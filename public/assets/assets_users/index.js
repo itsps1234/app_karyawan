@@ -1,7 +1,7 @@
 // Register Service worker to control making site work offline
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker
-	.register('/mobile-app/xhtml/app.js')
+	.register('/assets/assets_users/app.js')
 	.then(() => { console.log('Service Worker Registered'); });
 }
 
@@ -13,13 +13,13 @@ const installText = document.querySelector('.pwa-text');
 
 /* for ios start */
 function isThisDeviceRunningiOS(){
-  if (['iPad Simulator', 'iPhone Simulator','iPod Simulator', 'iPad','iPhone','iPod','ios'].includes(navigator.platform) || navigator.userAgent.indexOf('Mac OS X') != -1){ 
+  if (['iPad Simulator', 'iPhone Simulator','iPod Simulator', 'iPad','iPhone','iPod','ios'].includes(navigator.platform) || navigator.userAgent.indexOf('Mac OS X') != -1){
 	installText.innerHTML = 'Install Jobie job portal mobile app template to your home screen for easy access click to safari share option "Add to Home Screen".';
 	pwaBtn.remove();
 	return true;
-  }	
+  }
 }
-isThisDeviceRunningiOS();	
+isThisDeviceRunningiOS();
 /* for ios start */
 
 window.addEventListener('beforeinstallprompt', (e) => {

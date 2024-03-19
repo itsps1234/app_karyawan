@@ -22,7 +22,7 @@
 	<title>Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )</title>
 
 	<!-- PWA Version -->
-	<link rel="manifest" href="manifest.json">
+	{{-- <link rel="manifest" href="{{ asset('assets/assets_users/manifest.json') }}"> --}}
 
     <!-- Stylesheets -->
     @include('users.layouts.css') @yield('css')
@@ -83,10 +83,10 @@
 		<div class="container inner-wrapper">
 			<div class="dz-info">
 				<span>Good Morning</span>
-				<h2 class="name mb-0">Henry Kanwil</h2>
+				<h2 class="name mb-0">Dev</h2>
 			</div>
 			<div class="dz-media media-45 rounded-circle">
-				<a href="profile.html"><img src="assets/images/author/pic1.png" class="rounded-circle" alt="author-image"></a>
+				<a href="profile.html"><img src="{{ asset('assets/assets_users/images/author/pic1.png') }}" class="rounded-circle" alt="author-image"></a>
 			</div>
 		</div>
 	</div>
@@ -107,7 +107,7 @@
                                 </svg>
                             </a>
                         </span>
-                        <input type="text" placeholder="Search job here..." class="form-control ps-0 bs-0">
+                        <input type="text" placeholder="16 Mar 2024 3:38:06 PM" class="form-control ps-0 bs-0">
                     </div>
                 </form>
 
