@@ -42,17 +42,119 @@ class HomeUserController extends Controller
         ]);
     }
 
-    public function HomeAbsen(){
-        return view('users.absen.index');
+    public function HomeAbsen(Request $request){
+        $user_login = auth()->user()->id;
+        $date_now = date('Y');
+        $month_now = date('m');
+        $month_yesterday = \Carbon\Carbon::now()->subMonthsNoOverflow()->isoFormat('MM');
+        $month_yesterday1 = \Carbon\Carbon::now()->subMonthsNoOverflow()->isoFormat('MMMM');
+        $month_now1 = \Carbon\Carbon::now()->isoFormat('MMMM');
+        date_default_timezone_set('Asia/Jakarta');
+        $user_login = auth()->user()->id;
+        $tanggal = "";
+        $tglskrg = date('Y-m-d');
+        $tglkmrn = date('Y-m-d', strtotime('-1 days'));
+        $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
+        $tidak_masuk = MappingShift::where('status_absen', 'Tidak Masuk')
+            ->where('user_id', $user_login)
+            ->select(DB::raw("COUNT(*) as count"))
+            ->whereYear('tanggal', date('Y'))
+            ->groupBy(DB::raw("Month(tanggal)"))
+            ->pluck('count');
+        $masuk = MappingShift::where('mapping_shifts.status_absen', 'Masuk')
+            ->where('user_id', $user_login)
+            ->select(DB::raw("COUNT(mapping_shifts.tanggal) as count"))
+            ->whereYear('tanggal', date('Y'))
+            ->groupBy(DB::raw("Month(tanggal)"))
+            ->pluck('count');
+        $telat = MappingShift::where('status_absen', 'Telat')
+            ->where('user_id', $user_login)
+            ->select(DB::raw("COUNT(*) as count"))
+            ->whereYear('tanggal', date('Y'))
+            ->groupBy(DB::raw("Month(tanggal)"))
+            ->pluck('count');
+        // dd();
+        $telat_now = MappingShift::whereMonth('tanggal', $month_now)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("telat as count"))
+            ->pluck('count');
+        $telat_yesterday = MappingShift::whereMonth('tanggal', $month_yesterday)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("telat as count"))
+            ->pluck('count');
+        $lembur_now = MappingShift::whereMonth('tanggal', $month_now)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("lembur as count"))
+            ->pluck('count');
+        $lembur_yesterday = MappingShift::whereMonth('tanggal', $month_yesterday)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("lembur as count"))
+            ->pluck('count');
+        $data_telat_now = MappingShift::whereMonth('tanggal', $month_yesterday)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("tanggal as count"))
+            ->pluck('count');
+        $data_telat_yesterday = MappingShift::whereMonth('tanggal', $month_yesterday)
+            ->where('user_id', $user_login)
+            ->select(DB::raw("tanggal as count "))
+            ->pluck('count');
+        if($mapping_shift->count() > 0) {
+            foreach($mapping_shift as $mp) {
+                $jam_absen = $mp->jam_absen;
+                $jam_pulang = $mp->jam_pulang;
+            }
+        } else {
+            $jam_absen = "-";
+            $jam_pulang = "-";
+        }
+        if($jam_absen != null && $jam_pulang == null) {
+            $tanggal = $tglkmrn;
+        } else {
+            $tanggal = $tglskrg;
+        }
+
+        date_default_timezone_set('Asia/Jakarta');
+        $tglskrg = date('Y-m-d');
+        $data_absen = MappingShift::where('tanggal', $tglskrg)->where('user_id', auth()->user()->id);
+
+        if($request["mulai"] == null) {
+            $request["mulai"] = $request["akhir"];
+        }
+
+        if($request["akhir"] == null) {
+            $request["akhir"] = $request["mulai"];
+        }
+
+        if ($request["mulai"] && $request["akhir"]) {
+            $data_absen = MappingShift::where('user_id', auth()->user()->id)->whereBetween('tanggal', [$request["mulai"], $request["akhir"]]);
+        }
+        return view('users.absen.index', [
+            'title' => 'My Absen',
+            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
+            'data_absen' => $data_absen->get(),
+            'masuk'=>array_map('intval', json_decode($masuk)),
+            'tidak_masuk'=>array_map('intval', json_decode($tidak_masuk)),
+            'telat'=>array_map('intval', json_decode($telat)),
+            'date_now'=>$date_now,
+            'month_now1'=>$month_now1,
+            'month_yesterday1'=>$month_yesterday1,
+            'telat_now'=>array_map('intval', json_decode($telat_now)),
+            'telat_yesterday'=>array_map('intval', json_decode($telat_yesterday)),
+            'lembur_now'=>array_map('intval', json_decode($lembur_now)),
+            'data_telat_now'=>$data_telat_now,
+            'data_telat_yesterday'=>$data_telat_yesterday,
+            'lembur_yesterday'=>array_map('intval', json_decode($lembur_yesterday))
+        ]);
     }
 
     public function myLocation(Request $request)
     {
-        return redirect('maps/'.$request["lat"].'/'.$request['long']);
+        return redirect('/home/maps/'.$request["lat"].'/'.$request['long']);
     }
 
     public function absenMasuk(Request $request, $id)
     {
+        dd('a');
         date_default_timezone_set('Asia/Jakarta');
 
         $lokasi_kantor = Lokasi::first();
@@ -242,7 +344,7 @@ class HomeUserController extends Controller
     public function maps($lat, $long)
     {
         date_default_timezone_set('Asia/Jakarta');
-        return view('absen.maps', [
+        return view('users.absen.locationmaps', [
             'title' => 'Maps',
             'lat' => $lat,
             'long' => $long,

@@ -47,6 +47,9 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::put('/home/absen/masuk/{id}', [HomeUserController::class, 'absenMasuk']);
     Route::get('/home/absen', [HomeUserController::class, 'HomeAbsen']);
+    Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
+    Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
+    Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
 
     Route::put('/absen/masuk/{id}', [AbsenController::class, 'absenMasuk']);
     Route::put('/absen/pulang/{id}', [AbsenController::class, 'absenPulang']);
