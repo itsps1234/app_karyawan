@@ -15,7 +15,7 @@
                             </g>
                         </svg>
                         <div class="info">
-                            <p>Absen Masuk <br> <span class="title" style="font-size: 25px">09:44:00 </span></p>
+                            <p>Absen Masuk<br> <span class="title" style="font-size: 25px">09:44:00 </span></p>
                         </div>
                     </div>
                 </div>
