@@ -20,6 +20,8 @@ use App\Http\Controllers\karyawanController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\RekapDataController;
 use App\Http\Controllers\HomeUserController;
+use App\Http\Controllers\HistoryUserController;
+use App\Http\Controllers\ProfileUserController;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,10 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
+
+    Route::get('/history', [HistoryUserController::class, 'index']);
+
+    Route::get('/profile', [ProfileUserController::class, 'index']);
 
     Route::put('/absen/masuk/{id}', [AbsenController::class, 'absenMasuk']);
     Route::put('/absen/pulang/{id}', [AbsenController::class, 'absenPulang']);

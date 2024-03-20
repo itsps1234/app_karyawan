@@ -82,8 +82,31 @@
 	<div class="banner-wrapper author-notification">
 		<div class="container inner-wrapper">
 			<div class="dz-info">
-				<span>Good Morning</span>
-				<h2 class="name mb-0">Dev</h2>
+				<span>
+                    <?php
+                    date_default_timezone_set("Asia/Jakarta");
+                    $time = date("H");
+                    /* Set the $timezone variable to become the current timezone */
+                    $timezone = date("e");
+                    /* If the time is less than 1200 hours, show good morning */
+                    if ($time < "12") {
+                        echo "Good morning";
+                    } else
+                    /* If the time is grater than or equal to 1200 hours, but less than 1700 hours, so good afternoon */
+                    if ($time >= "12" && $time < "17") {
+                        echo "Good afternoon";
+                    } else
+                    /* Should the time be between or equal to 1700 and 1900 hours, show good evening */
+                    if ($time >= "17" && $time < "19") {
+                        echo "Good evening";
+                    } else
+                    /* Finally, show good night if the time is greater than or equal to 1900 hours */
+                    if ($time >= "19") {
+                        echo "Good night";
+                    }
+                ?>
+                </span>
+				<h2 class="name mb-0">{{ Auth::user()->fullname }}</h2>
 			</div>
 			<div class="dz-media media-45 rounded-circle">
 				<a href="profile.html"><img src="{{ asset('assets/assets_users/images/author/pic1.png') }}" class="rounded-circle" alt="author-image"></a>
