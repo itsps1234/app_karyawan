@@ -22,6 +22,8 @@ use App\Http\Controllers\RekapDataController;
 use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\HistoryUserController;
 use App\Http\Controllers\ProfileUserController;
+use App\Http\Controllers\AbsenUserController;
+use App\Http\Controllers\IzinUserController;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,11 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
+
+    Route::get('/absen/dashboard', [AbsenUserController::class, 'index']);
+    route::get('/absen/dashboard/index',[AbsenUserController::class, 'recordabsen']);
+
+    Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
 
     Route::get('/history', [HistoryUserController::class, 'index']);
 
@@ -162,3 +169,18 @@ Route::delete('/dokumen/delete/{id}', [DokumenController::class, 'delete'])->mid
 // Route::delete('/my-dokumen/delete/{id}', [DokumenController::class, 'myDokumenDelete'])->middleware('auth');
 Route::post('/logout', [authController::class, 'logout'])->name('logout');
 
+Route::get('optimize', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('optimize:clear');
+
+
+    Artisan::call('view:cache');
+    Artisan::call('route:cache');
+    Artisan::call('config:cache');
+    Artisan::call('optimize');
+
+    echo 'optimize clear';
+});

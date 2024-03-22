@@ -19,7 +19,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
     <!-- Title -->
-	<title>Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )</title>
+	<title>APPS KARYAWAN</title>
 
 	<!-- PWA Version -->
 	{{-- <link rel="manifest" href="{{ asset('assets/assets_users/manifest.json') }}"> --}}
@@ -108,9 +108,9 @@
                 </span>
 				<h2 class="name mb-0">{{ Auth::user()->fullname }}</h2>
 			</div>
-			<div class="dz-media media-45 rounded-circle">
-				<a href="profile.html"><img src="{{ asset('assets/assets_users/images/author/pic1.png') }}" class="rounded-circle" alt="author-image"></a>
-			</div>
+			{{-- <div class="dz-media media-45 rounded-circle">
+				<a href="profile.html"><img src="{{ asset('assets/img/logosp.png') }}" class="rounded-circle" alt="author-image"></a>
+			</div> --}}
 		</div>
 	</div>
     <!-- Banner End -->

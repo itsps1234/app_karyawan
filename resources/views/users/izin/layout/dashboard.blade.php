@@ -57,46 +57,46 @@
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
     <style type="text/css">
-        body {
-            font-family: "Montserrat", sans-serif;
-            font-size: 16px;
-            line-height: 1.4;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-            height: 100%;
-            /* background: #ffffff; */
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+    body {
+        font-family: "Montserrat", sans-serif;
+        font-size: 16px;
+        line-height: 1.4;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        height: 100%;
+        /* background: #ffffff; */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
-        .content-wrapper {
-            /* padding: 0;
-                margin: 0; */
-            background: url('dist/img/bgWave.svg') center bottom / 100% no-repeat fixed, url('/dist/img/topWave.svg') center top / 100% no-repeat fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
+    .content-wrapper {
+        /* padding: 0;
+            margin: 0; */
+        background: url('dist/img/bgWave.svg') center bottom / 100% no-repeat fixed, url('/dist/img/topWave.svg') center top / 100% no-repeat fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
 
-        .imgtgl {
-            background: url("dist/img/buttonBlue.svg") 0% 0% / cover rgba(71, 188, 188, 0.07);
-            border-radius: 6px;
-            font-size: 10px;
-            color: rgb(71, 188, 188);
-        }
+    .imgtgl {
+        background: url("dist/img/buttonBlue.svg") 0% 0% / cover rgba(71, 188, 188, 0.07);
+        border-radius: 6px;
+        font-size: 10px;
+        color: rgb(71, 188, 188);
+    }
 
-        .imgjam {
-            background-color: rgb(255, 250, 242);
-            background-image: url("dist/img/buttonOrange.svg");
-            background-size: cover;
-            border-radius: 6px;
-            font-size: 10px;
-            color: rgb(254, 153, 0);
-        }
+    .imgjam {
+        background-color: rgb(255, 250, 242);
+        background-image: url("dist/img/buttonOrange.svg");
+        background-size: cover;
+        border-radius: 6px;
+        font-size: 10px;
+        color: rgb(254, 153, 0);
+    }
     </style>
 
 

@@ -79,7 +79,7 @@
                                                         <h2 style="color: white">Absen Masuk: </h2>
                                                         <div style="margin-top:-60px" class="webcam" id="results"></div>
                                                     </center>
-                                                    <input type="hidden" name="jam_absen" value="{{ date('H:i') }}">
+                                                    <input type="hidden" name="jam_absen" value="{{ date('H:i:s') }}">
                                                     <input type="hidden" name="foto_jam_absen" class="image-tag">
                                                     <input type="hidden" name="lat_absen" id="lat">
                                                     <input type="hidden" name="long_absen" id="long">
