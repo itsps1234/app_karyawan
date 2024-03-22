@@ -102,6 +102,11 @@ Route::get('/karyawan/shift/{id}', [karyawanController::class, 'shift'])->middle
 Route::post('/karyawan/shift/proses-tambah-shift', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
 Route::delete('/karyawan/delete-shift/{id}', [karyawanController::class, 'deleteShift'])->middleware('admin');
 Route::get('/karyawan/edit-shift/{id}', [karyawanController::class, 'editShift'])->middleware('admin');
+
+// 
+Route::get('/karyawan/get_divisi', [karyawanController::class, 'get_divisi'])->middleware('admin');
+Route::get('/karyawan/get_jabatan', [karyawanController::class, 'get_jabatan'])->middleware('admin');
+
 // Route::put('/karyawan/proses-edit-shift/{id}', [karyawanController::class, 'prosesEditShift'])->middleware('auth');
 // Route::get('/absen', [AbsenController::class, 'index'])->middleware('auth');
 // Route::get('/my-location', [AbsenController::class, 'myLocation'])->middleware('auth');

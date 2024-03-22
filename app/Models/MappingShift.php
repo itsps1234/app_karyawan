@@ -9,6 +9,7 @@ class MappingShift extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    // protected $fillable = ['first_name', 'last_name', 'email'];
 
     public function User()
     {

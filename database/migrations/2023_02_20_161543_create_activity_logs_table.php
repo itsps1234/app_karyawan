@@ -15,9 +15,10 @@ class CreateActivityLogsTable extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->uuid('user_id');
+            $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('activity');
-            $table->string('description');            
+            $table->string('description');
             $table->timestamps();
         });
     }

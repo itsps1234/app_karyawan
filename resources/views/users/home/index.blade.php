@@ -1,6 +1,7 @@
 @extends('users.layouts.main')
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
+<!-- {{Auth::user()->id}} -->
 <!-- Features -->
 <div class="features-box">
     <div class="row m-b20 g-3">
@@ -43,7 +44,32 @@
 <!-- Features End -->
 <div class="categorie-section">
     <div class="title-bar">
-        <h5 class="dz-title">Absensi Bulan Maret 2024</h5>
+        <h5 class="title"> Absen&nbsp;Bulan&nbsp;
+        <select class="title select-text" style="width: max-content;border-radius: 0px; color: var(--primary);" name="" id="">
+            <option value="1">Januari</option>
+            <option value="2">Februari</option>
+            <option value="3">Maret</option>
+            <option value="4">April</option>
+            <option value="5">Mei</option>
+            <option value="6">Juni</option>
+            <option value="7">Juli</option>
+            <option value="8">Agustus</option>
+            <option value="9">September</option>
+            <option value="10">Oktober</option>
+            <option value="11">November</option>
+            <option value="12">Desember</option>
+        </select>
+         &nbsp;2024</h5>
+        <!-- <div class="dropdown d-inline-flex">
+            <span class="dropdown-toggle" data-bs-toggle="dropdown">
+                Maret
+            </span>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Link 1</a>
+                <a class="dropdown-item" href="#">Link 2</a>
+                <a class="dropdown-item" href="#">Link 3</a>
+            </div>
+        </div> -->
     </div>
     <div class="row">
         <div class="col-6">
@@ -151,36 +177,36 @@
     <div class="title-bar">
         <h5 class="dz-title">1 Minggu Terakhir</h5>
     </div>
-    <div class="card" >
+    <div class="card">
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Tanggal</th>
-                  <th scope="col">Jam Masuk</th>
-                  <th scope="col">Jam Pulang</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Tanggal</th>
+                    <th scope="col">Jam Masuk</th>
+                    <th scope="col">Jam Pulang</th>
                 </tr>
-              </thead>
-              <tbody>
+            </thead>
+            <tbody>
                 <tr>
-                  <th scope="row">1</th>
-                  <td>18-03-2024</td>
-                  <td>07.45</td>
-                  <td>17.02</td>
-                </tr>
-                <tr>
-                  <th scope="row">2</th>
-                  <td>19-03-2024</td>
-                  <td>07.45</td>
-                  <td>17.02</td>
+                    <th scope="row">1</th>
+                    <td>18-03-2024</td>
+                    <td>07.45</td>
+                    <td>17.02</td>
                 </tr>
                 <tr>
-                  <th scope="row">3</th>
-                  <td>20-03-2024</td>
-                  <td>07.45</td>
-                  <td>17.02</td>
+                    <th scope="row">2</th>
+                    <td>19-03-2024</td>
+                    <td>07.45</td>
+                    <td>17.02</td>
                 </tr>
-              </tbody>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>20-03-2024</td>
+                    <td>07.45</td>
+                    <td>17.02</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 </div>

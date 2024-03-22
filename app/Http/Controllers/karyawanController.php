@@ -14,7 +14,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ActivityLog;
+use App\Models\Departemen;
+use App\Models\Divisi;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 class karyawanController extends Controller
 {
@@ -28,63 +32,66 @@ class karyawanController extends Controller
 
     public function tambahKaryawan()
     {
-        return view('karyawan.tambah',[
+        return view('karyawan.tambah', [
             "title" => 'Tambah Karyawan',
+            "data_departemen" => Departemen::all(),
             "data_jabatan" => Jabatan::all()
         ]);
     }
 
     public function tambahKaryawanProses(Request $request)
     {
-        if($request["cuti_dadakan"] == null) {
+        if ($request["cuti_dadakan"] == null) {
             $request["cuti_dadakan"] = "0";
         } else {
             $request["cuti_dadakan"];
         }
 
-        if($request["cuti_bersama"] == null) {
+        if ($request["cuti_bersama"] == null) {
             $request["cuti_bersama"] = "0";
-        }  else {
+        } else {
             $request["cuti_bersama"];
         }
 
-        if($request["cuti_menikah"] == null) {
+        if ($request["cuti_menikah"] == null) {
             $request["cuti_menikah"] = "0";
-        }  else {
+        } else {
             $request["cuti_menikah"];
         }
 
-        if($request["cuti_diluar_tanggungan"] == null) {
+        if ($request["cuti_diluar_tanggungan"] == null) {
             $request["cuti_diluar_tanggungan"] = "0";
-        }  else {
+        } else {
             $request["cuti_diluar_tanggungan"];
         }
 
-        if($request["cuti_khusus"] == null) {
+        if ($request["cuti_khusus"] == null) {
             $request["cuti_khusus"] = "0";
-        }  else {
+        } else {
             $request["cuti_khusus"];
         }
 
-        if($request["cuti_melahirkan"] == null) {
+        if ($request["cuti_melahirkan"] == null) {
             $request["cuti_melahirkan"] = "0";
-        }  else {
+        } else {
             $request["cuti_melahirkan"];
         }
 
-        if($request["izin_telat"] == null) {
+        if ($request["izin_telat"] == null) {
             $request["izin_telat"] = "0";
-        }  else {
+        } else {
             $request["izin_telat"];
         }
 
-        if($request["izin_pulang_cepat"] == null) {
+        if ($request["izin_pulang_cepat"] == null) {
             $request["izin_pulang_cepat"] = "0";
-        }  else {
+        } else {
             $request["izin_pulang_cepat"];
         }
+        // $request["id"] = Str::uuid()->toString();
+        $request["jabatan_id"] = Jabatan::where('id',$request["jabatan_id"])->value('id');
 
-
+// dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'foto_karyawan' => 'image|file|max:10240',
@@ -106,21 +113,47 @@ class karyawanController extends Controller
             'izin_telat' => 'required',
             'izin_pulang_cepat' => 'required',
             'is_admin' => 'required',
-            'jabatan_id' => 'required',
+            'departemen_id' => 'required',
+            'divisi_id' => 'required',
         ]);
-
+        // dd($validatedData['id']);
         if ($request->file('foto_karyawan')) {
             $validatedData['foto_karyawan'] = $request->file('foto_karyawan')->store('foto_karyawan');
+        } else{
+            $validatedData['foto_karyawan'] = NULL;
         }
-
+        
         $validatedData['password'] = Hash::make($validatedData['password']);
-        User::create($validatedData);
+        // dd($validatedData);
+        User::create([
+            'name' => $validatedData['name'],
+            'foto_karyawan' => $validatedData['foto_karyawan'],
+            'email' => $validatedData['email'],
+            'telepon' => $validatedData['telepon'],
+            'username' => $validatedData['username'],
+            'password' => $validatedData['password'],
+            'tgl_lahir' => $validatedData['tgl_lahir'],
+            'gender' => $validatedData['gender'],
+            'tgl_join' => $validatedData['tgl_join'],
+            'status_nikah' => $validatedData['status_nikah'],
+            'alamat' => $validatedData['alamat'],
+            'cuti_dadakan' => $validatedData['cuti_dadakan'],
+            'cuti_bersama' => $validatedData['cuti_bersama'],
+            'cuti_menikah' => $validatedData['cuti_menikah'],
+            'cuti_diluar_tanggungan' => $validatedData['cuti_diluar_tanggungan'],
+            'cuti_khusus' => $validatedData['cuti_khusus'],
+            'cuti_melahirkan' => $validatedData['cuti_melahirkan'],
+            'izin_telat' => $validatedData['izin_telat'],
+            'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
+            'is_admin' => $validatedData['is_admin'],
+            'jabatan_id' =>Jabatan::where('id',$request["jabatan_id"])->value('id') ,
+        ]);
 
         // Merekam aktivitas pengguna
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'create',
-            'description' => 'Menambahkan data karyawan baru '.$request->name,
+            'description' => 'Menambahkan data karyawan baru ' . $request->name,
         ]);
 
         return redirect('/karyawan')->with('success', 'Data Berhasil di Tambahkan');
@@ -137,51 +170,51 @@ class karyawanController extends Controller
 
     public function editKaryawanProses(Request $request, $id)
     {
-        if($request["cuti_dadakan"] == null) {
+        if ($request["cuti_dadakan"] == null) {
             $request["cuti_dadakan"] = "0";
         } else {
             $request["cuti_dadakan"];
         }
 
-        if($request["cuti_bersama"] == null) {
+        if ($request["cuti_bersama"] == null) {
             $request["cuti_bersama"] = "0";
-        }  else {
+        } else {
             $request["cuti_bersama"];
         }
 
-        if($request["cuti_menikah"] == null) {
+        if ($request["cuti_menikah"] == null) {
             $request["cuti_menikah"] = "0";
-        }  else {
+        } else {
             $request["cuti_menikah"];
         }
 
-        if($request["cuti_diluar_tanggungan"] == null) {
+        if ($request["cuti_diluar_tanggungan"] == null) {
             $request["cuti_diluar_tanggungan"] = "0";
-        }  else {
+        } else {
             $request["cuti_diluar_tanggungan"];
         }
 
-        if($request["cuti_khusus"] == null) {
+        if ($request["cuti_khusus"] == null) {
             $request["cuti_khusus"] = "0";
-        }  else {
+        } else {
             $request["cuti_khusus"];
         }
 
-        if($request["cuti_melahirkan"] == null) {
+        if ($request["cuti_melahirkan"] == null) {
             $request["cuti_melahirkan"] = "0";
-        }  else {
+        } else {
             $request["cuti_melahirkan"];
         }
 
-        if($request["izin_telat"] == null) {
+        if ($request["izin_telat"] == null) {
             $request["izin_telat"] = "0";
-        }  else {
+        } else {
             $request["izin_telat"];
         }
 
-        if($request["izin_pulang_cepat"] == null) {
+        if ($request["izin_pulang_cepat"] == null) {
             $request["izin_pulang_cepat"] = "0";
-        }  else {
+        } else {
             $request["izin_pulang_cepat"];
         }
 
@@ -232,7 +265,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah data karyawan '.$request->name,
+            'description' => 'Mengubah data karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Data Berhasil di Update');
         return redirect('/karyawan');
@@ -254,7 +287,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => Auth::user()->id,
             'activity' => 'delete',
-            'description' => 'Menghapus data karyawan '.$delete->name,
+            'description' => 'Menghapus data karyawan ' . $delete->name,
         ]);
         return redirect('/karyawan')->with('success', 'Data Berhasil di Delete');
     }
@@ -279,7 +312,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah password karyawan '.$request->name,
+            'description' => 'Mengubah password karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Password Berhasil Diganti');
         return redirect('/karyawan');
@@ -287,6 +320,7 @@ class karyawanController extends Controller
 
     public function shift($id)
     {
+        // dd($id);
         return view('karyawan.mappingshift', [
             'title' => 'Mapping Shift',
             'karyawan' => User::find($id),
@@ -294,18 +328,39 @@ class karyawanController extends Controller
             'shift' => Shift::all()
         ]);
     }
- 
+
+
+    public function get_divisi(Request $request)
+    {
+        $id_departemen    = $request->id_departemen;
+        $divisi      = Divisi::where('dept_id', $id_departemen)->get();
+        // dd($divisi);
+        echo "<option value=''>Pilih Divisi...</option>";
+        foreach ($divisi as $divisi) {
+            echo "<option value='$divisi->id'>$divisi->nama_divisi</option>";
+        }
+    }
+    public function get_jabatan(Request $request)
+    {
+        $id_divisi    = $request->id_divisi;
+        $jabatan      = Jabatan::where('divisi_id', $id_divisi)->get();
+        echo "<option value=''>Pilih Jabatan...</option>";
+        foreach ($jabatan as $jabatan) {
+            echo "<option value='$jabatan->id'>$jabatan->nama_jabatan</option>";
+        }
+    }
     public function prosesTambahShift(Request $request)
     {
+        // dd($request->all());
         date_default_timezone_set('Asia/Jakarta');
 
-        if($request["tanggal_mulai"] == null) {
+        if ($request["tanggal_mulai"] == null) {
             $request["tanggal_mulai"] = $request["tanggal_akhir"];
         } else {
             $request["tanggal_mulai"] = $request["tanggal_mulai"];
         }
 
-        if($request["tanggal_akhir"] == null) {
+        if ($request["tanggal_akhir"] == null) {
             $request["tanggal_akhir"] = $request["tanggal_mulai"];
         } else {
             $request["tanggal_akhir"] = $request["tanggal_akhir"];
@@ -316,7 +371,7 @@ class karyawanController extends Controller
         $end = $end->modify('+1 day');
 
         $interval = new \DateInterval('P1D'); //referensi : https://en.wikipedia.org/wiki/ISO_8601#Durations
-        $daterange = new \DatePeriod($begin, $interval ,$end);
+        $daterange = new \DatePeriod($begin, $interval, $end);
 
 
         foreach ($daterange as $date) {
@@ -342,7 +397,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'create',
-            'description' => 'Menambahkan shift karyawan '.$request->name,
+            'description' => 'Menambahkan shift karyawan ' . $request->name,
         ]);
         return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Tambahkan');
     }
@@ -354,7 +409,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'delete',
-            'description' => 'Menghapus shift karyawan '.$delete->user->name,
+            'description' => 'Menghapus shift karyawan ' . $delete->user->name,
         ]);
         return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Delete');
     }
@@ -389,7 +444,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah shift karyawan '.$request->name,
+            'description' => 'Mengubah shift karyawan ' . $request->name,
         ]);
         return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Update');
     }
@@ -440,7 +495,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah profile karyawan '.$request->name,
+            'description' => 'Mengubah profile karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Data Berhasil di Update');
         return redirect('/my-profile');
@@ -465,7 +520,7 @@ class karyawanController extends Controller
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah password karyawan '.$request->name,
+            'description' => 'Mengubah password karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Password Berhasil di Update');
         return redirect('/my-profile');
@@ -500,5 +555,4 @@ class karyawanController extends Controller
         ]);
         return redirect('/reset-cuti')->with('success', 'Master Cuti Berhasil Diupdate');
     }
-   
 }

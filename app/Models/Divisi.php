@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Shift extends Model
+class Divisi extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'nama_divisi', 'created_at', 'updated_at'];
 
-    public function MappingShift()
+
+    public function Departemen()
     {
-        return $this->hasMany(MappingShift::class);
+        return $this->belongsTo(Jabatan::class);
     }
 }

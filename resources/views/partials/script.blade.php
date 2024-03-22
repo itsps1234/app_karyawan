@@ -48,6 +48,9 @@
 <script src="{{ url('adminlte/plugins/fullcalendar/main.js') }}"></script>
 
 <script>
+  $(function() {
+
+    /* initialize the external
   $(function () {
 
     /* initialize the external events
@@ -274,6 +277,50 @@
             });
         })
 
+        $(function(){
+          $('#id_departemen').on('change', function() {
+            let id_departemen = $('#id_departemen').val();
+            console.log(id_departemen);
+            $.ajax({
+              type: 'GET',
+              url: "{{url('karyawan/get_divisi')}}",
+                data: {
+                    id_departemen: id_departemen
+                },
+                cache: false,
+
+                success: function(msg) {
+                  console.log(msg);
+                  // $('#id_divisi').html(msg);
+                  $('#id_divisi').html(msg);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+                
+              })
+        })
+          $('#id_divisi').on('change', function() {
+            let id_divisi = $('#id_divisi').val();
+            console.log(id_divisi);
+            $.ajax({
+                type: 'GET',
+                url: "{{url('karyawan/get_jabatan')}}",
+                data: {
+                    id_divisi: id_divisi
+                },
+                cache: false,
+
+                success: function(msg) {
+                    $('#id_jabatan').html(msg);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+        })
         $(function(){
           $('form').on('submit', function(){
             $(':input[type="submit"]').prop('disabled', true);

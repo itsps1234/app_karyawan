@@ -15,8 +15,6 @@ class CreateMappingShiftsTable extends Migration
     {
         Schema::create('mapping_shifts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('shift_id');
             $table->string('tanggal');
             $table->string('jam_absen')->nullable();
             $table->string('telat')->nullable();
@@ -26,6 +24,7 @@ class CreateMappingShiftsTable extends Migration
             $table->string('foto_jam_absen')->nullable();
             $table->string('jam_pulang')->nullable();
             $table->string('pulang_cepat')->nullable();
+            $table->string('lembur')->nullable();
             $table->string('foto_jam_pulang')->nullable();
             $table->string('lat_pulang')->nullable();
             $table->string('long_pulang')->nullable();
