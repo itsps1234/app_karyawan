@@ -22,6 +22,7 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
+        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
         if($mapping_shift->count() > 0) {
             foreach($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
@@ -38,7 +39,8 @@ class HomeUserController extends Controller
         }
         return view('users.home.index', [
             'title' => 'Absen',
-            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get()
+            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
+            'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get()
         ]);
     }
 
@@ -154,13 +156,12 @@ class HomeUserController extends Controller
 
     public function absenMasuk(Request $request, $id)
     {
-        dd('a');
         date_default_timezone_set('Asia/Jakarta');
-
+        $user_login = auth()->user()->id;
         $lokasi_kantor = Lokasi::first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
-
+        $tglskrg = date('Y-m-d');
         $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
 
         if($request["jarak_masuk"] > $lokasi_kantor->radius) {
@@ -214,12 +215,13 @@ class HomeUserController extends Controller
             ActivityLog::create([
                 'user_id' => Auth::user()->id,
                 'activity' => 'tambah',
-                'description' => 'Absen Masuk Pada Tanggal ' . $tanggal
+                'description' => 'Absen Masuk Pada Tanggal ' . $tanggal,
+                'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
             ]);
 
             $request->session()->flash('success', 'Berhasil Absen Masuk');
 
-            return redirect('/absen');
+            return redirect('/home');
         }
 
     }
@@ -227,11 +229,11 @@ class HomeUserController extends Controller
     public function absenPulang(Request $request, $id)
     {
         date_default_timezone_set('Asia/Jakarta');
-
+        $user_login = auth()->user()->id;
         $lokasi_kantor = Lokasi::first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
-
+        $tglskrg = date('Y-m-d');
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
 
         if($request["jarak_pulang"] > $lokasi_kantor->radius) {
@@ -291,10 +293,12 @@ class HomeUserController extends Controller
             ActivityLog::create([
                 'user_id' => Auth::user()->id,
                 'activity' => 'tambah',
-                'description' => 'Absen Pulang Pada Tanggal ' . $tanggal
+                'description' => 'Absen Pulang Pada Tanggal ' . $tanggal,
+                'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
+
             ]);
 
-            return redirect('/absen')->with('success', 'Berhasil Absen Pulang');
+            return redirect('/home')->with('success', 'Berhasil Absen Pulang');
         }
     }
 

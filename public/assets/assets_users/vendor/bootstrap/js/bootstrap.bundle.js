@@ -2170,7 +2170,7 @@
     return getWindow(element).getComputedStyle(element);
   }
 
-  function isTableElement(element) {
+  function istableElement(element) {
     return ['table', 'td', 'th'].indexOf(getNodeName(element)) >= 0;
   }
 
@@ -2244,7 +2244,7 @@
     var window = getWindow(element);
     var offsetParent = getTrueOffsetParent(element);
 
-    while (offsetParent && isTableElement(offsetParent) && getComputedStyle$1(offsetParent).position === 'static') {
+    while (offsetParent && istableElement(offsetParent) && getComputedStyle$1(offsetParent).position === 'static') {
       offsetParent = getTrueOffsetParent(offsetParent);
     }
 

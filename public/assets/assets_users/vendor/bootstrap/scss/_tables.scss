@@ -129,9 +129,9 @@
 }
 
 
-// Table variants
+// table variants
 //
-// Table variants set the table cell backgrounds, border colors
+// table variants set the table cell backgrounds, border colors
 // and the colors of the striped, hovered & active tables
 
 @each $color, $value in $table-variants {

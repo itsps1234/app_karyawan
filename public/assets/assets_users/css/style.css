@@ -4,28 +4,28 @@
 	Version			 : 1.0
 	Author Portfolio : https://themeforest.net/user/dexignzone
 	=========================
-
+	
 	=========================
-	[Table of Contents]
+	[table of Contents] 
 	=========================
 	==============
 	  SCSS Start
 	==============
 	1. Abstracts
-        1.1 _bs-custom
+        1.1 _bs-custom	
         1.2 _inheritance
         1.3 _maps
         1.4 _mixin
         1.5 _variable
 
-    2. Bootstrap
+    2. Bootstrap 
         2.1 Here goes all official bootstrap scss files
 
     3. Global/Base
         3.1 _color
         3.2 _custom-grid
         3.3 _fonts
-        3.4 _helper
+        3.4 _helper 
         3.5 _reset
 
     4. Layout
@@ -45,7 +45,7 @@
         5.7 uc
         5.8 ui
         5.9 widget
-
+	
     6. Pages
         6.1  _banking
         6.2  _business
@@ -62,9 +62,9 @@
         6.13 _sales
         6.14 _statistics-page
         6.15 _stock
-
-	7. PreLoader
-
+		
+	7. PreLoader 
+	
 	==============
 	  SCSS End
 	==============
@@ -99,8 +99,8 @@
 
 /*
 	0 - 600: Phone
-	600 - 900: Tablet portrait
-	900 - 1200: Tablet landscape
+	600 - 900: tablet portrait
+	900 - 1200: tablet landscape
 	1200 - 1800: Normal styles
 	1800+ : Big Desktop
 	1em = 1rem
@@ -2314,10 +2314,6 @@ textarea.form-control-lg {
   color: #000;
   background-color: #56c760;
   border-color: #56c760; }
-  .btn-lokasisaya {
-    color: #673ab7;
-    background-color: #ffffff;
-    border-color: #ffffff; }
   .btn-success:hover {
     color: #000;
     background-color: #6fcf78;
@@ -11027,7 +11023,7 @@ select {
             .accordion-header-indicator {
                 &::before {
                     content: "\e622";
-
+                    
                 }
 
                 //icon style
@@ -13547,7 +13543,7 @@ button {
         img{
             margin: 10px 0;
         }
-    }
+    }    
 } */
 .divider {
   position: relative;
