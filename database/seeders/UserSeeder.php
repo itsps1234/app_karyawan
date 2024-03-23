@@ -40,6 +40,8 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'admin',
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'HRD & GA')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
                 'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'MANAGER HRD')->value('id')
             ], [
                 'id' => Uuid::uuid4(),
@@ -63,6 +65,8 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'FINANCE AND ACCOUNTING')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'FINANCE (CASH AND BANK - KASIR)')->value('id'),
                 'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR FINANCE (CASH AND BANK - KASIR)')->value('id')
             ], [
                 'id' => Uuid::uuid4(),
@@ -86,7 +90,9 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
-                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'ADMIN QUALITY CONTROL')->value('id')
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'PRODUCTION')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'QUALITY CONTROL')->value('id'),
+                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'STAFF QUALITY CONTROL')->value('id')
             ],
             [
                 'id' => Uuid::uuid4(),
@@ -110,6 +116,8 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'PROCUREMENT')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'PURCHASING MATERIAL (SOURCHING)')->value('id'),
                 'jabatan_id' =>  DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR SOURCHING')->value('id')
             ]
         ];

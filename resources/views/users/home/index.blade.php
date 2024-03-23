@@ -104,7 +104,7 @@
 <div class="categorie-section">
     <div class="title-bar">
         <h5 class="title"> Absen&nbsp;Bulan&nbsp;
-        <select class="title select-text" style="width: max-content;border-radius: 0px; color: var(--primary);" name="" id="">
+        <select class="title select-text" style="width: max-content;border-radius: 0px; color: var(--primary); border: none;" name="" id="">
             <option value="1">Januari</option>
             <option value="2">Februari</option>
             <option value="3">Maret</option>
