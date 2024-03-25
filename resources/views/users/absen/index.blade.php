@@ -87,7 +87,7 @@
                                                     <input type="hidden" name="jarak_masuk">
                                                     <input type="hidden" name="status_absen">
                                                     <center>
-                                                        <button type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
+                                                        <button style="color: white;" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
                                                     </center>
                                             </div>
                                         </form>

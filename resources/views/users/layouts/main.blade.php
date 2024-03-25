@@ -31,6 +31,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link href="https://cdn.datatables.net/2.0.3/css/dataTables.bootstrap5.css" rel="stylesheet">
 
 </head>
 <body>
@@ -106,7 +108,7 @@
                     }
                 ?>
                 </span>
-				<h2 class="name mb-0">{{ Auth::user()->fullname }}</h2>
+				<h2 class="name mb-0">{{ Auth::user()->name }}</h2>
 			</div>
 			{{-- <div class="dz-media media-45 rounded-circle">
 				<a href="profile.html"><img src="{{ asset('assets/img/logosp.png') }}" class="rounded-circle" alt="author-image"></a>

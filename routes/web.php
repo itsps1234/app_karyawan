@@ -50,6 +50,7 @@ Route::middleware('auth','log.activity')->group(function () {
 
     Route::get('/home', [HomeUserController::class, 'index']);
     Route::put('/home/absen/masuk/{id}', [HomeUserController::class, 'absenMasuk']);
+    Route::get('/datatableHome', [HomeUserController::class, 'datatableHome'])->name('datatableHome');
     Route::get('/home/absen', [HomeUserController::class, 'HomeAbsen']);
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);

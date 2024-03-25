@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ActivityLog;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeUserController extends Controller
 {
@@ -19,12 +21,19 @@ class HomeUserController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
         $tanggal = "";
+        // $dateweek = \Carbon\Carbon::today();
+        // dd($dateweek);
         $tglskrg = date('Y-m-d');
+        $blnskrg = date('m');
+        $thnskrg = date('Y');
+        // dd($thnskrg);
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
         $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
-        if($mapping_shift->count() > 0) {
-            foreach($mapping_shift as $mp) {
+        $count_absen_hadir = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
+        // dd($count_absen_hadir);
+        if ($mapping_shift->count() > 0) {
+            foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
                 $jam_pulang = $mp->jam_pulang;
             }
@@ -32,19 +41,55 @@ class HomeUserController extends Controller
             $jam_absen = "-";
             $jam_pulang = "-";
         }
-        if($jam_absen != null && $jam_pulang == null) {
+        if ($jam_absen != null && $jam_pulang == null) {
             $tanggal = $tglkmrn;
         } else {
             $tanggal = $tglskrg;
         }
+        // dd($status_absen_skrg);
         return view('users.home.index', [
             'title' => 'Absen',
             'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
-            'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get()
+            'count_absen_hadir' => $count_absen_hadir,
+            'thnskrg' => $thnskrg,
+            'status_absen_skrg' => $status_absen_skrg,
         ]);
     }
 
-    public function HomeAbsen(Request $request){
+    public function datatableHome(Request $request)
+    {
+        $user_login = auth()->user()->id;
+        $dateweek = \Carbon\Carbon::today()->subDays(7);
+        $datenow = \Carbon\Carbon::today();
+        if ($request->ajax()) {
+            $data = MappingShift::where('user_id', $user_login)->whereBetween('tanggal', array($dateweek, $datenow))->orderBy('tanggal','DESC')->get();
+            return DataTables::of($data)->addIndexColumn()
+                ->addColumn('tanggal', function ($row) {
+                    $result = Carbon::parse($row->tanggal)->isoFormat('D-MM-Y');;
+                    return $result;
+                })
+                ->addColumn('jam_absen', function ($row) {
+                    if ($row->jam_absen == NULL) {
+                        return $row->jam_absen;
+                    } else {
+                        $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+                        return $result;
+                    }
+                })
+                ->addColumn('jam_pulang', function ($row) {
+                    if ($row->jam_pulang == NULL) {
+                        return $row->jam_pulang;
+                    } else {
+                        $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                        return $result;
+                    }
+                })
+                ->rawColumns(['tanggal', 'jam_absen', 'jam_pulang'])
+                ->make(true);
+        }
+    }
+    public function HomeAbsen(Request $request)
+    {
         $user_login = auth()->user()->id;
         $date_now = date('Y');
         $month_now = date('m');
@@ -100,8 +145,8 @@ class HomeUserController extends Controller
             ->where('user_id', $user_login)
             ->select(DB::raw("tanggal as count "))
             ->pluck('count');
-        if($mapping_shift->count() > 0) {
-            foreach($mapping_shift as $mp) {
+        if ($mapping_shift->count() > 0) {
+            foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
                 $jam_pulang = $mp->jam_pulang;
             }
@@ -109,7 +154,7 @@ class HomeUserController extends Controller
             $jam_absen = "-";
             $jam_pulang = "-";
         }
-        if($jam_absen != null && $jam_pulang == null) {
+        if ($jam_absen != null && $jam_pulang == null) {
             $tanggal = $tglkmrn;
         } else {
             $tanggal = $tglskrg;
@@ -119,11 +164,11 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg)->where('user_id', auth()->user()->id);
 
-        if($request["mulai"] == null) {
+        if ($request["mulai"] == null) {
             $request["mulai"] = $request["akhir"];
         }
 
-        if($request["akhir"] == null) {
+        if ($request["akhir"] == null) {
             $request["akhir"] = $request["mulai"];
         }
 
@@ -133,25 +178,26 @@ class HomeUserController extends Controller
         return view('users.absen.index', [
             'title' => 'My Absen',
             'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
+            'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
             'data_absen' => $data_absen->get(),
-            'masuk'=>array_map('intval', json_decode($masuk)),
-            'tidak_masuk'=>array_map('intval', json_decode($tidak_masuk)),
-            'telat'=>array_map('intval', json_decode($telat)),
-            'date_now'=>$date_now,
-            'month_now1'=>$month_now1,
-            'month_yesterday1'=>$month_yesterday1,
-            'telat_now'=>array_map('intval', json_decode($telat_now)),
-            'telat_yesterday'=>array_map('intval', json_decode($telat_yesterday)),
-            'lembur_now'=>array_map('intval', json_decode($lembur_now)),
-            'data_telat_now'=>$data_telat_now,
-            'data_telat_yesterday'=>$data_telat_yesterday,
-            'lembur_yesterday'=>array_map('intval', json_decode($lembur_yesterday))
+            'masuk' => array_map('intval', json_decode($masuk)),
+            'tidak_masuk' => array_map('intval', json_decode($tidak_masuk)),
+            'telat' => array_map('intval', json_decode($telat)),
+            'date_now' => $date_now,
+            'month_now1' => $month_now1,
+            'month_yesterday1' => $month_yesterday1,
+            'telat_now' => array_map('intval', json_decode($telat_now)),
+            'telat_yesterday' => array_map('intval', json_decode($telat_yesterday)),
+            'lembur_now' => array_map('intval', json_decode($lembur_now)),
+            'data_telat_now' => $data_telat_now,
+            'data_telat_yesterday' => $data_telat_yesterday,
+            'lembur_yesterday' => array_map('intval', json_decode($lembur_yesterday))
         ]);
     }
 
     public function myLocation(Request $request)
     {
-        return redirect('/home/maps/'.$request["lat"].'/'.$request['long']);
+        return redirect('/home/maps/' . $request["lat"] . '/' . $request['long']);
     }
 
     public function absenMasuk(Request $request, $id)
@@ -163,10 +209,10 @@ class HomeUserController extends Controller
         $long_kantor = $lokasi_kantor->long_kantor;
         $tglskrg = date('Y-m-d');
         $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
-
-        if($request["jarak_masuk"] > $lokasi_kantor->radius) {
-            Alert::error('Diluar Jangkauan', 'Lokasi Anda Diluar Radius Kantor');
-            return redirect('/absen');
+        // dd($request["jarak_masuk"],$lokasi_kantor->radius);
+        if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
+            $request->session()->flash('absenmasukerror', 'Gagal Absen Masuk');
+            return redirect('/home');
         } else {
             $foto_jam_absen = $request["foto_jam_absen"];
 
@@ -219,11 +265,11 @@ class HomeUserController extends Controller
                 'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
             ]);
 
-            $request->session()->flash('success', 'Berhasil Absen Masuk');
+            // dd($tglskrg);
+            $request->session()->flash('absenmasuksuccess', 'Berhasil Absen Masuk');
 
-            return redirect('/home');
+            return redirect('home');
         }
-
     }
 
     public function absenPulang(Request $request, $id)
@@ -236,8 +282,8 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
 
-        if($request["jarak_pulang"] > $lokasi_kantor->radius) {
-            Alert::error('Diluar Jangkauan', 'Lokasi Anda Diluar Radius Kantor');
+        if ($request["jarak_pulang"] > $lokasi_kantor->radius) {
+            $request->session()->flash('absenpulangsuccess', 'Gagal Absen Pulang');
             return redirect('/absen');
         } else {
             $foto_jam_pulang = $request["foto_jam_pulang"];
@@ -297,8 +343,8 @@ class HomeUserController extends Controller
                 'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
 
             ]);
-
-            return redirect('/home')->with('success', 'Berhasil Absen Pulang');
+            $request->session()->flash('absenpulangsuccess', 'Gagal Absen Pulang');
+            return redirect('/home');
         }
     }
 
@@ -326,11 +372,11 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg);
 
-        if($request["mulai"] == null) {
+        if ($request["mulai"] == null) {
             $request["mulai"] = $request["akhir"];
         }
 
-        if($request["akhir"] == null) {
+        if ($request["akhir"] == null) {
             $request["akhir"] = $request["mulai"];
         }
 
@@ -559,8 +605,8 @@ class HomeUserController extends Controller
             ->where('user_id', $user_login)
             ->select(DB::raw("tanggal as count "))
             ->pluck('count');
-        if($mapping_shift->count() > 0) {
-            foreach($mapping_shift as $mp) {
+        if ($mapping_shift->count() > 0) {
+            foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
                 $jam_pulang = $mp->jam_pulang;
             }
@@ -568,7 +614,7 @@ class HomeUserController extends Controller
             $jam_absen = "-";
             $jam_pulang = "-";
         }
-        if($jam_absen != null && $jam_pulang == null) {
+        if ($jam_absen != null && $jam_pulang == null) {
             $tanggal = $tglkmrn;
         } else {
             $tanggal = $tglskrg;
@@ -578,11 +624,11 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg)->where('user_id', auth()->user()->id);
 
-        if($request["mulai"] == null) {
+        if ($request["mulai"] == null) {
             $request["mulai"] = $request["akhir"];
         }
 
-        if($request["akhir"] == null) {
+        if ($request["akhir"] == null) {
             $request["akhir"] = $request["mulai"];
         }
 
@@ -594,18 +640,18 @@ class HomeUserController extends Controller
             'title' => 'My Absen',
             'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
             'data_absen' => $data_absen->get(),
-            'masuk'=>array_map('intval', json_decode($masuk)),
-            'tidak_masuk'=>array_map('intval', json_decode($tidak_masuk)),
-            'telat'=>array_map('intval', json_decode($telat)),
-            'date_now'=>$date_now,
-            'month_now1'=>$month_now1,
-            'month_yesterday1'=>$month_yesterday1,
-            'telat_now'=>array_map('intval', json_decode($telat_now)),
-            'telat_yesterday'=>array_map('intval', json_decode($telat_yesterday)),
-            'lembur_now'=>array_map('intval', json_decode($lembur_now)),
-            'data_telat_now'=>$data_telat_now,
-            'data_telat_yesterday'=>$data_telat_yesterday,
-            'lembur_yesterday'=>array_map('intval', json_decode($lembur_yesterday))
+            'masuk' => array_map('intval', json_decode($masuk)),
+            'tidak_masuk' => array_map('intval', json_decode($tidak_masuk)),
+            'telat' => array_map('intval', json_decode($telat)),
+            'date_now' => $date_now,
+            'month_now1' => $month_now1,
+            'month_yesterday1' => $month_yesterday1,
+            'telat_now' => array_map('intval', json_decode($telat_now)),
+            'telat_yesterday' => array_map('intval', json_decode($telat_yesterday)),
+            'lembur_now' => array_map('intval', json_decode($lembur_now)),
+            'data_telat_now' => $data_telat_now,
+            'data_telat_yesterday' => $data_telat_yesterday,
+            'lembur_yesterday' => array_map('intval', json_decode($lembur_yesterday))
         ]);
     }
 }

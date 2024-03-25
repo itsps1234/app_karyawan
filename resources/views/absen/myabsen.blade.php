@@ -113,7 +113,7 @@
                                 <div class="col"></div>
                                 <div class="col">
                                     <center>
-                                        <h2>Absen Masuk: </h2>
+                                        <h2>Absen Masuk 1: </h2>
                                         <div class="webcam" id="results"></div>
                                     </center>
                                 </div>
