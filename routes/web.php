@@ -59,6 +59,7 @@ Route::middleware('auth','log.activity')->group(function () {
     route::get('/absen/dashboard/index',[AbsenUserController::class, 'recordabsen']);
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
+    Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
 
     Route::get('/history', [HistoryUserController::class, 'index']);
 
@@ -110,7 +111,7 @@ Route::post('/karyawan/shift/proses-tambah-shift', [karyawanController::class, '
 Route::delete('/karyawan/delete-shift/{id}', [karyawanController::class, 'deleteShift'])->middleware('admin');
 Route::get('/karyawan/edit-shift/{id}', [karyawanController::class, 'editShift'])->middleware('admin');
 
-// 
+//
 Route::get('/karyawan/get_divisi', [karyawanController::class, 'get_divisi'])->middleware('admin');
 Route::get('/karyawan/get_jabatan', [karyawanController::class, 'get_jabatan'])->middleware('admin');
 

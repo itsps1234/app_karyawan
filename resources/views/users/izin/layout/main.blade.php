@@ -50,9 +50,9 @@
                 <div class=" container">
                     <div class="dz-info">
                         <span class="location d-block">Form Permission</span>
-                        @foreach ($departemens  as $dep)
-                            <h5 class="title">Department of "{{ $dep->nama_departemen }}"</h5>
-                        @endforeach
+                        {{-- @foreach ($user  as $dep) --}}
+                            <h5 class="title">Department of "{{ $user->nama_departemen }}"</h5>
+                        {{-- @endforeach --}}
                     </div>
                     <div class="dz-media media-65">
                         <img src="assets/images/logo/logo.svg" alt="">

@@ -21,6 +21,8 @@ class UserSeeder extends Seeder
             [
                 'id' => Uuid::uuid4(),
                 'name' => 'Admin',
+                'fullname' => 'Admin',
+                'motto' => 'ini adalah kalimat motto',
                 'foto_karyawan' => '',
                 'email' => 'admin@gmail.com',
                 'telepon' => '0987654321',
@@ -46,6 +48,8 @@ class UserSeeder extends Seeder
             ], [
                 'id' => Uuid::uuid4(),
                 'name' => 'User1',
+                'fullname' => 'User1',
+                'motto' => 'ini adalah kalimat motto',
                 'foto_karyawan' => '',
                 'email' => 'user1@gmail.com',
                 'telepon' => '123456789',
@@ -65,12 +69,14 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
-                'dept_id' => DB::table('departemens')->where('nama_departemen', 'FINANCE AND ACCOUNTING')->value('id'),
-                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'FINANCE (CASH AND BANK - KASIR)')->value('id'),
-                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR FINANCE (CASH AND BANK - KASIR)')->value('id')
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'HRD & GA')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'STAFF HRD')->value('id')
             ], [
                 'id' => Uuid::uuid4(),
                 'name' => 'User2',
+                'fullname' => 'User2',
+                'motto' => 'ini adalah kalimat motto',
                 'foto_karyawan' => '',
                 'email' => 'user2@gmail.com',
                 'telepon' => '123456789',
@@ -90,13 +96,15 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
-                'dept_id' => DB::table('departemens')->where('nama_departemen', 'PRODUCTION')->value('id'),
-                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'QUALITY CONTROL')->value('id'),
-                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'STAFF QUALITY CONTROL')->value('id')
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'HRD & GA')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                'jabatan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR HRD')->value('id')
             ],
             [
                 'id' => Uuid::uuid4(),
                 'name' => 'User3',
+                'fullname' => 'User3',
+                'motto' => 'ini adalah kalimat motto',
                 'foto_karyawan' => '',
                 'email' => 'user3@gmail.com',
                 'telepon' => '123456789',
@@ -116,9 +124,9 @@ class UserSeeder extends Seeder
                 'izin_telat' => '16',
                 'izin_pulang_cepat' => '9',
                 'is_admin' => 'user',
-                'dept_id' => DB::table('departemens')->where('nama_departemen', 'PROCUREMENT')->value('id'),
-                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'PURCHASING MATERIAL (SOURCHING)')->value('id'),
-                'jabatan_id' =>  DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR SOURCHING')->value('id')
+                'dept_id' => DB::table('departemens')->where('nama_departemen', 'HRD & GA')->value('id'),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                'jabatan_id' =>  DB::table('jabatans')->where('nama_jabatan', 'JUNIOR MANAGER HRD')->value('id')
             ]
         ];
         DB::table('users')->insert($data);

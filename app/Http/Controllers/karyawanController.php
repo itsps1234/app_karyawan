@@ -90,10 +90,14 @@ class karyawanController extends Controller
         }
         // $request["id"] = Str::uuid()->toString();
         $request["jabatan_id"] = Jabatan::where('id',$request["jabatan_id"])->value('id');
+        $request["departemen_id"] = Departemen::where('id',$request["departemen_id"])->value('id');
+        $request["divisi_id"] = Divisi::where('id',$request["divisi_id"])->value('id');
 
 // dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            'fullname' => 'required|max:255',
+            'motto' => 'required|max:255',
             'foto_karyawan' => 'image|file|max:10240',
             'email' => 'required|email:dns|unique:users',
             'telepon' => 'required',
@@ -113,7 +117,8 @@ class karyawanController extends Controller
             'izin_telat' => 'required',
             'izin_pulang_cepat' => 'required',
             'is_admin' => 'required',
-            'departemen_id' => 'required',
+            'dept_id' => 'required',
+            'jabatan_id' => 'required',
             'divisi_id' => 'required',
         ]);
         // dd($validatedData['id']);
@@ -122,11 +127,13 @@ class karyawanController extends Controller
         } else{
             $validatedData['foto_karyawan'] = NULL;
         }
-        
+
         $validatedData['password'] = Hash::make($validatedData['password']);
         // dd($validatedData);
         User::create([
             'name' => $validatedData['name'],
+            'fullname' => $validatedData['fullname'],
+            'motto' => $validatedData['motto'],
             'foto_karyawan' => $validatedData['foto_karyawan'],
             'email' => $validatedData['email'],
             'telepon' => $validatedData['telepon'],
@@ -147,6 +154,8 @@ class karyawanController extends Controller
             'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
             'is_admin' => $validatedData['is_admin'],
             'jabatan_id' =>Jabatan::where('id',$request["jabatan_id"])->value('id') ,
+            'dept_id' => Departemen::where('id',$request["departemen_id"])->value('id') ,
+            'divisi_id' => Divisi::where('id',$request["divisi_id"])->value('id') ,
         ]);
 
         // Merekam aktivitas pengguna

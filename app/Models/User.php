@@ -24,6 +24,8 @@ class User extends Authenticatable
     protected $guarded = ['id',];
     protected $fillable = [
         'name',
+        'fullname',
+        'motto',
         'foto_karyawan',
         'email',
         'telepon',
@@ -43,7 +45,7 @@ class User extends Authenticatable
         'izin_telat',
         'izin_pulang_cepat',
         'is_admin',
-        'departemen_id',
+        'dept_id',
         'divisi_id',
         'jabatan_id'
     ];
