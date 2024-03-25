@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('dept_id')->on('departemens')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->uuid('divisi_id')->after('dept_id');
             $table->foreign('divisi_id')->on('divisis')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->uuid('jabatan_id')->after('divisi_id');
+            $table->uuid('jabatan_id')->after('is_admin');
             $table->foreign('jabatan_id')->on('jabatans')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasColumn('users', 'dept_id')) {
+        if (Schema::hasColumn('users', 'jabatan_id')) {
             Schema::table('users', function (Blueprint $table) {
                 $table->dropForeign(['dept_id']);
                 $table->dropColumn('dept_id');

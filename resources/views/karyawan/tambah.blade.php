@@ -16,6 +16,24 @@
                         @enderror
                     </div>
                     <div class="col">
+                        <label for="name">Fullname</label>
+                        <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" autofocus value="{{ old('fullname') }}">
+                        @error('fullname')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="name">Motto</label>
+                        <input type="text" class="form-control @error('motto') is-invalid @enderror" id="motto" name="motto" autofocus value="{{ old('motto') }}">
+                        @error('motto')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
                         <label for="foto_karyawan" class="form-label">Foto Karyawan</label>
                         <input class="form-control @error('foto_karyawan') is-invalid @enderror" type="file" id="foto_karyawan" name="foto_karyawan">
                         @error('foto_karyawan')

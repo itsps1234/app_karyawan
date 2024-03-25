@@ -12,6 +12,9 @@ use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Jabatan;
+use App\Models\Izin;
+use App\Models\Departemen;
+use App\Models\Divisi;
 use DB;
 
 class IzinUserController extends Controller
@@ -19,73 +22,47 @@ class IzinUserController extends Controller
     public function index()
     {
         $user_id        = Auth()->user()->id;
-        $user           = User::findOrFail(auth()->user()->id);
-        $jabatan        = DB::table('jabatans')->where('id', auth()->user()->jabatan_id)->first();
-        $divisi         = DB::table('divisis')->where('id', $jabatan->divisi_id)->first();
-        $departemens    = DB::table('departemens')->where('id', $divisi->dept_id)->get();
-        $level          = DB::table('level_jabatans')->where('id', $jabatan->level_id)->first();
-        $levelatasan    = $level->level_jabatan - 1;
+        $user           = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                        ->join('departemens','departemens.id','=','users.dept_id')
+                        ->join('divisis','divisis.id','=','users.divisi_id')
+                        ->where('users.id', Auth()->user()->id)->first();
+        $userLevel      = DB::table('level_jabatans')->where('id',$user->level_id)->first();
+        $levelatasan    = $userLevel->level_jabatan - 1;
         $IdLevelAsasan  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-        $getAsatan      = DB::table('jabatans')->where('level_id',$IdLevelAsasan->id)->where('divisi_id', $jabatan->divisi_id)->first();
+        $getAsatan      = DB::table('jabatans')->where('level_id',$IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
         $getUserAtasan  = DB::table('users')->where('jabatan_id', $getAsatan->id)->first();
+
+        $record_data    = DB::table('izins')->where('user_id', Auth::user()->id)->get();
+        dd($record_data);
         return view('users.izin.index', [
             'title'             => 'Tambah Permintaan Cuti Karyawan',
             'data_user'         => $user,
             'data_cuti_user'    => Cuti::where('user_id', $user_id)->orderBy('id', 'desc')->get(),
             'getUserAtasan'     => $getUserAtasan,
-            'departemens'       => $departemens
+            'user'              => $user
         ]);
     }
 
-    public function tambah(Request $request)
+    public function izinAbsen(Request $request)
     {
-        date_default_timezone_set('Asia/Jakarta');
-
-        if($request["tanggal_mulai"] == null) {
-            $request["tanggal_mulai"] = $request["tanggal_akhir"];
-        } else {
-            $request["tanggal_mulai"] = $request["tanggal_mulai"];
-        }
-
-        if($request["tanggal_akhir"] == null) {
-            $request["tanggal_akhir"] = $request["tanggal_mulai"];
-        } else {
-            $request["tanggal_akhir"] = $request["tanggal_akhir"];
-        }
-
-        $begin = new \DateTime($request["tanggal_mulai"]);
-        $end = new \DateTime($request["tanggal_akhir"]);
-        $end = $end->modify('+1 day');
-
-        $interval = new \DateInterval('P1D'); //referensi : https://en.wikipedia.org/wiki/ISO_8601#Durations
-        $daterange = new \DatePeriod($begin, $interval ,$end);
-
-        foreach ($daterange as $date) {
-            $request["tanggal"] = $date->format("Y-m-d");
-
-            $request['status_cuti'] = "Pending";
-            $validatedData = $request->validate([
-                'user_id' => 'required',
-                'nama_cuti' => 'required',
-                'tanggal' => 'required',
-                'alasan_cuti' => 'required',
-                'foto_cuti' => 'image|file|max:10240',
-                'status_cuti' => 'required',
-            ]);
-
-            if ($request->file('foto_cuti')) {
-                $validatedData['foto_cuti'] = $request->file('foto_cuti')->store('foto_cuti');
-            }
-
-            Cuti::create($validatedData);
-        }
-        ActivityLog::create([
-            'user_id' => Auth::user()->id,
-            'activity' => 'tambah',
-            'description' => 'Menambahkan data cuti baru dengan nama cuti ' . $request->nama_cuti,
-        ]);
-
-        return redirect('/cuti')->with('success', 'Data Berhasil di Tambahkan');
+        // dd($request->all());
+        $data                   = new Izin();
+        $data->user_id          = $request->id_user;
+        $data->departements_id  = Departemen::where('id',$request["departements"])->value('id');
+        $data->jabatan_id       = Jabatan::where('id',$request["jabatan"])->value('id');
+        $data->divisi_id        = Divisi::where('id',$request["divisi"])->value('id');
+        $data->telp             = $request->telp;
+        $data->email            = $request->email;
+        $data->fullname         = $request->fullname;
+        $data->izin             = $request->izin;
+        $data->tanggal          = $request->tanggal;
+        $data->jam              = $request->jam;
+        $data->keterangan_izin  = $request->keterangan_izin;
+        $data->approve_atasan   = $request->approve_atasan;
+        $data->id_approve_atasan= $request->id_user_atasan;
+        $data->status_izin      = 0;
+        $data->save();
+        return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Tambahkan');
     }
 
     public function delete($id)
