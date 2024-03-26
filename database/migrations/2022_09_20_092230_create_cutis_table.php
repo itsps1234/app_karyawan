@@ -14,8 +14,7 @@ class CreateCutisTable extends Migration
     public function up()
     {
         Schema::create('cutis', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id');
+            $table->uuid('id')->primary;
             $table->string('nama_cuti');
             $table->string('tanggal');
             $table->text('alasan_cuti');

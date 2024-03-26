@@ -26,7 +26,7 @@ class HomeUserController extends Controller
         $tglskrg = date('Y-m-d');
         $blnskrg = date('m');
         $thnskrg = date('Y');
-        // dd($thnskrg);
+        // dd($blnskrg);
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
         $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
@@ -56,36 +56,84 @@ class HomeUserController extends Controller
         ]);
     }
 
+    public function get_count_absensi_home(Request $request)
+    {
+        $blnskrg = date('m');
+        $user_login = auth()->user()->id;
+        if ($request->ajax()) {
+            if (!empty($request->filter_month)) {
+                $count_absen_hadir = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $request->filter_month)->where('status_absen', 'Masuk')->count();
+            } else {
+                $count_absen_hadir = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
+            }
+        }
+        return $count_absen_hadir;
+    }
     public function datatableHome(Request $request)
     {
+
+        // dd($request->all());
         $user_login = auth()->user()->id;
         $dateweek = \Carbon\Carbon::today()->subDays(7);
         $datenow = \Carbon\Carbon::today();
+        $blnskrg = date('m');
+        // dd($firstDayofPreviousMonth);
         if ($request->ajax()) {
-            $data = MappingShift::where('user_id', $user_login)->whereBetween('tanggal', array($dateweek, $datenow))->orderBy('tanggal','DESC')->get();
-            return DataTables::of($data)->addIndexColumn()
-                ->addColumn('tanggal', function ($row) {
-                    $result = Carbon::parse($row->tanggal)->isoFormat('D-MM-Y');;
-                    return $result;
-                })
-                ->addColumn('jam_absen', function ($row) {
-                    if ($row->jam_absen == NULL) {
-                        return $row->jam_absen;
-                    } else {
-                        $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+            if (!empty($request->filter_month)) {
+                if ($request->filter_month == $blnskrg) {
+                    $data = MappingShift::where('user_id', $user_login)->whereBetween('tanggal', array($dateweek, $datenow))->orderBy('tanggal', 'DESC')->get();
+                } else {
+                    $data = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $request->filter_month)->limit(7)->orderBy('tanggal', 'DESC')->get();
+                }
+                return DataTables::of($data)->addIndexColumn()
+                    ->addColumn('tanggal', function ($row) {
+                        $result = Carbon::parse($row->tanggal)->isoFormat('D-MM-Y');;
                         return $result;
-                    }
-                })
-                ->addColumn('jam_pulang', function ($row) {
-                    if ($row->jam_pulang == NULL) {
-                        return $row->jam_pulang;
-                    } else {
-                        $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                    })
+                    ->addColumn('jam_absen', function ($row) {
+                        if ($row->jam_absen == NULL) {
+                            return $row->jam_absen;
+                        } else {
+                            $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+                            return $result;
+                        }
+                    })
+                    ->addColumn('jam_pulang', function ($row) {
+                        if ($row->jam_pulang == NULL) {
+                            return $row->jam_pulang;
+                        } else {
+                            $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                            return $result;
+                        }
+                    })
+                    ->rawColumns(['tanggal', 'jam_absen', 'jam_pulang'])
+                    ->make(true);
+            } else {
+                $data = MappingShift::where('user_id', $user_login)->whereBetween('tanggal', array($dateweek, $datenow))->orderBy('tanggal', 'DESC')->get();
+                return DataTables::of($data)->addIndexColumn()
+                    ->addColumn('tanggal', function ($row) {
+                        $result = Carbon::parse($row->tanggal)->isoFormat('D-MM-Y');;
                         return $result;
-                    }
-                })
-                ->rawColumns(['tanggal', 'jam_absen', 'jam_pulang'])
-                ->make(true);
+                    })
+                    ->addColumn('jam_absen', function ($row) {
+                        if ($row->jam_absen == NULL) {
+                            return $row->jam_absen;
+                        } else {
+                            $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+                            return $result;
+                        }
+                    })
+                    ->addColumn('jam_pulang', function ($row) {
+                        if ($row->jam_pulang == NULL) {
+                            return $row->jam_pulang;
+                        } else {
+                            $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                            return $result;
+                        }
+                    })
+                    ->rawColumns(['tanggal', 'jam_absen', 'jam_pulang'])
+                    ->make(true);
+            }
         }
     }
     public function HomeAbsen(Request $request)
@@ -211,7 +259,7 @@ class HomeUserController extends Controller
         $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
         // dd($request["jarak_masuk"],$lokasi_kantor->radius);
         if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
-            $request->session()->flash('absenmasukerror', 'Gagal Absen Masuk');
+            $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
             return redirect('/home');
         } else {
             $foto_jam_absen = $request["foto_jam_absen"];
@@ -283,8 +331,8 @@ class HomeUserController extends Controller
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
 
         if ($request["jarak_pulang"] > $lokasi_kantor->radius) {
-            $request->session()->flash('absenpulangsuccess', 'Gagal Absen Pulang');
-            return redirect('/absen');
+            $request->session()->flash('absenpulangoutradius', 'Gagal Absen Pulang');
+            return redirect('/home');
         } else {
             $foto_jam_pulang = $request["foto_jam_pulang"];
 
@@ -343,7 +391,7 @@ class HomeUserController extends Controller
                 'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
 
             ]);
-            $request->session()->flash('absenpulangsuccess', 'Gagal Absen Pulang');
+            $request->session()->flash('absenpulangsuccess', 'Berhasil Absen Pulang');
             return redirect('/home');
         }
     }

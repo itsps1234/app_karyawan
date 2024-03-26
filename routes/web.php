@@ -48,9 +48,10 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/my-location', [AbsenController::class, 'myLocation']);
     Route::get('/absen', [AbsenController::class, 'index']);
 
-    Route::get('/home', [HomeUserController::class, 'index']);
+    Route::get('/home', [HomeUserController::class, 'index'])->name('home');
     Route::put('/home/absen/masuk/{id}', [HomeUserController::class, 'absenMasuk']);
     Route::get('/datatableHome', [HomeUserController::class, 'datatableHome'])->name('datatableHome');
+    Route::get('/get_count_absensi_home', [HomeUserController::class, 'get_count_absensi_home'])->name('get_count_absensi_home');
     Route::get('/home/absen', [HomeUserController::class, 'HomeAbsen']);
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
@@ -62,9 +63,9 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
 
-    Route::get('/history', [HistoryUserController::class, 'index']);
+    Route::get('/history', [HistoryUserController::class, 'index'])->name('history');
 
-    Route::get('/profile', [ProfileUserController::class, 'index']);
+    Route::get('/profile', [ProfileUserController::class, 'index'])->name('profile');
 
     Route::put('/absen/masuk/{id}', [AbsenController::class, 'absenMasuk']);
     Route::put('/absen/pulang/{id}', [AbsenController::class, 'absenPulang']);

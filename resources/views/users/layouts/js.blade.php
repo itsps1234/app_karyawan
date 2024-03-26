@@ -174,7 +174,7 @@
     $(function(){
     
 var today = moment().format('YYYY-MM-DD');
-var month = moment().format('M');
+var month = moment().format('MM');
 var day   =  moment().format('D');
 var year  = moment().format('YYYY');
 
@@ -184,31 +184,65 @@ $('.month').val(month);
 });
   </script>
 <script type="text/javascript">
-  $(function () {
-$('#month').change(function () {
-  filter_month = $(this).val();
-  console.log(filter_month);
-  
-  })
-  })
-  $(function () {
-    var table = $('#datatableHome').DataTable({
+$(document).ready(function () {
+    load_data();
+    function load_data(filter_month = '') {
+      console.log(filter_month);
+      var table1 = $('#datatableHome').DataTable({
         processing: true,
         serverSide: true,
         responsive:true,
         scrollX: true,
         "bPaginate": false,
         searching: false,
-        ajax: "{{ route('datatableHome') }}",
+        ajax: {
+          url :"{{ route('datatableHome') }}",
+          data:{
+            filter_month:filter_month,
+          }
+        },
         columns: [
-            {data: 'id',render: function(data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            }},
-            {data: 'tanggal', name: 'tanggal'},
+            {
+              data: 'id',render: function(data, type, row, meta) 
+              {
+              return meta.row + meta.settings._iDisplayStart + 1;
+              }
+            },
+            {
+              data: 'tanggal', 
+              name: 'tanggal'
+            },
             {data: 'jam_absen', name: 'jam_absen'},
             {data: 'jam_pulang', name: 'jam_pulang'},
-        ]
-    });
+          ],
+          order: [[2, 'desc']]
+      });
+    }
+    function load_absensi(filter_month=''){
+      $.ajax({
+        url: "{{route('get_count_absensi_home')}}",
+        data:{
+              filter_month:filter_month,
+        },
+        type: "GET",
+        error: function() {
+          alert('Something is wrong');
+        },
+        success: function(data) {
+          $('#count_absen_hadir').html(data);
+          console.log(data)
+        }
+      });
+    }
+    $('#month').change(function () {
+    filter_month = $(this).val();
+    console.log(filter_month);
+    $('#datatableHome').DataTable().destroy();
+    load_data(filter_month);
+    load_absensi(filter_month);
+    
+    
+    })
   });
 </script>
 

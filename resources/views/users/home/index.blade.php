@@ -28,6 +28,30 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('absenmasukoutradius'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>error!</strong> Anda Berada Diluar Radius Absen.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('absenpulangoutradius'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>error!</strong> Anda Berada Diluar Radius Absen.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('absenkeluarsuccess'))
 <div class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -57,7 +81,7 @@
 <div class="features-box">
     <div class="row m-b20 g-3">
         @foreach ($status_absen_skrg as $data)
-        @if ($data->jam_absen == null)
+        @if ($data->jam_absen == null && $data->jam_pulang==null)
         <div class="col">
             <a href="{{ url('/home/absen') }}">
                 <div class="card card-bx card-content bg-primary">
@@ -69,7 +93,7 @@
                             </g>
                         </svg>
                         <div class="info">
-                            <p>Absen Masuk1 <br> <span class="title" style="font-size: 25px" id="jam_masuk"></span></p>
+                            <p>Absen Masuk <br> <span class="title" style="font-size: 25px" id="jam_masuk"></span></p>
                             <script>
                                 setInterval(customClock, 500);
 
@@ -103,7 +127,7 @@
                 </div>
             </a>
         </div>
-        @else
+        @elseif ($data->jam_absen != null && $data->jam_pulang==null)
         <div class="col">
             <a href="{{ url('/home/absen') }}" style="pointer-events: none">
                 <div class="card card-bx card-content bg-primary">
@@ -149,6 +173,41 @@
                 </div>
             </a>
         </div>
+        @elseif ($data->jam_absen != null && $data->jam_pulang != null)
+        <div class="col">
+            <a href="{{ url('/home/absen') }}" style="pointer-events: none">
+                <div class="card card-bx card-content bg-primary">
+                    <div class="card-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.848 12.459c.202.038.202.333.001.372-1.907.361-6.045 1.111-6.547 1.111-.719 0-1.301-.582-1.301-1.301 0-.512.77-5.447 1.125-7.445.034-.192.312-.181.343.014l.985 6.238 5.394 1.011z" fill="#fff" fill-rule="nonzero" opacity="0.3" />
+                            </g>
+                        </svg>
+                        <div class="info">
+                            <p>Sudah Absen <br> <span class="title" style="font-size: 25px">{{ $data->jam_absen }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a href="{{ url('/home/absen') }}" style="pointer-events: none">
+                <div class="card card-bx card-content bg-secondary">
+                    <div class="card-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path d="M13 12l-.688-4h-.609l-.703 4c-.596.347-1 .984-1 1.723 0 1.104.896 2 2 2s2-.896 2-2c0-.739-.404-1.376-1-1.723zm-1-8c-5.522 0-10 4.477-10 10s4.478 10 10 10 10-4.477 10-10-4.478-10-10-10zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm-2-19.819v-2.181h4v2.181c-1.438-.243-2.592-.238-4 0zm9.179 2.226l1.407-1.407 1.414 1.414-1.321 1.321c-.462-.484-.964-.926-1.5-1.328zm-12.679 9.593c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm12 0c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm-6 6c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm-4-2c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm8 0c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm-8-9c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5zm8 0c0 .276-.224.5-.5.5s-.5-.224-.5-.5.224-.5.5-.5.5.224.5.5z" fill="#fff" fill-rule="nonzero" opacity="0.3" />
+                            </g>
+                        </svg>
+                        <div class="info">
+                            <p>Sudah Absen <br> <span class="title" style="font-size: 25px">{{ $data->jam_pulang }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
         @endif
         @endforeach
     </div>
@@ -158,15 +217,15 @@
     <div class="title-bar">
         <h5 class="title"> Absen&nbsp;Bulan&nbsp;
             <select class="month" style="width: max-content;border-radius: 0px; background-color:transparent; color: var(--primary); border: none;outline: none;" name="" id="month">
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
+                <option value="01">Januari</option>
+                <option value="02">Februari</option>
+                <option value="03">Maret</option>
+                <option value="04">April</option>
+                <option value="05">Mei</option>
+                <option value="06">Juni</option>
+                <option value="07">Juli</option>
+                <option value="08">Agustus</option>
+                <option value="09">September</option>
                 <option value="10">Oktober</option>
                 <option value="11">November</option>
                 <option value="12">Desember</option>
@@ -201,7 +260,7 @@
                         <div class="col">
                             <h6 class="title"><a href="javascript:void(0);">Hadir</a></h6>
                             <span class="">
-                                <h5>
+                                <h5 id="count_absen_hadir">
                                     {{$count_absen_hadir}}
                                 </h5>
                             </span>
