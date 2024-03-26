@@ -61,6 +61,8 @@ Route::middleware('auth','log.activity')->group(function () {
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
+    Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);
+    Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
 
     Route::get('/history', [HistoryUserController::class, 'index']);
 

@@ -47,12 +47,16 @@ class HomeUserController extends Controller
             $tanggal = $tglskrg;
         }
         // dd($status_absen_skrg);
+        $user = Auth::user()->id;
+        $dataizin = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin',0)->get();
+        // dd($dataizin);
         return view('users.home.index', [
-            'title' => 'Absen',
-            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
+            'title'             => 'Absen',
+            'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', '2024-03-26')->get(),
             'count_absen_hadir' => $count_absen_hadir,
-            'thnskrg' => $thnskrg,
+            'thnskrg'           => $thnskrg,
             'status_absen_skrg' => $status_absen_skrg,
+            'dataizin'          => $dataizin,
         ]);
     }
 
