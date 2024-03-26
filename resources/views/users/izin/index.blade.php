@@ -3,6 +3,7 @@
 @section('content')
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <div class="container">
     <form class="my-2">
         <div class="input-group">
@@ -29,7 +30,7 @@
                     <h4 class="modal-title">From Permission</h4>
                 </div>
                 <div class="container">
-                    <form class="my-2" method="post" action="{{ url('/izin/tambah-izin-proses') }}" enctype="multipart/form-data">
+                    <form class="my-2" method="post" action="{{ url('/izin/tambah-izin-proses/') }}" enctype="multipart/form-data">
                         @method('put')
                         @csrf
                         <div class="input-group">
@@ -89,23 +90,30 @@
                     <h4>History.</h4>
                 </div>
             </div>
+            @foreach ($record_data as $record_data)
             <div class="notification-content" style="background-color: white">
-                <a href="profile.html">
+                <a href="#" onclick="return false;">
                     <div class="notification">
-                        <h6>Izin Cuti</h6>
-                        <p>Acara Keluarga</p>
+                        <h6>{{ $record_data->izin }}</h6>
+                        <p>{{ $record_data->keterangan_izin}}</p>
                         <div class="notification-footer">
                             <span>
                                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
                                     <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
                                 </svg>
-                                10h ago
+                                {{ $record_data->tanggal}}
                             </span>
-                            <p class="mb-0">Mark as read</p>
+                            @if ($record_data->status_izin == 0)
+                                <small class="badge badge-danger"><i class="far fa-clock"></i> Waitting</small>
+                            @else
+                                <small class="badge badge-success"><i class="far fa-clock"></i> Approved</small>
+                            @endif
                         </div>
                     </div>
                 </a>
             </div>
+            @endforeach
+
     </div>
 @endsection
