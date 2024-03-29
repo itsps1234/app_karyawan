@@ -26,7 +26,7 @@
                 </a>
             </li>
 			<li>
-                <a class="nav-link" href="{{ url('/cuti/dashboard/') }}">
+                <a class="nav-link" href="pages.html">
                     <span class="dz-icon bg-orange light">
                         <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 511.997 511.997" xml:space="preserve">

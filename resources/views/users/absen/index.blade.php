@@ -87,7 +87,7 @@
                                                     <input type="hidden" name="jarak_masuk">
                                                     <input type="hidden" name="status_absen">
                                                     <center>
-                                                        <button style="color: white;" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
+                                                        <button style="background-color: white" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
                                                     </center>
                                             </div>
                                         </form>
@@ -113,7 +113,7 @@
                                             }
                                         </script>
                                     @elseif($skjampul == null)
-                                        <form method="post" action="{{ url('/absen/pulang/'.$skid) }}">
+                                        <form method="post" action="{{ url('/home/absen/pulang/'.$skid) }}">
                                             @method('put')
                                             @csrf
                                             <div class="form">
@@ -128,7 +128,7 @@
                                                 <input type="hidden" name="pulang_cepat">
                                                 <input type="hidden" name="jarak_pulang">
                                                 <center>
-                                                    <button type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
+                                                    <button type="submit" class="btn btn-lokasisaya" style="background-color: white" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
                                                 </center>
                                             </div>
                                         </form>

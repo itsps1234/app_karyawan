@@ -49,7 +49,10 @@ class HomeUserController extends Controller
         // dd($status_absen_skrg);
         $user = Auth::user()->id;
         $dataizin = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin',0)->get();
-        // dd($dataizin);
+        $datacuti = DB::table('cutis')->join('users','users.id','=','cutis.id_user_atasan')
+                    ->join('kategori_cuti','kategori_cuti.id','=','cutis.nama_cuti')
+                    ->where('id_user_atasan', $user)->where('status_cuti',0)->get();
+        // dd($datacuti);
         return view('users.home.index', [
             'title'             => 'Absen',
             'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', '2024-03-26')->get(),
@@ -57,6 +60,7 @@ class HomeUserController extends Controller
             'thnskrg'           => $thnskrg,
             'status_absen_skrg' => $status_absen_skrg,
             'dataizin'          => $dataizin,
+            'datacuti'          => $datacuti,
         ]);
     }
 

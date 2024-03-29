@@ -24,6 +24,7 @@ use App\Http\Controllers\HistoryUserController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AbsenUserController;
 use App\Http\Controllers\IzinUserController;
+use App\Http\Controllers\CutiUserController;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/datatableHome', [HomeUserController::class, 'datatableHome'])->name('datatableHome');
     Route::get('/get_count_absensi_home', [HomeUserController::class, 'get_count_absensi_home'])->name('get_count_absensi_home');
     Route::get('/home/absen', [HomeUserController::class, 'HomeAbsen']);
+    Route::put('/home/absen/pulang/{id}', [AbsenController::class, 'absenPulang']);
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
@@ -64,6 +66,11 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
     Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);
     Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
+
+    Route::get('/cuti/dashboard', [CutiUserController::class, 'index']);
+    Route::get('/cuti/approve/{id}', [CutiUserController::class, 'cutiApprove']);
+    Route::put('/cuti/tambah-cuti-proses', [CutiUserController::class, 'cutiAbsen']);
+    Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
 
     Route::get('/history', [HistoryUserController::class, 'index'])->name('history');
 
