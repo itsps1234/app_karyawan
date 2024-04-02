@@ -30,51 +30,62 @@ class HomeUserController extends Controller
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
         $count_absen_hadir = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
+        $user = Auth::user()->id;
+        $dataizin = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
+        $datacuti = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')
+            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')
+            ->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
 
         // dd($count_absen_hadir);
         if ($mapping_shift == '' || $mapping_shift == NULL) {
-            $jam_absen = "-";
-            $jam_pulang = "-";
+            $jam_absen = null;
+            $jam_pulang = null;
+            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
+            return view('users.home.index', [
+                'title'             => 'Absen',
+                'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->first(),
+                'count_absen_hadir' => $count_absen_hadir,
+                'thnskrg'           => $thnskrg,
+                'status_absen_skrg' => $status_absen_skrg,
+                'dataizin'          => $dataizin,
+                'datacuti'          => $datacuti,
+            ]);
         } else {
             $jam_absen = $mapping_shift->jam_absen;
             $jam_pulang = $mapping_shift->jam_pulang;
             $getshift = $mapping_shift->shift->nama_shift;
-        }
-        $hours_1_masuk = Carbon::parse($mapping_shift->shift->jam_masuk)->subHour(1)->format('H:i:s');
-        $hours_1_pulang = Carbon::parse($mapping_shift->shift->jam_keluar)->subHour(-1)->format('H:i:s');
-        $timenow = Carbon::now()->format('H:i:s');
-        // dd($getshift);
-        if ($getshift == 'Malam') {
-            if ($jam_absen != null && $jam_pulang == null) {
-                if ($hours_1_pulang > $timenow) {
-                    $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
+
+            $hours_1_masuk = Carbon::parse($mapping_shift->shift->jam_masuk)->subHour(1)->format('H:i:s');
+            $hours_1_pulang = Carbon::parse($mapping_shift->shift->jam_keluar)->subHour(-1)->format('H:i:s');
+            $timenow = Carbon::now()->format('H:i:s');
+            // dd($getshift);
+            if ($getshift == 'Malam') {
+                if ($jam_absen != null && $jam_pulang == null) {
+                    if ($hours_1_pulang > $timenow) {
+                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
+                    } else {
+                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
+                    }
                 } else {
                     $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
                 }
             } else {
                 $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
             }
-        } else {
-            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
+            // $hours_1 = Carbon::parse($getshift->shift->jam_masuk)->subHour(-1)->format('H:i:s');
+            // dd($hours_1);
+            // dd($datacuti);
+            return view('users.home.index', [
+                'title'             => 'Absen',
+                'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->first(),
+                'count_absen_hadir' => $count_absen_hadir,
+                'thnskrg'           => $thnskrg,
+                'get_shift'         => $getshift,
+                'status_absen_skrg' => $status_absen_skrg,
+                'dataizin'          => $dataizin,
+                'datacuti'          => $datacuti,
+            ]);
         }
-        // $hours_1 = Carbon::parse($getshift->shift->jam_masuk)->subHour(-1)->format('H:i:s');
-        // dd($hours_1);
-        $user = Auth::user()->id;
-        $dataizin = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
-        $datacuti = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')
-            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')
-            ->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
-        // dd($datacuti);
-        return view('users.home.index', [
-            'title'             => 'Absen',
-            'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->first(),
-            'count_absen_hadir' => $count_absen_hadir,
-            'thnskrg'           => $thnskrg,
-            'get_shift'         => $getshift,
-            'status_absen_skrg' => $status_absen_skrg,
-            'dataizin'          => $dataizin,
-            'datacuti'          => $datacuti,
-        ]);
     }
 
     public function get_count_absensi_home(Request $request)
