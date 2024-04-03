@@ -88,12 +88,17 @@ class karyawanController extends Controller
         } else {
             $request["izin_pulang_cepat"];
         }
+        if ($request["kuota_cuti"] == null) {
+            $request["kuota_cuti"] = "0";
+        } else {
+            $request["kuota_cuti"];
+        }
         // $request["id"] = Str::uuid()->toString();
-        $request["jabatan_id"] = Jabatan::where('id',$request["jabatan_id"])->value('id');
-        $request["departemen_id"] = Departemen::where('id',$request["departemen_id"])->value('id');
-        $request["divisi_id"] = Divisi::where('id',$request["divisi_id"])->value('id');
+        $request["jabatan_id"] = Jabatan::where('id', $request["jabatan_id"])->value('id');
+        $request["departemen_id"] = Departemen::where('id', $request["departemen_id"])->value('id');
+        $request["divisi_id"] = Divisi::where('id', $request["divisi_id"])->value('id');
 
-// dd($request->all());
+        // dd($request->all());
         $validatedData = $request->validate([
             'name' => 'required|max:255',
             'fullname' => 'required|max:255',
@@ -108,6 +113,7 @@ class karyawanController extends Controller
             'tgl_join' => 'required',
             'status_nikah' => 'required',
             'alamat' => 'required',
+            'kuota_cuti' => 'required',
             'cuti_dadakan' => 'required',
             'cuti_bersama' => 'required',
             'cuti_menikah' => 'required',
@@ -117,14 +123,14 @@ class karyawanController extends Controller
             'izin_telat' => 'required',
             'izin_pulang_cepat' => 'required',
             'is_admin' => 'required',
-            'dept_id' => 'required',
+            'departemen_id' => 'required',
             'jabatan_id' => 'required',
             'divisi_id' => 'required',
         ]);
         // dd($validatedData['id']);
         if ($request->file('foto_karyawan')) {
-            $validatedData['foto_karyawan'] = $request->file('foto_karyawan')->store('foto_karyawan');
-        } else{
+            $validatedData['foto_karyawan'] = $request->file('foto_karyawan')->store('storage/foto_karyawan');
+        } else {
             $validatedData['foto_karyawan'] = NULL;
         }
 
@@ -144,6 +150,7 @@ class karyawanController extends Controller
             'tgl_join' => $validatedData['tgl_join'],
             'status_nikah' => $validatedData['status_nikah'],
             'alamat' => $validatedData['alamat'],
+            'kuota_cuti' => $validatedData['kuota_cuti'],
             'cuti_dadakan' => $validatedData['cuti_dadakan'],
             'cuti_bersama' => $validatedData['cuti_bersama'],
             'cuti_menikah' => $validatedData['cuti_menikah'],
@@ -153,9 +160,9 @@ class karyawanController extends Controller
             'izin_telat' => $validatedData['izin_telat'],
             'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
             'is_admin' => $validatedData['is_admin'],
-            'jabatan_id' =>Jabatan::where('id',$request["jabatan_id"])->value('id') ,
-            'dept_id' => Departemen::where('id',$request["departemen_id"])->value('id') ,
-            'divisi_id' => Divisi::where('id',$request["divisi_id"])->value('id') ,
+            'jabatan_id' => Jabatan::where('id', $request["jabatan_id"])->value('id'),
+            'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
+            'divisi_id' => Divisi::where('id', $request["divisi_id"])->value('id'),
         ]);
 
         // Merekam aktivitas pengguna

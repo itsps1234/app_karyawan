@@ -232,6 +232,15 @@
                 <br>
                 <div class="form-row">
                     <div class="col">
+                        <label for="kuota_cuti">Kuota Cuti</label>
+                        <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti') }}">
+                        @error('kuota_cuti')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
                         <label for="cuti_dadakan">Cuti Dadakan</label>
                         <input type="number" class="form-control @error('cuti_dadakan') is-invalid @enderror" id="cuti_dadakan" name="cuti_dadakan" value="{{ old('cuti_dadakan') }}">
                         @error('cuti_dadakan')

@@ -215,7 +215,7 @@ $(document).ready(function () {
             {data: 'jam_absen', name: 'jam_absen'},
             {data: 'jam_pulang', name: 'jam_pulang'},
           ],
-          order: [[2, 'desc']]
+          order: [[1, 'desc']]
       });
     }
     function load_absensi(filter_month=''){

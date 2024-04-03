@@ -21,7 +21,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     public $incrementing = false;
-    protected $guarded = ['id',];
+    protected $guarded = ['id'];
     protected $fillable = [
         'name',
         'fullname',
@@ -36,6 +36,7 @@ class User extends Authenticatable
         'tgl_join',
         'status_nikah',
         'alamat',
+        'kuota_cuti',
         'cuti_dadakan',
         'cuti_bersama',
         'cuti_menikah',
@@ -45,9 +46,9 @@ class User extends Authenticatable
         'izin_telat',
         'izin_pulang_cepat',
         'is_admin',
+        'jabatan_id',
         'dept_id',
         'divisi_id',
-        'jabatan_id'
     ];
 
 
