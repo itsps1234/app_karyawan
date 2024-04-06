@@ -1,34 +1,53 @@
 @extends('users.izin.layout.main')
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
+
+<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
+
+<style>
+    .kbw-signature {
+        width: fit-content;
+        height: 100%;
+    }
+
+    #sig canvas {
+        margin-top: 5px;
+        width: 100%;
+        height: auto;
+    }
+</style>
 
 @if(Session::has('statuscutisuccess'))
-    <div class="alert alert-success light alert-lg alert-dismissible fade show">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-            <line x1="9" y1="9" x2="9.01" y2="9"></line>
-            <line x1="15" y1="9" x2="15.01" y2="9"></line>
-        </svg>
-        <strong>Success!</strong> Anda Berhasil Pengajuan Cuti
-        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
+<div class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Pengajuan Cuti
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('statuscutiwarning'))
-    <div class="alert alert-danger light alert-lg alert-dismissible fade show">
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-            <line x1="15" y1="9" x2="9" y2="15"></line>
-            <line x1="9" y1="9" x2="15" y2="15"></line>
-        </svg>
-        <strong>Warning!</strong> Anda Gagal Pengajuan Cuti.
-        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-            <i class="fa-solid fa-xmark"></i>
-        </button>
-    </div>
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Anda Gagal Pengajuan Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @endif
 <div class="container">
     <form class="my-2">
@@ -37,26 +56,29 @@
             <input type="time" value="{{ date('H:i:s') }}" readonly style="font-weight: bold" placeholder="Phone number" class="form-control">
         </div>
     </form>
-    <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-toggle="modal" data-target="#myModal">
+    <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
         <i class="fa fa-plus" aria-hidden="true"> </i>
         &nbsp; Add
     </button>
     <script>
-        $('button').click(function(){
-        $('#myModal').modal('show');
+        $('button').click(function() {
+            $('#myModal').modal('show');
         });
     </script>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
+    <div class="modal fade" id="modal_pengajuan_cuti">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">From Permission</h4>
+                    <h5 class="modal-title">From Permission</h5>
+                    <button class="btn-close" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
-                <div class="container">
-                    <form class="my-2" method="post" action="{{ url('/cuti/tambah-cuti-proses/') }}" enctype="multipart/form-data">
+                <form class="my-2" method="post" action="{{ url('/cuti/tambah-cuti-proses/') }}" enctype="multipart/form-data">
+                    <div class="modal-body">
                         @method('put')
                         @csrf
                         <div class="input-group">
@@ -67,6 +89,7 @@
                             {{-- <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}"> --}}
                             {{-- <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id=""> --}}
                             <input type="hidden" name="id_user_atasan" value="{{ $getUserAtasan->id }}">
+                            <input type="hidden" name="id_user_atasan2" value="{{ $getUseratasan2->id }}">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Nama" readonly>
@@ -80,9 +103,19 @@
                             <input type="text" class="form-control" value="Kategori Cuti" readonly>
                             <select class="form-control" name="cuti" required>
                                 <option value="">Pilih Cuti...</option>
-                                @foreach(\App\Models\KategoriCuti::where('status',1)->get() as $data)
-                                    <option value="{{$data->id}}">{{$data->id}} - {{$data->nama_cuti}}
-                                    </option>
+                                @foreach($get_kategori_cuti as $data)
+                                <option value="{{$data->id}}">{{$data->nama_cuti}}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Pengganti" readonly>
+                            <select class="form-control" name="user_backup" required>
+                                <option value="">Pilih Pengganti...</option>
+                                @foreach($get_user_backup as $data)
+                                <option value="{{$data->id}}">{{$data->fullname}}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -98,53 +131,75 @@
                             <textarea class="form-control" name="keterangan_cuti" style="font-weight: bold" required placeholder="Keterangan"></textarea>
                         </div>
                         <div class="input-group">
-                            <input type="text"  class="form-control" value="Approve By" readonly>
+                            <input type="text" class="form-control" value="Approve By 1" readonly>
                             <input type="text" class="form-control" name="approve_atasan" value="{{ $getUserAtasan->name }}" readonly>
                         </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary float-right">Submit</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Approve By 2" readonly>
+                            <input type="text" class="form-control" name="approve_atasan2" value="{{ $getUseratasan2->name }}" readonly>
                         </div>
-                    </form>
-                </div>
-
+                        <div class="input-group">
+                            <label for="signature64">TTD Pemohon</label>
+                            <br>
+                            <div id="sig"></div>
+                            <button id="clear" class="btn btn-danger btn-sm">Clear</button>
+                            <textarea id="signature64" name="ttd_user" style="display: none"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary float-right">Submit</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
+
         </div>
     </div>
 </div>
+</div>
 
-    <hr width="90%" style="margin-left: 5%;margin-right: 5%">
-    <div class="container">
-            <div class="detail-content">
-                <div class="flex-1">
-                    <h4>History.</h4>
+<hr width="90%" style="margin-left: 5%;margin-right: 5%">
+<div class="container">
+    <div class="detail-content">
+        <div class="flex-1">
+            <h4>History.</h4>
+        </div>
+    </div>
+    @foreach ($record_data as $record_data)
+    <div class="notification-content" style="background-color: white">
+        <a href="#" onclick="return false;">
+            <div class="notification">
+                <h6>{{ $record_data->nama_cuti }}</h6>
+                <p>{{ $record_data->keterangan_cuti}}</p>
+                <div class="notification-footer">
+                    <span>
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        {{ $record_data->tanggal}}
+                    </span>
+                    @if ($record_data->status_cuti == 0)
+                    <small class="badge badge-danger"><i class="far fa-clock"></i> Menunggu</small>
+                    @else
+                    <small class="badge badge-success"><i class="far fa-clock"></i> Disetujui</small>
+                    @endif
                 </div>
             </div>
-            @foreach ($record_data as $record_data)
-            <div class="notification-content" style="background-color: white">
-                <a href="#" onclick="return false;">
-                    <div class="notification">
-                        <h6>{{ $record_data->nama_cuti }}</h6>
-                        <p>{{ $record_data->keterangan_cuti}}</p>
-                        <div class="notification-footer">
-                            <span>
-                                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                                    <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                                </svg>
-                                {{ $record_data->tanggal}}
-                            </span>
-                            @if ($record_data->status_cuti == 0)
-                                <small class="badge badge-danger"><i class="far fa-clock"></i> Menunggu</small>
-                            @else
-                                <small class="badge badge-success"><i class="far fa-clock"></i> Disetujui</small>
-                            @endif
-                        </div>
-                    </div>
-                </a>
-            </div>
-            @endforeach
-
+        </a>
     </div>
+    @endforeach
+
+</div>
+<script type="text/javascript">
+    var sig = $('#sig').signature({
+        syncField: '#signature64',
+        syncFormat: 'PNG'
+    });
+    $('#clear').click(function(e) {
+        e.preventDefault();
+        sig.signature('clear');
+        $("#signature64").val('');
+    });
+</script>
 @endsection

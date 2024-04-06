@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Jabatan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
@@ -16,14 +17,73 @@ class JabatanSeeder extends Seeder
     public function run()
     {
         $jenis_data = [
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'), 'nama_jabatan' => 'MANAGER HRD', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'), 'nama_jabatan' => 'JUNIOR MANAGER HRD', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'), 'nama_jabatan' => 'SUPERVISOR HRD', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'), 'nama_jabatan' => 'STAFF HRD', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'), 'nama_jabatan' => 'MANAGER GA', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'), 'nama_jabatan' => 'JUNIOR MANAGER GA', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'), 'nama_jabatan' => 'SUPERVISOR GA', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'), 'created_at' => now(), 'updated_at' => now()],
-            ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'), 'nama_jabatan' => 'STAFF GA', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'), 'created_at' => now(), 'updated_at' => now()],
+            // HRD
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                // 'atasan_id' => NULL,
+                'nama_jabatan' => 'MANAGER HRD',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'MANAGER HRD & GA')->value('id'),
+                'nama_jabatan' => 'JUNIOR MANAGER HRD',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'JUNIOR MANAGER HRD & GA')->value('id'),
+                'nama_jabatan' => 'SUPERVISOR HRD',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR HRD & GA')->value('id'),
+                'nama_jabatan' => 'STAFF HRD',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            // GA
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+                // 'atasan_id' => NULL,
+                'nama_jabatan' => 'MANAGER GA',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'MANAGER HRD & GA')->value('id'),
+                'nama_jabatan' => 'JUNIOR MANAGER GA',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'JUNIOR MANAGER HRD & GA')->value('id'),
+                'nama_jabatan' => 'SUPERVISOR GA',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => Uuid::uuid4(),
+                'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+                // 'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR HRD & GA')->value('id'),
+                'nama_jabatan' => 'STAFF GA',
+                'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'),
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            // IT
             ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'INFORMATION TECHNOLOGY')->value('id'), 'nama_jabatan' => 'MANAGER IT', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'), 'created_at' => now(), 'updated_at' => now()],
             ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'INFORMATION TECHNOLOGY')->value('id'), 'nama_jabatan' => 'JUNIOR MANAGER IT', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'), 'created_at' => now(), 'updated_at' => now()],
             ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'INFORMATION TECHNOLOGY')->value('id'), 'nama_jabatan' => 'SUPERVISOR IT', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'), 'created_at' => now(), 'updated_at' => now()],
@@ -96,6 +156,81 @@ class JabatanSeeder extends Seeder
             ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'MARKETING')->value('id'), 'nama_jabatan' => 'SUPERVISOR MARKETING', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'), 'created_at' => now(), 'updated_at' => now()],
             ['id' => Uuid::uuid4(), 'divisi_id' => DB::table('divisis')->where('nama_divisi', 'MARKETING')->value('id'), 'nama_jabatan' => 'MARKETING', 'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'), 'created_at' => now(), 'updated_at' => now()],
         ];
+        // Jabatan::create(
+        //     [
+        //         'id' => Uuid::uuid4(),
+        //         'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+        //         'atasan_id' => NULL,
+        //         'nama_jabatan' => 'MANAGER HRD & GA',
+        //         'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'),
+        //         'created_at' => now(), 'updated_at' => now()
+        //     ]
+        // );
+        // Jabatan::create(
+        //     [
+        //         'id' => Uuid::uuid4(),
+        //         'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+        //         'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'MANAGER HRD & GA')->value('id'),
+        //         'nama_jabatan' => 'JUNIOR MANAGER HRD & GA',
+        //         'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'),
+        //         'created_at' => now(), 'updated_at' => now()
+        //     ]
+        // );
+        // Jabatan::create(
+        //     [
+        //         'id' => Uuid::uuid4(),
+        //         'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+        //         'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'JUNIOR MANAGER HRD & GA')->value('id'),
+        //         'nama_jabatan' => 'SUPERVISOR HRD & GA',
+        //         'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'),
+        //         'created_at' => now(), 'updated_at' => now()
+        //     ]
+        // );
+        // Jabatan::create(
+        //     [
+        //         'id' => Uuid::uuid4(),
+        //         'divisi_id' => DB::table('divisis')->where('nama_divisi', 'HUMAN RESOURCE DEVELOPMENT')->value('id'),
+        //         'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR HRD & GA')->value('id'),
+        //         'nama_jabatan' => 'STAFF HRD',
+        //         'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'),
+        //         'created_at' => now(), 'updated_at' => now()
+        //     ]
+        // );
+        // GA
+        // Jabatan::create(
+        //     [
+        //         'id' => Uuid::uuid4(),
+        //         'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+        //         'atasan_id' => NULL,
+        //         'nama_jabatan' => 'MANAGER HRD & GA',
+        //         'level_id' => DB::table('level_jabatans')->where('level_jabatan', '1')->value('id'),
+        //         'created_at' => now(), 'updated_at' => now()
+        //     ]
+        // );
+        // Jabatan::create([
+        //     'id' => Uuid::uuid4(),
+        //     'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+        //     'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'MANAGER HRD & GA')->value('id'),
+        //     'nama_jabatan' => 'JUNIOR MANAGER HRD & GA',
+        //     'level_id' => DB::table('level_jabatans')->where('level_jabatan', '2')->value('id'),
+        //     'created_at' => now(), 'updated_at' => now()
+        // ]);
+        // Jabatan::create([
+        //     'id' => Uuid::uuid4(),
+        //     'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+        //     'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'JUNIOR MANAGER HRD & GA')->value('id'),
+        //     'nama_jabatan' => 'SUPERVISOR HRD & GA',
+        //     'level_id' => DB::table('level_jabatans')->where('level_jabatan', '3')->value('id'),
+        //     'created_at' => now(), 'updated_at' => now()
+        // ]);
+        // Jabatan::create([
+        //     'id' => Uuid::uuid4(),
+        //     'divisi_id' => DB::table('divisis')->where('nama_divisi', 'GENERAL AFFAIRS')->value('id'),
+        //     'atasan_id' => DB::table('jabatans')->where('nama_jabatan', 'SUPERVISOR HRD & GA')->value('id'),
+        //     'nama_jabatan' => 'STAFF GA',
+        //     'level_id' => DB::table('level_jabatans')->where('level_jabatan', '4')->value('id'),
+        //     'created_at' => now(), 'updated_at' => now()
+        // ]);
         DB::table('jabatans')->insert($jenis_data);
     }
 }

@@ -17,6 +17,7 @@ class CreateJabatansTable extends Migration
             $table->uuid('id')->primary();
             $table->uuid('divisi_id');
             $table->foreign('divisi_id')->on('divisis')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->uuid('atasan_id')->nullable();
             $table->string('nama_jabatan');
             $table->uuid('level_id');
             $table->foreign('level_id')->on('level_jabatans')->references('id')->cascadeOnDelete()->cascadeOnUpdate();

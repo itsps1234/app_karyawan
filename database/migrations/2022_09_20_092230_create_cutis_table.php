@@ -17,9 +17,15 @@ class CreateCutisTable extends Migration
             $table->uuid('id')->primary;
             $table->string('nama_cuti');
             $table->string('tanggal');
-            $table->text('alasan_cuti');
+            $table->string('tanggal_mulai');
+            $table->string('tanggal_selesai');
+            $table->integer('total_cuti');
+            $table->text('keterangan_cuti');
             $table->string('foto_cuti')->nullable();
             $table->string('status_cuti');
+            $table->string('approve_atasan');
+            $table->string('ttd_atasan')->nullable();
+            $table->string('waktu_approve')->nullable();
             $table->string('catatan')->nullable();
             $table->timestamps();
         });

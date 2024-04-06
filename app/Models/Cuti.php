@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Cuti extends Model
 {
-    use HasFactory;
+    use HasFactory,UuidTrait;
     protected $guarded = ['id'];
     public $incrementing = false;
     protected $fillable = [
@@ -20,11 +21,18 @@ class Cuti extends Model
         'keterangan_cuti',
         'foto_cuti',
         'status_cuti',
+        'user_id_backup',
+        'ttd_user',
         'approve_atasan',
+        'approve_atasan2',
         'id_user_atasan',
+        'id_user_atasan2',
         'ttd_atasan',
+        'ttd_atasan2',
         'waktu_approve',
+        'waktu_approve2',
         'catatan',
+        'catatan2',
     ];
 
     public function User()

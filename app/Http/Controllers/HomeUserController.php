@@ -181,7 +181,6 @@ class HomeUserController extends Controller
         $tanggal = "";
         $tglskrg = date('Y-m-d');
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
-        $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
         $tidak_masuk = MappingShift::where('status_absen', 'Tidak Masuk')
             ->where('user_id', $user_login)
             ->select(DB::raw("COUNT(*) as count"))
@@ -225,21 +224,14 @@ class HomeUserController extends Controller
             ->where('user_id', $user_login)
             ->select(DB::raw("tanggal as count "))
             ->pluck('count');
-        $tanggal = $tglskrg;
-        // if ($mapping_shift->count() > 0) {
-        //     foreach ($mapping_shift as $mp) {
-        //         $jam_absen = $mp->jam_absen;
-        //         $jam_pulang = $mp->jam_pulang;
-        //     }
-        // } else {
-        //     $jam_absen = "-";
-        //     $jam_pulang = "-";
-        // }
-        // if ($jam_absen != null && $jam_pulang == null) {
-        //     $tanggal = $tglkmrn;
-        // } else {
-        // }
-
+        $get_mapping = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
+        if ($get_mapping == '' || $get_mapping == NULL) {
+            $tanggal = $tglskrg;
+            $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->first();
+        } else {
+            $tanggal = $tglkmrn;
+            $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->first();
+        }
         date_default_timezone_set('Asia/Jakarta');
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg)->where('user_id', auth()->user()->id);
@@ -279,8 +271,8 @@ class HomeUserController extends Controller
                 // dd($get_nama_shift);
                 return view('users.absen.index', [
                     'title' => 'My Absen',
-                    'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
-                    'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
+                    'shift_karyawan' => $status_absen_skrg,
+                    'status_absen_skrg' => $status_absen_skrg,
                     'data_absen' => $data_absen->get(),
                     'masuk' => array_map('intval', json_decode($masuk)),
                     'tidak_masuk' => array_map('intval', json_decode($tidak_masuk)),

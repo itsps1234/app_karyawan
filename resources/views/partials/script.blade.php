@@ -249,7 +249,63 @@
     flatpickr("input[type=datetime-local]", config)
     flatpickr("input[type=datetime]", {})
 </script>
+<script type="text/javascript">
+   
+    var i = 0;
+       
+    $("#add").click(function(){
+   
+        ++i;
+        let id_departemen = $('#id_departemen').val();
+        // console.log(id_departemen);
+        $.ajax({
+              type: 'GET',
+              url: "{{url('karyawan/get_divisi')}}",
+                data: {
+                    id_departemen: id_departemen
+                },
+                cache: false,
 
+                success: function(msg) {
+                  // $('#id_divisi').html(msg);
+                  $('#dynamicTable').append('<tr><td><select name="addmore['+i+'][divisi_id]" id="addmore['+i+']id_divisi" class="select_divisi form-control" data-live-search="true">'+msg+'</select></td><td><select name="addmore['+i+'][jabatan_id]" id="addmore['+i+']id_jabatan" class="select_jabatan form-control" data-live-search="true"></select></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
+                  var get = 'addmore['+i+']id_divisi';
+                },
+                error: function(data) {
+                  console.log('error:', data)
+                },
+                
+              })
+              
+              // return get;
+            });
+            // console.log('addmore[1]id_divisi');
+    $('#dynamicTable').on('change', '.select_divisi', function() {
+            let id_divisi = $(this).val();
+            console.log(id_divisi);
+            $.ajax({
+              type: 'GET',
+              url: "{{url('karyawan/get_jabatan')}}",
+              data: {
+                id_divisi: id_divisi
+              },
+              cache: false,
+              
+              success: function(msg) {
+                // console.log(msg);
+                $(".select_jabatan").html(msg);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+    $(document).on('click', '.remove-tr', function(){  
+         $(this).parents('tr').remove();
+    });  
+   
+</script>
 <script>
   $(function () {
 
@@ -280,7 +336,7 @@
         $(function(){
           $('#id_departemen').on('change', function() {
             let id_departemen = $('#id_departemen').val();
-            console.log(id_departemen);
+            // console.log(id_departemen);
             $.ajax({
               type: 'GET',
               url: "{{url('karyawan/get_divisi')}}",
@@ -290,7 +346,7 @@
                 cache: false,
 
                 success: function(msg) {
-                  console.log(msg);
+                  // console.log(msg);
                   // $('#id_divisi').html(msg);
                   $('#id_divisi').html(msg);
                 },
@@ -302,7 +358,7 @@
         })
           $('#id_divisi').on('change', function() {
             let id_divisi = $('#id_divisi').val();
-            console.log(id_divisi);
+            // console.log(id_divisi);
             $.ajax({
                 type: 'GET',
                 url: "{{url('karyawan/get_jabatan')}}",

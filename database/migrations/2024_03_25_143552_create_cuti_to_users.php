@@ -16,7 +16,8 @@ class CreateCutiToUsers extends Migration
         Schema::table('cutis', function (Blueprint $table) {
             $table->uuid('user_id')->after('id');
             $table->foreign('user_id')->on('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
-            
+            $table->uuid('id_user_atasan')->after('approve_atasan');
+            $table->foreign('id_user_atasan')->on('users')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }
 
@@ -31,6 +32,8 @@ class CreateCutiToUsers extends Migration
             Schema::table('cutis', function (Blueprint $table) {
                 $table->dropForeign(['user_id']);
                 $table->dropColumn('user_id');
+                $table->dropForeign(['id_user_atasan']);
+                $table->dropColumn('id_user_atasan');
             });
         }
     }

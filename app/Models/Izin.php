@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Izin extends Model
 {
-    use HasFactory;
+    use HasFactory, UuidTrait;
     public $incrementing = false;
     protected $guarded = ['id'];
 
@@ -27,8 +28,7 @@ class Izin extends Model
         'approve_atasan',
         'id_approve_atasan',
         'status_izin',
+        'waktu_approve',
         'catatan',
     ];
-
-
 }

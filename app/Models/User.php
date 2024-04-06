@@ -46,9 +46,13 @@ class User extends Authenticatable
         'izin_telat',
         'izin_pulang_cepat',
         'is_admin',
-        'jabatan_id',
         'dept_id',
         'divisi_id',
+        'jabatan_id',
+        'divisi1_id',
+        'jabatan1_id',
+        'divisi2_id',
+        'jabatan2_id',
     ];
 
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreign('dept_id')->on('departemens')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
             $table->uuid('divisi_id')->after('dept_id');
             $table->foreign('divisi_id')->on('divisis')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->uuid('jabatan_id')->after('is_admin');
+            $table->uuid('jabatan_id')->after('divisi_id');
             $table->foreign('jabatan_id')->on('jabatans')->references('id')->cascadeOnDelete()->cascadeOnUpdate();
         });
     }

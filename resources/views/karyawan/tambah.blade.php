@@ -16,6 +16,18 @@
                         @enderror
                     </div>
                     <div class="col">
+                        <label for="foto_karyawan" class="form-label">Foto Karyawan</label>
+                        <input class="form-control @error('foto_karyawan') is-invalid @enderror" type="file" id="foto_karyawan" name="foto_karyawan">
+                        @error('foto_karyawan')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <br>
+                <div class="form-row">
+                    <div class="col">
                         <label for="name">Fullname</label>
                         <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" autofocus value="{{ old('fullname') }}">
                         @error('fullname')
@@ -33,17 +45,7 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col">
-                        <label for="foto_karyawan" class="form-label">Foto Karyawan</label>
-                        <input class="form-control @error('foto_karyawan') is-invalid @enderror" type="file" id="foto_karyawan" name="foto_karyawan">
-                        @error('foto_karyawan')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
                 </div>
-                <br>
                 <div class="form-row">
                     <div class="col">
                         <label for="email">Email</label>
@@ -123,18 +125,6 @@
                         </div>
                         @enderror
                     </div>
-                </div>
-                <br>
-                <div class="form-row">
-                    <div class="col">
-                        <label for="tgl_join">Tanggal Masuk Perusahaan</label>
-                        <input type="datetime" class="form-control @error('tgl_join') is-invalid @enderror" id="tgl_join" name="tgl_join" value="{{ old('tgl_join') }}">
-                        @error('tgl_join')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
                     <div class="col">
                         <?php $sNikah = array(
                             [
@@ -166,6 +156,15 @@
                 <br>
                 <div class="form-row">
                     <div class="col">
+                        <label for="tgl_join">Tanggal Masuk Perusahaan</label>
+                        <input type="datetime" class="form-control @error('tgl_join') is-invalid @enderror" id="tgl_join" name="tgl_join" value="{{ old('tgl_join') }}">
+                        @error('tgl_join')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
                         <label for="departemen_id">Departemen</label>
                         <select name="departemen_id" id="id_departemen" class="form-control selectpicker" data-live-search="true">
                             <option value="">Pilih Departemen</option>
@@ -183,14 +182,32 @@
                         </div>
                         @enderror
                     </div>
-                    <div class="col">
-                    <label for="divisi_id">Divisi</label>
-                        <select name="divisi_id" id="id_divisi" class="form-control" data-live-search="true">
-                        </select>
-                    </div>
                 </div>
                 <br>
                 <div class="form-row">
+                    <table class="table table-bordered" id="dynamicTable">
+                        <tr>
+                            <th>Divisi</th>
+                            <th>Jabatan</th>
+                        </tr>
+                        <tr>
+                            <td><select name="addmore[0][divisi_id]" id="id_divisi" class="form-control" data-live-search="true">
+                                </select>
+                            </td>
+                            <td>
+                                <select name="addmore[0][jabatan_id]" id="id_jabatan" class="form-control" data-live-search="true">
+                                </select>
+                            </td>
+                            <td><button type="button" name="add" id="add" class="btn btn-sm btn-success">Add</button></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- <div class="form-row">
+                    <div class="col">
+                        <label for="divisi_id">Divisi</label>
+                        <select name="divisi_id" id="id_divisi" class="form-control" data-live-search="true">
+                        </select>
+                    </div>
                     <div class="col">
                         <label for="jabatan_id">Jabatan</label>
                         <select name="jabatan_id" id="id_jabatan" class="form-control" data-live-search="true">
@@ -201,6 +218,10 @@
                         </div>
                         @enderror
                     </div>
+                </div> -->
+                <br>
+                <div class="form-row">
+
                     <div class="col">
                         <?php $is_admin = array(
                             [
@@ -228,9 +249,6 @@
                         </div>
                         @enderror
                     </div>
-                </div>
-                <br>
-                <div class="form-row">
                     <div class="col">
                         <label for="kuota_cuti">Kuota Cuti</label>
                         <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti') }}">
@@ -240,6 +258,9 @@
                         </div>
                         @enderror
                     </div>
+                </div>
+                <br>
+                <div class="form-row">
                     <div class="col">
                         <label for="cuti_dadakan">Cuti Dadakan</label>
                         <input type="number" class="form-control @error('cuti_dadakan') is-invalid @enderror" id="cuti_dadakan" name="cuti_dadakan" value="{{ old('cuti_dadakan') }}">

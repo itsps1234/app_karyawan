@@ -14,7 +14,7 @@ class CreateIzinsTable extends Migration
     public function up()
     {
         Schema::create('izins', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('user_id');
             $table->string('departements_id');
             $table->string('jabatan_id');
@@ -30,6 +30,8 @@ class CreateIzinsTable extends Migration
             $table->string('approve_atasan');
             $table->string('id_approve_atasan');
             $table->integer('status_izin');
+            $table->string('ttd_atasan')->nullable();
+            $table->string('waktu_approve')->nullable();
             $table->string('catatan')->nullable();
             $table->timestamps();
         });
