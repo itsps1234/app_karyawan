@@ -165,7 +165,7 @@ class karyawanController extends Controller
             $divisi4_id = NULL;
             $jabatan4_id = NULL;
         } else if ($size == '5') {
-            // dd('oke 3');
+            // dd($request["addmore"]['4']["jabatan_id"]);
             $get_divisi_id = $request["addmore"]['0']["divisi_id"];
             $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
             $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];

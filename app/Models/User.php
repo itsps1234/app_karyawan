@@ -53,6 +53,10 @@ class User extends Authenticatable
         'jabatan1_id',
         'divisi2_id',
         'jabatan2_id',
+        'divisi3_id',
+        'jabatan3_id',
+        'divisi4_id',
+        'jabatan4_id',
     ];
 
 
