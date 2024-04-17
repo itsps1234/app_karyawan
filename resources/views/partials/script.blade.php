@@ -268,7 +268,7 @@
 
                 success: function(msg) {
                   // $('#id_divisi').html(msg);
-                  $('#dynamicTable').append('<tr><td><select name="addmore['+i+'][divisi_id]" id="addmore['+i+']id_divisi" class="select_divisi form-control" data-live-search="true">'+msg+'</select></td><td><select name="addmore['+i+'][jabatan_id]" id="addmore['+i+']id_jabatan" class="select_jabatan form-control" data-live-search="true"></select></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
+                  $('#dynamicTable').append('<tr><td><select name="addmore['+i+'][divisi_id]" id="addmore['+i+']id_divisi" class="select_divisi'+i+' form-control" data-live-search="true">'+msg+'</select></td><td><select name="addmore['+i+'][jabatan_id]" id="addmore['+i+']id_jabatan" class="select_jabatan'+i+' form-control" data-live-search="true"></select></td><td><button type="button" class="btn btn-sm btn-danger remove-tr">Remove</button></td></tr>');
                   var get = 'addmore['+i+']id_divisi';
                 },
                 error: function(data) {
@@ -278,9 +278,10 @@
               })
               
               // return get;
-            });
+           
             // console.log('addmore[1]id_divisi');
-    $('#dynamicTable').on('change', '.select_divisi', function() {
+            $(document).on('change', '.select_divisi'+i+'', function() {
+              console.log('OK');
             let id_divisi = $(this).val();
             console.log(id_divisi);
             $.ajax({
@@ -293,7 +294,7 @@
               
               success: function(msg) {
                 // console.log(msg);
-                $(".select_jabatan").html(msg);
+                $('.select_jabatan'+i+'').html(msg);
                 },
                 error: function(data) {
                     console.log('error:', data)
@@ -304,6 +305,7 @@
     $(document).on('click', '.remove-tr', function(){  
          $(this).parents('tr').remove();
     });  
+  });
    
 </script>
 <script>
