@@ -158,9 +158,9 @@ class karyawanController extends Controller
             $divisi2_id = Divisi::where('id', $get_divisi2_id)->value('id');
             $get_jabatan2_id = $request["addmore"]['2']["jabatan_id"];
             $jabatan2_id = Jabatan::where('id', $get_jabatan2_id)->value('id');
-            $get_divisi3_id = $request["addmore"]['2']["divisi_id"];
+            $get_divisi3_id = $request["addmore"]['3']["divisi_id"];
             $divisi3_id = Divisi::where('id', $get_divisi3_id)->value('id');
-            $get_jabatan3_id = $request["addmore"]['2']["jabatan_id"];
+            $get_jabatan3_id = $request["addmore"]['3']["jabatan_id"];
             $jabatan3_id = Jabatan::where('id', $get_jabatan3_id)->value('id');
             $divisi4_id = NULL;
             $jabatan4_id = NULL;
@@ -178,13 +178,13 @@ class karyawanController extends Controller
             $divisi2_id = Divisi::where('id', $get_divisi2_id)->value('id');
             $get_jabatan2_id = $request["addmore"]['2']["jabatan_id"];
             $jabatan2_id = Jabatan::where('id', $get_jabatan2_id)->value('id');
-            $get_divisi3_id = $request["addmore"]['2']["divisi_id"];
+            $get_divisi3_id = $request["addmore"]['3']["divisi_id"];
             $divisi3_id = Divisi::where('id', $get_divisi3_id)->value('id');
-            $get_jabatan3_id = $request["addmore"]['2']["jabatan_id"];
+            $get_jabatan3_id = $request["addmore"]['3']["jabatan_id"];
             $jabatan3_id = Jabatan::where('id', $get_jabatan3_id)->value('id');
-            $get_divisi4_id = $request["addmore"]['2']["divisi_id"];
+            $get_divisi4_id = $request["addmore"]['4']["divisi_id"];
             $divisi4_id = Divisi::where('id', $get_divisi4_id)->value('id');
-            $get_jabatan4_id = $request["addmore"]['2']["jabatan_id"];
+            $get_jabatan4_id = $request["addmore"]['4']["jabatan_id"];
             $jabatan4_id = Jabatan::where('id', $get_jabatan4_id)->value('id');
         }
 
