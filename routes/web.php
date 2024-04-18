@@ -26,6 +26,8 @@ use App\Http\Controllers\AbsenUserController;
 use App\Http\Controllers\IzinUserController;
 use App\Http\Controllers\CutiUserController;
 use Carbon\Carbon;
+use Illuminate\Support\Composer;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,7 +38,8 @@ use Carbon\Carbon;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('auth','log.activity')->group(function () {
+
+Route::middleware('auth', 'log.activity')->group(function () {
     Route::post('/logout', [authController::class, 'logout']);
     Route::put('/karyawan/proses-edit-shift/{id}', [karyawanController::class, 'prosesEditShift']);
     Route::get('/id-card', [IdCardController::class, 'index']);
@@ -60,7 +63,7 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
 
     Route::get('/absen/dashboard', [AbsenUserController::class, 'index']);
-    route::get('/absen/dashboard/index',[AbsenUserController::class, 'recordabsen']);
+    route::get('/absen/dashboard/index', [AbsenUserController::class, 'recordabsen']);
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
@@ -186,6 +189,9 @@ Route::delete('/dokumen/delete/{id}', [DokumenController::class, 'delete'])->mid
 // Route::delete('/my-dokumen/delete/{id}', [DokumenController::class, 'myDokumenDelete'])->middleware('auth');
 Route::post('/logout', [authController::class, 'logout'])->name('logout');
 
+Route::get('/linkstorage', function () {
+    Artisan::call('storage:link');
+});
 Route::get('optimize', function () {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
@@ -198,6 +204,6 @@ Route::get('optimize', function () {
     Artisan::call('route:cache');
     Artisan::call('config:cache');
     Artisan::call('optimize');
-
+    Composer::call('dump-autoload');
     echo 'optimize clear';
 });

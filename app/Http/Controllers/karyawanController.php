@@ -95,7 +95,7 @@ class karyawanController extends Controller
             $request["kuota_cuti"];
         }
         $size = count(collect($request["addmore"]));
-        // dd($size);
+        dd(collect($request["addmore"]));
         if ($size == '1') {
             $get_divisi_id = $request["addmore"]['0']["divisi_id"];
             $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');

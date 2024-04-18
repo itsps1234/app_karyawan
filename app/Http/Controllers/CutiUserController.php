@@ -10,6 +10,7 @@ use App\Models\MappingShift;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ActivityLog;
 use App\Models\KategoriCuti;
+use App\Models\LevelJabatan;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
@@ -25,68 +26,36 @@ class CutiUserController extends Controller
             ->join('departemens', 'departemens.id', '=', 'users.dept_id')
             ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
             ->where('users.id', Auth()->user()->id)->first();
-        $userLevel      = DB::table('level_jabatans')->where('id', $user->level_id)->first();
-        $levelatasan    = $userLevel->level_jabatan - 1;
-        $levelatasan2    = $userLevel->level_jabatan - 2;
-        $levelatasan3    = $userLevel->level_jabatan - 3;
-        $IdLevelAsasan  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-        $IdLevelAsasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
-        $IdLevelAsasan3  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan3)->first();
-        $getAsatan      = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
-        $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
-        $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAsasan3->id)->where('divisi_id', $user->divisi_id)->first();
-        $atasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
-        $atasan2  = User::with('jabatan')->where('jabatan_id', $getAsatan2->id)->first();
-        $atasan3  = User::with('jabatan')->where('jabatan_id', $getAsatan3->id)->first();
-        // dd($atasan2);
-        if ($atasan == '' || $atasan == NULL) {
-            // dd('atasan null');
-            $atasan1  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
-            if ($atasan1 == NULL || $atasan1 == '') {
-                // dd('jabatan 1 null');
-                $getUserAtasan  = User::with('jabatan')->where('jabatan2_id', $getAsatan->id)->first();
+        $userLevel      = LevelJabatan::where('id', $user->level_id)->first();
+        // dd($userLevel->level_jabatan);
+        if ($userLevel->level_jabatan >= 3) {
+            $levelatasan    = $userLevel->level_jabatan - 1;
+            $levelatasan2    = $userLevel->level_jabatan - 2;
+            $levelatasan3    = $userLevel->level_jabatan - 3;
+            $IdLevelAsasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
+            $IdLevelAsasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
+            $IdLevelAsasan3  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan3)->first();
+            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
+            $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
+            $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAsasan3->id)->where('divisi_id', $user->divisi_id)->first();
+            $atasan          = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan2         = User::with('jabatan')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan3         = User::with('jabatan')->where('jabatan_id', $getAsatan3->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            // dd($atasan);
+            if ($atasan == '' || $atasan == NULL) {
+                $getUserAtasan = $atasan2;
+                $getUseratasan2 = $atasan3;
+                // dd($getUseratasan2); 
+                if ($getUserAtasan == '' || $getUserAtasan == NULL) {
+                    $getUserAtasan = $atasan3;
+                    $getUseratasan2 = $atasan3;
+                }
             } else {
-                // dd('jabatan 1 not null');
-                $getUserAtasan  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
+                $getUserAtasan = $atasan;
+                $getUserAtasan = $atasan2;
             }
         } else {
-            $getUserAtasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
-            // dd('atasan not null');
-        }
-        if ($atasan2 == '' || $atasan2 == NULL) {
-            // dd('atasan2 null');
-            $atasan2_1  = User::with('jabatan')->where('jabatan1_id', $getAsatan2->id)->first();
-            if ($atasan2_1 == NULL || $atasan2_1 == '') {
-                // dd('jabatan 1 null');
-                $getUseratasan2  = User::with('jabatan')->where('jabatan2_id', $getAsatan2->id)->first();
-            } else {
-                // dd('jabatan 1 not null');
-                $getUseratasan2  = User::with('jabatan')->where('jabatan1_id', $getAsatan2->id)->first();
-            }
-        } else {
-            $getUseratasan2  = User::with('jabatan')->where('jabatan_id', $getAsatan2->id)->first();
-            // dd('atasan2 not null');
-        }
-
-        if ($atasan3 == '' || $atasan3 == NULL) {
-            // dd('atasan3 null');
-            $atasan3_1  = User::with('jabatan')->where('jabatan1_id', $getAsatan3->id)->first();
-            if ($atasan3_1 == NULL || $atasan3_1 == '') {
-                // dd('jabatan 1 null');
-                $getUseratasan3  = User::with('jabatan')->where('jabatan2_id', $getAsatan3->id)->first();
-            } else {
-                // dd('jabatan 1 not null');
-                $getUseratasan3  = User::with('jabatan')->where('jabatan1_id', $getAsatan3->id)->first();
-            }
-        } else {
-            $getUseratasan3  = User::with('jabatan')->where('jabatan_id', $getAsatan3->id)->first();
-            dd('atasan2 not null');
-        }
-        if ($getUseratasan2 == '' || $getUseratasan2 == NULL) {
-            $getUseratasan2 = $getUseratasan3;
-            // dd($getUseratasan2); 
-        } else {
-            $getUseratasan2 = $getUseratasan2;
+            dd('gak oke');
         }
         // dd($getUseratasan2);
         // $getUserAtasan  = DB::table('users')->where('jabatan_id', $getAsatan->id)->first();
@@ -146,10 +115,9 @@ class CutiUserController extends Controller
             if ($kuota_cuti->kuota_cuti >= $data_interval) {
                 // dd('input cuti');
                 if ($request->ttd_user != null) {
-                    $ttd_user= $file_save;
-                } else{
-                    $ttd_user= NULL;
-
+                    $ttd_user = $file_save;
+                } else {
+                    $ttd_user = NULL;
                 }
                 Cuti::create([
                     'user_id' => User::where('id', Auth::user()->id)->value('id'),
