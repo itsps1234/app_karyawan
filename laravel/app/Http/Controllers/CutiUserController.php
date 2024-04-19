@@ -141,9 +141,10 @@ class CutiUserController extends Controller
             if ($kuota_cuti->kuota_cuti >= $data_interval) {
                 // dd('input cuti');
                 if ($request->ttd_user != null) {
-                    $ttd_user = $file_save;
-                } else {
-                    $ttd_user = NULL;
+                    $ttd_user= $file_save;
+                } else{
+                    $ttd_user= NULL;
+
                 }
                 Cuti::create([
                     'user_id' => User::where('id', Auth::user()->id)->value('id'),
