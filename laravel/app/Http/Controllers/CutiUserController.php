@@ -46,33 +46,33 @@ class CutiUserController extends Controller
                 $getUserAtasan = $atasan2;
                 $getUseratasan2 = $atasan3;
                 // dd('atasan null');
-                if ($getUserAtasan == NULL || $getUseratasan2 == NULL) {
+                if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
-                } else if ($getUserAtasan == NULL || $getUseratasan2 != NULL) {
+                } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
                     $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan3;
-                } else if ($getUserAtasan != NULL || $getUseratasan2 == NULL) {
+                } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan2;
-                } else if ($getUserAtasan != NULL || $getUseratasan2 != NULL) {
+                } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 }
-            } else if ($atasan2 == '' || $atasan2 == NULL) {
+            } else if ($atasan2 == '' && $atasan2 == NULL) {
                 $getUserAtasan = $atasan;
                 $getUseratasan2 = $atasan3;
-                // dd('atasan null');
-                if ($getUserAtasan == NULL || $getUseratasan2 == NULL) {
+                if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
+                    dd('atasan null');
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
-                } else if ($getUserAtasan == NULL || $getUseratasan2 != NULL) {
+                } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
                     $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan3;
-                } else if ($getUserAtasan != NULL || $getUseratasan2 == NULL) {
+                } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan;
-                } else if ($getUserAtasan != NULL || $getUseratasan2 != NULL) {
+                } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 }

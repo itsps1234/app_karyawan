@@ -9,14 +9,11 @@ class Departemen extends Model
 {
     use HasFactory;
     public $incrementing = false;
-    protected $guarded = ['id', 'nama_departemen', 'created_at', 'updated_at'];
+    protected $guarded = ['id'];
+    protected $fillable = ['id', 'nama_departemen', 'created_at', 'updated_at'];
 
     public function Jabatan()
     {
         return $this->hasMany(Jabatan::class);
-    }
-    public function Divisi()
-    {
-        return $this->hasMany(Divisi::class);
     }
 }

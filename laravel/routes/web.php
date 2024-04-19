@@ -25,6 +25,8 @@ use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AbsenUserController;
 use App\Http\Controllers\IzinUserController;
 use App\Http\Controllers\CutiUserController;
+use App\Http\Controllers\DepartemenController;
+use App\Http\Controllers\DivisiController;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +38,8 @@ use Carbon\Carbon;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('auth','log.activity')->group(function () {
+
+Route::middleware('auth', 'log.activity')->group(function () {
     Route::post('/logout', [authController::class, 'logout']);
     Route::put('/karyawan/proses-edit-shift/{id}', [karyawanController::class, 'prosesEditShift']);
     Route::get('/id-card', [IdCardController::class, 'index']);
@@ -60,7 +63,7 @@ Route::middleware('auth','log.activity')->group(function () {
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
 
     Route::get('/absen/dashboard', [AbsenUserController::class, 'index']);
-    route::get('/absen/dashboard/index',[AbsenUserController::class, 'recordabsen']);
+    route::get('/absen/dashboard/index', [AbsenUserController::class, 'recordabsen']);
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
@@ -166,12 +169,28 @@ Route::put('/lokasi-kantor/{id}', [LokasiController::class, 'updateLokasi'])->mi
 Route::put('/lokasi-kantor/radius/{id}', [LokasiController::class, 'updateRadiusLokasi'])->middleware('admin');
 Route::get('/reset-cuti', [KaryawanController::class, 'resetCuti'])->middleware('admin');
 Route::put('/reset-cuti/{id}', [KaryawanController::class, 'resetCutiProses'])->middleware('admin');
+// MASTER DEPARTEMEN
+Route::get('/departemen', [DepartemenController::class, 'index'])->middleware('admin');
+Route::get('/departemen/create', [DepartemenController::class, 'create'])->middleware('admin');
+Route::post('/departemen/insert', [DepartemenController::class, 'insert'])->middleware('admin');
+Route::get('/departemen/edit/{id}', [DepartemenController::class, 'edit'])->middleware('admin');
+Route::put('/departemen/update/{id}', [DepartemenController::class, 'update'])->middleware('admin');
+Route::delete('/departemen/delete/{id}', [DepartemenController::class, 'delete'])->middleware('admin');
+// MASTER DIVISI
+Route::get('/divisi', [DivisiController::class, 'index'])->middleware('admin');
+Route::get('/divisi/create', [DivisiController::class, 'create'])->middleware('admin');
+Route::post('/divisi/insert', [DivisiController::class, 'insert'])->middleware('admin');
+Route::get('/divisi/edit/{id}', [DivisiController::class, 'edit'])->middleware('admin');
+Route::put('/divisi/update/{id}', [DivisiController::class, 'update'])->middleware('admin');
+Route::delete('/divisi/delete/{id}', [DivisiController::class, 'delete'])->middleware('admin');
+// MASTER JABATAN
 Route::get('/jabatan', [jabatanController::class, 'index'])->middleware('admin');
 Route::get('/jabatan/create', [jabatanController::class, 'create'])->middleware('admin');
 Route::post('/jabatan/insert', [jabatanController::class, 'insert'])->middleware('admin');
 Route::get('/jabatan/edit/{id}', [jabatanController::class, 'edit'])->middleware('admin');
 Route::put('/jabatan/update/{id}', [jabatanController::class, 'update'])->middleware('admin');
 Route::delete('/jabatan/delete/{id}', [jabatanController::class, 'delete'])->middleware('admin');
+
 Route::get('/dokumen', [DokumenController::class, 'index'])->middleware('admin');
 Route::get('/dokumen/tambah', [DokumenController::class, 'tambah'])->middleware('admin');
 Route::post('/dokumen/tambah-proses', [DokumenController::class, 'tambahProses'])->middleware('admin');
