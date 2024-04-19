@@ -39,48 +39,48 @@
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        
+
         <!-- Meta -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, minimal-ui, viewport-fit=cover">
         <meta name="theme-color" content="#2196f3">
-        <meta name="author" content="DexignZone" /> 
-        <meta name="keywords" content="" /> 
-        <meta name="robots" content="" /> 
+        <meta name="author" content="DexignZone" />
+        <meta name="keywords" content="" />
+        <meta name="robots" content="" />
         <meta name="description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )"/>
         <meta property="og:title" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
         <meta property="og:description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
         <meta property="og:image" content="https://jobie.dexignzone.com/mobile-app/xhtml/social-image.png"/>
         <meta name="format-detection" content="telephone=no">
-        
+
         <!-- Favicons Icon -->
         <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
-        
+
         <!-- Title -->
         <title>APPS KARYAWAN</title>
-        
+
         <!-- Stylesheets -->
         <link rel="stylesheet" href="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets_users/css/style.css') }}">
-        
+
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Racing+Sans+One&display=swap" rel="stylesheet">
-    
-    </head>   
+
+    </head>
     <body>
     <div class="page-wraper">
-    
+
         <!-- Preloader -->
         <div id="preloader">
             <div class="spinner"></div>
         </div>
         <!-- Preloader end-->
-    
+
         <!-- Page Content -->
         <div class="page-content">
-            
+
             <!-- Banner -->
             <div class="banner-wrapper shape-1">
                 <div class="container inner-wrapper">
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <!-- Banner End -->
-            
+
             <div class="container">
                 <div class="account-area">
                     <form method="POST" action="{{ url('/login-proses') }}">
@@ -100,7 +100,7 @@
                         <div class="input-group">
                             {{-- <input type="password" placeholder="Password" id="dz-password" class="form-control be-0"> --}}
                             <input type="password" name="password" id="dz-password" id="password" class="form-control be-0" placeholder="***********">
-                            <span class="input-group-text show-pass"> 
+                            <span class="input-group-text show-pass">
                                 <i class="fa fa-eye-slash"></i>
                                 <i class="fa fa-eye"></i>
                             </span>
@@ -121,7 +121,7 @@
             </div>
         </div>
         <!-- Page Content End -->
-        
+
         <!-- Footer -->
         <footer class="footer fixed">
             <div class="container">
@@ -129,7 +129,7 @@
             </div>
         </footer>
         <!-- Footer End -->
-        
+
         <!-- Theme Color Settings -->
         <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom">
             <div class="offcanvas-body small">

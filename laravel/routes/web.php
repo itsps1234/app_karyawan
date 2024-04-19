@@ -109,6 +109,7 @@ Route::get('/register', [authController::class, 'register'])->middleware('guest'
 Route::post('/register-proses', [authController::class, 'registerProses'])->middleware('guest');
 Route::post('/login-proses', [authController::class, 'loginProses'])->middleware('guest');
 Route::get('/dashboard', [dashboardController::class, 'index'])->middleware('admin');
+Route::get('/dashboard/holding', [dashboardController::class, 'holding'])->middleware('admin');
 Route::get('/activity-logs', 'App\Http\Controllers\ActivityLogController@index')->name('activity-logs.index');
 // Route::post('/logout', [authController::class, 'logout'])->middleware('auth');
 Route::get('/karyawan', [karyawanController::class, 'index'])->middleware('admin');

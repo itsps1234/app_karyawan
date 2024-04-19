@@ -57,7 +57,8 @@ class authController extends Controller
             $request->session()->regenerate();
 
             if(auth()->user()->is_admin == "admin") {
-                return redirect()->intended('/dashboard');
+                return redirect()->intended('/dashboard/holding');
+                // return redirect()->intended('/holding');
             } else {
                 return redirect()->intended('/home');
             }
