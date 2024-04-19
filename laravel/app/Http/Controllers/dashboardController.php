@@ -17,7 +17,7 @@ class dashboardController extends Controller
         $tgl_skrg = date("Y-m-d");
 
         $logs = ActivityLog::query();
-        
+
         $logs = $logs->orderBy('created_at', 'desc')->limit(5)->get();
 
         return view('dashboard.index', [
@@ -32,5 +32,10 @@ class dashboardController extends Controller
             'jumlah_karyawan_lembur' => Lembur::where('tanggal', $tgl_skrg)->count(),
             'logs' => $logs,
         ]);
+    }
+
+    public function holding()
+    {
+        return view('dashboard.holding');
     }
 }
