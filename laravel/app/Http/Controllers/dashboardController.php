@@ -13,6 +13,8 @@ class dashboardController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
+        // dd(request()->segment(count(request()->segments())));
         date_default_timezone_set('Asia/Jakarta');
         $tgl_skrg = date("Y-m-d");
 
@@ -31,6 +33,7 @@ class dashboardController extends Controller
             'jumlah_izin_pulang_cepat' => MappingShift::where('tanggal', $tgl_skrg)->where('status_absen', 'Izin Pulang Cepat')->count(),
             'jumlah_karyawan_lembur' => Lembur::where('tanggal', $tgl_skrg)->count(),
             'logs' => $logs,
+            'holding' => $holding,
         ]);
     }
 
