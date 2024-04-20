@@ -94,8 +94,31 @@ class karyawanController extends Controller
         } else {
             $request["kuota_cuti"];
         }
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'fullname' => 'required|max:255',
+            'motto' => 'required|max:255',
+            'email' => 'required|max:255',
+            'telepon' => 'required|max:255',
+            'username' => 'required|max:255',
+            'password' => 'required|max:255',
+            'tgl_lahir' => 'required|max:255',
+            'gender' => 'required|max:255',
+            'tgl_join' => 'required|max:255',
+            'status_nikah' => 'required|max:255',
+            'alamat' => 'required|max:255',
+            'cuti_dadakan' => 'required|max:11',
+            'cuti_bersama' => 'required|max:11',
+            'cuti_menikah' => 'required|max:11',
+            'cuti_diluar_tanggungan' => 'required|max:11',
+            'cuti_khusus' => 'required|max:11',
+            'cuti_melahirkan' => 'required|max:11',
+            'izin_telat' => 'required|max:11',
+            'izin_pulang_cepat' => 'required|max:11',
+            'kuota_cuti' => 'required|max:11',
+        ]);
         $size = count(collect($request["addmore"]));
-        dd(collect($request["addmore"]));
+        // dd(collect($request["addmore"]));
         if ($size == '1') {
             $get_divisi_id = $request["addmore"]['0']["divisi_id"];
             $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
@@ -186,9 +209,20 @@ class karyawanController extends Controller
             $divisi4_id = Divisi::where('id', $get_divisi4_id)->value('id');
             $get_jabatan4_id = $request["addmore"]['4']["jabatan_id"];
             $jabatan4_id = Jabatan::where('id', $get_jabatan4_id)->value('id');
+        } else {
+            $divisi_id = NULL;
+            $jabatan_id = NULL;
+            $divisi1_id = NULL;
+            $jabatan1_id = NULL;
+            $divisi2_id = NULL;
+            $jabatan2_id = NULL;
+            $divisi3_id = NULL;
+            $jabatan3_id = NULL;
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
         }
 
-        
+
         // dd($validatedData);
         $insert = User::create(
             [

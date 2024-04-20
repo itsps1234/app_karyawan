@@ -5,18 +5,21 @@ namespace App\Models;
 use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Jabatan extends Model
 {
     use HasFactory, UuidTrait;
+    public $incrementing = false;
     protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $fillable = ['divisi_id', 'nama_jabatan', 'level_id', 'created_at', 'updated_at'];
 
-    public function User()
+    public function LevelJabatan(): BelongsTo
     {
-        return $this->hasMany(User::class);
+        return $this->belongsTo(LevelJabatan::class, 'level_id', 'id');
     }
-    public function levelJabatan()
+    public function Divisi(): BelongsTo
     {
-        return $this->belongsTo(levelJabatan::class, 'level_id', 'id');
+        return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
     }
 }

@@ -2,7 +2,7 @@
 @section('isi')
 <center>
     <div class="container-fluid">
-        <div class="card card-outline card-primary col-lg-4">
+        <div class="card card-outline card-primary col-lg-8">
             <div class="p-4">
                 <form method="post" action="{{ url('/divisi/update/'.$data_divisi->id) }}">
                     @method('put')
@@ -11,8 +11,8 @@
                         <label for="nama_departemen" class="float-left">Nama Departemen</label>
                         <select class="form-control @error('nama_departemen') is-invalid @enderror" id="nama_departemen" name="nama_departemen" autofocus value="{{ old('nama_departemen') }}">
                             <option value=""> Pilih Departemen</option>
-                            @foreach($data_departemen as $data)
-                            <option value="{{$data->id}}">{{$data->nama_departemen}}</option>
+                            @foreach($data_departemen as $s)
+                            <option value="{{$s->id}}" {{$s->id == $data_divisi->dept_id  ? 'selected' : ''}}>{{$s->nama_departemen}}</option>
                             @endforeach
                         </select>
                         @error('nama_divisi')

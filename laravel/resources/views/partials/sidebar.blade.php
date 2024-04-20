@@ -97,7 +97,7 @@
                         <a href="{{ url('/departemen') }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
-                                Master Departmen
+                                Master Departemen
                             </p>
                         </a>
                     </li>

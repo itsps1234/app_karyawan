@@ -22,7 +22,7 @@
                     @foreach ($data_divisi as $dj)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $dj->Departemen->nama_departemen }}</td>
+                        <td>{{ $dj->Departemen->nama_departemen}}</td>
                         <td>{{ $dj->nama_divisi }}</td>
                         <td>
                             <a href="{{ url('/divisi/edit/'.$dj->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-edit"></i></a>
