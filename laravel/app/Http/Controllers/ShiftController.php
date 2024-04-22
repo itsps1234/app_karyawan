@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Shift;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
@@ -16,8 +17,10 @@ class ShiftController extends Controller
      */
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('shift.index', [
             'title' => 'Master Shift',
+            'holding' => $holding,
             'shift' => Shift::all()
         ]);
     }
@@ -29,8 +32,10 @@ class ShiftController extends Controller
      */
     public function create()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('shift.create', [
-            'title' => 'Tambah Data Master Shift'
+            'title' => 'Tambah Data Master Shift',
+            'holding' => $holding,
         ]);
     }
 
@@ -42,6 +47,7 @@ class ShiftController extends Controller
      */
     public function store(Request $request)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'nama_shift' => 'required|max:255',
             'jam_masuk' => 'required',
@@ -54,7 +60,7 @@ class ShiftController extends Controller
             'activity' => 'create',
             'description' => 'Menambahkan data master shift dengan nama shift ' . $request->nama_shift
         ]);
-        return redirect('/shift')->with('success', 'Data Berhasil di Tambahkan');
+        return redirect('/shift/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
     }
 
     /**
@@ -76,8 +82,10 @@ class ShiftController extends Controller
      */
     public function edit($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         return view("shift.edit", [
             'title' => 'Edit Shift',
+            'holding' => $holding,
             'shift' => Shift::findOrFail($id)
         ]);
     }
@@ -91,6 +99,7 @@ class ShiftController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'nama_shift' => 'required|max:255',
             'jam_masuk' => 'required',
@@ -103,7 +112,7 @@ class ShiftController extends Controller
             'activity' => 'update',
             'description' => 'Mengubah data master shift dengan nama shift ' . $request->nama_shift
         ]);
-        return redirect('/shift')->with('success', 'Data Berhasil di Update');
+        return redirect('/shift/' . $holding)->with('success', 'Data Berhasil di Update');
     }
 
     /**
@@ -114,6 +123,7 @@ class ShiftController extends Controller
      */
     public function destroy($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $delete = Shift::find($id);
         $delete->delete();
         ActivityLog::create([
@@ -121,6 +131,6 @@ class ShiftController extends Controller
             'activity' => 'delete',
             'description' => 'Menghapus data master shift dengan nama shift ' . $delete->nama_shift
         ]);
-        return redirect('/shift')->with('success', 'Data Berhasil di Delete');
+        return redirect('/shift/' . $holding)->with('success', 'Data Berhasil di Delete');
     }
 }

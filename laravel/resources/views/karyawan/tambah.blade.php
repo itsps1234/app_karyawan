@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="card card-outline card-primary col-lg-12">
         <div class="mt-4 p-4">
-            <form method="post" action="{{ url('/karyawan/tambah-karyawan-proses') }}" enctype="multipart/form-data">
+            <form method="post" action="{{ url('/karyawan/tambah-karyawan-proses/'.$holding) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="form-row">
                     <div class="col">
@@ -109,7 +109,7 @@
                         );
                         ?>
                         <label for="gender">Gender</label>
-                        <select name="gender" id="gender" class="form-control selectpicker" data-live-search="true">
+                        <select name="gender" id="gender" class="selectpicker form-control  @error('gender') is-invalid @enderror" data-live-search="true">
                             <option value="">Pilih Gender</option>
                             @foreach ($gender as $g)
                             @if(old('gender') == $g["gender"])
@@ -136,7 +136,7 @@
                         );
                         ?>
                         <label for="status_nikah">Status Pernikahan</label>
-                        <select name="status_nikah" id="status_nikah" class="form-control selectpicker" data-live-search="true">
+                        <select name="status_nikah" id="status_nikah" class="form-control selectpicker @error('status_nikah') is-invalid @enderror" data-live-search="true">
                             <option value="">Pilih Status</option>
                             @foreach ($sNikah as $s)
                             @if(old('status_nikah') == $s["status"])
@@ -166,7 +166,7 @@
                     </div>
                     <div class="col">
                         <label for="departemen_id">Departemen</label>
-                        <select name="departemen_id" id="id_departemen" class="form-control selectpicker" data-live-search="true">
+                        <select name="departemen_id" id="id_departemen" class="form-control selectpicker @error('departemen_id') is-invalid @enderror " data-live-search="true">
                             <option value="">Pilih Departemen</option>
                             @foreach ($data_departemen as $dj)
                             @if(old('departemen_id') == $dj->id)
@@ -233,7 +233,7 @@
                         );
                         ?>
                         <label for="is_admin">Level User</label>
-                        <select name="is_admin" id="is_admin" class="form-control selectpicker" data-live-search="true">
+                        <select class="selectpicker form-control @error('is_admin') is-invalid @enderror" name="is_admin" id="is_admin" data-live-search="true">
                             <option value="">Pilih Level</option>
                             @foreach ($is_admin as $a)
                             @if(old('is_admin') == $a["is_admin"])
@@ -253,6 +253,44 @@
                         <label for="kuota_cuti">Kuota Cuti</label>
                         <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti') }}">
                         @error('kuota_cuti')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <br>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="kontrak_kerja">Kontrak Kerja</label>
+                        <input type="text" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
+
+                    </div>
+                    <div class="col">
+                        <?php $penempatan_kerja = array(
+                            [
+                                "penempatan_kerja" => "CV. SUMBER PANGAN"
+                            ],
+                            [
+                                "penempatan_kerja" => "PT. SURYA PANGAN SEMESTA"
+                            ],
+                            [
+                                "penempatan_kerja" => "CV. SURYA INTI PANGAN"
+                            ]
+                        );
+                        ?>
+                        <label for="penempatan_kerja">Penempatan Kerja</label>
+                        <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
+                            <option selected disabled value=""> Pilih Lokasi Penempatan</option>
+                            @foreach ($penempatan_kerja as $a)
+                            @if(old('penempatan_kerja') == $a["penempatan_kerja"])
+                            <option value="{{ $a["penempatan_kerja"] }}" selected>{{ $a["penempatan_kerja"] }}</option>
+                            @else
+                            <option value="{{ $a["penempatan_kerja"] }}">{{ $a["penempatan_kerja"] }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                        @error('penempatan_kerja')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>

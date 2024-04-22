@@ -176,6 +176,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        // Laravolt\Indonesia\ServiceProvider::class
         // Mews\Captcha\CaptchaServiceProvider::class,
     ],
 
@@ -232,6 +233,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'Indonesia' => Laravolt\Indonesia\Facade::class
         // 'Captcha' => Mews\Captcha\Facades\Captcha::class,
     ],
 

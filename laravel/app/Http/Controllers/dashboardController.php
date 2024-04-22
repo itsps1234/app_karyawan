@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\User;
 use App\Models\MappingShift;
 use Illuminate\Http\Request;
@@ -8,12 +9,15 @@ use App\Models\Cuti;
 use App\Models\Lembur;
 use App\Models\ResetCuti;
 use App\Models\ActivityLog;
+use Ramsey\Uuid\Uuid;
 
 class dashboardController extends Controller
 {
     public function index()
     {
         $holding = request()->segment(count(request()->segments()));
+        // $md5_sp = md5('sp');
+        // $holding = md5($get_holding);
         // dd(request()->segment(count(request()->segments())));
         date_default_timezone_set('Asia/Jakarta');
         $tgl_skrg = date("Y-m-d");
@@ -39,6 +43,7 @@ class dashboardController extends Controller
 
     public function holding()
     {
+        // dd($sp);
         return view('dashboard.holding');
     }
 }

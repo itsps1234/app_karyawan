@@ -19,21 +19,28 @@ use App\Models\Divisi;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
+use Laravolt\Indonesia\IndonesiaService;
 
 class karyawanController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.index', [
             'title' => 'Karyawan',
+            'holding' => $holding,
             'data_user' => User::all()
         ]);
     }
-
+    public function provinces()
+    {
+    }
     public function tambahKaryawan()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.tambah', [
             "title" => 'Tambah Karyawan',
+            'holding' => $holding,
             "data_departemen" => Departemen::all(),
             "data_jabatan" => Jabatan::all()
         ]);
@@ -103,9 +110,9 @@ class karyawanController extends Controller
             'username' => 'required|max:255',
             'password' => 'required|max:255',
             'tgl_lahir' => 'required|max:255',
-            'gender' => 'required|max:255',
+            'gender' => 'required',
             'tgl_join' => 'required|max:255',
-            'status_nikah' => 'required|max:255',
+            'status_nikah' => 'required',
             'alamat' => 'required|max:255',
             'cuti_dadakan' => 'required|max:11',
             'cuti_bersama' => 'required|max:11',
@@ -116,6 +123,8 @@ class karyawanController extends Controller
             'izin_telat' => 'required|max:11',
             'izin_pulang_cepat' => 'required|max:11',
             'kuota_cuti' => 'required|max:11',
+            'kontrak_kerja' => 'required|max:255',
+            'penempatan_kerja' => 'required|max:255',
         ]);
         $size = count(collect($request["addmore"]));
         // dd(collect($request["addmore"]));
@@ -226,29 +235,31 @@ class karyawanController extends Controller
         // dd($validatedData);
         $insert = User::create(
             [
-                'name' => $request['name'],
-                'fullname' => $request['fullname'],
-                'motto' => $request['motto'],
+                'name' => $validatedData['name'],
+                'fullname' => $validatedData['fullname'],
+                'motto' => $validatedData['motto'],
                 'foto_karyawan' => $request['foto_karyawan'],
-                'email' => $request['email'],
-                'telepon' => $request['telepon'],
-                'username' => $request['username'],
-                'password' => Hash::make($request['password']),
-                'tgl_lahir' => $request['tgl_lahir'],
-                'gender' => $request['gender'],
-                'tgl_join' => $request['tgl_join'],
-                'status_nikah' => $request['status_nikah'],
-                'alamat' => $request['alamat'],
-                'kuota_cuti' => $request['kuota_cuti'],
-                'cuti_dadakan' => $request['cuti_dadakan'],
-                'cuti_bersama' => $request['cuti_bersama'],
-                'cuti_menikah' => $request['cuti_menikah'],
-                'cuti_diluar_tanggungan' => $request['cuti_diluar_tanggungan'],
-                'cuti_khusus' => $request['cuti_khusus'],
-                'cuti_melahirkan' => $request['cuti_melahirkan'],
-                'izin_telat' => $request['izin_telat'],
-                'izin_pulang_cepat' => $request['izin_pulang_cepat'],
+                'email' => $validatedData['email'],
+                'telepon' => $validatedData['telepon'],
+                'username' => $validatedData['username'],
+                'password' => Hash::make($validatedData['password']),
+                'tgl_lahir' => $validatedData['tgl_lahir'],
+                'gender' => $validatedData['gender'],
+                'tgl_join' => $validatedData['tgl_join'],
+                'status_nikah' => $validatedData['status_nikah'],
+                'alamat' => $validatedData['alamat'],
+                'kuota_cuti' => $validatedData['kuota_cuti'],
+                'cuti_dadakan' => $validatedData['cuti_dadakan'],
+                'cuti_bersama' => $validatedData['cuti_bersama'],
+                'cuti_menikah' => $validatedData['cuti_menikah'],
+                'cuti_diluar_tanggungan' => $validatedData['cuti_diluar_tanggungan'],
+                'cuti_khusus' => $validatedData['cuti_khusus'],
+                'cuti_melahirkan' => $validatedData['cuti_melahirkan'],
+                'izin_telat' => $validatedData['izin_telat'],
+                'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
                 'is_admin' => $request['is_admin'],
+                'kontrak_kerja' => $validatedData['kontrak_kerja'],
+                'penempatan_kerja' => $validatedData['penempatan_kerja'],
                 'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
                 'divisi_id' => Divisi::where('id', $divisi_id)->value('id'),
                 'jabatan_id' => Jabatan::where('id', $jabatan_id)->value('id'),
@@ -270,14 +281,16 @@ class karyawanController extends Controller
             'activity' => 'create',
             'description' => 'Menambahkan data karyawan baru ' . $request->name,
         ]);
-
-        return redirect('/karyawan')->with('success', 'Data Berhasil di Tambahkan');
+        $holding = request()->segment(count(request()->segments()));
+        return redirect('/karyawan/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
     }
 
     public function detail($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.editkaryawan', [
             'title' => 'Detail Karyawan',
+            'holding' => $holding,
             'karyawan' => User::find($id),
             'data_jabatan' => Jabatan::all()
         ]);

@@ -1,13 +1,13 @@
 @extends('layouts.holding')
 @section('isi')
-  <!-- ======= Top Bar ======= -->
+<!-- ======= Top Bar ======= -->
 <section id="topbar" class="d-flex align-items-center">
     <div class="container d-flex justify-content-center justify-content-md-between">
         <div class="contact-info d-flex align-items-center">
         </div>
     </div>
 </section>
-  <!-- ======= Hero Section ======= -->
+<!-- ======= Hero Section ======= -->
 <section id="hero" class="d-flex align-items-center" style="height: 100%">
     <div class="container" data-aos="zoom-out" data-aos-delay="100">
         <div class="row">
@@ -17,8 +17,8 @@
             <div class="d-flex">
                 <a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="btn-get-started scrollto">Logout</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-	                {{ csrf_field() }}
-	            </form>
+                    {{ csrf_field() }}
+                </form>
             </div>
             <!-- </div> -->
             <div class="col-12">
@@ -44,7 +44,7 @@
                                             <div class="col-12">
                                                 <img src="{{ url('public/holding/assets/img/logosps.png') }}" width="50%" style="margin-right: 25%;margin-left: 25%">
                                             </div>
-                                            <h4 class="title" style="text-align: center;"><a href="">PT. SUMBER PANGAN</a></h4>
+                                            <h4 class="title" style="text-align: center;"><a href="">PT. SURYA PANGAN SEMESTA</a></h4>
                                         </a>
                                     </div>
                                 </div>
@@ -66,8 +66,8 @@
                 </section>
             </div>
         </div>
-        </div>
-  </section><!-- End Hero -->
+    </div>
+</section><!-- End Hero -->
 
 <footer id="footer">
     <div class="container py-4">

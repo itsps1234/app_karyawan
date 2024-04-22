@@ -11,7 +11,7 @@ class authController extends Controller
 {
     public function index()
     {
-        return view('auth.login',[
+        return view('auth.login', [
             "title" => "Log In"
         ]);
     }
@@ -56,7 +56,7 @@ class authController extends Controller
         if (Auth::attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
 
-            if(auth()->user()->is_admin == "admin") {
+            if (auth()->user()->is_admin == "admin") {
                 return redirect()->intended('/dashboard/holding');
                 // return redirect()->intended('/holding');
             } else {

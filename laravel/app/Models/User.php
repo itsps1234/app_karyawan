@@ -46,6 +46,8 @@ class User extends Authenticatable
         'izin_telat',
         'izin_pulang_cepat',
         'is_admin',
+        'kontrak_kerja',
+        'penempatan_kerja',
         'dept_id',
         'divisi_id',
         'jabatan_id',

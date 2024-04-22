@@ -27,17 +27,18 @@
 
             @can('admin')
             <!-- Sidebar Menu -->
-            <!-- <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <li class="nav-item">
-                            <a href="{{ url('/dashboard') }}" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-                </ul>
+
+            <!-- <ul class="n
+                <ul class=" nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="{{ url('/dashboard') }}" class="nav-link {{ Request::is('dashboard*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+            </ul>
             </nav> -->
             <!-- /.sidebar-menu -->
 
@@ -48,8 +49,9 @@
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-header">DATA MASTER</li>
+                    @if($holding == 'sp')
                     <li class="nav-item">
-                        <a href="{{ url('/karyawan') }}" class="nav-link {{ Request::is('karyawan*') ? 'active' : '' }}">
+                        <a href="{{ url('/karyawan/'.$holding) }}" class="nav-link {{ Request::is('karyawan*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-solid fa-user merah"></i>
                             <p>
                                 Karyawan
@@ -58,7 +60,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/shift') }}" class="nav-link {{ Request::is('shift*') ? 'active' : '' }}">
+                        <a href="{{ url('/shift/'.$holding) }}" class="nav-link {{ Request::is('shift*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-fw fa-clock merah"></i>
                             <p>
                                 Master Shift
@@ -67,7 +69,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/rekap-data') }}" class="nav-link {{ Request::is('rekap-data*') ? 'active' : '' }}">
+                        <a href="{{ url('/rekap-data/'.$holding) }}" class="nav-link {{ Request::is('rekap-data*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-database merah"></i>
                             <p>
                                 Rekap Data Absensi
@@ -76,7 +78,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/lokasi-kantor') }}" class="nav-link {{ Request::is('lokasi-kantor*') ? 'active' : '' }}">
+                        <a href="{{ url('/lokasi-kantor/'.$holding) }}" class="nav-link {{ Request::is('lokasi-kantor*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-map-marked-alt merah"></i>
                             <p>
                                 Master Lokasi
@@ -85,7 +87,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/reset-cuti') }}" class="nav-link {{ Request::is('reset-cuti*') ? 'active' : '' }}">
+                        <a href="{{ url('/reset-cuti/'.$holding) }}" class="nav-link {{ Request::is('reset-cuti*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-sync-alt merah"></i>
                             <p>
                                 Reset Cuti
@@ -97,7 +99,7 @@
                         <a href="{{ url('/departemen') }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
-                                Master Departemen
+                                Master Departmen
                             </p>
                         </a>
                     </li>
@@ -117,6 +119,33 @@
                             </p>
                         </a>
                     </li>
+                    @elseif($holding == 'sps')
+                    <li class="nav-item">
+                        <a href="{{ url('/jabatan') }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Jabatan
+                            </p>
+                        </a>
+                    </li>
+                    @elseif($holding = 'sip')
+                    <li class="nav-item">
+                        <a href="{{ url('/divisi') }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Divisi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/jabatan') }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Jabatan
+                            </p>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </nav>
 
@@ -391,4 +420,60 @@
     .putihTua {
         color: #ffffff;
     }
+</style>
+.unguTua {
+color: #800080;
+}
+
+.abuMuda {
+color: #c0c0c0;
+}
+
+.abuTua {
+color: #808080;
+}
+
+.hitamMuda {
+color: #000000;
+}
+
+.hitamTua {
+color: #000000;
+}
+
+.putihMuda {
+color: #ffffff;
+}
+
+.putihTua {
+color: #ffffff;
+}
+</style>
+.unguTua {
+color: #800080;
+}
+
+.abuMuda {
+color: #c0c0c0;
+}
+
+.abuTua {
+color: #808080;
+}
+
+.hitamMuda {
+color: #000000;
+}
+
+.hitamTua {
+color: #000000;
+}
+
+.putihMuda {
+color: #ffffff;
+}
+
+.putihTua {
+color: #ffffff;
+}
 </style>

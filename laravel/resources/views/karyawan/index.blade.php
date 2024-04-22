@@ -4,7 +4,7 @@
     <div class="card card-outline card-primary">
         <div class="card-header">
             <center>
-                <a href="{{ url('/karyawan/tambah-karyawan') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Data Karyawan</a>
+                <a href="{{ url('/karyawan/tambah-karyawan/'.$holding) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Data Karyawan</a>
             </center>
         </div>
         <!-- /.card-header -->
