@@ -382,6 +382,51 @@
                     </div>
                 </div>
                 <br>
+                <label for="alamat">Alamat</label>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="provinsi">Provinsi</label>
+                        <select class="form-control" id="id_provinsi" name="provinsi">
+                            <option value=""> Pilih Provinsi </option>
+                            @foreach($data_provinsi as $data)
+                            <option value="{{$data->code}}">{{$data->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="kabupaten">Kabupaten / Kota</label>
+                        <select class="form-control @error('kabupaten') is-invalid @enderror" id="id_kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
+                            <option value=""> Pilih Kabupaten / Kota</option>
+                        </select>
+                        @error('kabupaten')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="kecamatan">kecamatan</label>
+                        <select class="form-control @error('kecamatan') is-invalid @enderror" id="id_kecamatan" name="kecamatan" value="{{ old('kecamatan') }}">
+                            <option value=""> Pilih kecamatan</option>
+                        </select>
+                        @error('kecamatan')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="desa">Desa</label>
+                        <select class="form-control @error('desa') is-invalid @enderror" id="id_desa" name="desa" value="{{ old('desa') }}">
+                            <option value=""> Pilih Desa</option>
+                        </select>
+                        @error('desa')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col">
                         <label for="alamat">Alamat</label>
@@ -401,4 +446,32 @@
     </div>
 </div>
 <br>
+@endsection
+@section('js')
+<script>
+    $(function() {
+        $('#id_provinsi').on('change', function() {
+            let id_provinsi = $(this).val();
+            let url = "{{url('/get_kabupaten')}}" + "/" + id_provinsi;
+            console.log(id_provinsi);
+            console.log(url);
+            $.ajax({
+                type: 'GET',
+                url: url,
+                // data: {
+                //     id_provinsi: id_provinsi
+                // },
+                cache: false,
+                success: function(msg) {
+                    console.log(msg);
+                    $('#id_kabupaten').html(msg);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+    });
+</script>
 @endsection

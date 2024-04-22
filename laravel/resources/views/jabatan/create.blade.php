@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="card card-outline card-primary col-lg-8">
             <div class="p-4">
-                <form method="post" action="{{ url('/jabatan/insert') }}">
+                <form method="post" action="{{ url('/jabatan/insert/'.$holding) }}">
                     @csrf
                     <div class="form-group">
                         <label for="nama_divisi" class="float-left">Nama Divisi</label>

@@ -14,12 +14,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Models\ActivityLog;
+use App\Models\Cities;
+use App\Models\City;
 use App\Models\Departemen;
+use App\Models\District;
 use App\Models\Divisi;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
 use Laravolt\Indonesia\IndonesiaService;
+use App\Models\Provincies;
+use App\Models\Regencies;
+use App\Models\Village;
 
 class karyawanController extends Controller
 {
@@ -32,8 +38,15 @@ class karyawanController extends Controller
             'data_user' => User::all()
         ]);
     }
-    public function provinces()
+    public function get_kabupaten($id)
     {
+        dd($id);
+        $get_kabupaten = Cities::where('province_code ', $id)->get();
+        return $get_kabupaten;
+        echo "<option value=''>Pilih Kabupaten...</option>";
+        foreach ($get_kabupaten as $kabupaten) {
+            echo "<option value='$kabupaten->code'>$kabupaten->name</option>";
+        }
     }
     public function tambahKaryawan()
     {
@@ -42,7 +55,11 @@ class karyawanController extends Controller
             "title" => 'Tambah Karyawan',
             'holding' => $holding,
             "data_departemen" => Departemen::all(),
-            "data_jabatan" => Jabatan::all()
+            "data_jabatan" => Jabatan::all(),
+            "data_provinsi" => Provincies::all(),
+            "data_kabupaten" => Cities::all(),
+            "data_kecamatan" => District::all(),
+            "data_desa" => Village::all(),
         ]);
     }
 
@@ -656,14 +673,17 @@ class karyawanController extends Controller
 
     public function resetCuti()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.masterreset', [
             'title' => 'Master Data Reset Cuti',
+            'holding' => $holding,
             'data_cuti' => ResetCuti::first()
         ]);
     }
 
     public function resetCutiProses(Request $request, $id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'cuti_dadakan' => 'required',
             'cuti_bersama' => 'required',
@@ -681,6 +701,6 @@ class karyawanController extends Controller
             'activity' => 'update',
             'description' => 'Mengubah master data reset cuti',
         ]);
-        return redirect('/reset-cuti')->with('success', 'Master Cuti Berhasil Diupdate');
+        return redirect('/reset-cuti/' . $holding)->with('success', 'Master Cuti Berhasil Diupdate');
     }
 }

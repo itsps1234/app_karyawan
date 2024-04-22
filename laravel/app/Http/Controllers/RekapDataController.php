@@ -13,6 +13,7 @@ class RekapDataController extends Controller
 {
     public function index(Request $request)
     {
+        $holding = request()->segment(count(request()->segments()));
         date_default_timezone_set('Asia/Jakarta');
 
         // $bulan = date('m');
@@ -30,11 +31,12 @@ class RekapDataController extends Controller
             $tanggal_akhir = $request["akhir"];
             $title = "Rekap Data Absensi Tanggal " . $tanggal_mulai . " s/d " . $tanggal_akhir;
         }
-        
+
         return view('rekapdata.index', [
             'title' => $title,
-            'data_user' => $user, 
+            'data_user' => $user,
             'tanggal_mulai' => $tanggal_mulai,
+            'holding' => $holding,
             'tanggal_akhir' => $tanggal_akhir
         ]);
     }

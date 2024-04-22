@@ -40,7 +40,7 @@
 
   <section class="content" style="height: auto">
     @yield('isi')
-</section>
+  </section>
   <!-- Vendor JS Files -->
   <script src="{{ url('public/holding/assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
   <script src="{{ url('public/holding/assets/vendor/aos/aos.js') }}"></script>

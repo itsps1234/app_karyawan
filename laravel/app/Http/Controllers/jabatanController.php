@@ -12,18 +12,22 @@ class jabatanController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         // $get = Jabatan::with('Divisi')->with('LevelJabatan')->get();
         // dd($get);
         return view('jabatan.index', [
             'title' => 'Master Jabatan',
+            'holding' => $holding,
             'data_jabatan' => Jabatan::with('Divisi')->with('LevelJabatan')->get()
         ]);
     }
 
     public function create()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('jabatan.create', [
             'title' => 'Tambah Data Jabatan',
+            'holding' => $holding,
             'get_divisi' => Divisi::get(),
             'get_level' => LevelJabatan::orderBy('level_jabatan', 'ASC')->get(),
         ]);
@@ -31,6 +35,7 @@ class jabatanController extends Controller
 
     public function insert(Request $request)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'nama_divisi' => 'required',
             'nama_jabatan' => 'required|max:255',
@@ -44,14 +49,16 @@ class jabatanController extends Controller
                 'level_id' => LevelJabatan::where('id', $validatedData['level_jabatan'])->value('id'),
             ]
         );
-        return redirect('/jabatan')->with('success', 'Data Berhasil di Tambahkan');
+        return redirect('/jabatan/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
     }
 
     public function edit($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('jabatan.edit', [
             'title' => 'Edit Data Jabatan',
             'get_divisi' => Divisi::get(),
+            'holding' => $holding,
             'get_level' => LevelJabatan::get(),
             'data_jabatan' => Jabatan::with('Divisi')->with('LevelJabatan')->findOrFail($id)
         ]);
@@ -59,6 +66,7 @@ class jabatanController extends Controller
 
     public function update(Request $request, $id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'nama_divisi' => 'required',
             'nama_jabatan' => 'required|max:255',
@@ -72,13 +80,14 @@ class jabatanController extends Controller
                 'level_id' => LevelJabatan::where('id', $validatedData['level_jabatan'])->value('id'),
             ]
         );
-        return redirect('/jabatan')->with('success', 'Data Berhasil di Update');
+        return redirect('/jabatan/' . $holding)->with('success', 'Data Berhasil di Update');
     }
 
     public function delete($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $jabatan = Jabatan::findOrFail($id);
         $jabatan->delete();
-        return redirect('/jabatan')->with('success', 'Data Berhasil di Delete');
+        return redirect('/jabatan/' . $holding)->with('success', 'Data Berhasil di Delete');
     }
 }

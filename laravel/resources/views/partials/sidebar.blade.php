@@ -5,8 +5,14 @@
         @else
         <a href="{{ url('/absen') }}" class="brand-link">
             @endif
+            @if($holding=='sp')
             <img src="{{ url('public/assets/img/logosp.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-            <span class="brand-text font-weight-light">HOLDING</span>
+            @elseif($holding=='sps')
+            <img src="{{ url('public/holding/assets/img/logosps.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            @else
+            <img src="{{ url('public/holding/assets/img/logosip.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            @endif
+            <span class="brand-text font-weight-light">@if($holding=='sp')CV. SP @elseif($holding=='sps') PT. SPS @else CV. SIP @endif</span>
         </a>
 
         <!-- Sidebar -->
@@ -96,7 +102,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="{{ url('/departemen') }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
+                        <a href="{{ url('/departemen/'.$holding) }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Departmen
@@ -104,7 +110,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/divisi') }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
+                        <a href="{{ url('/divisi/'.$holding) }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Divisi
@@ -112,7 +118,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/jabatan') }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
+                        <a href="{{ url('/jabatan/'.$holding) }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Jabatan
@@ -121,7 +127,68 @@
                     </li>
                     @elseif($holding == 'sps')
                     <li class="nav-item">
-                        <a href="{{ url('/jabatan') }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
+                        <a href="{{ url('/karyawan/'.$holding) }}" class="nav-link {{ Request::is('karyawan*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-solid fa-user merah"></i>
+                            <p>
+                                Karyawan
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/shift/'.$holding) }}" class="nav-link {{ Request::is('shift*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-fw fa-clock merah"></i>
+                            <p>
+                                Master Shift
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/rekap-data/'.$holding) }}" class="nav-link {{ Request::is('rekap-data*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-database merah"></i>
+                            <p>
+                                Rekap Data Absensi
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/lokasi-kantor/'.$holding) }}" class="nav-link {{ Request::is('lokasi-kantor*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-map-marked-alt merah"></i>
+                            <p>
+                                Master Lokasi
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/reset-cuti/'.$holding) }}" class="nav-link {{ Request::is('reset-cuti*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-sync-alt merah"></i>
+                            <p>
+                                Reset Cuti
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/departemen/'.$holding) }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Departmen
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/divisi/'.$holding) }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Divisi
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/jabatan/'.$holding) }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Jabatan
@@ -130,7 +197,60 @@
                     </li>
                     @elseif($holding = 'sip')
                     <li class="nav-item">
-                        <a href="{{ url('/divisi') }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
+                        <a href="{{ url('/karyawan/'.$holding) }}" class="nav-link {{ Request::is('karyawan*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-solid fa-user merah"></i>
+                            <p>
+                                Karyawan
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/shift/'.$holding) }}" class="nav-link {{ Request::is('shift*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-fw fa-clock merah"></i>
+                            <p>
+                                Master Shift
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/rekap-data/'.$holding) }}" class="nav-link {{ Request::is('rekap-data*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-database merah"></i>
+                            <p>
+                                Rekap Data Absensi
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/lokasi-kantor/'.$holding) }}" class="nav-link {{ Request::is('lokasi-kantor*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-map-marked-alt merah"></i>
+                            <p>
+                                Master Lokasi
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/reset-cuti/'.$holding) }}" class="nav-link {{ Request::is('reset-cuti*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-sync-alt merah"></i>
+                            <p>
+                                Reset Cuti
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url('/departemen/'.$holding) }}" class="nav-link {{ Request::is('departemen*') ? 'active' : '' }}">
+                            <i class="nav-icon fa fa-universal-access merah"></i>
+                            <p>
+                                Master Departmen
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/divisi/'.$holding) }}" class="nav-link {{ Request::is('divisi*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Divisi
@@ -138,7 +258,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/jabatan') }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
+                        <a href="{{ url('/jabatan/'.$holding) }}" class="nav-link {{ Request::is('jabatan*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-universal-access merah"></i>
                             <p>
                                 Master Jabatan
@@ -420,60 +540,4 @@
     .putihTua {
         color: #ffffff;
     }
-</style>
-.unguTua {
-color: #800080;
-}
-
-.abuMuda {
-color: #c0c0c0;
-}
-
-.abuTua {
-color: #808080;
-}
-
-.hitamMuda {
-color: #000000;
-}
-
-.hitamTua {
-color: #000000;
-}
-
-.putihMuda {
-color: #ffffff;
-}
-
-.putihTua {
-color: #ffffff;
-}
-</style>
-.unguTua {
-color: #800080;
-}
-
-.abuMuda {
-color: #c0c0c0;
-}
-
-.abuTua {
-color: #808080;
-}
-
-.hitamMuda {
-color: #000000;
-}
-
-.hitamTua {
-color: #000000;
-}
-
-.putihMuda {
-color: #ffffff;
-}
-
-.putihTua {
-color: #ffffff;
-}
 </style>

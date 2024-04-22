@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="card card-outline card-primary col-lg-4">
             <div class="p-4">
-                <form method="post" action="{{ url('/departemen/update/'.$data_departemen->id) }}">
+                <form method="post" action="{{ url('/departemen/update/'.$data_departemen->id.'/'.$holding) }}">
                     @method('put')
                     @csrf
                     <div class="form-group">

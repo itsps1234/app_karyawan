@@ -3,7 +3,7 @@
 <div class="container-fluid">
     <div class="card card-outline card-primary col-lg-12">
         <div class="mt-4 p-4">
-            <form method="post" action="{{ url('/reset-cuti/'.$data_cuti->id) }}">
+            <form method="post" action="{{ url('/reset-cuti/'.$data_cuti->id.'/'.$holding) }}">
                 @method('put')
                 @csrf
                 <div class="form-row">
@@ -91,8 +91,8 @@
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary float-right">Submit</button>
-              </form>
-              <br>
+            </form>
+            <br>
         </div>
     </div>
 </div>

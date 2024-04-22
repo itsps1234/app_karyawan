@@ -4,7 +4,7 @@
     <div class="card card-outline card-primary">
         <div class="card-header">
             <center>
-                <a href="{{ url('/divisi/create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Data Divisi</a>
+                <a href="{{ url('/divisi/create/'.$holding) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Data Divisi</a>
             </center>
         </div>
         <!-- /.card-header -->
@@ -25,8 +25,8 @@
                         <td>{{ $dj->Departemen->nama_departemen}}</td>
                         <td>{{ $dj->nama_divisi }}</td>
                         <td>
-                            <a href="{{ url('/divisi/edit/'.$dj->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-edit"></i></a>
-                            <form action="{{ url('/divisi/delete/'.$dj->id) }}" method="post" class="d-inline">
+                            <a href="{{ url('/divisi/edit/'.$dj->id.'/'.$holding) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-edit"></i></a>
+                            <form action="{{ url('/divisi/delete/'.$dj->id.'/'.$holding) }}" method="post" class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <button class="btn btn-danger btn-sm btn-circle" onClick="return confirm('Are You Sure')"><i class="fa fa-solid fa-trash"></i></button>
