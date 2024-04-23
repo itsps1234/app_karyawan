@@ -49,7 +49,13 @@
             <div class="head-details">
                 <div class=" container">
                     <div class="dz-info">
-                        <span class="location d-block">Form Permission</span>
+                        <span class="location d-block">Form Izin
+                            @if($user->kontrak_kerja == 'CV. SUMBER PANGAN')
+                                CV. SUMBER PANGAN
+                            @elseif($user->kontrak_kerja == 'PT. SURYA PANGAN SEMESTA')
+                                PT. SURYA PANGAN SEMESTA
+                            @endif
+                        </span>
                         {{-- @foreach ($user  as $dep) --}}
                             <h5 class="title">Department of "{{ $user->nama_departemen }}"</h5>
                         {{-- @endforeach --}}
