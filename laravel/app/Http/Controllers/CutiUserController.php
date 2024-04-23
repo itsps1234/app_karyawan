@@ -38,9 +38,9 @@ class CutiUserController extends Controller
             $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
             $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
             $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAsasan3->id)->where('divisi_id', $user->divisi_id)->first();
-            $atasan          = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
-            $atasan2         = User::with('jabatan')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
-            $atasan3         = User::with('jabatan')->where('jabatan_id', $getAsatan3->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan          = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan2         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan3         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan3->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
             // dd($atasan);
             if ($atasan == '' || $atasan == NULL) {
                 $getUserAtasan = $atasan2;
@@ -49,31 +49,34 @@ class CutiUserController extends Controller
                 if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
+                    // atasan bertingkat 4
                 } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan2;
+                    $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan2;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan3;
+                    $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan3;
                 }
             } else if ($atasan2 == '' && $atasan2 == NULL) {
                 $getUserAtasan = $atasan;
                 $getUseratasan2 = $atasan3;
+                // dd('atasan null');
                 if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
-                    dd('atasan null');
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
+                    // atasan bertingkat 4
                 } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan;
+                    $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan3;
+                    // dd('atasan null');
+                    $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan3;
                 }
             } else {
@@ -141,10 +144,9 @@ class CutiUserController extends Controller
             if ($kuota_cuti->kuota_cuti >= $data_interval) {
                 // dd('input cuti');
                 if ($request->ttd_user != null) {
-                    $ttd_user= $file_save;
-                } else{
-                    $ttd_user= NULL;
-
+                    $ttd_user = $file_save;
+                } else {
+                    $ttd_user = NULL;
                 }
                 Cuti::create([
                     'user_id' => User::where('id', Auth::user()->id)->value('id'),

@@ -27,14 +27,14 @@
                         <td>{{ $du->email }}</td>
                         <td>{{ $du->username }}</td>
                         <td>
-                            <a href="{{ url('/karyawan/detail/'.$du->id) }}" class="btn btn-sm btn-info"><i class="fa fa-solid fa-eye"></i></a>
-                            <a href="{{ url('/karyawan/edit-password/'.$du->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-key"></i></a>
-                            <form action="{{ url('/karyawan/delete/'.$du->id) }}" method="post" class="d-inline">
+                            <a href="{{ url('/karyawan/detail/'.$du->id.'/'.$holding) }}" class="btn btn-sm btn-info"><i class="fa fa-solid fa-eye"></i></a>
+                            <a href="{{ url('/karyawan/edit-password/'.$du->id.'/'.$holding) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-key"></i></a>
+                            <form action="{{ url('/karyawan/delete/'.$du->id.'/'.$holding) }}" method="post" class="d-inline">
                                 @method('delete')
                                 @csrf
                                 <button class="btn btn-danger btn-sm btn-circle" onClick="return confirm('Are You Sure')"><i class="fa fa-solid fa-trash"></i></button>
                             </form>
-                            <a href="{{ url('/karyawan/shift/'.$du->id) }}" class="btn btn-sm btn-success"><i class="fa fa-solid fa-clock"></i></a>
+                            <a href="{{ url('/karyawan/shift/'.$du->id.'/'.$holding) }}" class="btn btn-sm btn-success"><i class="fa fa-solid fa-clock"></i></a>
                         </td>
                     </tr>
                     @endforeach

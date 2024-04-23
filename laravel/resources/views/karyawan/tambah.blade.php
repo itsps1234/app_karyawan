@@ -395,7 +395,7 @@
                     </div>
                     <div class="col">
                         <label for="kabupaten">Kabupaten / Kota</label>
-                        <select class="form-control @error('kabupaten') is-invalid @enderror" id="id_kabupaten" name="kabupaten" value="{{ old('kabupaten') }}">
+                        <select class="form-control" id="id_kabupaten" name="kabupaten">
                             <option value=""> Pilih Kabupaten / Kota</option>
                         </select>
                         @error('kabupaten')
@@ -406,7 +406,7 @@
                     </div>
                     <div class="col">
                         <label for="kecamatan">kecamatan</label>
-                        <select class="form-control @error('kecamatan') is-invalid @enderror" id="id_kecamatan" name="kecamatan" value="{{ old('kecamatan') }}">
+                        <select class="form-control @error('kecamatan') is-invalid @enderror" id="id_kecamatan" name="kecamatan">
                             <option value=""> Pilih kecamatan</option>
                         </select>
                         @error('kecamatan')
@@ -417,7 +417,7 @@
                     </div>
                     <div class="col">
                         <label for="desa">Desa</label>
-                        <select class="form-control @error('desa') is-invalid @enderror" id="id_desa" name="desa" value="{{ old('desa') }}">
+                        <select class="form-control @error('desa') is-invalid @enderror" id="id_desa" name="desa">
                             <option value=""> Pilih Desa</option>
                         </select>
                         @error('desa')
@@ -429,7 +429,25 @@
                 </div>
                 <div class="form-row">
                     <div class="col">
-                        <label for="alamat">Alamat</label>
+                        <label for="rt">RT</label>
+                        <input type="number" class="form-control @error('rt') is-invalid @enderror" id="rt" name="rt" value="{{ old('rt') }}">
+                        @error('rt')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="rw">RW</label>
+                        <input type="number" class="form-control @error('rw') is-invalid @enderror" id="rw" name="rw" value="{{ old('rw') }}">
+                        @error('rw')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="alamat">Jalan/Dusun</label>
                         <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat') }}">
                         @error('alamat')
                         <div class="invalid-feedback">
@@ -448,23 +466,76 @@
 <br>
 @endsection
 @section('js')
+<script src="{{ url('public/adminlte/plugins/jquery/jquery.min.js') }}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{ url('public/adminlte/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script>
     $(function() {
         $('#id_provinsi').on('change', function() {
             let id_provinsi = $(this).val();
-            let url = "{{url('/get_kabupaten')}}" + "/" + id_provinsi;
+            let url = "{{url('/karyawan/get_kabupaten')}}" + "/" + id_provinsi;
             console.log(id_provinsi);
             console.log(url);
             $.ajax({
-                type: 'GET',
                 url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
                 // data: {
                 //     id_provinsi: id_provinsi
                 // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_kabupaten').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+        $('#id_kabupaten').on('change', function() {
+            let id_kabupaten = $(this).val();
+            let url = "{{url('/karyawan/get_kecamatan')}}" + "/" + id_kabupaten;
+            console.log(id_kabupaten);
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
                 cache: false,
-                success: function(msg) {
-                    console.log(msg);
-                    $('#id_kabupaten').html(msg);
+                processData: false,
+                // data: {
+                //     id_kabupaten: id_kabupaten
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_kecamatan').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+        $('#id_kecamatan').on('change', function() {
+            let id_kecamatan = $(this).val();
+            let url = "{{url('/karyawan/get_desa')}}" + "/" + id_kecamatan;
+            console.log(id_kecamatan);
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_kecamatan: id_kecamatan
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_desa').html(response);
                 },
                 error: function(data) {
                     console.log('error:', data)

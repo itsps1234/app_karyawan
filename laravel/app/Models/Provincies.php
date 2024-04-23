@@ -10,4 +10,5 @@ class Provincies extends Model
     use HasFactory;
     protected $table = 'indonesia_provinces';
     protected $guarded = ['id'];
+    protected $fillable = ['code', 'name', 'meta'];
 }

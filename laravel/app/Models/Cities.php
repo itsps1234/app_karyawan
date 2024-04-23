@@ -10,4 +10,5 @@ class Cities extends Model
     use HasFactory;
     protected $table = 'indonesia_cities';
     protected $guarded = ['id'];
+    protected $fillable = ['code', 'province_code', 'name', 'meta'];
 }

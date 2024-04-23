@@ -10,4 +10,5 @@ class Village extends Model
     use HasFactory;
     protected $table = 'indonesia_villages';
     protected $guarded = ['id'];
+    protected $fillable = ['code', 'district_code', 'name', 'meta'];
 }

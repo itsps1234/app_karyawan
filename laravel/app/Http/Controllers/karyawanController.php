@@ -26,6 +26,7 @@ use Laravolt\Indonesia\IndonesiaService;
 use App\Models\Provincies;
 use App\Models\Regencies;
 use App\Models\Village;
+use Laravolt\Indonesia\Models\Province;
 
 class karyawanController extends Controller
 {
@@ -40,12 +41,32 @@ class karyawanController extends Controller
     }
     public function get_kabupaten($id)
     {
-        dd($id);
-        $get_kabupaten = Cities::where('province_code ', $id)->get();
-        return $get_kabupaten;
+        // dd($id);
+        $get_kabupaten = Cities::where('province_code', $id)->get();
+        // return $get_kabupaten;
         echo "<option value=''>Pilih Kabupaten...</option>";
         foreach ($get_kabupaten as $kabupaten) {
             echo "<option value='$kabupaten->code'>$kabupaten->name</option>";
+        }
+    }
+    public function get_kecamatan($id)
+    {
+        // dd($id);
+        $get_desa = District::where('city_code', $id)->get();
+        // return $get_desa;
+        echo "<option value=''>Pilih Desa...</option>";
+        foreach ($get_desa as $desa) {
+            echo "<option value='$desa->code'>$desa->name</option>";
+        }
+    }
+    public function get_desa($id)
+    {
+        // dd($id);
+        $get_kecamatan = Village::where('district_code', $id)->get();
+        // return $get_kecamatan;
+        echo "<option value=''>Pilih Kecamatan...</option>";
+        foreach ($get_kecamatan as $kecamatan) {
+            echo "<option value='$kecamatan->code'>$kecamatan->name</option>";
         }
     }
     public function tambahKaryawan()
@@ -142,6 +163,12 @@ class karyawanController extends Controller
             'kuota_cuti' => 'required|max:11',
             'kontrak_kerja' => 'required|max:255',
             'penempatan_kerja' => 'required|max:255',
+            'provinsi' => 'required|max:255',
+            'kabupaten' => 'required|max:255',
+            'kecamatan' => 'required|max:255',
+            'desa' => 'required|max:255',
+            'rt' => 'required|max:255',
+            'rw' => 'required|max:255',
         ]);
         $size = count(collect($request["addmore"]));
         // dd(collect($request["addmore"]));
@@ -264,7 +291,6 @@ class karyawanController extends Controller
                 'gender' => $validatedData['gender'],
                 'tgl_join' => $validatedData['tgl_join'],
                 'status_nikah' => $validatedData['status_nikah'],
-                'alamat' => $validatedData['alamat'],
                 'kuota_cuti' => $validatedData['kuota_cuti'],
                 'cuti_dadakan' => $validatedData['cuti_dadakan'],
                 'cuti_bersama' => $validatedData['cuti_bersama'],
@@ -277,6 +303,14 @@ class karyawanController extends Controller
                 'is_admin' => $request['is_admin'],
                 'kontrak_kerja' => $validatedData['kontrak_kerja'],
                 'penempatan_kerja' => $validatedData['penempatan_kerja'],
+                'provinsi' => Province::where('id', $validatedData['provinsi'])->value('code'),
+                'kabupaten' => Cities::where('id', $validatedData['kabupaten'])->value('code'),
+                'kecamatan' => District::where('id', $validatedData['kecamatan'])->value('code'),
+                'desa' => Village::where('id', $validatedData['desa'])->value('code'),
+                'rt' => $validatedData['rt'],
+                'rw' => $validatedData['rw'],
+                'alamat' => $validatedData['alamat'],
+                'detail_alamat' => Province::where('id', $validatedData['provinsi'])->value('name') . ' , ' . Cities::where('id', $validatedData['kabupaten'])->value('name') . ' , ' . District::where('id', $validatedData['kecamatan'])->value('name') . ' , ' . Village::where('id', $validatedData['desa'])->value('name') . ' , RT. ' . $validatedData['rt'] . ' , RW. ' . $validatedData['rw'] . ' , ' . $validatedData['alamat'],
                 'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
                 'divisi_id' => Divisi::where('id', $divisi_id)->value('id'),
                 'jabatan_id' => Jabatan::where('id', $jabatan_id)->value('id'),
@@ -309,7 +343,7 @@ class karyawanController extends Controller
             'title' => 'Detail Karyawan',
             'holding' => $holding,
             'karyawan' => User::find($id),
-            'data_jabatan' => Jabatan::all()
+            'data_departemen' => Departemen::all()
         ]);
     }
 

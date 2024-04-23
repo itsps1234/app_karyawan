@@ -27,7 +27,6 @@ class CreateUsersTable extends Migration
             $table->string('gender');
             $table->string('tgl_join');
             $table->string('status_nikah');
-            $table->text('alamat');
             $table->string('cuti_dadakan');
             $table->string('cuti_bersama');
             $table->string('cuti_menikah');
@@ -38,6 +37,14 @@ class CreateUsersTable extends Migration
             $table->string('izin_pulang_cepat');
             $table->string('is_admin');
             $table->string('kontrak_kerja');
+            $table->string('penempatan_kerja');
+            $table->string('provinsi');
+            $table->string('kabupaten');
+            $table->string('kecamatan');
+            $table->string('desa');
+            $table->string('rt');
+            $table->string('rw');
+            $table->text('alamat');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
