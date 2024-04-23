@@ -16,9 +16,9 @@
                         @enderror
                     </div>
                     <div class="col">
-                        <label for="foto_karyawan" class="form-label">Foto Karyawan</label>
-                        <input class="form-control @error('foto_karyawan') is-invalid @enderror" type="file" id="foto_karyawan" name="foto_karyawan">
-                        @error('foto_karyawan')
+                        <label for="name">Fullname</label>
+                        <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" autofocus value="{{ old('fullname') }}">
+                        @error('fullname')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -28,24 +28,25 @@
                 <br>
                 <div class="form-row">
                     <div class="col">
-                        <label for="name">Fullname</label>
-                        <input type="text" class="form-control @error('fullname') is-invalid @enderror" id="fullname" name="fullname" autofocus value="{{ old('fullname') }}">
-                        @error('fullname')
+                        <label for="nik">NIK Karyawan</label>
+                        <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" autofocus value="{{ old('nik') }}">
+                        @error('nik')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
                     <div class="col">
-                        <label for="name">Motto</label>
-                        <input type="text" class="form-control @error('motto') is-invalid @enderror" id="motto" name="motto" autofocus value="{{ old('motto') }}">
-                        @error('motto')
+                        <label for="npwp">NPWP</label>
+                        <input type="text" class="form-control @error('npwp') is-invalid @enderror" id="npwp" name="npwp" autofocus value="{{ old('npwp') }}">
+                        @error('npwp')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                         @enderror
                     </div>
                 </div>
+                <br>
                 <div class="form-row">
                     <div class="col">
                         <label for="email">Email</label>
@@ -57,9 +58,30 @@
                         @enderror
                     </div>
                     <div class="col">
-                        <label for="telepon">Nomor Telfon</label>
+                        <label for="telepon">Nomor Telefon</label>
                         <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon" name="telepon" value="{{ old('telepon') }}">
                         @error('telepon')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <br>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="foto_karyawan" class="form-label">Foto Karyawan</label>
+                        <input class="form-control @error('foto_karyawan') is-invalid @enderror" type="file" id="foto_karyawan" name="foto_karyawan">
+                        @error('foto_karyawan')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+                        <label for="name">Motto</label>
+                        <input type="text" class="form-control @error('motto') is-invalid @enderror" id="motto" name="motto" autofocus value="{{ old('motto') }}">
+                        @error('motto')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -90,6 +112,15 @@
                 <br>
                 <div class="form-row">
                     <div class="col">
+                        <label for="tempat_lahir">Tempat Lahir</label>
+                        <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir') }}">
+                        @error('tempat_lahir')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
                         <label for="tgl_lahir">Tanggal Lahir</label>
                         <input type="datetime" class="form-control @error('tgl_lahir') is-invalid @enderror" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}">
                         @error('tgl_lahir')
@@ -98,8 +129,11 @@
                         </div>
                         @enderror
                     </div>
+                </div>
+                <br>
+                <div class="form-row">
                     <div class="col">
-                        <?php $gender = array(
+                        <?php $get_gender = array(
                             [
                                 "gender" => "Laki-Laki"
                             ],
@@ -111,11 +145,11 @@
                         <label for="gender">Gender</label>
                         <select name="gender" id="gender" class="selectpicker form-control  @error('gender') is-invalid @enderror" data-live-search="true">
                             <option value="">Pilih Gender</option>
-                            @foreach ($gender as $g)
+                            @foreach ($get_gender as $g)
                             @if(old('gender') == $g["gender"])
-                            <option value="{{ $g["gender"] }}" selected>{{ $g["gender"] }}</option>
+                            <option value="{{ $g['gender'] }}" selected>{{ $g["gender"] }}</option>
                             @else
-                            <option value="{{ $g["gender"] }}">{{ $g["gender"] }}</option>
+                            <option value="{{ $g['gender'] }}">{{ $g["gender"] }}</option>
                             @endif
                             @endforeach
                         </select>
@@ -147,6 +181,52 @@
                             @endforeach
                         </select>
                         @error('status_nikah')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <br>
+                <div class="form-row">
+                    <div class="col">
+                        <?php $bank = array(
+                            [
+                                "kode_bank" => "BBRI",
+                                "bank" => "BANK RAKYAT INDONESIA (BRI)"
+                            ],
+                            [
+                                "kode_bank" => "BBCA",
+                                "bank" => "BANK CENTRAL ASIA (BCA)"
+                            ],
+                            [
+                                "kode_bank" => "BOCBC",
+                                "bank" => "BANK OCBC"
+                            ]
+                        );
+                        ?>
+                        <label for="bank">Bank</label>
+                        <select name="bank" id="bank" onchange="bankCheck(this);" class="selectpicker form-control  @error('bank') is-invalid @enderror" data-live-search="true">
+                            <option value="">Pilih Bank</option>
+                            @foreach ($bank as $bank)
+                            @if(old('bank') == $bank["bank"])
+                            <option value="{{ $bank['kode_bank'] }}" selected>{{ $bank["bank"] }}</option>
+                            @else
+                            <option value="{{ $bank['kode_bank'] }}">{{ $bank["bank"] }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                        @error('bank')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                    <div class="col">
+
+                        <label for="nomor_rekening">Rekening</label>
+                        <input type="number" name="nomor_rekening" id="nomor_rekening" class="form-control @error('nomor_rekening') is-invalid @enderror">
+                        @error('nomor_rekening')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -469,8 +549,62 @@
 <script src="{{ url('public/adminlte/plugins/jquery/jquery.min.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{ url('public/adminlte/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
+    function bankCheck(that) {
+        if (that.value == "BBRI") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank BRI?',
+                showConfirmButton: true
+            });
+            bankdigit = 15;
+            // document.getElementById("ifBRI").style.display = "block";
+            // document.getElementById("ifBCA").style.display = "none";
+            // document.getElementById("ifMANDIRI").style.display = "none";
+        } else if (that.value == "BBCA") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank BCA?',
+                showConfirmButton: true
+            });
+            bankdigit = 10;
+            // document.getElementById("ifMANDIRI").style.display = "block";
+            // document.getElementById("ifBCA").style.display = "none";
+            // document.getElementById("ifBRI").style.display = "none";
+        } else if (that.value == "BOCBC") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank OCBC?',
+                showConfirmButton: true
+            });
+            bankdigit = 12;
+            // document.getElementById("ifBCA").style.display = "block";
+            // document.getElementById("ifMANDIRI").style.display = "none";
+            // document.getElementById("ifBRI").style.display = "none";
+        }
+    }
     $(function() {
+        $('#nomor_rekening').keyup(function(e) {
+            if ($(this).val().length >= bankdigit) {
+                $(this).val($(this).val().substr(0, bankdigit));
+                document.getElementById("nomor_rekening").focus();
+                Swal.fire({
+                    position: 'top',
+                    icon: 'warning',
+                    title: 'Nomor Rekening harus ' + bankdigit + ' karakter. Mohon cek kembali!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // if (length !== bankdigit) {
+                //     document.getElementById('nomor_rekening').value;
+                //     alert('Nomor Rekening harus ' + bankdigit + ' karakter. Mohon cek kembali!');
+                //     document.getElementById('nomor_rekening').focus();
+            }
+        });
         $('#id_provinsi').on('change', function() {
             let id_provinsi = $(this).val();
             let url = "{{url('/karyawan/get_kabupaten')}}" + "/" + id_provinsi;

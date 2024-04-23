@@ -80,9 +80,9 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
-    Route::get('/penugasan/approve/{id}', [PenugasanController::class, 'cutiApprove']);
-    Route::put('/penugasan/tambah-cuti-proses', [PenugasanController::class, 'cutiAbsen']);
-    Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'cutiApproveProses']);
+    Route::get('/penugasan/approve/{id}', [PenugasanController::class, 'penugasanApprove']);
+    Route::put('/penugasan/tambah-penugasan-proses', [PenugasanController::class, 'tambahPenugasan']);
+    Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'penugasanApproveProses']);
 
     Route::get('/history', [HistoryUserController::class, 'index'])->name('history');
 
@@ -208,9 +208,15 @@ Route::put('/data-cuti/edit-proses/{id}', [CutiController::class, 'editAdminPros
 Route::get('/lokasi-kantor/sp', [LokasiController::class, 'index'])->middleware('admin');
 Route::get('/lokasi-kantor/sps', [LokasiController::class, 'index'])->middleware('admin');
 Route::get('/lokasi-kantor/sip', [LokasiController::class, 'index'])->middleware('admin');
-Route::put('/lokasi-kantor/{id}/sp', [LokasiController::class, 'updateLokasi'])->middleware('admin');
-Route::put('/lokasi-kantor/{id}/sps', [LokasiController::class, 'updateLokasi'])->middleware('admin');
-Route::put('/lokasi-kantor/{id}/sip', [LokasiController::class, 'updateLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/add/sp', [LokasiController::class, 'addLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/add/sps', [LokasiController::class, 'addLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/add/sip', [LokasiController::class, 'addLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/edit/sp', [LokasiController::class, 'updateLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/edit/sps', [LokasiController::class, 'updateLokasi'])->middleware('admin');
+Route::post('/lokasi-kantor/edit/sip', [LokasiController::class, 'updateLokasi'])->middleware('admin');
+Route::get('/lokasi-kantor/delete/{id}/sp', [LokasiController::class, 'deleteLokasi'])->middleware('admin');
+Route::get('/lokasi-kantor/delete/{id}/sps', [LokasiController::class, 'deleteLokasi'])->middleware('admin');
+Route::get('/lokasi-kantor/delete/{id}/sip', [LokasiController::class, 'deleteLokasi'])->middleware('admin');
 Route::put('/lokasi-kantor/radius/{id}/sp', [LokasiController::class, 'updateRadiusLokasi'])->middleware('admin');
 Route::put('/lokasi-kantor/radius/{id}/sps', [LokasiController::class, 'updateRadiusLokasi'])->middleware('admin');
 Route::put('/lokasi-kantor/radius/{id}/sip', [LokasiController::class, 'updateRadiusLokasi'])->middleware('admin');
