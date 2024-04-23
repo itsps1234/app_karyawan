@@ -414,7 +414,7 @@
         <h5 class="dz-title">1 Minggu Terakhir</h5>
     </div>
     <div class="card">
-        <table id="datatableHome" class="table table-striped table-hover">
+        <table id="datatableHome" class="table table-striped table-hover" style="width: 100%">
             <thead>
                 <tr>
                     <th scope="col">#</th>
