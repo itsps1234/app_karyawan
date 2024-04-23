@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cuti;
+use App\Models\Penugasan;
 use App\Models\User;
+use App\Models\Jabatan;
+use App\Models\Departemen;
+use App\Models\Divisi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\MappingShift;
@@ -27,7 +30,7 @@ class PenugasanController extends Controller
             ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
             ->where('users.id', Auth()->user()->id)->first();
         $userLevel      = LevelJabatan::where('id', $user->level_id)->first();
-         dd($user);
+        // dd($userLevel->level_jabatan);
         if ($userLevel->level_jabatan >= 3) {
             $levelatasan    = $userLevel->level_jabatan - 1;
             $levelatasan2    = $userLevel->level_jabatan - 2;
@@ -38,9 +41,9 @@ class PenugasanController extends Controller
             $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
             $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
             $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAsasan3->id)->where('divisi_id', $user->divisi_id)->first();
-            $atasan          = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
-            $atasan2         = User::with('jabatan')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
-            $atasan3         = User::with('jabatan')->where('jabatan_id', $getAsatan3->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan          = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan2         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
+            $atasan3         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan3->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
             // dd($atasan);
             if ($atasan == '' || $atasan == NULL) {
                 $getUserAtasan = $atasan2;
@@ -49,31 +52,34 @@ class PenugasanController extends Controller
                 if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
+                    // atasan bertingkat 4
                 } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan2;
+                    $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan2;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan3;
+                    $getUserAtasan = $atasan2;
                     $getUseratasan2 = $atasan3;
                 }
             } else if ($atasan2 == '' && $atasan2 == NULL) {
                 $getUserAtasan = $atasan;
                 $getUseratasan2 = $atasan3;
+                // dd('atasan null');
                 if ($getUserAtasan == NULL && $getUseratasan2 == NULL) {
-                    dd('atasan null');
                     $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
+                    // atasan bertingkat 4
                 } else if ($getUserAtasan == NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan;
+                    $getUserAtasan = $atasan3;
                     $getUseratasan2 = $atasan3;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 == NULL) {
                     $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan;
                 } else if ($getUserAtasan != NULL && $getUseratasan2 != NULL) {
-                    $getUserAtasan = $atasan3;
+                    // dd('atasan null');
+                    $getUserAtasan = $atasan;
                     $getUseratasan2 = $atasan3;
                 }
             } else {
@@ -83,24 +89,76 @@ class PenugasanController extends Controller
         } else {
             dd('gak oke');
         }
-        // dd($getUseratasan2);
-        // $getUserAtasan  = DB::table('users')->where('jabatan_id', $getAsatan->id)->first();
-        $record_data    = DB::table('cutis')->where('user_id', Auth::user()->id)->join('kategori_cuti', 'kategori_cuti.id', 'cutis.nama_cuti')->orderBy('tanggal', 'DESC')->get();
-        // dd($record_data);
-        $get_kategori_cuti = KategoriCuti::where('status', 1)->get();
-        $get_user_backup = User::where('dept_id', Auth::user()->dept_id)->where('divisi_id', Auth::user()->divisi_id)->where('id', '!=', Auth::user()->id)->get();
-        // dd($get_user_backup);
+        $record_data        = DB::table('penugasans')->where('id_user', Auth::user()->id)->join('users','users.id', 'penugasans.id_user')->orderBy('tanggal_pengajuan', 'DESC')->first();
+        dd($record_data->id);
+        $get_kategori_cuti  = KategoriCuti::where('status', 1)->get();
+        $get_user_backup    = User::where('dept_id', Auth::user()->dept_id)->where('divisi_id', Auth::user()->divisi_id)->where('id', '!=', Auth::user()->id)->get();
         return view('users.penugasan.index', [
-            'title'             => 'Tambah Permintaan Cuti Karyawan',
-            'data_user'         => $user,
-            'data_cuti_user'    => Cuti::where('user_id', $user_id)->orderBy('id', 'desc')->get(),
-            'getUserAtasan'     => $getUserAtasan,
-            'getUseratasan2'     => $getUseratasan2,
-            'get_user_backup'     => $get_user_backup,
+            'title'                 => 'Tambah Permintaan Cuti Karyawan',
+            'data_user'             => $user,
+            'data_cuti_user'        => Penugasan::where('id_user', $user_id)->orderBy('id', 'desc')->get(),
+            'getUserAtasan'         => $getUserAtasan,
+            'getUseratasan2'        => $getUseratasan2,
+            'get_user_backup'       => $get_user_backup,
             'get_kategori_cuti'     => $get_kategori_cuti,
-            'user'              => $user,
-            'record_data'       => $record_data
+            'user'                  => $user,
+            'record_data'           => $record_data
         ]);
+    }
+
+    public function tambahPenugasan(Request $request)
+    {
+        // dd($request->all());
+        $date_now = date("Y-m-d");
+        if($request->tanggal_kunjungan > $date_now  || $request->tanggal_kunjungan = $date_now){
+            Penugasan::create([
+                'id_user'                       => User::where('id', Auth::user()->id)->value('id'),
+                'id_user_atasan'                => User::where('id', $request->id_user_atasan)->value('id'),
+                'id_user_atasan2'               => User::where('id', $request->id_user_atasan2)->value('id'),
+                'id_jabatan'                    => Jabatan::where('id', $request->id_jabatan)->value('id'),
+                'id_departemen'                 => Departemen::where('id', $request->id_departemen)->value('id'),
+                'id_divisi'                     => Divisi::where('id', $request->id_divisi)->value('id'),
+                'id_diajukan_oleh'              => User::where('id', $request->id_diajukan_oleh)->value('id'),
+                'ttd_id_diajukan_oleh'          => $request->ttd_id_diajukan_oleh,
+                'waktu_ttd_id_diajukan_oleh'    => $request->waktu_ttd_id_diajukan_oleh,
+                'id_diminta_oleh'               => $request->id_diminta_oleh,
+                'ttd_id_diminta_oleh'           => $request->ttd_id_diminta_oleh,
+                'waktu_ttd_id_diminta_oleh'     => $request->waktu_ttd_id_diminta_oleh,
+                'id_disahkan_oleh'              => $request->id_disahkan_oleh,
+                'ttd_id_disahkan_oleh'          => $request->ttd_id_disahkan_oleh,
+                'waktu_ttd_id_disahkan_oleh'    => $request->waktu_ttd_id_disahkan_oleh,
+                'proses_hrd'                    => $request->proses_hrd,
+                'ttd_proses_hrd'                => $request->ttd_proses_hrd,
+                'waktu_ttd_proses_hrd'          => $request->waktu_ttd_proses_hrd,
+                'proses_finance'                => $request->proses_finance,
+                'ttd_proses_finance'            => $request->ttd_proses_finance,
+                'waktu_ttd_proses_finance'      => $request->waktu_ttd_proses_finance,
+                'penugasan'                     => $request->penugasan,
+                'tanggal_kunjungan'             => $request->tanggal_kunjungan,
+                'selesai_kunjungan'             => $request->selesai_kunjungan,
+                'kegiatan_penugasan'            => $request->kegiatan_penugasan,
+                'pic_dikunjungi'                => $request->pic_dikunjungi,
+                'alamat_dikunjungi'             => $request->alamat_dikunjungi,
+                'transportasi'                  => $request->transportasi,
+                'kelas'                         => $request->kelas,
+                'budget_hotel'                  => $request->budget_hotel,
+                'makan'                         => $request->makan,
+                'status_penugasan'                        => 0,
+
+            ]);
+            $request->session()->flash('penugasansukses', 'Berhasil Membuat Perdin');
+            return redirect('/penugasan/dashboard');
+        }else{
+            $request->session()->flash('penugasangagal', 'Gagal Membuat Perdin');
+            return redirect('/penugasan/dashboard');
+        }
+    }
+
+    public function penugasanDetail($id)
+    {
+        dd($id);
+        $penugasan = DB::table('penugasans')->where('id', $id)->first();
+        dd($penugasan);
     }
 
     public function cutiApprove($id)
@@ -117,70 +175,7 @@ class PenugasanController extends Controller
             'data'  => $data
         ]);
     }
-    public function cutiAbsen(Request $request)
-    {
-        // dd($request->all());
-        $date1          = new DateTime($request->tanggal_mulai);
-        $date2          = new DateTime($request->tanggal_selesai);
-        $interval       = $date1->diff($date2);
-        $data_interval  = $interval->days + 1;
 
-        $folderPath     = public_path('storage/ttd_user/');
-        $image_parts    = explode(";base64,", $request->ttd_user);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type     = $image_type_aux[1];
-        $image_base64   = base64_decode($image_parts[1]);
-        $file_save           = uniqid() . '.' . $image_type;
-        $file           = $folderPath . $file_save;
-        file_put_contents($file, $image_base64);
-        // dd($data_interval);
-        $hMin14         = date('Y-m-d', strtotime("+14 day", strtotime($request->tgl_pengajuan))); //2024-04-18
-        $kuota_cuti     = DB::table('users')->where('id', $request->id_user)->first();
-        // dd($file_save);
-        if ($request->tanggal_mulai >= $hMin14) {
-            if ($kuota_cuti->kuota_cuti >= $data_interval) {
-                // dd('input cuti');
-                if ($request->ttd_user != null) {
-                    $ttd_user= $file_save;
-                } else{
-                    $ttd_user= NULL;
-
-                }
-                Cuti::create([
-                    'user_id' => User::where('id', Auth::user()->id)->value('id'),
-                    'nama_cuti' => KategoriCuti::where('id', $request->cuti)->value('nama_cuti'),
-                    'tanggal' => date('Y-m-d H:i:s'),
-                    'tanggal_mulai' => $request->tanggal_mulai,
-                    'tanggal_selesai' => $request->tanggal_selesai,
-                    'total_cuti' => $data_interval,
-                    'keterangan_cuti' => $request->keterangan_cuti,
-                    'foto_cuti' => NULL,
-                    'status_cuti' => 0,
-                    'user_id_backup' => $request->user_backup,
-                    'ttd_user' => $ttd_user,
-                    'approve_atasan' => 0,
-                    'approve_atasan2' => 0,
-                    'id_user_atasan' => User::where('id', $request->id_user_atasan)->value('id'),
-                    'id_user_atasan2' => User::where('id', $request->id_user_atasan2)->value('id'),
-                    'ttd_atasan' => NULL,
-                    'ttd_atasan2' => NULL,
-                    'waktu_approve' => NULL,
-                    'waktu_approve2' => NULL,
-                    'catatan' => NULL,
-                    'catatan2' => NULL,
-                ]);
-
-                $request->session()->flash('Peringatan01', 'Berhasil');
-                return redirect('cuti/dashboard');
-            } else {
-                $request->session()->flash('Peringatan01', 'Anda Tidak Memiliki Kuota Cuti');
-                return redirect('cuti/dashboard');
-            }
-        } else {
-            $request->session()->flash('Peringatan01', 'Pengajuan Harus H-14 untuk cuti');
-            return redirect('cuti/dashboard');
-        }
-    }
     public function cutiApproveProses(Request $request, $id)
     {
         // dd($request->all());
