@@ -30,6 +30,7 @@ use App\Http\Controllers\IzinUserController;
 use App\Http\Controllers\CutiUserController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DivisiController;
+use App\Http\Controllers\PenugasanController;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -77,6 +78,11 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/cuti/approve/{id}', [CutiUserController::class, 'cutiApprove']);
     Route::put('/cuti/tambah-cuti-proses', [CutiUserController::class, 'cutiAbsen']);
     Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
+
+    Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
+    Route::get('/penugasan/approve/{id}', [PenugasanController::class, 'cutiApprove']);
+    Route::put('/penugasan/tambah-cuti-proses', [PenugasanController::class, 'cutiAbsen']);
+    Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'cutiApproveProses']);
 
     Route::get('/history', [HistoryUserController::class, 'index'])->name('history');
 
