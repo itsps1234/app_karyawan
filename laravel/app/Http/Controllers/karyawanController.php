@@ -19,6 +19,7 @@ use App\Models\City;
 use App\Models\Departemen;
 use App\Models\District;
 use App\Models\Divisi;
+use App\Models\Lokasi;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 use Illuminate\Support\Str;
@@ -26,7 +27,6 @@ use Laravolt\Indonesia\IndonesiaService;
 use App\Models\Provincies;
 use App\Models\Regencies;
 use App\Models\Village;
-use Laravolt\Indonesia\Models\Province;
 
 class karyawanController extends Controller
 {
@@ -81,6 +81,7 @@ class karyawanController extends Controller
             "data_kabupaten" => Cities::all(),
             "data_kecamatan" => District::all(),
             "data_desa" => Village::all(),
+            "data_lokasi" => Lokasi::all(),
         ]);
     }
 
@@ -141,16 +142,21 @@ class karyawanController extends Controller
         }
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            'nik' => 'required|max:255',
+            'npwp' => 'required|max:255',
             'fullname' => 'required|max:255',
             'motto' => 'required|max:255',
             'email' => 'required|max:255',
             'telepon' => 'required|max:255',
             'username' => 'required|max:255',
             'password' => 'required|max:255',
+            'tempat_lahir' => 'required|max:255',
             'tgl_lahir' => 'required|max:255',
             'gender' => 'required',
             'tgl_join' => 'required|max:255',
             'status_nikah' => 'required',
+            'nama_bank' => 'required',
+            'nomor_rekening' => 'required',
             'alamat' => 'required|max:255',
             'cuti_dadakan' => 'required|max:11',
             'cuti_bersama' => 'required|max:11',
@@ -163,10 +169,10 @@ class karyawanController extends Controller
             'kuota_cuti' => 'required|max:11',
             'kontrak_kerja' => 'required|max:255',
             'penempatan_kerja' => 'required|max:255',
-            'provinsi' => 'required|max:255',
-            'kabupaten' => 'required|max:255',
-            'kecamatan' => 'required|max:255',
-            'desa' => 'required|max:255',
+            'provinsi' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'desa' => 'required',
             'rt' => 'required|max:255',
             'rw' => 'required|max:255',
         ]);
@@ -280,6 +286,8 @@ class karyawanController extends Controller
         $insert = User::create(
             [
                 'name' => $validatedData['name'],
+                'nik' => $validatedData['nik'],
+                'npwp' => $validatedData['npwp'],
                 'fullname' => $validatedData['fullname'],
                 'motto' => $validatedData['motto'],
                 'foto_karyawan' => $request['foto_karyawan'],
@@ -287,10 +295,13 @@ class karyawanController extends Controller
                 'telepon' => $validatedData['telepon'],
                 'username' => $validatedData['username'],
                 'password' => Hash::make($validatedData['password']),
+                'tempat_lahir' => $validatedData['tempat_lahir'],
                 'tgl_lahir' => $validatedData['tgl_lahir'],
                 'gender' => $validatedData['gender'],
                 'tgl_join' => $validatedData['tgl_join'],
                 'status_nikah' => $validatedData['status_nikah'],
+                'nama_bank' => $validatedData['nama_bank'],
+                'nomor_rekening' => $validatedData['nomor_rekening'],
                 'kuota_cuti' => $validatedData['kuota_cuti'],
                 'cuti_dadakan' => $validatedData['cuti_dadakan'],
                 'cuti_bersama' => $validatedData['cuti_bersama'],
@@ -303,14 +314,14 @@ class karyawanController extends Controller
                 'is_admin' => $request['is_admin'],
                 'kontrak_kerja' => $validatedData['kontrak_kerja'],
                 'penempatan_kerja' => $validatedData['penempatan_kerja'],
-                'provinsi' => Province::where('id', $validatedData['provinsi'])->value('code'),
-                'kabupaten' => Cities::where('id', $validatedData['kabupaten'])->value('code'),
-                'kecamatan' => District::where('id', $validatedData['kecamatan'])->value('code'),
-                'desa' => Village::where('id', $validatedData['desa'])->value('code'),
+                'provinsi' => Provincies::where('code', $validatedData['provinsi'])->value('code'),
+                'kabupaten' => Cities::where('code', $validatedData['kabupaten'])->value('code'),
+                'kecamatan' => District::where('code', $validatedData['kecamatan'])->value('code'),
+                'desa' => Village::where('code', $validatedData['desa'])->value('code'),
                 'rt' => $validatedData['rt'],
                 'rw' => $validatedData['rw'],
                 'alamat' => $validatedData['alamat'],
-                'detail_alamat' => Province::where('id', $validatedData['provinsi'])->value('name') . ' , ' . Cities::where('id', $validatedData['kabupaten'])->value('name') . ' , ' . District::where('id', $validatedData['kecamatan'])->value('name') . ' , ' . Village::where('id', $validatedData['desa'])->value('name') . ' , RT. ' . $validatedData['rt'] . ' , RW. ' . $validatedData['rw'] . ' , ' . $validatedData['alamat'],
+                'detail_alamat' => Provincies::where('code', $validatedData['provinsi'])->value('name') . ' , ' . Cities::where('code', $validatedData['kabupaten'])->value('name') . ' , ' . District::where('code', $validatedData['kecamatan'])->value('name') . ' , ' . Village::where('code', $validatedData['desa'])->value('name') . ' , RT. ' . $validatedData['rt'] . ' , RW. ' . $validatedData['rw'] . ' , ' . $validatedData['alamat'],
                 'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
                 'divisi_id' => Divisi::where('id', $divisi_id)->value('id'),
                 'jabatan_id' => Jabatan::where('id', $jabatan_id)->value('id'),
@@ -452,6 +463,7 @@ class karyawanController extends Controller
 
     public function deleteKaryawan($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $delete = User::find($id);
         $deleteShift = MappingShift::where('user_id', $id);
         $deleteLembur = Lembur::where('user_id', $id);
@@ -468,7 +480,7 @@ class karyawanController extends Controller
             'activity' => 'delete',
             'description' => 'Menghapus data karyawan ' . $delete->name,
         ]);
-        return redirect('/karyawan')->with('success', 'Data Berhasil di Delete');
+        return redirect('/karyawan/' . $holding)->with('success', 'Data Berhasil di Delete');
     }
 
     public function editpassword($id)
@@ -500,9 +512,11 @@ class karyawanController extends Controller
     public function shift($id)
     {
         // dd($id);
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.mappingshift', [
             'title' => 'Mapping Shift',
             'karyawan' => User::find($id),
+            'holding' => $holding,
             'shift_karyawan' => MappingShift::where('user_id', $id)->orderBy('id', 'desc')->limit(100)->get(),
             'shift' => Shift::all()
         ]);
@@ -573,16 +587,18 @@ class karyawanController extends Controller
 
             MappingShift::create($validatedData);
         }
+        $holding = request()->segment(count(request()->segments()));
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'create',
             'description' => 'Menambahkan shift karyawan ' . $request->name,
         ]);
-        return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Tambahkan');
+        return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
     }
 
     public function deleteShift(Request $request, $id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $delete = MappingShift::find($id);
         $delete->delete();
         ActivityLog::create([
@@ -590,14 +606,16 @@ class karyawanController extends Controller
             'activity' => 'delete',
             'description' => 'Menghapus shift karyawan ' . $delete->user->name,
         ]);
-        return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Delete');
+        return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Delete');
     }
 
     public function editShift($id)
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('karyawan.editshift', [
             'title' => 'Edit Shift',
             'shift_karyawan' => MappingShift::find($id),
+            'holding' => $holding,
             'shift' => Shift::all()
         ]);
     }
@@ -625,7 +643,8 @@ class karyawanController extends Controller
             'activity' => 'update',
             'description' => 'Mengubah shift karyawan ' . $request->name,
         ]);
-        return redirect('/karyawan/shift/' . $request["user_id"])->with('success', 'Data Berhasil di Update');
+        $holding = request()->segment(count(request()->segments()));
+        return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Update');
     }
 
     public function myProfile()

@@ -140,7 +140,9 @@ Route::get('/karyawan/detail/{id}/sp', [karyawanController::class, 'detail'])->m
 Route::get('/karyawan/detail/{id}/sps', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sip', [karyawanController::class, 'detail'])->middleware('admin');
 Route::put('/karyawan/proses-edit/{id}', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
-Route::delete('/karyawan/delete/{id}', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
+Route::delete('/karyawan/delete/{id}/sp', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
+Route::delete('/karyawan/delete/{id}/sps', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
+Route::delete('/karyawan/delete/{id}/sip', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
 Route::get('/karyawan/edit-password/{id}', [karyawanController::class, 'editPassword'])->middleware('admin');
 Route::put('/karyawan/edit-password-proses/{id}', [karyawanController::class, 'editPasswordProses'])->middleware('admin');
 Route::get('/shift/sp', [ShiftController::class, 'index'])->middleware('admin');
@@ -161,12 +163,18 @@ Route::put('/shift/update/{id}/sip', [ShiftController::class, 'update'])->middle
 Route::delete('/shift/delete/{id}/sp', [ShiftController::class, 'destroy'])->middleware('admin');
 Route::delete('/shift/delete/{id}/sps', [ShiftController::class, 'destroy'])->middleware('admin');
 Route::delete('/shift/delete/{id}/sip', [ShiftController::class, 'destroy'])->middleware('admin');
-Route::get('/karyawan/shift/{id}', [karyawanController::class, 'shift'])->middleware('admin');
+Route::get('/karyawan/shift/{id}/sp', [karyawanController::class, 'shift'])->middleware('admin');
+Route::get('/karyawan/shift/{id}/sps', [karyawanController::class, 'shift'])->middleware('admin');
+Route::get('/karyawan/shift/{id}/sip', [karyawanController::class, 'shift'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sp', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sps', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sip', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
-Route::delete('/karyawan/delete-shift/{id}', [karyawanController::class, 'deleteShift'])->middleware('admin');
-Route::get('/karyawan/edit-shift/{id}', [karyawanController::class, 'editShift'])->middleware('admin');
+Route::delete('/karyawan/delete-shift/{id}/sp', [karyawanController::class, 'deleteShift'])->middleware('admin');
+Route::delete('/karyawan/delete-shift/{id}/sps', [karyawanController::class, 'deleteShift'])->middleware('admin');
+Route::delete('/karyawan/delete-shift/{id}/sip', [karyawanController::class, 'deleteShift'])->middleware('admin');
+Route::get('/karyawan/edit-shift/{id}/sp', [karyawanController::class, 'editShift'])->middleware('admin');
+Route::get('/karyawan/edit-shift/{id}/sps', [karyawanController::class, 'editShift'])->middleware('admin');
+Route::get('/karyawan/edit-shift/{id}/sip', [karyawanController::class, 'editShift'])->middleware('admin');
 //
 Route::get('/karyawan/get_divisi', [karyawanController::class, 'get_divisi'])->middleware('admin');
 Route::get('/karyawan/get_jabatan', [karyawanController::class, 'get_jabatan'])->middleware('admin');

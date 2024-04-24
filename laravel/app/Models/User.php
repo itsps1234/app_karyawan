@@ -24,6 +24,10 @@ class User extends Authenticatable
     protected $guarded = ['id'];
     protected $fillable = [
         'name',
+        'nik',
+        'npwp',
+        'nama_bank',
+        'nomor_rekening',
         'fullname',
         'motto',
         'foto_karyawan',
@@ -31,6 +35,7 @@ class User extends Authenticatable
         'telepon',
         'username',
         'password',
+        'tempat_lahir',
         'tgl_lahir',
         'gender',
         'tgl_join',

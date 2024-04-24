@@ -213,9 +213,6 @@
             </div>
         </div>
     </div>
-    <input type="text" name="lat_kantor" id="lat">
-    <input type="text" name="long_kantor" id="long">
-
 </div>
 <br>
 @endsection

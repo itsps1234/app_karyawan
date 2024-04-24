@@ -5,7 +5,7 @@
         <div class="col-md-4">
             <div class="card card-outline card-primary">
                 <div class="p-4">
-                    <form method="post" action="{{ url('/karyawan/shift/proses-tambah-shift') }}">
+                    <form method="post" action="{{ url('/karyawan/shift/proses-tambah-shift/'.$holding) }}">
                         @csrf
                         <div class="form-group">
                             <label for="shift_id" class="float-left">Shift</label>
@@ -80,8 +80,8 @@
                                 <td>{{ $sk->Shift->jam_masuk}}</td>
                                 <td>{{ $sk->Shift->jam_keluar}}</td>
                                 <td>
-                                    <a href="{{ url('/karyawan/edit-shift/'.$sk->id) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-edit"></i></a>
-                                    <form action="{{ url('/karyawan/delete-shift/'.$sk->id) }}" method="post" class="d-inline">
+                                    <a href="{{ url('/karyawan/edit-shift/'.$sk->id.'/'.$holding) }}" class="btn btn-sm btn-warning"><i class="fa fa-solid fa-edit"></i></a>
+                                    <form action="{{ url('/karyawan/delete-shift/'.$sk->id.'/'.$holding) }}" method="post" class="d-inline">
                                         @method('delete')
                                         @csrf
                                         <input type="hidden" name="user_id" value="{{ $karyawan->id }}">

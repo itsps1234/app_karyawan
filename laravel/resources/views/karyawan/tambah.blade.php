@@ -205,18 +205,18 @@
                             ]
                         );
                         ?>
-                        <label for="bank">Bank</label>
-                        <select name="bank" id="bank" onchange="bankCheck(this);" class="selectpicker form-control  @error('bank') is-invalid @enderror" data-live-search="true">
+                        <label for="nama_bank">Bank</label>
+                        <select name="nama_bank" id="nama_bank" onchange="bankCheck(this);" class="selectpicker form-control  @error('nama_bank') is-invalid @enderror" data-live-search="true">
                             <option value="">Pilih Bank</option>
                             @foreach ($bank as $bank)
-                            @if(old('bank') == $bank["bank"])
+                            @if(old('nama_bank') == $bank["bank"])
                             <option value="{{ $bank['kode_bank'] }}" selected>{{ $bank["bank"] }}</option>
                             @else
                             <option value="{{ $bank['kode_bank'] }}">{{ $bank["bank"] }}</option>
                             @endif
                             @endforeach
                         </select>
-                        @error('bank')
+                        @error('nama_bank')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -347,26 +347,14 @@
 
                     </div>
                     <div class="col">
-                        <?php $penempatan_kerja = array(
-                            [
-                                "penempatan_kerja" => "CV. SUMBER PANGAN"
-                            ],
-                            [
-                                "penempatan_kerja" => "PT. SURYA PANGAN SEMESTA"
-                            ],
-                            [
-                                "penempatan_kerja" => "CV. SURYA INTI PANGAN"
-                            ]
-                        );
-                        ?>
                         <label for="penempatan_kerja">Penempatan Kerja</label>
                         <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
                             <option selected disabled value=""> Pilih Lokasi Penempatan</option>
-                            @foreach ($penempatan_kerja as $a)
-                            @if(old('penempatan_kerja') == $a["penempatan_kerja"])
-                            <option value="{{ $a["penempatan_kerja"] }}" selected>{{ $a["penempatan_kerja"] }}</option>
+                            @foreach ($data_lokasi as $a)
+                            @if(old('penempatan_kerja') == $a["lokasi_kantor"])
+                            <option value="{{ $a["lokasi_kantor"] }}" selected>{{ $a["lokasi_kantor"] }}</option>
                             @else
-                            <option value="{{ $a["penempatan_kerja"] }}">{{ $a["penempatan_kerja"] }}</option>
+                            <option value="{{ $a["lokasi_kantor"] }}">{{ $a["lokasi_kantor"] }}</option>
                             @endif
                             @endforeach
                         </select>

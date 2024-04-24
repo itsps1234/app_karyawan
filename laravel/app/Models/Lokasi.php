@@ -10,5 +10,5 @@ class Lokasi extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    protected $fillable = ['lokasi_kantor', 'lat_kantor', 'long_kantor', 'radius'];
+    protected $fillable = ['kode_kantor', 'lokasi_kantor', 'lat_kantor', 'long_kantor', 'radius'];
 }

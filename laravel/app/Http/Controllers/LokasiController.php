@@ -6,6 +6,7 @@ use App\Models\Lokasi;
 use Illuminate\Http\Request;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Uuid;
 
 class LokasiController extends Controller
 {
@@ -31,7 +32,15 @@ class LokasiController extends Controller
             'radius' => 'required'
         ]);
 
-        Lokasi::create($validatedData);
+        Lokasi::insert(
+            [
+                'kode_kantor' => Uuid::uuid4(),
+                'lokasi_kantor' => $validatedData['lokasi_kantor'],
+                'lat_kantor' => $validatedData['lat_kantor'],
+                'long_kantor' => $validatedData['long_kantor'],
+                'radius' => $validatedData['radius'],
+            ]
+        );
         ActivityLog::create([
             'user_id' => Auth::user()->id,
             'activity' => 'Tambah',
