@@ -27,16 +27,14 @@ class HomeUserController extends Controller
         $blnskrg = date('m');
         $thnskrg = date('Y');
         // dd($blnskrg);
-        $tglkmrn = date('Y-m-d', strtotime('-1 days'));
-        $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
-        $count_absen_hadir = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
-        $user = Auth::user()->id;
-        $dataizin = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
-        $datacuti = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')
-            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')
-            ->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
-
-        // dd($count_absen_hadir);
+        $tglkmrn            = date('Y-m-d', strtotime('-1 days'));
+        $mapping_shift      = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
+        $count_absen_hadir  = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
+        $user           = Auth::user()->id;
+        $dataizin       = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
+        $datacuti       = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
+        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id','penugasans.id_user')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
+        $idpenugasan    = DB::table('penugasans')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
             $jam_pulang = null;
@@ -49,6 +47,8 @@ class HomeUserController extends Controller
                 'status_absen_skrg' => $status_absen_skrg,
                 'dataizin'          => $dataizin,
                 'datacuti'          => $datacuti,
+                'datapenugasan'     => $datapenugasan,
+                'idpenugasan'       => $idpenugasan,
             ]);
         } else {
             $jam_absen = $mapping_shift->jam_absen;
@@ -84,6 +84,8 @@ class HomeUserController extends Controller
                 'status_absen_skrg' => $status_absen_skrg,
                 'dataizin'          => $dataizin,
                 'datacuti'          => $datacuti,
+                'datapenugasan'     => $datapenugasan,
+                'idpenugasan'       => $idpenugasan,
             ]);
         }
     }
