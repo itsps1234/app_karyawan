@@ -243,7 +243,7 @@
     </div>
     @foreach ($record_data as $record_data)
     <div class="notification-content" style="background-color: white">
-        <a href="{{ url('penugasan/detail/'.$record_data->id) }}">
+        <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
             <div class="notification">
                 <h6>{{ $record_data->fullname }}</h6>
                 <p>{{ $record_data->kegiatan_penugasan}}</p>

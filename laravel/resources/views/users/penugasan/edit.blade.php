@@ -60,15 +60,15 @@
                 {{-- <input type="hidden" name="departements" value="{{ $user->dept_id }}"> --}}
                 {{-- <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}"> --}}
                 {{-- <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id=""> --}}
-                <input type="hidden" name="id_user_atasan" value="{{ $getUserAtasan->id }}">
-                <input type="hidden" name="id_user_atasan2" value="{{ $getUseratasan2->id }}">
+                <input type="hidden" name="id_user_atasan" value="{{ $penugasan->id_user_atasan }}">
+                <input type="hidden" name="id_user_atasan2" value="{{ $penugasan->id_user_atasan2 }}">
                 <input type="hidden" name="nik" value="{{ Auth::user()->id }}">
-                <input type="hidden" name="id_jabatan" value="{{ $user->jabatan_id }}">
-                <input type="hidden" name="id_departemen" value="{{ $user->dept_id }}">
-                <input type="hidden" name="id_divisi" value="{{ $user->divisi_id }}">
+                <input type="hidden" name="id_jabatan" value="{{ $penugasan->id_jabatan }}">
+                <input type="hidden" name="id_departemen" value="{{ $penugasan->id_departemen }}">
+                <input type="hidden" name="id_divisi" value="{{ $penugasan->id_divisi }}">
                 <input type="hidden" name="id_diajukan_oleh" value="{{ Auth::user()->id }}">
-                <input type="hidden" name="id_diminta_oleh" value="{{ $getUserAtasan->id }}">
-                <input type="hidden" name="id_disahkan_oleh" value="{{ $getUseratasan2->id }}">
+                <input type="hidden" name="id_diminta_oleh" value="{{ $penugasan->id_diminta_oleh }}">
+                <input type="hidden" name="id_disahkan_oleh" value="{{ $penugasan->id_disahkan_oleh }}">
                 <input type="hidden" name="proses_hrd" value="proses hrd">
                 <input type="hidden" name="proses_finance" value="proses finance">
                 <input type="hidden" name="tanggal_pengajuan" value="{{ date('Y-m-d') }}">
@@ -84,15 +84,15 @@
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Jabatan" readonly>
-                <input type="text" class="form-control" name="" value="{{ $user->nama_jabatan }}" style="font-weight: bold" readonly required>
+                <input type="text" class="form-control" name="" value="{{ $penugasan->nama_jabatan }}" style="font-weight: bold" readonly required>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Divisi" readonly>
-                <input type="text" class="form-control" name="" value="{{ $user->nama_departemen }}" style="font-weight: bold" readonly required>
+                <input type="text" class="form-control" name="" value="{{ $penugasan->nama_departemen }}" style="font-weight: bold" readonly required>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Divisi" readonly>
-                <input type="text" class="form-control" name="" value="{{ $user->nama_divisi }}" style="font-weight: bold" readonly required>
+                <input type="text" class="form-control" name="" value="{{ $penugasan->nama_divisi }}" style="font-weight: bold" readonly required>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Asal Kerja" readonly>
@@ -115,22 +115,22 @@
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Tanggal Kunjungan" readonly>
-                <input type="date" name="tanggal_kunjungan" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                <input type="date" name="tanggal_kunjungan" value="{{ $penugasan->tanggal_kunjungan }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Selesai Kunjungan" readonly>
-                <input type="date" name="selesai_kunjungan" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                <input type="date" name="selesai_kunjungan" value="{{ $penugasan->selesai_kunjungan}}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
             </div>
             <div class="input-group">
-                <textarea class="form-control" name="kegiatan_penugasan" style="font-weight: bold" required placeholder="Kegiatan penugasan"></textarea>
+                <textarea class="form-control" name="kegiatan_penugasan" style="font-weight: bold" required>{{ $penugasan->kegiatan_penugasan }}</textarea>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="PIC dikunjungi" readonly>
-                <input type="text" class="form-control" name="pic_dikunjungi" style="font-weight: bold" required>
+                <input type="text" class="form-control" name="pic_dikunjungi" value="{{ $penugasan->pic_dikunjungi }}" style="font-weight: bold" required>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Alamat" readonly>
-                <input type="text" class="form-control" name="alamat_dikunjungi" style="font-weight: bold" required>
+                <input type="text" class="form-control" name="alamat_dikunjungi" value="{{ $penugasan->alamat }}" style="font-weight: bold" required>
             </div>
             <hr>
             <div class="input-group">
@@ -179,11 +179,17 @@
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Diminta oleh" readonly>
-                <input type="text" class="form-control" name="diminta_oleh" value="{{ $getUserAtasan->fullname }}" readonly>
+                @php
+                    $diminta = \App\Models\User::where(['id'=>$penugasan->id_diminta_oleh])->first();
+                @endphp
+                <input type="text" class="form-control" name="diminta_oleh" value="{{ $diminta->fullname }}" readonly>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Disahkan oleh" readonly>
-                <input type="text" class="form-control" name="disahkan_oleh" value="{{ $getUseratasan2->fullname }}" readonly>
+                @php
+                    $disahkan = \App\Models\User::where(['id'=>$penugasan->id_disahkan_oleh])->first();
+                @endphp
+                <input type="text" class="form-control" name="disahkan_oleh" value="{{ $disahkan->fullname }}" readonly>
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Diproses HRD" readonly>
@@ -195,8 +201,8 @@
             </div>
     </form>
     <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-        <i class="fa fa-plus" aria-hidden="true"> </i>
-        &nbsp; Add
+        <i class="fa fa-refresh" aria-hidden="true"> </i>
+        &nbsp; Update
     </button>
     <script>
         $('button').click(function() {
@@ -231,39 +237,6 @@
 </div>
 </div>
 
-<hr width="90%" style="margin-left: 5%;margin-right: 5%">
-<div class="container">
-    <div class="detail-content">
-        <div class="flex-1">
-            <h4>Riwayat</h4>
-        </div>
-    </div>
-    @foreach ($record_data as $record_data)
-    <div class="notification-content" style="background-color: white">
-        <a href="{{ url('penugasan/detail/'.$record_data->id) }}">
-            <div class="notification">
-                <h6>{{ $record_data->fullname }}</h6>
-                <p>{{ $record_data->kegiatan_penugasan}}</p>
-                <div class="notification-footer">
-                    <span>
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                        {{ $record_data->tanggal_pengajuan}}
-                    </span>
-                    @if ($record_data->status_penugasan == 0)
-                    <small class="badge badge-danger"><i class="far fa-clock"></i> Menunggu</small>
-                    @else
-                    <small class="badge badge-success"><i class="far fa-clock"></i> Disetujui</small>
-                    @endif
-                </div>
-            </div>
-        </a>
-    </div>
-    @endforeach
-
-</div>
 
 <script type="text/javascript">
     var sig = $('#sig').signature({
