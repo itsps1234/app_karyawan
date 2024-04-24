@@ -30,6 +30,15 @@ use App\Models\Village;
 
 class karyawanController extends Controller
 {
+    public function index2()
+    {
+        dd('ok');
+        return view('lokasi.index2', [
+            'title' => 'Setting Lokasi Kantor',
+            'lokasi' => Lokasi::get(),
+            'data_lokasi' => Lokasi::all()
+        ]);
+    }
     public function index()
     {
         $holding = request()->segment(count(request()->segments()));

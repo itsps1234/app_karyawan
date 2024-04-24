@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lokasi;
 use Illuminate\Http\Request;
 use App\Models\ActivityLog;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
 
@@ -12,10 +13,20 @@ class LokasiController extends Controller
 {
     public function index()
     {
+        dd('ok');
         $holding = request()->segment(count(request()->segments()));
-        return view('lokasi.index', [
+        return view('lokasi.index2', [
             'title' => 'Setting Lokasi Kantor',
             'holding' => $holding,
+            'lokasi' => Lokasi::get(),
+            'data_lokasi' => Lokasi::all()
+        ]);
+    }
+    public function index2()
+    {
+        dd('ok');
+        return view('lokasi.index2', [
+            'title' => 'Setting Lokasi Kantor',
             'lokasi' => Lokasi::get(),
             'data_lokasi' => Lokasi::all()
         ]);
@@ -32,9 +43,23 @@ class LokasiController extends Controller
             'radius' => 'required'
         ]);
 
+        if ($validatedData['lokasi_kantor'] == 'CV. SUMBER PANGAN - KEDIRI') {
+            $kategori_kantor = 'sp';
+        } else if ($validatedData['lokasi_kantor'] == 'CV. SUMBER PANGAN - TUBAN') {
+            $kategori_kantor = 'sp';
+        } else if ($validatedData['lokasi_kantor'] == 'PT. SURYA PANGAN SEMESTA - KEDIRI') {
+            $kategori_kantor = 'sps';
+        } else if ($validatedData['lokasi_kantor'] == 'PT. SURYA PANGAN SEMESTA - NGAWI') {
+            $kategori_kantor = 'sps';
+        } else if ($validatedData['lokasi_kantor'] == 'PT. SURYA PANGAN SEMESTA - SUBANG') {
+            $kategori_kantor = 'sps';
+        } else if ($validatedData['lokasi_kantor'] == 'CV. SURYA INTI PANGAN - MAKASAR') {
+            $kategori_kantor = 'sip';
+        }
         Lokasi::insert(
             [
                 'kode_kantor' => Uuid::uuid4(),
+                'katogori_kantor' => $kategori_kantor,
                 'lokasi_kantor' => $validatedData['lokasi_kantor'],
                 'lat_kantor' => $validatedData['lat_kantor'],
                 'long_kantor' => $validatedData['long_kantor'],

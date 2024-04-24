@@ -52,24 +52,36 @@
                                 @csrf
                                 <div class="modal-body">
                                     <div class="col">
-                                        <?php $lokasi_kantor = array(
+                                        <?php
+                                        $lokasi_kantor = array(
                                             [
+                                                "kategori" => "sp",
                                                 "lokasi" => "CV. SUMBER PANGAN - KEDIRI"
                                             ],
                                             [
+                                                "kategori" => "sp",
                                                 "lokasi" => "CV. SUMBER PANGAN - TUBAN"
                                             ],
                                             [
+                                                "kategori" => "sps",
                                                 "lokasi" => "PT. SURYA PANGAN SEMESTA - KEDIRI"
                                             ],
                                             [
+                                                "kategori" => "sps",
                                                 "lokasi" => "PT. SURYA PANGAN SEMESTA - NGAWI"
                                             ],
                                             [
+                                                "kategori" => "sps",
                                                 "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
+                                            ],
+                                            [
+                                                "kategori" => "sip",
+                                                "lokasi" => "CV. SURYA INTI PANGAN - MAKASAR"
                                             ]
                                         );
+
                                         ?>
+                                        <!-- {{$holding}} -->
                                         <label for="lokasi_kantor">Lokasi Kantor</label>
                                         <select name="lokasi_kantor" id="lokasi_kantor" class="selectpicker form-control  @error('lokasi_kantor') is-invalid @enderror" data-live-search="true">
                                             <option value="">Pilih Lokasi</option>

@@ -16,7 +16,7 @@
             <h2>We are team of talented designers making websites with Bootstrap</h2>
             <div class="d-flex">
                 <a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="btn-get-started scrollto">Logout</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
             </div>
