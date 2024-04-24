@@ -171,6 +171,24 @@ class PenugasanController extends Controller
         ]);
     }
 
+    public function penugasanApprove($id)
+    {
+        dd($id);
+        $user       = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                    ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                    ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                    ->where('users.id', Auth()->user()->id)->first();
+        $penugasan  = DB::table('penugasans')->join('jabatans','jabatans.id', 'penugasans.id_jabatan')
+                    ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
+                    ->join('users', 'users.id', 'penugasans.id_user')
+                    ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
+                    ->where('penugasans.id', $id)->first();
+        return view('users.penugasan.approve', [
+            'penugasan' => $penugasan,
+            'user'      => $user,
+        ]);
+    }
+
     public function cutiApprove($id)
     {
         $user   = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')

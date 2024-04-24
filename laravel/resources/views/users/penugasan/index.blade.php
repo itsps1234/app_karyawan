@@ -124,13 +124,13 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Asal Kerja" readonly>
-                            <select class="form-control" name="cuti" required>
+                            <select class="form-control" name="asal_kerja" required>
                                 <option value="">Pilih Asal Kerja...</option>
-                                <option value="CV. SP (PAGU)">CV. Sumber Pangan (Pagu)</option>
-                                <option value="CV. SP (TUBAN)">CV. Sumber Pangan (Tuban)</option>
-                                <option value="PT. SPS (GURAH)">PT. Surya Pangan Semesta (Gurah)</option>
-                                <option value="PT. SPS (NGAWI)">PT. Surya Pangan Semesta (Ngawi)</option>
-                                <option value="PT. SPS (SUBANG)">PT. Surya Pangan Semesta (Subang)</option>
+                                <option value="CV. SUMBER PANGAN - KEDIRI">CV. Sumber Pangan (Kediri)</option>
+                                <option value="CV. SUMBER PANGAN - TUBAN">CV. Sumber Pangan (Tuban)</option>
+                                <option value="PT. SURYA PANGAN SEMESTA - KEDIRI">PT. Surya Pangan Semesta (Kediri)</option>
+                                <option value="PT. SURYA PANGAN SEMESTA - NGAWI">PT. Surya Pangan Semesta (Ngawi)</option>
+                                <option value="PT. SURYA PANGAN SEMESTA - SUBANG">PT. Surya Pangan Semesta (Subang)</option>
                             </select>
                         </div>
                         <div class="input-group">

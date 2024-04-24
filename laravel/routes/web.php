@@ -80,7 +80,10 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
-    Route::get('/penugasan/approve/{id}', [PenugasanController::class, 'penugasanApprove']);
+    Route::get('/penugasan/approve/diminta/{id}', [PenugasanController::class, 'penugasanApprove']);
+    Route::get('/penugasan/approve/disahkan/{id}', [PenugasanController::class, 'penugasanApprove']);
+    Route::get('/penugasan/approve/diproseshrd/{id}', [PenugasanController::class, 'penugasanApprove']);
+    Route::get('/penugasan/approve/diprosesfinance/{id}', [PenugasanController::class, 'penugasanApprove']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);
     Route::get('/penugasan/detail/update/{id}', [PenugasanController::class, 'penugasanUpdate']);
     Route::get('/penugasan/delete/{id}', [PenugasanController::class, 'penugasanDelete']);
