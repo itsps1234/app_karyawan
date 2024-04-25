@@ -53,33 +53,35 @@
                                 <div class="modal-body">
                                     <div class="col">
                                         <?php
-                                        $lokasi_kantor = array(
-                                            [
-                                                "kategori" => "sp",
-                                                "lokasi" => "CV. SUMBER PANGAN - KEDIRI"
-                                            ],
-                                            [
-                                                "kategori" => "sp",
-                                                "lokasi" => "CV. SUMBER PANGAN - TUBAN"
-                                            ],
-                                            [
-                                                "kategori" => "sps",
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - KEDIRI"
-                                            ],
-                                            [
-                                                "kategori" => "sps",
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - NGAWI"
-                                            ],
-                                            [
-                                                "kategori" => "sps",
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
-                                            ],
-                                            [
-                                                "kategori" => "sip",
-                                                "lokasi" => "CV. SURYA INTI PANGAN - MAKASAR"
-                                            ]
-                                        );
-
+                                        $holding = request()->segment(count(request()->segments()));
+                                        if ($holding == 'sp') {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "CV. SUMBER PANGAN - KEDIRI"
+                                                ],
+                                                [
+                                                    "lokasi" => "CV. SUMBER PANGAN - TUBAN"
+                                                ],
+                                            );
+                                        } else if ($holding == 'sps') {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - KEDIRI"
+                                                ],
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - NGAWI"
+                                                ],
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
+                                                ]
+                                            );
+                                        } else {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "CV. SURYA INTI PANGAN - MAKASAR"
+                                                ]
+                                            );
+                                        }
                                         ?>
                                         <!-- {{$holding}} -->
                                         <label for="lokasi_kantor">Lokasi Kantor</label>
@@ -152,23 +154,37 @@
                                 <div class="modal-body">
                                     <div class="col">
                                         <input type="hidden" name="id_lokasi" id="id_lokasi">
-                                        <?php $lokasi_kantor = array(
-                                            [
-                                                "lokasi" => "CV. SUMBER PANGAN - KEDIRI"
-                                            ],
-                                            [
-                                                "lokasi" => "CV. SUMBER PANGAN - TUBAN"
-                                            ],
-                                            [
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - KEDIRI"
-                                            ],
-                                            [
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - NGAWI"
-                                            ],
-                                            [
-                                                "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
-                                            ]
-                                        );
+                                        <input type="hidden" name="kategori_kantor" id="kategori_kantor" value="{{$holding}}">
+                                        <?php
+                                        $holding = request()->segment(count(request()->segments()));
+                                        if ($holding == 'sp') {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "CV. SUMBER PANGAN - KEDIRI"
+                                                ],
+                                                [
+                                                    "lokasi" => "CV. SUMBER PANGAN - TUBAN"
+                                                ],
+                                            );
+                                        } else if ($holding == 'sps') {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - KEDIRI"
+                                                ],
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - NGAWI"
+                                                ],
+                                                [
+                                                    "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
+                                                ]
+                                            );
+                                        } else {
+                                            $lokasi_kantor = array(
+                                                [
+                                                    "lokasi" => "CV. SURYA INTI PANGAN - MAKASAR"
+                                                ]
+                                            );
+                                        }
                                         ?>
                                         <label for="lokasi_kantor">Lokasi Kantor</label>
                                         <select name="lokasi_kantor" id="lokasi_kantor_update" class="selectpicker form-control  @error('lokasi_kantor') is-invalid @enderror" data-live-search="true">

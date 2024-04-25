@@ -29,23 +29,23 @@ class IzinUserController extends Controller
         $userLevel      = DB::table('level_jabatans')->where('id', $user->level_id)->first();
         $levelatasan    = $userLevel->level_jabatan - 1;
         $IdLevelAsasan  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-        $getAsatan      = DB::table('jabatans')->where('level_id',$IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
+        $getAsatan      = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
         // $getAsatan      = User::with('Jabatan')->where('id', Auth::user()->id)->first();
         $atasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
         // dd($atasan);
-        if($atasan==''|| $atasan == NULL){
+        if ($atasan == '' || $atasan == NULL) {
             // dd('atasan null');
             $atasan1  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
-            if($atasan1==NULL || $atasan1 == ''){
+            if ($atasan1 == NULL || $atasan1 == '') {
                 // dd('jabatan 1 null');
                 $getUserAtasan  = User::with('jabatan')->where('jabatan2_id', $getAsatan->id)->first();
-            } else{
+            } else {
                 // dd('jabatan 1 not null');
                 $getUserAtasan  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
             }
         } else {
             $getUserAtasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
-            dd('atasan not null');
+            // dd('atasan not null');
         }
         // dd($getUserAtasan);
         $record_data    = DB::table('izins')->where('user_id', Auth::user()->id)->orderBy('tanggal', 'DESC')->get();

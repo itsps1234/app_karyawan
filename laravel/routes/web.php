@@ -61,7 +61,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/datatableHome', [HomeUserController::class, 'datatableHome'])->name('datatableHome');
     Route::get('/get_count_absensi_home', [HomeUserController::class, 'get_count_absensi_home'])->name('get_count_absensi_home');
     Route::get('/home/absen', [HomeUserController::class, 'HomeAbsen']);
-    Route::put('/home/absen/pulang/{id}', [AbsenController::class, 'absenPulang']);
+    Route::put('/home/absen/pulang/{id}', [HomeUserController::class, 'absenPulang']);
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
@@ -142,7 +142,9 @@ Route::post('/karyawan/tambah-karyawan-proses/sip', [karyawanController::class, 
 Route::get('/karyawan/detail/{id}/sp', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sps', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sip', [karyawanController::class, 'detail'])->middleware('admin');
-Route::put('/karyawan/proses-edit/{id}', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::put('/karyawan/proses-edit/{id}/sp', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::put('/karyawan/proses-edit/{id}/sps', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::put('/karyawan/proses-edit/{id}/sip', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
 Route::delete('/karyawan/delete/{id}/sp', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
 Route::delete('/karyawan/delete/{id}/sps', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
 Route::delete('/karyawan/delete/{id}/sip', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');

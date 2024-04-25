@@ -343,7 +343,8 @@
                 <div class="form-row">
                     <div class="col">
                         <label for="kontrak_kerja">Kontrak Kerja</label>
-                        <input type="text" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
+                        <input type="text" readonly class="form-control" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
+                        <input type="hidden" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="{{$holding}}">
 
                     </div>
                     <div class="col">

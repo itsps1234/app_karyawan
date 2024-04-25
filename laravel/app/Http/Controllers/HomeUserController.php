@@ -33,7 +33,7 @@ class HomeUserController extends Controller
         $user           = Auth::user()->id;
         $dataizin       = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
         $datacuti       = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
-        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id','penugasans.id_user')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
+        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
         $idpenugasan    = DB::table('penugasans')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
@@ -172,6 +172,7 @@ class HomeUserController extends Controller
     }
     public function HomeAbsen(Request $request)
     {
+        // dd('ok');
         $user_login = auth()->user()->id;
         $date_now = date('Y');
         $month_now = date('m');
@@ -268,6 +269,7 @@ class HomeUserController extends Controller
             $getshift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->first();
             $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
         }
+        // dd($getshift->jam_absen);
         if ($getshift->jam_absen == '' || $getshift->jam_absen == NULL) {
             if ($timenow >= $hours_1_masuk) {
                 // dd($get_nama_shift);
@@ -323,18 +325,22 @@ class HomeUserController extends Controller
 
     public function absenMasuk(Request $request, $id)
     {
+        // dd(Auth::guard('web')->user()->penempatan_kerja);
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
-        $lokasi_kantor = Lokasi::first();
+        $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
+        // dd($long_kantor);
         $tglskrg = date('Y-m-d');
         $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
-        // dd($request["jarak_masuk"],$lokasi_kantor->radius);
+        // dd($request["jarak_masuk"], $lokasi_kantor->radius);
         if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
+            // dd('oke');
             $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
             return redirect('/home');
         } else {
+            // dd('gak oke');
             $foto_jam_absen = $request["foto_jam_absen"];
 
             $image_parts = explode(";base64,", $foto_jam_absen);
@@ -397,12 +403,13 @@ class HomeUserController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
-        $lokasi_kantor = Lokasi::first();
+        $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
+        // dd($lokasi_kantor);
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
         $tglskrg = date('Y-m-d');
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
-
+        // dd($request["jarak_pulang"], $lokasi_kantor->radius);
         if ($request["jarak_pulang"] > $lokasi_kantor->radius) {
             $request->session()->flash('absenpulangoutradius', 'Gagal Absen Pulang');
             return redirect('/home');

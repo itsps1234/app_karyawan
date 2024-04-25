@@ -114,35 +114,39 @@
                                 <br>
                                 <div class="form-row">
                                     <div class="col">
-                                        <label for="tgl_lahir">Tanggal Lahir</label>
-                                        <input type="datetime" class="form-control @error('tgl_lahir') is-invalid @enderror" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $karyawan->tgl_lahir) }}">
-                                        @error('tgl_lahir')
+                                        <label for="nik">NIK Karyawan</label>
+                                        <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" autofocus value="{{ old('nik',$karyawan->nik) }}">
+                                        @error('nik')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
                                         @enderror
                                     </div>
                                     <div class="col">
-                                        <?php $gender = array(
-                                            [
-                                                "gender" => "Laki-Laki"
-                                            ],
-                                            [
-                                                "gender" => "Perempuan"
-                                            ]
-                                        );
-                                        ?>
-                                        <label for="gender">Gender</label>
-                                        <select name="gender" id="gender" class="form-control selectpicker" data-live-search="true">
-                                            @foreach ($gender as $g)
-                                            @if(old('gender', $karyawan->gender) == $g["gender"])
-                                            <option value="{{ $g["gender"] }}" selected>{{ $g["gender"] }}</option>
-                                            @else
-                                            <option value="{{ $g["gender"] }}">{{ $g["gender"] }}</option>
-                                            @endif
-                                            @endforeach
-                                        </select>
-                                        @error('gender')
+                                        <label for="npwp">NPWP</label>
+                                        <input type="text" class="form-control @error('npwp') is-invalid @enderror" id="npwp" name="npwp" autofocus value="{{ old('npwp',$karyawan->npwp) }}">
+                                        @error('npwp')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="tempat_lahir">Tempat Lahir</label>
+                                        <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir',$karyawan->tempat_lahir) }}">
+                                        @error('tempat_lahir')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col">
+                                        <label for="tgl_lahir">Tanggal Lahir</label>
+                                        <input type="datetime" class="form-control @error('tgl_lahir') is-invalid @enderror" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir', $karyawan->tgl_lahir) }}">
+                                        @error('tgl_lahir')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -188,6 +192,43 @@
                                     </div>
                                 </div>
                                 <br>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="name">Motto</label>
+                                        <input type="text" class="form-control @error('motto') is-invalid @enderror" id="motto" name="motto" autofocus value="{{ old('motto',$karyawan->motto) }}">
+                                        @error('motto')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col">
+                                        <?php $gender = array(
+                                            [
+                                                "gender" => "Laki-Laki"
+                                            ],
+                                            [
+                                                "gender" => "Perempuan"
+                                            ]
+                                        );
+                                        ?>
+                                        <label for="gender">Gender</label>
+                                        <select name="gender" id="gender" class="form-control selectpicker" data-live-search="true">
+                                            @foreach ($gender as $g)
+                                            @if(old('gender', $karyawan->gender) == $g["gender"])
+                                            <option value="{{ $g["gender"] }}" selected>{{ $g["gender"] }}</option>
+                                            @else
+                                            <option value="{{ $g["gender"] }}">{{ $g["gender"] }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                        @error('gender')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="departemen_id">Departemen</label>
@@ -248,15 +289,15 @@
                                         <tr>
                                             <td>
                                                 <select name="addmore[0][divisi_id]" id="id_divisi" class="form-control" data-live-search="true">
-                                                    @foreach ($jabatan as $jabatan)
-                                                    <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
+                                                    @foreach ($divisi as $divisi)
+                                                    <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
                                             <td>
                                                 <select name="addmore[0][jabatan_id]" id="id_jabatan" class="form-control" data-live-search="true">
-                                                    @foreach ($divisi as $divisi)
-                                                    <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
+                                                    @foreach ($jabatan as $jabatan)
+                                                    <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
@@ -264,37 +305,87 @@
                                         </tr>
                                     </table>
                                 </div>
+                                <br>
                                 <div class="form-row">
                                     <div class="col">
-                                        <label for="kontrak_kerja">Kontrak Kerja</label>
-                                        <input type="text" class="form-control" readonly id="kontrak_kerja" name="kontrak_kerja" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
-
-                                    </div>
-                                    <div class="col">
-                                        <?php $penempatan_kerja = array(
+                                        <?php $bank = array(
                                             [
-                                                "penempatan_kerja" => "CV. SUMBER PANGAN"
+                                                "kode_bank" => "BBRI",
+                                                "bank" => "BANK RAKYAT INDONESIA (BRI)"
                                             ],
                                             [
-                                                "penempatan_kerja" => "PT. SURYA PANGAN SEMESTA"
+                                                "kode_bank" => "BBCA",
+                                                "bank" => "BANK CENTRAL ASIA (BCA)"
                                             ],
                                             [
-                                                "penempatan_kerja" => "CV. SURYA INTI PANGAN"
+                                                "kode_bank" => "BOCBC",
+                                                "bank" => "BANK OCBC"
                                             ]
                                         );
                                         ?>
+                                        <label for="nama_bank">Bank</label>
+                                        <select name="nama_bank" id="nama_bank" onchange="bankCheck(this);" class="selectpicker form-control  @error('nama_bank') is-invalid @enderror" data-live-search="true">
+                                            <option value="">Pilih Bank</option>
+                                            @foreach ($bank as $bank)
+                                            @if(old('nama_bank') == $bank["bank"])
+                                            <option value="{{ $bank['kode_bank'] }}" selected>{{ $bank["bank"] }}</option>
+                                            @else
+                                            @if($bank["kode_bank"]==$karyawan->nama_bank)
+                                            <option value="{{ $bank['kode_bank'] }}" selected>{{ $bank["bank"] }}</option>
+                                            @else
+                                            <option value="{{ $bank['kode_bank'] }}">{{ $bank["bank"] }}</option>
+                                            @endif
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                        @error('nama_bank')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col">
+
+                                        <label for="nomor_rekening">Rekening</label>
+                                        <input type="number" name="nomor_rekening" id="nomor_rekening" class="form-control @error('nomor_rekening') is-invalid @enderror" value="{{ old('nomor_rekening', $karyawan->nomor_rekening) }}">
+                                        @error('nomor_rekening')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="kontrak_kerja">Kontrak Kerja</label>
+                                        <input type="text" class="form-control" readonly value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
+                                        <input type="hidden" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="{{$holding}}">
+                                    </div>
+                                    <div class="col">
                                         <label for="penempatan_kerja">Penempatan Kerja</label>
                                         <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
                                             <option selected disabled value=""> Pilih Lokasi Penempatan</option>
-                                            @foreach ($penempatan_kerja as $a)
-                                            @if(old('penempatan_kerja',$karyawan->penempatan_kerja) == $a["penempatan_kerja"])
-                                            <option value="{{ $a["penempatan_kerja"] }}" selected>{{ $a["penempatan_kerja"] }}</option>
+                                            @foreach ($data_lokasi as $a)
+                                            @if(old('penempatan_kerja',$karyawan->penempatan_kerja) == $a["lokasi_kantor"])
+                                            <option value="{{ $a["lokasi_kantor"] }}" selected>{{ $a["lokasi_kantor"] }}</option>
                                             @else
-                                            <option value="{{ $a["penempatan_kerja"] }}">{{ $a["penempatan_kerja"] }}</option>
+                                            <option value="{{ $a["lokasi_kantor"] }}">{{ $a["lokasi_kantor"] }}</option>
                                             @endif
                                             @endforeach
                                         </select>
                                         @error('penempatan_kerja')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="kuota_cuti">Kuota Cuti</label>
+                                        <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti',$karyawan->kuota_cuti) }}">
+                                        @error('kuota_cuti')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>
@@ -387,18 +478,16 @@
                                 <br>
                                 <label for="alamat">Alamat</label>
                                 <?php
-                                if ($karyawan->provinsi == NULL) {
-                                    $data_provinsi = App\Models\Provincies::Where('code', $karyawan->provinsi)->get();
-                                }
                                 // echo $data_provinsi;
-                                $data_kabupaten = App\Models\Cities::Where('code', $karyawan->kabupaten)->get();
-                                $data_kecamatan = App\Models\District::Where('code', $karyawan->kecamatan)->get();
-                                $data_desa = App\Models\Village::Where('code', $karyawan->desa)->get();
+                                $data_provinsi = App\Models\Provincies::all();
+                                $data_kabupaten = App\Models\Cities::all();
+                                $data_kecamatan = App\Models\District::all();
+                                $data_desa = App\Models\Village::all();
                                 ?>
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="provinsi">Provinsi</label>
-                                        <select class="form-control" id="id_provinsi" name="provinsi">
+                                        <select class="form-control  @error('provinsi') is-invalid @enderror" id="id_provinsi" name="provinsi">
                                             <option value=""> Pilih Provinsi </option>
                                             @foreach ($data_provinsi as $provinsi)
                                             <option value="{{$provinsi->code}}" {{($provinsi->code == $karyawan->provinsi) ? 'selected' : ''}}>{{$provinsi->name}}</option>
@@ -407,7 +496,7 @@
                                     </div>
                                     <div class="col">
                                         <label for="kabupaten">Kabupaten / Kota</label>
-                                        <select class="form-control" id="id_kabupaten" name="kabupaten">
+                                        <select class="form-control @error('kabupaten') is-invalid @enderror" id="id_kabupaten" name="kabupaten">
                                             <option value=""> Pilih Kabupaten / Kota</option>
                                             @foreach ($data_kabupaten as $kabupaten)
                                             <option value="{{$kabupaten->code}}" {{($kabupaten->code == $karyawan->kabupaten) ? 'selected' : ''}}>{{$kabupaten->name}}</option>
@@ -449,10 +538,28 @@
                                     </div>
                                 </div>
                                 <br>
-                                <div class="form">
+                                <div class="form-row">
                                     <div class="col">
-                                        <label for="alamat">Alamat</label>
-                                        <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat', $karyawan->alamat) }}">
+                                        <label for="rt">RT</label>
+                                        <input type="number" class="form-control @error('rt') is-invalid @enderror" id="rt" name="rt" value="{{ old('rt',$karyawan->rt) }}">
+                                        @error('rt')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col">
+                                        <label for="rw">RW</label>
+                                        <input type="number" class="form-control @error('rw') is-invalid @enderror" id="rw" name="rw" value="{{ old('rw',$karyawan->rw) }}">
+                                        @error('rw')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col">
+                                        <label for="alamat">Jalan/Dusun</label>
+                                        <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat',$karyawan->alamat) }}">
                                         @error('alamat')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -473,6 +580,10 @@
 <br>
 @endsection
 @section('js')
+<script src="{{ url('public/adminlte/plugins/jquery/jquery.min.js') }}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="{{ url('public/adminlte/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script type="text/javascript">
     var i = 0;
 
@@ -571,5 +682,134 @@
 
         })
     })
+</script>
+<script>
+    function bankCheck(that) {
+        if (that.value == "BBRI") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank BRI?',
+                showConfirmButton: true
+            });
+            bankdigit = 15;
+            // document.getElementById("ifBRI").style.display = "block";
+            // document.getElementById("ifBCA").style.display = "none";
+            // document.getElementById("ifMANDIRI").style.display = "none";
+        } else if (that.value == "BBCA") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank BCA?',
+                showConfirmButton: true
+            });
+            bankdigit = 10;
+            // document.getElementById("ifMANDIRI").style.display = "block";
+            // document.getElementById("ifBCA").style.display = "none";
+            // document.getElementById("ifBRI").style.display = "none";
+        } else if (that.value == "BOCBC") {
+            Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'Apakah Benar Bank OCBC?',
+                showConfirmButton: true
+            });
+            bankdigit = 12;
+            // document.getElementById("ifBCA").style.display = "block";
+            // document.getElementById("ifMANDIRI").style.display = "none";
+            // document.getElementById("ifBRI").style.display = "none";
+        }
+    }
+    $(function() {
+        $('#nomor_rekening').keyup(function(e) {
+            if ($(this).val().length >= bankdigit) {
+                $(this).val($(this).val().substr(0, bankdigit));
+                document.getElementById("nomor_rekening").focus();
+                Swal.fire({
+                    position: 'top',
+                    icon: 'warning',
+                    title: 'Nomor Rekening harus ' + bankdigit + ' karakter. Mohon cek kembali!',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                // if (length !== bankdigit) {
+                //     document.getElementById('nomor_rekening').value;
+                //     alert('Nomor Rekening harus ' + bankdigit + ' karakter. Mohon cek kembali!');
+                //     document.getElementById('nomor_rekening').focus();
+            }
+        });
+        $('#id_provinsi').on('change', function() {
+            let id_provinsi = $(this).val();
+            let url = "{{url('/karyawan/get_kabupaten')}}" + "/" + id_provinsi;
+            console.log(id_provinsi);
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_provinsi: id_provinsi
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_kabupaten').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+        $('#id_kabupaten').on('change', function() {
+            let id_kabupaten = $(this).val();
+            let url = "{{url('/karyawan/get_kecamatan')}}" + "/" + id_kabupaten;
+            console.log(id_kabupaten);
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_kabupaten: id_kabupaten
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_kecamatan').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+        $('#id_kecamatan').on('change', function() {
+            let id_kecamatan = $(this).val();
+            let url = "{{url('/karyawan/get_desa')}}" + "/" + id_kecamatan;
+            console.log(id_kecamatan);
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_kecamatan: id_kecamatan
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#id_desa').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+    });
 </script>
 @endsection

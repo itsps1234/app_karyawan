@@ -16,14 +16,15 @@ class AbsenController extends Controller
 {
     public function index()
     {
+        // dd('ok');
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
         $tanggal = "";
         $tglskrg = date('Y-m-d');
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
-        if($mapping_shift->count() > 0) {
-            foreach($mapping_shift as $mp) {
+        if ($mapping_shift->count() > 0) {
+            foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
                 $jam_pulang = $mp->jam_pulang;
             }
@@ -31,7 +32,7 @@ class AbsenController extends Controller
             $jam_absen = "-";
             $jam_pulang = "-";
         }
-        if($jam_absen != null && $jam_pulang == null) {
+        if ($jam_absen != null && $jam_pulang == null) {
             $tanggal = $tglkmrn;
         } else {
             $tanggal = $tglskrg;
@@ -44,50 +45,50 @@ class AbsenController extends Controller
 
     public function myLocation(Request $request)
     {
-        return redirect('maps/'.$request["lat"].'/'.$request['long']);
+        return redirect('maps/' . $request["lat"] . '/' . $request['long']);
     }
 
     public function absenMasuk(Request $request, $id)
     {
         date_default_timezone_set('Asia/Jakarta');
-       
+
         $lokasi_kantor = Lokasi::first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
 
         $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
 
-        if($request["jarak_masuk"] > $lokasi_kantor->radius) {
+        if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
             Alert::error('Diluar Jangkauan', 'Lokasi Anda Diluar Radius Kantor');
             return redirect('/absen');
         } else {
             $foto_jam_absen = $request["foto_jam_absen"];
 
             $image_parts = explode(";base64,", $foto_jam_absen);
-    
+
             $image_base64 = base64_decode($image_parts[1]);
             $fileName = 'foto_jam_absen/' . uniqid() . '.png';
-    
+
             Storage::put($fileName, $image_base64);
-    
-    
+
+
             $request["foto_jam_absen"] = $fileName;
-    
+
             $request["status_absen"] = "Masuk";
-    
+
             $mapping_shift = MappingShift::where('id', $id)->get();
-    
+
             foreach ($mapping_shift as $mp) {
                 $shift = $mp->Shift->jam_masuk;
                 $tanggal = $mp->tanggal;
             }
-    
+
             $tgl_skrg = date("Y-m-d");
-    
+
             $awal  = strtotime($tanggal . $shift);
             $akhir = strtotime($tgl_skrg . $request["jam_absen"]);
             $diff  = $akhir - $awal;
-    
+
             if ($diff <= 0) {
                 $request["telat"] = 0;
             } else {
@@ -103,19 +104,18 @@ class AbsenController extends Controller
                 'jarak_masuk' => 'required',
                 'status_absen' => 'required'
             ]);
-    
+
             MappingShift::where('id', $id)->update($validatedData);
             ActivityLog::create([
                 'user_id' => Auth::user()->id,
                 'activity' => 'tambah',
                 'description' => 'Absen Masuk Pada Tanggal ' . $tanggal
             ]);
-    
+
             $request->session()->flash('success', 'Berhasil Absen Masuk');
-    
+
             return redirect('/absen');
         }
-
     }
 
     public function absenPulang(Request $request, $id)
@@ -128,21 +128,21 @@ class AbsenController extends Controller
 
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
 
-        if($request["jarak_pulang"] > $lokasi_kantor->radius) {
+        if ($request["jarak_pulang"] > $lokasi_kantor->radius) {
             Alert::error('Diluar Jangkauan', 'Lokasi Anda Diluar Radius Kantor');
             return redirect('/absen');
         } else {
             $foto_jam_pulang = $request["foto_jam_pulang"];
 
             $image_parts = explode(";base64,", $foto_jam_pulang);
-    
+
             $image_base64 = base64_decode($image_parts[1]);
             $fileName = 'foto_jam_pulang/' . uniqid() . '.png';
-    
+
             Storage::put($fileName, $image_base64);
-    
+
             $request["foto_jam_pulang"] = $fileName;
-    
+
             $mapping_shift = MappingShift::where('id', $id)->get();
             foreach ($mapping_shift as $mp) {
                 $shiftmasuk = $mp->Shift->jam_masuk;
@@ -152,20 +152,20 @@ class AbsenController extends Controller
             $new_tanggal = "";
             $timeMasuk = strtotime($shiftmasuk);
             $timePulang = strtotime($shiftpulang);
-    
-    
+
+
             if ($timePulang < $timeMasuk) {
                 $new_tanggal = date('Y-m-d', strtotime('+1 days', strtotime($tanggal)));
             } else {
                 $new_tanggal = $tanggal;
             }
-    
+
             $tgl_skrg = date("Y-m-d");
-    
+
             $akhir = strtotime($new_tanggal . $shiftpulang);
             $awal  = strtotime($tgl_skrg . $request["jam_pulang"]);
             $diff  = $akhir - $awal;
-    
+
             if ($diff <= 0) {
                 $request["pulang_cepat"] = 0;
             } else {
@@ -180,14 +180,14 @@ class AbsenController extends Controller
                 'pulang_cepat' => 'required',
                 'jarak_pulang' => 'required'
             ]);
-    
+
             MappingShift::where('id', $id)->update($validatedData);
             ActivityLog::create([
                 'user_id' => Auth::user()->id,
                 'activity' => 'tambah',
                 'description' => 'Absen Pulang Pada Tanggal ' . $tanggal
             ]);
-    
+
             return redirect('/absen')->with('success', 'Berhasil Absen Pulang');
         }
     }
@@ -200,7 +200,7 @@ class AbsenController extends Controller
         $dist = rad2deg($dist);
         $miles = $dist * 60 * 1.1515;
         $unit = strtoupper($unit);
-      
+
         if ($unit == "K") {
             return ($miles * 1.609344);
         } else if ($unit == "N") {
@@ -216,11 +216,11 @@ class AbsenController extends Controller
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg);
 
-        if($request["mulai"] == null) {
+        if ($request["mulai"] == null) {
             $request["mulai"] = $request["akhir"];
         }
 
-        if($request["akhir"] == null) {
+        if ($request["akhir"] == null) {
             $request["akhir"] = $request["mulai"];
         }
 
@@ -349,7 +349,7 @@ class AbsenController extends Controller
         $lokasi_kantor = Lokasi::first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
-        
+
         $request["jarak_pulang"] = $this->distance($request["lat_pulang"], $request["long_pulang"], $lat_kantor, $long_kantor, "K") * 1000;
 
         $validatedData = $request->validate([
@@ -377,7 +377,7 @@ class AbsenController extends Controller
 
         return redirect('/data-absen')->with('success', 'Berhasil Edit Absen Pulang (Manual)');
     }
-    
+
     public function deleteAdmin($id)
     {
         $delete = MappingShift::find($id);
@@ -449,8 +449,8 @@ class AbsenController extends Controller
             ->where('user_id', $user_login)
             ->select(DB::raw("tanggal as count "))
             ->pluck('count');
-        if($mapping_shift->count() > 0) {
-            foreach($mapping_shift as $mp) {
+        if ($mapping_shift->count() > 0) {
+            foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
                 $jam_pulang = $mp->jam_pulang;
             }
@@ -458,21 +458,21 @@ class AbsenController extends Controller
             $jam_absen = "-";
             $jam_pulang = "-";
         }
-        if($jam_absen != null && $jam_pulang == null) {
+        if ($jam_absen != null && $jam_pulang == null) {
             $tanggal = $tglkmrn;
         } else {
             $tanggal = $tglskrg;
         }
-        
+
         date_default_timezone_set('Asia/Jakarta');
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg)->where('user_id', auth()->user()->id);
 
-        if($request["mulai"] == null) {
+        if ($request["mulai"] == null) {
             $request["mulai"] = $request["akhir"];
         }
 
-        if($request["akhir"] == null) {
+        if ($request["akhir"] == null) {
             $request["akhir"] = $request["mulai"];
         }
 
@@ -484,18 +484,18 @@ class AbsenController extends Controller
             'title' => 'My Absen',
             'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get(),
             'data_absen' => $data_absen->get(),
-            'masuk'=>array_map('intval', json_decode($masuk)),
-            'tidak_masuk'=>array_map('intval', json_decode($tidak_masuk)),
-            'telat'=>array_map('intval', json_decode($telat)),
-            'date_now'=>$date_now,
-            'month_now1'=>$month_now1,
-            'month_yesterday1'=>$month_yesterday1,
-            'telat_now'=>array_map('intval', json_decode($telat_now)),
-            'telat_yesterday'=>array_map('intval', json_decode($telat_yesterday)),
-            'lembur_now'=>array_map('intval', json_decode($lembur_now)),
-            'data_telat_now'=>$data_telat_now,
-            'data_telat_yesterday'=>$data_telat_yesterday,
-            'lembur_yesterday'=>array_map('intval', json_decode($lembur_yesterday))
+            'masuk' => array_map('intval', json_decode($masuk)),
+            'tidak_masuk' => array_map('intval', json_decode($tidak_masuk)),
+            'telat' => array_map('intval', json_decode($telat)),
+            'date_now' => $date_now,
+            'month_now1' => $month_now1,
+            'month_yesterday1' => $month_yesterday1,
+            'telat_now' => array_map('intval', json_decode($telat_now)),
+            'telat_yesterday' => array_map('intval', json_decode($telat_yesterday)),
+            'lembur_now' => array_map('intval', json_decode($lembur_now)),
+            'data_telat_now' => $data_telat_now,
+            'data_telat_yesterday' => $data_telat_yesterday,
+            'lembur_yesterday' => array_map('intval', json_decode($lembur_yesterday))
         ]);
     }
 }

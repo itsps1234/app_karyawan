@@ -30,22 +30,13 @@ use App\Models\Village;
 
 class karyawanController extends Controller
 {
-    public function index2()
-    {
-        dd('ok');
-        return view('lokasi.index2', [
-            'title' => 'Setting Lokasi Kantor',
-            'lokasi' => Lokasi::get(),
-            'data_lokasi' => Lokasi::all()
-        ]);
-    }
     public function index()
     {
         $holding = request()->segment(count(request()->segments()));
         return view('karyawan.index', [
             'title' => 'Karyawan',
             'holding' => $holding,
-            'data_user' => User::all()
+            'data_user' => User::where('kontrak_kerja', $holding)->get()
         ]);
     }
     public function get_kabupaten($id)
@@ -363,12 +354,14 @@ class karyawanController extends Controller
             'title' => 'Detail Karyawan',
             'holding' => $holding,
             'karyawan' => User::find($id),
-            'data_departemen' => Departemen::all()
+            'data_departemen' => Departemen::all(),
+            "data_lokasi" => Lokasi::all(),
         ]);
     }
 
     public function editKaryawanProses(Request $request, $id)
     {
+        // dd($request->all());
         if ($request["cuti_dadakan"] == null) {
             $request["cuti_dadakan"] = "0";
         } else {
@@ -419,24 +412,39 @@ class karyawanController extends Controller
 
         $rules = [
             'name' => 'required|max:255',
-            'foto_karyawan' => 'image|file|max:10240',
-            'telepon' => 'required',
-            'password' => 'required',
-            'tgl_lahir' => 'required',
+            'nik' => 'required|max:255',
+            'npwp' => 'required|max:255',
+            'fullname' => 'required|max:255',
+            'motto' => 'required|max:255',
+            'email' => 'required|max:255',
+            'telepon' => 'required|max:255',
+            'username' => 'required|max:255',
+            'password' => 'required|max:255',
+            'tempat_lahir' => 'required|max:255',
+            'tgl_lahir' => 'required|max:255',
             'gender' => 'required',
-            'tgl_join' => 'required',
+            'tgl_join' => 'required|max:255',
             'status_nikah' => 'required',
-            'alamat' => 'required',
-            'cuti_dadakan' => 'required',
-            'cuti_bersama' => 'required',
-            'cuti_menikah' => 'required',
-            'cuti_diluar_tanggungan' => 'required',
-            'cuti_khusus' => 'required',
-            'cuti_melahirkan' => 'required',
-            'izin_telat' => 'required',
-            'izin_pulang_cepat' => 'required',
-            'is_admin' => 'required',
-            'jabatan_id' => 'required',
+            'nama_bank' => 'required',
+            'nomor_rekening' => 'required',
+            'alamat' => 'required|max:255',
+            'cuti_dadakan' => 'required|max:11',
+            'cuti_bersama' => 'required|max:11',
+            'cuti_menikah' => 'required|max:11',
+            'cuti_diluar_tanggungan' => 'required|max:11',
+            'cuti_khusus' => 'required|max:11',
+            'cuti_melahirkan' => 'required|max:11',
+            'izin_telat' => 'required|max:11',
+            'izin_pulang_cepat' => 'required|max:11',
+            'kuota_cuti' => 'required|max:11',
+            'kontrak_kerja' => 'required|max:255',
+            'penempatan_kerja' => 'required|max:255',
+            'provinsi' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'desa' => 'required',
+            'rt' => 'required|max:255',
+            'rw' => 'required|max:255',
         ];
 
 
@@ -458,16 +466,170 @@ class karyawanController extends Controller
             }
             $validatedData['foto_karyawan'] = $request->file('foto_karyawan')->store('foto_karyawan');
         }
-
-
-        User::where('id', $id)->update($validatedData);
+        $size = count(collect($request["addmore"]));
+        if ($size == '1') {
+            $get_divisi_id = $request["addmore"]['0']["divisi_id"];
+            $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
+            $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];
+            $jabatan_id = Jabatan::where('id', $get_jabatan_id)->value('id');
+            // dd($divisi_id);
+            $divisi1_id = NULL;
+            $jabatan1_id = NULL;
+            $divisi2_id = NULL;
+            $jabatan2_id = NULL;
+            $divisi3_id = NULL;
+            $jabatan3_id = NULL;
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
+            // dd('oke 1 '.$jabatan_id);
+        } else if ($size == '2') {
+            // dd('oke 2');
+            $get_divisi_id = $request["addmore"]['0']["divisi_id"];
+            $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
+            $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];
+            $jabatan_id = Jabatan::where('id', $get_jabatan_id)->value('id');
+            $get_divisi1_id = $request["addmore"]['1']["divisi_id"];
+            $divisi1_id = Divisi::where('id', $get_divisi1_id)->value('id');
+            $get_jabatan1_id = $request["addmore"]['1']["jabatan_id"];
+            $jabatan1_id = Jabatan::where('id', $get_jabatan1_id)->value('id');
+            $divisi2_id = NULL;
+            $jabatan2_id = NULL;
+            $divisi3_id = NULL;
+            $jabatan3_id = NULL;
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
+        } else if ($size == '3') {
+            // dd('oke 3');
+            $get_divisi_id = $request["addmore"]['0']["divisi_id"];
+            $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
+            $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];
+            $jabatan_id = Jabatan::where('id', $get_jabatan_id)->value('id');
+            $get_divisi1_id = $request["addmore"]['1']["divisi_id"];
+            $divisi1_id = Divisi::where('id', $get_divisi1_id)->value('id');
+            $get_jabatan1_id = $request["addmore"]['1']["jabatan_id"];
+            $jabatan1_id = Jabatan::where('id', $get_jabatan1_id)->value('id');
+            $get_divisi2_id = $request["addmore"]['2']["divisi_id"];
+            $divisi2_id = Divisi::where('id', $get_divisi2_id)->value('id');
+            $get_jabatan2_id = $request["addmore"]['2']["jabatan_id"];
+            $jabatan2_id = Jabatan::where('id', $get_jabatan2_id)->value('id');
+            $divisi3_id = NULL;
+            $jabatan3_id = NULL;
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
+        } else if ($size == '4') {
+            // dd('oke 3');
+            $get_divisi_id = $request["addmore"]['0']["divisi_id"];
+            $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
+            $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];
+            $jabatan_id = Jabatan::where('id', $get_jabatan_id)->value('id');
+            $get_divisi1_id = $request["addmore"]['1']["divisi_id"];
+            $divisi1_id = Divisi::where('id', $get_divisi1_id)->value('id');
+            $get_jabatan1_id = $request["addmore"]['1']["jabatan_id"];
+            $jabatan1_id = Jabatan::where('id', $get_jabatan1_id)->value('id');
+            $get_divisi2_id = $request["addmore"]['2']["divisi_id"];
+            $divisi2_id = Divisi::where('id', $get_divisi2_id)->value('id');
+            $get_jabatan2_id = $request["addmore"]['2']["jabatan_id"];
+            $jabatan2_id = Jabatan::where('id', $get_jabatan2_id)->value('id');
+            $get_divisi3_id = $request["addmore"]['3']["divisi_id"];
+            $divisi3_id = Divisi::where('id', $get_divisi3_id)->value('id');
+            $get_jabatan3_id = $request["addmore"]['3']["jabatan_id"];
+            $jabatan3_id = Jabatan::where('id', $get_jabatan3_id)->value('id');
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
+        } else if ($size == '5') {
+            // dd($request["addmore"]['4']["jabatan_id"]);
+            $get_divisi_id = $request["addmore"]['0']["divisi_id"];
+            $divisi_id = Divisi::where('id', $get_divisi_id)->value('id');
+            $get_jabatan_id = $request["addmore"]['0']["jabatan_id"];
+            $jabatan_id = Jabatan::where('id', $get_jabatan_id)->value('id');
+            $get_divisi1_id = $request["addmore"]['1']["divisi_id"];
+            $divisi1_id = Divisi::where('id', $get_divisi1_id)->value('id');
+            $get_jabatan1_id = $request["addmore"]['1']["jabatan_id"];
+            $jabatan1_id = Jabatan::where('id', $get_jabatan1_id)->value('id');
+            $get_divisi2_id = $request["addmore"]['2']["divisi_id"];
+            $divisi2_id = Divisi::where('id', $get_divisi2_id)->value('id');
+            $get_jabatan2_id = $request["addmore"]['2']["jabatan_id"];
+            $jabatan2_id = Jabatan::where('id', $get_jabatan2_id)->value('id');
+            $get_divisi3_id = $request["addmore"]['3']["divisi_id"];
+            $divisi3_id = Divisi::where('id', $get_divisi3_id)->value('id');
+            $get_jabatan3_id = $request["addmore"]['3']["jabatan_id"];
+            $jabatan3_id = Jabatan::where('id', $get_jabatan3_id)->value('id');
+            $get_divisi4_id = $request["addmore"]['4']["divisi_id"];
+            $divisi4_id = Divisi::where('id', $get_divisi4_id)->value('id');
+            $get_jabatan4_id = $request["addmore"]['4']["jabatan_id"];
+            $jabatan4_id = Jabatan::where('id', $get_jabatan4_id)->value('id');
+        } else {
+            $divisi_id = NULL;
+            $jabatan_id = NULL;
+            $divisi1_id = NULL;
+            $jabatan1_id = NULL;
+            $divisi2_id = NULL;
+            $jabatan2_id = NULL;
+            $divisi3_id = NULL;
+            $jabatan3_id = NULL;
+            $divisi4_id = NULL;
+            $jabatan4_id = NULL;
+        }
+        $holding = request()->segment(count(request()->segments()));
+        User::where('id', $id)->update(
+            [
+                'name' => $validatedData['name'],
+                'nik' => $validatedData['nik'],
+                'npwp' => $validatedData['npwp'],
+                'fullname' => $validatedData['fullname'],
+                'motto' => $validatedData['motto'],
+                'foto_karyawan' => $request['foto_karyawan'],
+                'email' => $validatedData['email'],
+                'telepon' => $validatedData['telepon'],
+                'username' => $validatedData['username'],
+                'password' => $validatedData['password'],
+                'tempat_lahir' => $validatedData['tempat_lahir'],
+                'tgl_lahir' => $validatedData['tgl_lahir'],
+                'gender' => $validatedData['gender'],
+                'tgl_join' => $validatedData['tgl_join'],
+                'status_nikah' => $validatedData['status_nikah'],
+                'nama_bank' => $validatedData['nama_bank'],
+                'nomor_rekening' => $validatedData['nomor_rekening'],
+                'kuota_cuti' => $validatedData['kuota_cuti'],
+                'cuti_dadakan' => $validatedData['cuti_dadakan'],
+                'cuti_bersama' => $validatedData['cuti_bersama'],
+                'cuti_menikah' => $validatedData['cuti_menikah'],
+                'cuti_diluar_tanggungan' => $validatedData['cuti_diluar_tanggungan'],
+                'cuti_khusus' => $validatedData['cuti_khusus'],
+                'cuti_melahirkan' => $validatedData['cuti_melahirkan'],
+                'izin_telat' => $validatedData['izin_telat'],
+                'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
+                'is_admin' => $request['is_admin'],
+                'kontrak_kerja' => $validatedData['kontrak_kerja'],
+                'penempatan_kerja' => $validatedData['penempatan_kerja'],
+                'provinsi' => Provincies::where('code', $validatedData['provinsi'])->value('code'),
+                'kabupaten' => Cities::where('code', $validatedData['kabupaten'])->value('code'),
+                'kecamatan' => District::where('code', $validatedData['kecamatan'])->value('code'),
+                'desa' => Village::where('code', $validatedData['desa'])->value('code'),
+                'rt' => $validatedData['rt'],
+                'rw' => $validatedData['rw'],
+                'alamat' => $validatedData['alamat'],
+                'detail_alamat' => Provincies::where('code', $validatedData['provinsi'])->value('name') . ' , ' . Cities::where('code', $validatedData['kabupaten'])->value('name') . ' , ' . District::where('code', $validatedData['kecamatan'])->value('name') . ' , ' . Village::where('code', $validatedData['desa'])->value('name') . ' , RT. ' . $validatedData['rt'] . ' , RW. ' . $validatedData['rw'] . ' , ' . $validatedData['alamat'],
+                'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
+                'divisi_id' => Divisi::where('id', $divisi_id)->value('id'),
+                'jabatan_id' => Jabatan::where('id', $jabatan_id)->value('id'),
+                'divisi1_id' => Divisi::where('id', $divisi1_id)->value('id'),
+                'jabatan1_id' => Jabatan::where('id', $jabatan1_id)->value('id'),
+                'divisi2_id' => Divisi::where('id', $divisi2_id)->value('id'),
+                'jabatan2_id' => Jabatan::where('id', $jabatan2_id)->value('id'),
+                'divisi3_id' => Divisi::where('id', $divisi3_id)->value('id'),
+                'jabatan3_id' => Jabatan::where('id', $jabatan3_id)->value('id'),
+                'divisi4_id' => Divisi::where('id', $divisi4_id)->value('id'),
+                'jabatan4_id' => Jabatan::where('id', $jabatan4_id)->value('id'),
+            ]
+        );
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
             'description' => 'Mengubah data karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Data Berhasil di Update');
-        return redirect('/karyawan');
+        return redirect('/karyawan/' . $holding);
     }
 
     public function deleteKaryawan($id)
