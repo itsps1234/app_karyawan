@@ -33,7 +33,7 @@ class HomeUserController extends Controller
         $user           = Auth::user()->id;
         $dataizin       = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
         $datacuti       = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
-        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
+        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user_atasan', $user)->get();
         $idpenugasan    = DB::table('penugasans')->where('id_user_atasan', $user)->where('status_penugasan', 0)->get();
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;

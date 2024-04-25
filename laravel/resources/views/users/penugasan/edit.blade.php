@@ -49,7 +49,6 @@
         @endphp
         @if ($penugasan->status_penugasan == 0)
             <form class="my-2"method="post" action="{{ url('/penugasan/detail/update/'.$id_penugasan) }}" enctype="multipart/form-data">
-                @method('post')
                 @csrf
                 <div class="input-group">
                     <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
@@ -58,6 +57,7 @@
                     {{-- <input type="hidden" name="departements" value="{{ $user->dept_id }}"> --}}
                     {{-- <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}"> --}}
                     {{-- <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id=""> --}}
+                    <input type="hidden" name="status_penugasan" id="" value="1">
                     <input type="hidden" name="id_user_atasan" value="{{ $penugasan->id_user_atasan }}">
                     <input type="hidden" name="id_user_atasan2" value="{{ $penugasan->id_user_atasan2 }}">
                     <input type="hidden" name="nik" value="{{ Auth::user()->id }}">
@@ -118,13 +118,11 @@
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" value="Tanggal Kunjungan" readonly>
-                    <input type="date" name="tanggal_kunjungan" value="{{ $penugasan->tanggal_kunjungan }}"
-                        style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                    <input type="date" name="tanggal_kunjungan" value="{{ $penugasan->tanggal_kunjungan }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control" value="Selesai Kunjungan" readonly>
-                    <input type="date" name="selesai_kunjungan" value="{{ $penugasan->selesai_kunjungan }}"
-                        style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                    <input type="date" name="selesai_kunjungan" value="{{ $penugasan->selesai_kunjungan }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
                 </div>
                 <div class="input-group">
                     <textarea class="form-control" name="kegiatan_penugasan" style="font-weight: bold" required>{{ $penugasan->kegiatan_penugasan }}</textarea>
@@ -217,18 +215,27 @@
                                 <canvas id="the_canvas" width="auto" height="100px"></canvas>
                                 <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
                                 <hr>
-                                <input type="hidden" id="signature" name="ttd_userpenugasan">
-                                <button type="button" style="height: 10px;" id="clear_btn" class="btn btn-danger btn-sm" data-action="clear">
-                                    <i class="fa fa-refresh" aria-hidden="true"> </i>
-                                </button>
+                                <div style="margin:10px;">
+                                    <input type="hidden" id="signature" name="signature">
+                                    <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" style="margin-left:5%" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                                    <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" style="margin-right:5%" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                                </div>
 
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%; margin-top:5%">
-                        <i class="fa fa-refresh" aria-hidden="true"> </i>
-                        &nbsp; Update
-                    </button>
+                    {{-- <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i>Update</button> --}}
+                    {{-- <div id="signature-pad">
+                        <div style="border:solid 1px teal; width:360px;height:110px;padding:3px;position:relative;">
+                            <div id="note" onmouseover="my_function();">The signature should be inside box</div>
+                            <canvas id="the_canvas" width="350px" height="100px"></canvas>
+                        </div>
+                        <div style="margin:10px;">
+                            <input type="hidden" id="signature" name="signature">
+                            <button type="button" id="clear_btn" class="btn btn-danger" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> Clear</button>
+                            <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i>Update</button>
+                        </div>
+                    </div> --}}
                 @elseif($penugasan->status_penugasan == 1)
                     <div class="input-group">
                         <input type="text" class="form-control" value="Diajukan oleh" readonly>
@@ -624,19 +631,6 @@
         @endif
     </div>
     </div>
-
-
-    <script type="text/javascript">
-        var sig = $('#sig').signature({
-            syncField: '#signature64',
-            syncFormat: 'PNG'
-        });
-        $('#clear').click(function(e) {
-            e.preventDefault();
-            sig.signature('clear');
-            $("#signature64").val('');
-        });
-    </script>
 
     <script>
     var wrapper = document.getElementById("signature-pad");

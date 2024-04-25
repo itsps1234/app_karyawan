@@ -270,7 +270,7 @@
                 @foreach ($datapenugasan as $datapenugasan)
                 @foreach($idpenugasan as $idpenugasan)
                 <a href="{{ url('/penugasan/approve/diminta/'.$idpenugasan->id) }}">
-                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 10px;">
+                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
@@ -278,9 +278,9 @@
                                 </div>
                                 <div class="card-info">
                                     <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
-                                    <span class="">Penugasan {{ $datapenugasan->penugasan }}</span>
+                                    <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
                                     <div class="d-flex align-items-center">
-                                        @if ($datapenugasan->status_penugasan == 0)
+                                        @if ($datapenugasan->status_penugasan == 1)
                                         <small class="badge badge-danger">Pending</small>
                                         @endif
                                     </div>
