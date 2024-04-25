@@ -67,7 +67,8 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
 
     Route::get('/absen/dashboard', [AbsenUserController::class, 'index']);
-    route::get('/absen/dashboard/index', [AbsenUserController::class, 'recordabsen']);
+    route::get('/absen/data-absensi', [AbsenUserController::class, 'recordabsen']);
+    route::get('get_table_absensi', [AbsenUserController::class, 'get_table_absensi'])->name('get_table_absensi');
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);

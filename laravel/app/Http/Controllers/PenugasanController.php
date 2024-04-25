@@ -91,6 +91,7 @@ class PenugasanController extends Controller
         }
         $record_data        = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user', Auth::user()->id)
             ->select('penugasans.*', 'users.fullname')->orderBy('tanggal_pengajuan', 'DESC')->get();
+        // dd($record_data);
         $get_kategori_cuti  = KategoriCuti::where('status', 1)->get();
         $get_user_backup    = User::where('dept_id', Auth::user()->dept_id)->where('divisi_id', Auth::user()->divisi_id)->where('id', '!=', Auth::user()->id)->get();
         return view('users.penugasan.index', [
@@ -158,15 +159,15 @@ class PenugasanController extends Controller
     public function penugasanEdit($id)
     {
         $user           = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-                        ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-                        ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-                        ->where('users.id', Auth()->user()->id)->first();
+            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+            ->where('users.id', Auth()->user()->id)->first();
         $penugasan      = DB::table('penugasans')
-                        ->join('jabatans', 'jabatans.id', 'penugasans.id_jabatan')
-                        ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
-                        ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
-                        ->join('users', 'users.id', 'penugasans.id_diminta_oleh')
-                        ->where('penugasans.id', $id)->first();
+            ->join('jabatans', 'jabatans.id', 'penugasans.id_jabatan')
+            ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
+            ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
+            ->join('users', 'users.id', 'penugasans.id_diminta_oleh')
+            ->where('penugasans.id', $id)->first();
         // $id_penugasan   = $id;
         return view('users.penugasan.edit', [
             'penugasan'     => $penugasan,
@@ -193,7 +194,6 @@ class PenugasanController extends Controller
         $data->update();
         $request->session()->flash('updatesukses', 'Berhasil Membuat Perdin');
         return redirect('/penugasan/dashboard');
-
     }
 
     public function penugasanApprove($id)
