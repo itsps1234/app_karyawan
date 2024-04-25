@@ -89,8 +89,8 @@ class PenugasanController extends Controller
         } else {
             dd('gak oke');
         }
-        $record_data        = DB::table('penugasans')->join('users','users.id', 'penugasans.id_user')->where('id_user', Auth::user()->id)
-                            ->select('penugasans.*', 'users.fullname')->orderBy('tanggal_pengajuan', 'DESC')->get();
+        $record_data        = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user', Auth::user()->id)
+            ->select('penugasans.*', 'users.fullname')->orderBy('tanggal_pengajuan', 'DESC')->get();
         $get_kategori_cuti  = KategoriCuti::where('status', 1)->get();
         $get_user_backup    = User::where('dept_id', Auth::user()->dept_id)->where('divisi_id', Auth::user()->divisi_id)->where('id', '!=', Auth::user()->id)->get();
         return view('users.penugasan.index', [
@@ -108,9 +108,8 @@ class PenugasanController extends Controller
 
     public function tambahPenugasan(Request $request)
     {
-        // dd($request->all());
         $date_now = date("Y-m-d");
-        if($request->tanggal_kunjungan > $date_now  || $request->tanggal_kunjungan = $date_now){
+        if ($request->tanggal_kunjungan > $date_now  || $request->tanggal_kunjungan = $date_now) {
             Penugasan::create([
                 'id_user'                       => User::where('id', Auth::user()->id)->value('id'),
                 'id_user_atasan'                => User::where('id', $request->id_user_atasan)->value('id'),
@@ -118,6 +117,7 @@ class PenugasanController extends Controller
                 'id_jabatan'                    => Jabatan::where('id', $request->id_jabatan)->value('id'),
                 'id_departemen'                 => Departemen::where('id', $request->id_departemen)->value('id'),
                 'id_divisi'                     => Divisi::where('id', $request->id_divisi)->value('id'),
+                'asal_kerja'                    => $request->asal_kerja,
                 'id_diajukan_oleh'              => User::where('id', $request->id_diajukan_oleh)->value('id'),
                 'ttd_id_diajukan_oleh'          => $request->ttd_id_diajukan_oleh,
                 'waktu_ttd_id_diajukan_oleh'    => $request->waktu_ttd_id_diajukan_oleh,
@@ -143,12 +143,13 @@ class PenugasanController extends Controller
                 'kelas'                         => $request->kelas,
                 'budget_hotel'                  => $request->budget_hotel,
                 'makan'                         => $request->makan,
-                'status_penugasan'                        => 0,
+                'status_penugasan'              => 0,
+                'tanggal_pengajuan'             => $request->tanggal_pengajuan,
 
             ]);
             $request->session()->flash('penugasansukses', 'Berhasil Membuat Perdin');
             return redirect('/penugasan/dashboard');
-        }else{
+        } else {
             $request->session()->flash('penugasangagal', 'Gagal Membuat Perdin');
             return redirect('/penugasan/dashboard');
         }
@@ -156,33 +157,57 @@ class PenugasanController extends Controller
 
     public function penugasanEdit($id)
     {
-        $user       = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-                    ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-                    ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-                    ->where('users.id', Auth()->user()->id)->first();
-        $penugasan  = DB::table('penugasans')->join('jabatans','jabatans.id', 'penugasans.id_jabatan')
-                    ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
-                    ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
-                    ->join('users', 'users.id', 'penugasans.id_diminta_oleh')
-                    ->where('penugasans.id', $id)->first();
+        $user           = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                        ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                        ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                        ->where('users.id', Auth()->user()->id)->first();
+        $penugasan      = DB::table('penugasans')
+                        ->join('jabatans', 'jabatans.id', 'penugasans.id_jabatan')
+                        ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
+                        ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
+                        ->join('users', 'users.id', 'penugasans.id_diminta_oleh')
+                        ->where('penugasans.id', $id)->first();
+        // $id_penugasan   = $id;
         return view('users.penugasan.edit', [
-            'penugasan' => $penugasan,
-            'user'      => $user,
+            'penugasan'     => $penugasan,
+            'user'          => $user,
+            'id_penugasan'  => $id,
         ]);
+    }
+
+    public function penugasanUpdate(Request $request, $id)
+    {
+        dd($request->ttd_userpenugasan);
+        $data   = Penugasan::find($id)->first();
+        $data->asal_kerja           = $request->asal_kerja;
+        $data->penugasan            = $request->penugasan;
+        $data->tanggal_kunjungan    = $request->tanggal_kunjungan;
+        $data->selesai_kunjungan    = $request->selesai_kunjungan;
+        $data->kegiatan_penugasan   = $request->kegiatan_penugasan;
+        $data->pic_dikunjungi       = $request->pic_dikunjungi;
+        $data->alamat_dikunjungi    = $request->alamat_dikunjungi;
+        $data->transportasi         = $request->transportasi;
+        $data->kelas                = $request->kelas;
+        $data->budget_hotel         = $request->budget_hotel;
+        $data->makan                = $request->makan;
+        $data->update();
+        $request->session()->flash('updatesukses', 'Berhasil Membuat Perdin');
+        return redirect('/penugasan/dashboard');
+
     }
 
     public function penugasanApprove($id)
     {
-        dd($id);
         $user       = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-                    ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-                    ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-                    ->where('users.id', Auth()->user()->id)->first();
-        $penugasan  = DB::table('penugasans')->join('jabatans','jabatans.id', 'penugasans.id_jabatan')
-                    ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
-                    ->join('users', 'users.id', 'penugasans.id_user')
-                    ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
-                    ->where('penugasans.id', $id)->first();
+            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+            ->where('users.id', Auth()->user()->id)->first();
+        $penugasan  = DB::table('penugasans')->join('jabatans', 'jabatans.id', 'penugasans.id_jabatan')
+            ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
+            ->join('users', 'users.id', 'penugasans.id_user')
+            ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
+            ->where('penugasans.id', $id)->first();
+        // dd($penugasan);
         return view('users.penugasan.approve', [
             'penugasan' => $penugasan,
             'user'      => $user,

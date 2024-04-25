@@ -19,6 +19,7 @@ class Penugasan extends Model
         'id_jabatan',
         'id_departemen',
         'id_divisi',
+        'asal_kerja',
         'id_diajukan_oleh',
         'ttd_id_diajukan_oleh',
         'waktu_ttd_id_diajukan_oleh',
@@ -45,6 +46,8 @@ class Penugasan extends Model
         'budget_hotel',
         'makan',
         'status_penugasan',
+        'tanggal_pengajuan',
+        'ttd_userpenugasan',
     ];
 
     public function User()

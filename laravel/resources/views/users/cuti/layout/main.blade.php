@@ -49,7 +49,7 @@
             <div class="head-details">
                 <div class=" container">
                     <div class="dz-info">
-                        <span class="location d-block">Form Cuti
+                        <span class="location d-block">Form Penugasan
                             @if($user->kontrak_kerja == 'CV. SUMBER PANGAN')
                                 CV. SUMBER PANGAN
                             @elseif($user->kontrak_kerja == 'PT. SURYA PANGAN SEMESTA')

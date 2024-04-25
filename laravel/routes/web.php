@@ -85,7 +85,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/penugasan/approve/diproseshrd/{id}', [PenugasanController::class, 'penugasanApprove']);
     Route::get('/penugasan/approve/diprosesfinance/{id}', [PenugasanController::class, 'penugasanApprove']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);
-    Route::get('/penugasan/detail/update/{id}', [PenugasanController::class, 'penugasanUpdate']);
+    Route::post('/penugasan/detail/update/{id}', [PenugasanController::class, 'penugasanUpdate']);
     Route::get('/penugasan/delete/{id}', [PenugasanController::class, 'penugasanDelete']);
     Route::put('/penugasan/tambah-penugasan-proses', [PenugasanController::class, 'tambahPenugasan']);
     Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'penugasanApproveProses']);

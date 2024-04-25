@@ -36,6 +36,19 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('updatesukses'))
+<div class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Update Perdin
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('penugasangagal'))
 <div class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -100,7 +113,6 @@
                             <input type="hidden" name="proses_hrd" value="proses hrd">
                             <input type="hidden" name="proses_finance" value="proses finance">
                             <input type="hidden" name="tanggal_pengajuan" value="{{ date('Y-m-d') }}">
-                            <input type="hidden" name="jam_pengajuan" value="{{ date('h:i:s') }}">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Nama" readonly>
@@ -137,17 +149,17 @@
                             <input type="text" class="form-control" value="Penugasan" readonly>
                             <select class="form-control" name="penugasan" required>
                                 <option value="">Pilih Penugasan...</option>
-                                <option value="dalam kota">Dalam Kota</option>
-                                <option value="luar kota">Luar Kota</option>
+                                <option value="Dalam Kota">Dalam Kota</option>
+                                <option value="Luar Kota">Luar Kota</option>
                             </select>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal Kunjungan" readonly>
-                            <input type="date" name="tanggal_kunjungan" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                            <input type="date" name="tanggal_kunjungan" style="font-weight: bold" required placeholder="Phone number" class="form-control">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Selesai Kunjungan" readonly>
-                            <input type="date" name="selesai_kunjungan" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                            <input type="date" name="selesai_kunjungan" style="font-weight: bold" required placeholder="Phone number" class="form-control">
                         </div>
                         <div class="input-group">
                             <textarea class="form-control" name="kegiatan_penugasan" style="font-weight: bold" required placeholder="Kegiatan penugasan"></textarea>
