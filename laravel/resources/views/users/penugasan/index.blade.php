@@ -49,6 +49,19 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('hapussukses'))
+<div class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Hapus Perdin
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('penugasangagal'))
 <div class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -255,6 +268,13 @@
     </div>
     @foreach ($record_data as $record_data)
     <div class="notification-content" style="background-color: white">
+        @if ($record_data->status_penugasan == 0)
+            <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
+                <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
+            </a>
+        @else
+            <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
+        @endif
         <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
             <div class="notification">
                 <h6>{{ $record_data->fullname }}</h6>

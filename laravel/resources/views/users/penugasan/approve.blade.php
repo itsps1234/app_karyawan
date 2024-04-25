@@ -124,7 +124,7 @@
                         $diproseshrd = \App\Models\User::where(['id'=>'e30d4a42-5562-415c-b1b6-f6b9ccc379a1'])->first();
                         $diprosesfin = \App\Models\User::where(['id'=>'436da676-5782-4f4e-ad50-52b45060430c'])->first();
                     @endphp
-                    @if($penugasan->status_penugasan == 0)
+                    @if($penugasan->status_penugasan == 1)
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diajukan oleh" readonly>
                             <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
@@ -132,31 +132,6 @@
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diminta oleh" readonly>
                             <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Disahkan oleh" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Diproses HRD" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Diproses Finance" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-                        </div>
-                        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-                            <i class="fa fa-refresh" aria-hidden="true"> </i>
-                            &nbsp; Setujui
-                        </button>
-                    @elseif($penugasan->status_penugasan == 1)
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Diajukan oleh" readonly>
-                            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Diminta oleh" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Disahkan oleh" readonly>
@@ -185,7 +160,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Disahkan oleh" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
+                            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses HRD" readonly>
@@ -214,7 +189,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses HRD" readonly>
-                            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
+                            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses Finance" readonly>
@@ -225,6 +200,31 @@
                             &nbsp; Setujui
                         </button>
                     @elseif($penugasan->status_penugasan == 4)
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Diajukan oleh" readonly>
+                            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Diminta oleh" readonly>
+                            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Disahkan oleh" readonly>
+                            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Diproses HRD" readonly>
+                            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Diproses Finance" readonly>
+                            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
+                        </div>
+                        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
+                            <i class="fa fa-refresh" aria-hidden="true"> </i>
+                            &nbsp; Setujui
+                        </button>
+                    @elseif($penugasan->status_penugasan == 5)
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diajukan oleh" readonly>
                             <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">

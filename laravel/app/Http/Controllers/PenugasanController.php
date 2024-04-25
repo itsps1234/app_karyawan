@@ -90,7 +90,7 @@ class PenugasanController extends Controller
             dd('gak oke');
         }
         $record_data        = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->where('id_user', Auth::user()->id)
-            ->select('penugasans.*', 'users.fullname')->orderBy('tanggal_pengajuan', 'DESC')->get();
+            ->select('penugasans.*')->orderBy('tanggal_pengajuan', 'DESC')->where('penugasans.id', 1)->get();
         $get_kategori_cuti  = KategoriCuti::where('status', 1)->get();
         $get_user_backup    = User::where('dept_id', Auth::user()->dept_id)->where('divisi_id', Auth::user()->divisi_id)->where('id', '!=', Auth::user()->id)->get();
         return view('users.penugasan.index', [
@@ -177,23 +177,41 @@ class PenugasanController extends Controller
 
     public function penugasanUpdate(Request $request, $id)
     {
-        dd($request->ttd_userpenugasan);
+        $folderPath     = public_path('signature/');
+        $image_parts    = explode(";base64,", $request->signature);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type     = $image_type_aux[1];
+        $image_base64   = base64_decode($image_parts[1]);
+        $uniqid         = date('y-m-d').'-'.uniqid();
+        $file           = $folderPath . $uniqid . '.' . $image_type;
+        file_put_contents($file, $image_base64);
         $data   = Penugasan::find($id)->first();
-        $data->asal_kerja           = $request->asal_kerja;
-        $data->penugasan            = $request->penugasan;
-        $data->tanggal_kunjungan    = $request->tanggal_kunjungan;
-        $data->selesai_kunjungan    = $request->selesai_kunjungan;
-        $data->kegiatan_penugasan   = $request->kegiatan_penugasan;
-        $data->pic_dikunjungi       = $request->pic_dikunjungi;
-        $data->alamat_dikunjungi    = $request->alamat_dikunjungi;
-        $data->transportasi         = $request->transportasi;
-        $data->kelas                = $request->kelas;
-        $data->budget_hotel         = $request->budget_hotel;
-        $data->makan                = $request->makan;
+        $data->asal_kerja                   = $request->asal_kerja;
+        $data->penugasan                    = $request->penugasan;
+        $data->tanggal_kunjungan            = $request->tanggal_kunjungan;
+        $data->selesai_kunjungan            = $request->selesai_kunjungan;
+        $data->kegiatan_penugasan           = $request->kegiatan_penugasan;
+        $data->pic_dikunjungi               = $request->pic_dikunjungi;
+        $data->alamat_dikunjungi            = $request->alamat_dikunjungi;
+        $data->transportasi                 = $request->transportasi;
+        $data->kelas                        = $request->kelas;
+        $data->budget_hotel                 = $request->budget_hotel;
+        $data->makan                        = $request->makan;
+        $data->ttd_id_diajukan_oleh         = $uniqid;
+        $data->waktu_ttd_id_diajukan_oleh   = date('Y-m-d h:i:s');
+        $data->status_penugasan             = 1;
         $data->update();
         $request->session()->flash('updatesukses', 'Berhasil Membuat Perdin');
         return redirect('/penugasan/dashboard');
 
+    }
+
+    public function penugasanDelete(Request $request,$id)
+    {
+        $delete = Penugasan::find($id);
+        $delete->delete();
+        $request->session()->flash('hapussukses', 'Berhasil MembuatHapus Perdin');
+        return redirect('/penugasan/dashboard');
     }
 
     public function penugasanApprove($id)
@@ -206,7 +224,9 @@ class PenugasanController extends Controller
             ->join('departemens', 'departemens.id', 'penugasans.id_departemen')
             ->join('users', 'users.id', 'penugasans.id_user')
             ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
-            ->where('penugasans.id', $id)->first();
+            ->where('penugasans.id', $id)
+            ->where('penugasans.status_penugasan', 1)->first();
+        dd($penugasan);
         // dd($penugasan);
         return view('users.penugasan.approve', [
             'penugasan' => $penugasan,
