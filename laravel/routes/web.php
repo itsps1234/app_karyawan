@@ -72,6 +72,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
     Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
+    Route::get('/izin/detail/edit/{id}', [IzinUserController::class, 'izinEdit']);
     Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);
     Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
 
@@ -81,13 +82,18 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
-    Route::get('/penugasan/approve/diminta/{id}', [PenugasanController::class, 'penugasanApprove']);
-    Route::get('/penugasan/approve/disahkan/{id}', [PenugasanController::class, 'penugasanApprove']);
-    Route::get('/penugasan/approve/diproseshrd/{id}', [PenugasanController::class, 'penugasanApprove']);
-    Route::get('/penugasan/approve/diprosesfinance/{id}', [PenugasanController::class, 'penugasanApprove']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);
     Route::get('/penugasan/detail/delete/{id}', [PenugasanController::class, 'penugasanDelete']);
     Route::post('/penugasan/detail/update/{id}', [PenugasanController::class, 'penugasanUpdate']);
+    Route::get('/penugasan/approve/diminta/show/{id}', [PenugasanController::class, 'approveShow']);
+    Route::get('/penugasan/approve/disahkan/show/{id}', [PenugasanController::class, 'approveShow']);
+    Route::get('/penugasan/approve/diproseshrd/show/{id}', [PenugasanController::class, 'approveShow']);
+    Route::get('/penugasan/approve/diprosesfinance/show/{id}', [PenugasanController::class, 'approveShow']);
+    Route::post('/penugasan/approve/diminta/ttd/{id}', [PenugasanController::class, 'approveDiminta']);
+    Route::post('/penugasan/approve/disahkan/ttd/{id}', [PenugasanController::class, 'approveDisahkan']);
+    Route::post('/penugasan/approve/diproseshrd/ttd/{id}', [PenugasanController::class, 'approveDiproseshrd']);
+    Route::post('/penugasan/approve/diprosesfinance/ttd/{id}', [PenugasanController::class, 'approveDiprosesfinance']);
+
     Route::get('/penugasan/delete/{id}', [PenugasanController::class, 'penugasanDelete']);
     Route::put('/penugasan/tambah-penugasan-proses', [PenugasanController::class, 'tambahPenugasan']);
     Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'penugasanApproveProses']);

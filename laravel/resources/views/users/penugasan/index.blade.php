@@ -257,9 +257,8 @@
         </div>
     </div>
 </div>
-</div>
 
-<hr width="90%" style="margin-left: 5%;margin-right: 5%">
+{{-- <hr width="90%" style="margin-left: 5%;margin-right: 5%"> --}}
 <div class="container">
     <div class="detail-content">
         <div class="flex-1">
@@ -268,12 +267,12 @@
     </div>
     @foreach ($record_data as $record_data)
     <div class="notification-content" style="background-color: white">
-        @if ($record_data->status_penugasan == 0)
+        @if ($record_data->status_penugasan != 0)
             <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
-                <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
+                <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
             </a>
         @else
-            <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
+            <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
         @endif
         <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
             <div class="notification">
@@ -287,10 +286,12 @@
                         </svg>
                         {{ $record_data->tanggal_pengajuan}}
                     </span>
-                    @if ($record_data->status_penugasan == 0)
-                    <small class="badge badge-danger"><i class="far fa-clock"></i> Menunggu</small>
-                    @else
-                    <small class="badge badge-success"><i class="far fa-clock"></i> Disetujui</small>
+                    @if ($record_data->status_penugasan == 0 )
+                    <small class="badge light badge-danger"><i class="fa fa-pencil"> </i> Tambahkan TTD</small>
+                    @elseif($record_data->status_penugasan == 1)
+                    <small class="badge light badge-warning"><i class="fa fa-pencil"> </i> Proses TTD Diminta</small>
+                    @elseif($record_data->status_penugasan == 2)
+                    <small class="badge light badge-info"><i class="fa fa-pencil"> </i> Proses TTD Disahkan</small>
                     @endif
                 </div>
             </div>

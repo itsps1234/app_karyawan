@@ -1,28 +1,13 @@
 @extends('users.penugasan.layout.main')
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-
+<script type="text/javascript" src="{{ asset('assets_ttd/assets/signature.js') }}"></script>
 <style>
-    .kbw-signature {
-        width: fit-content;
-        height: 100%;
+    body{
+    padding: 15px;
     }
-
-    #sig canvas {
-        margin-top: 5px;
-        width: 100%;
-        height: auto;
-    }
+    #note{position:absolute;left:50px;top:35px;padding:0px;margin:0px;cursor:default;}
 </style>
-
 @if(Session::has('penugasansukses'))
 <div class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -50,9 +35,9 @@
 </div>
 @endif
     <div class="container">
-            <form class="my-2">
-                @method('put')
-                    @csrf
+            <form class="my-2"method="post" action="{{ url('/penugasan/approve/diminta/ttd/'.$id_penugasan->id) }}" enctype="multipart/form-data">
+                @csrf
+                    <input type="hidden" name="status_penugasan" value="2">
                     <div class="input-group">
                         <input type="text" class="form-control" value="Nama" readonly>
                         <input type="text" class="form-control" name="" value="{{ $penugasan->fullname }}" style="font-weight: bold" readonly required>
@@ -115,7 +100,7 @@
                     </div>
                     <div class="input-group">
                         <input type="text" class="form-control" value="Makan" readonly>
-                        <input type="text" class="form-control" name="" value="{{ $penugasan->makan }}" readonly style="font-weight: bold" required>
+                        <input type="text" class="form-control" name="" value="{{ $penugasan->makan }} {{ $penugasan->id_diminta_oleh }}" readonly style="font-weight: bold" required>
                     </div>
                     <hr>
                     @php
@@ -128,6 +113,25 @@
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diajukan oleh" readonly>
                             <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
+                            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Cek Signature</button>
+                            <div class="modal fade" id="exampleModalCenter">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Signature : {{ $penugasan->fullname }}</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                                            {{-- <img width="40px" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" alt=""> --}}
+                                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_id_diajukan_oleh }}</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diminta oleh" readonly>
@@ -145,10 +149,22 @@
                             <input type="text" class="form-control" value="Diproses Finance" readonly>
                             <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
                         </div>
-                        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-                            <i class="fa fa-refresh" aria-hidden="true"> </i>
-                            &nbsp; Setujui
-                        </button>
+                        <div class="input-group">
+                            <div id="signature-pad">
+                                <div style="border:solid 1px teal; width:100%;height:200px;">
+                                    <div id="note" onmouseover="my_function();"></div>
+                                    <canvas id="the_canvas" width="auto" height="100px"></canvas>
+                                    <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
+                                    <hr>
+                                    <div style="margin:10px;">
+                                        <input type="hidden" id="signature" name="signature">
+                                        <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" style="margin-left:5%" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                                        <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" style="margin-right:5%" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     @elseif($penugasan->status_penugasan == 2)
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diajukan oleh" readonly>
@@ -254,16 +270,31 @@
     </div>
 </div>
 
+<script>
+    var wrapper = document.getElementById("signature-pad");
+    var clearButton = wrapper.querySelector("[data-action=clear]");
+    var savePNGButton = wrapper.querySelector("[data-action=save-png]");
+    var canvas = wrapper.querySelector("canvas");
+    var el_note = document.getElementById("note");
+    var signaturePad;
+    signaturePad = new SignaturePad(canvas);
 
-<script type="text/javascript">
-    var sig = $('#sig').signature({
-        syncField: '#signature64',
-        syncFormat: 'PNG'
+    clearButton.addEventListener("click", function (event) {
+        document.getElementById("note").innerHTML="The signature should be inside box";
+        signaturePad.clear();
     });
-    $('#clear').click(function(e) {
-        e.preventDefault();
-        sig.signature('clear');
-        $("#signature64").val('');
+    savePNGButton.addEventListener("click", function (event){
+        if (signaturePad.isEmpty()){
+            alert("Please provide signature first.");
+            event.preventDefault();
+        }else{
+            var canvas  = document.getElementById("the_canvas");
+            var dataUrl = canvas.toDataURL();
+            document.getElementById("signature").value = dataUrl;
+        }
     });
-</script>
+    function my_function(){
+        document.getElementById("note").innerHTML="";
+    }
+    </script>
 @endsection

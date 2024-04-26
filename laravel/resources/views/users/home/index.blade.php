@@ -78,6 +78,19 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('approveperdinsukses'))
+<div class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Approve.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @endif
 <div class="features-box">
     <div class="row m-b20 g-3">
@@ -268,29 +281,29 @@
                 </a>
                 @endforeach
                 @foreach ($datapenugasan as $datapenugasan)
-                @foreach($idpenugasan as $idpenugasan)
-                <a href="{{ url('/penugasan/approve/diminta/'.$idpenugasan->id) }}">
-                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
-                        <div class="card job-post">
-                            <div class="card-body">
-                                <div class="media media-80">
-                                    <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
-                                </div>
-                                <div class="card-info">
-                                    <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
-                                    <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
-                                    <div class="d-flex align-items-center">
-                                        @if ($datapenugasan->status_penugasan == 1)
-                                        <small class="badge badge-danger">Pending</small>
-                                        @endif
+                    @if($datapenugasan->ttd_id_diminta_oleh == NULL && $datapenugasan->waktu_ttd_id_diminta_oleh == NULL)
+                        <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">
+                            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
+                                <div class="card job-post">
+                                    <div class="card-body">
+                                        <div class="media media-80">
+                                            <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                        </div>
+                                        <div class="card-info">
+                                            <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
+                                            <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
+                                            <div class="d-flex align-items-center">
+                                                @if ($datapenugasan->status_penugasan == 1)
+                                                <small class="badge badge-danger">Pending</small>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-                @endforeach
+                        </a>
+                    @endif
+            @endforeach
             </div>
             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
         </div>
