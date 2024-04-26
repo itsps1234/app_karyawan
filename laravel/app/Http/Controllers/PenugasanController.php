@@ -30,7 +30,6 @@ class PenugasanController extends Controller
             ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
             ->where('users.id', Auth()->user()->id)->first();
         $userLevel      = LevelJabatan::where('id', $user->level_id)->first();
-        // dd($userLevel->level_jabatan);
         if ($userLevel->level_jabatan >= 3) {
             $levelatasan    = $userLevel->level_jabatan - 1;
             $levelatasan2    = $userLevel->level_jabatan - 2;
@@ -186,7 +185,7 @@ class PenugasanController extends Controller
         $uniqid         = date('y-m-d') . '-' . uniqid();
         $file           = $folderPath . $uniqid . '.' . $image_type;
         file_put_contents($file, $image_base64);
-        $data   = Penugasan::find($id)->first();
+        $data                               = Penugasan::find($id);
         $data->asal_kerja                   = $request->asal_kerja;
         $data->penugasan                    = $request->penugasan;
         $data->tanggal_kunjungan            = $request->tanggal_kunjungan;
@@ -201,7 +200,7 @@ class PenugasanController extends Controller
         $data->ttd_id_diajukan_oleh         = $uniqid;
         $data->waktu_ttd_id_diajukan_oleh   = date('Y-m-d h:i:s');
         $data->status_penugasan             = 1;
-        $data->update();
+        $data->save();
         $request->session()->flash('updatesukses', 'Berhasil Membuat Perdin');
         return redirect('/penugasan/dashboard');
     }
@@ -214,7 +213,7 @@ class PenugasanController extends Controller
         return redirect('/penugasan/dashboard');
     }
 
-    public function penugasanApprove($id)
+    public function approveShow($id)
     {
         $user       = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
             ->join('departemens', 'departemens.id', '=', 'users.dept_id')
@@ -226,55 +225,31 @@ class PenugasanController extends Controller
             ->join('divisis', 'divisis.id', 'penugasans.id_divisi')
             ->where('penugasans.id', $id)
             ->where('penugasans.status_penugasan', 1)->first();
-        dd($penugasan);
-        // dd($penugasan);
+        $id_penugasan   = DB::table('penugasans')->where('id', $id)->first();
         return view('users.penugasan.approve', [
             'penugasan' => $penugasan,
             'user'      => $user,
+            'id_penugasan'  => $id_penugasan,
         ]);
     }
 
-    public function cutiApprove($id)
+    public function approveDiminta(Request $request, $id)
     {
-        $user   = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-            ->where('users.id', Auth()->user()->id)->first();
-        $data   = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.user_id')
-            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')
-            ->where('cutis.id', $id)->first();
-        return view('users.cuti.approvecuti', [
-            'user'  => $user,
-            'data'  => $data
-        ]);
-    }
-
-    public function cutiApproveProses(Request $request, $id)
-    {
-        // dd($request->all());
-        $folderPath     = public_path('upload/');
-        $image_parts    = explode(";base64,", $request->ttd);
+        $folderPath     = public_path('signature/');
+        $image_parts    = explode(";base64,", $request->signature);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type     = $image_type_aux[1];
         $image_base64   = base64_decode($image_parts[1]);
-        $file           = $folderPath . uniqid() . '.' . $image_type;
+        $uniqid         = date('y-m-d') . '-' . uniqid();
+        $file           = $folderPath . $uniqid . '.' . $image_type;
         file_put_contents($file, $image_base64);
-        if ($request->ttd != null) {
-            $data = Izin::find($id);
-            $data->status_izin  = 1;
-            $data->catatan      = $request->catatan;
-            $data->waktu_approve = date('Y-m-d H:i:s');
-            $data->save();
-            return redirect('/home');
-        } else {
-            $data = Izin::find($id);
-            $data->status_izin  = 3;
-            $data->catatan      = $request->catatan;
-            $data->waktu_approve = date('Y-m-d H:i:s');
-            $data->save();
-            return redirect('/home');
-        }
-
-        return back()->with('success', 'success Full upload signature');
+        $data                               = Penugasan::find($id);
+        $data->ttd_id_diminta_oleh          = $uniqid;
+        $data->waktu_ttd_id_diminta_oleh    = date('Y-m-d h:i:s');
+        $data->status_penugasan             = 2;
+        $data->save();
+        $request->session()->flash('approveperdinsukses', 'Berhasil Approve Perdin');
+        return redirect('/home');
     }
+
 }
