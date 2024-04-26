@@ -58,6 +58,53 @@ class IzinUserController extends Controller
             'record_data'       => $record_data
         ]);
     }
+    public function izinEdit($id)
+    {
+        $user           = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+            ->where('users.id', Auth()->user()->id)->first();
+        $get_izin_id = Izin::where('id', $id)->first();
+        // dd($get_izin_id);
+        return view(
+            'users.izin.edit',
+            [
+                'user' => $user,
+                'get_izin' => $get_izin_id,
+            ]
+        );
+    }
+    public function izinEditProses(Request $request)
+    {
+        $folderPath     = public_path('signature/');
+        $image_parts    = explode(";base64,", $request->signature);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type     = $image_type_aux[1];
+        $image_base64   = base64_decode($image_parts[1]);
+        $uniqid         = date('y-m-d') . '-' . uniqid();
+        $file           = $folderPath . $uniqid . '.' . $image_type;
+        file_put_contents($file, $image_base64);
+        $data                   = Izin::where('id', $request['id'])->first();
+        $data->user_id          = $request->id_user;
+        $data->departements_id  = Departemen::where('id', $request["departements"])->value('id');
+        $data->jabatan_id       = Jabatan::where('id', $request["jabatan"])->value('id');
+        $data->divisi_id        = Divisi::where('id', $request["divisi"])->value('id');
+        $data->telp             = $request->telp;
+        $data->email            = $request->email;
+        $data->fullname         = $request->fullname;
+        $data->izin             = $request->izin;
+        $data->tanggal          = $request->tanggal;
+        $data->jam              = $request->jam;
+        $data->keterangan_izin  = $request->keterangan_izin;
+        $data->approve_atasan   = $request->approve_atasan;
+        $data->id_approve_atasan = $request->id_user_atasan;
+        $data->ttd_pengajuan    = $uniqid;
+        $data->waktu_ttd_pengajuan    = date('Y-m-d');
+        $data->status_izin      = 0;
+        $data->update();
+        Alert::success('Sukses', 'Data Berhasil di Dipdate');
+        return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Dipdate');
+    }
 
     public function izinAbsen(Request $request)
     {

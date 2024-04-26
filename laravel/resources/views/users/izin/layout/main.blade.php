@@ -36,6 +36,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div class="page-wraper">
 
         <!-- Preloader -->

@@ -269,11 +269,11 @@
     @foreach ($record_data as $record_data)
     <div class="notification-content" style="background-color: white">
         @if ($record_data->status_penugasan == 0)
-            <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
-                <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
-            </a>
+        <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
+            <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
+        </a>
         @else
-            <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
+        <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
         @endif
         <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
             <div class="notification">

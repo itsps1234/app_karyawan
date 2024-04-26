@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Izin extends Model
 {
@@ -25,10 +26,17 @@ class Izin extends Model
         'jam',
         'keterangan_izin',
         'foto_izin',
+        'ttd_pengajuan',
+        'waktu_ttd_pengajuan',
         'approve_atasan',
         'id_approve_atasan',
         'status_izin',
         'waktu_approve',
         'catatan',
     ];
+
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }

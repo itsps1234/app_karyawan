@@ -52,7 +52,7 @@ class AbsenController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
-        $lokasi_kantor = Lokasi::first();
+        $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
 
@@ -122,7 +122,7 @@ class AbsenController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
-        $lokasi_kantor = Lokasi::first();
+        $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
         $lat_kantor = $lokasi_kantor->lat_kantor;
         $long_kantor = $lokasi_kantor->long_kantor;
 
