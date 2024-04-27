@@ -78,6 +78,18 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('lokaikerjanull'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>error!</strong>&nbsp;Lokasi Kerja Anda Kosong. Hubungi HRD
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('approveperdinsukses'))
 <div class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -281,29 +293,29 @@
                 </a>
                 @endforeach
                 @foreach ($datapenugasan as $datapenugasan)
-                    @if($datapenugasan->ttd_id_diminta_oleh == NULL && $datapenugasan->waktu_ttd_id_diminta_oleh == NULL)
-                        <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">
-                            <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
-                                <div class="card job-post">
-                                    <div class="card-body">
-                                        <div class="media media-80">
-                                            <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
-                                        </div>
-                                        <div class="card-info">
-                                            <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
-                                            <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
-                                            <div class="d-flex align-items-center">
-                                                @if ($datapenugasan->status_penugasan == 1)
-                                                <small class="badge badge-danger">Pending</small>
-                                                @endif
-                                            </div>
-                                        </div>
+                @if($datapenugasan->ttd_id_diminta_oleh == NULL && $datapenugasan->waktu_ttd_id_diminta_oleh == NULL)
+                <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">
+                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
+                        <div class="card job-post">
+                            <div class="card-body">
+                                <div class="media media-80">
+                                    <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                </div>
+                                <div class="card-info">
+                                    <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
+                                    <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
+                                    <div class="d-flex align-items-center">
+                                        @if ($datapenugasan->status_penugasan == 1)
+                                        <small class="badge badge-danger">Pending</small>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    @endif
-            @endforeach
+                        </div>
+                    </div>
+                </a>
+                @endif
+                @endforeach
             </div>
             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
         </div>

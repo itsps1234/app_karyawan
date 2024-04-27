@@ -71,7 +71,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     route::get('get_table_absensi', [AbsenUserController::class, 'get_table_absensi'])->name('get_table_absensi');
 
     Route::get('/izin/dashboard', [IzinUserController::class, 'index']);
-    Route::put('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
+    Route::post('/izin/tambah-izin-proses', [IzinUserController::class, 'izinAbsen']);
     Route::post('/izin/edit-izin-proses', [IzinUserController::class, 'izinEditProses']);
     Route::get('/izin/detail/edit/{id}', [IzinUserController::class, 'izinEdit']);
     Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);

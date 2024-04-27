@@ -15,6 +15,7 @@ use App\Models\Jabatan;
 use App\Models\Izin;
 use App\Models\Departemen;
 use App\Models\Divisi;
+use App\Models\LevelJabatan;
 use DB;
 
 class IzinUserController extends Controller
@@ -22,32 +23,90 @@ class IzinUserController extends Controller
     public function index(Request $request)
     {
         $user_id        = Auth()->user()->id;
-        $user           = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+        $user = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+            ->join('level_jabatans', 'jabatans.level_id', '=', 'level_jabatans.id')
             ->join('departemens', 'departemens.id', '=', 'users.dept_id')
             ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
             ->where('users.id', Auth()->user()->id)->first();
-        $userLevel      = DB::table('level_jabatans')->where('id', $user->level_id)->first();
-        $levelatasan    = $userLevel->level_jabatan - 1;
-        $IdLevelAsasan  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-        $getAsatan      = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->where('divisi_id', $user->divisi_id)->first();
-        // $getAsatan      = User::with('Jabatan')->where('id', Auth::user()->id)->first();
-        $atasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
-        // dd($atasan);
-        if ($atasan == '' || $atasan == NULL) {
-            // dd('atasan null');
-            $atasan1  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
-            if ($atasan1 == NULL || $atasan1 == '') {
-                // dd('jabatan 1 null');
-                $getUserAtasan  = User::with('jabatan')->where('jabatan2_id', $getAsatan->id)->first();
+        if ($user->level_jabatan == 4) {
+            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '3')->first();
+            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '1')->first();
+            $atasan  = DB::table('users')
+                ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                ->where('jabatans.level_id', $IdLevelAsasan->id)
+                ->where('users.divisi_id', $user->divisi_id)
+                ->where('is_admin', 'user')
+                ->first();
+            if ($atasan == '' || $atasan == NULL) {
+                $atasan1  = DB::table('users')
+                    ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                    ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                    ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                    ->where('jabatans.level_id', $IdLevelAsasan1->id)
+                    ->where('users.divisi_id', $user->divisi_id)
+                    ->where('is_admin', 'user')
+                    ->first();
+                $getUserAtasan  = $atasan1;
+                if ($atasan == '' || $atasan == NULL) {
+                    $atasan2  = DB::table('users')
+                        ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                        ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                        ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                        ->where('jabatans.level_id', $IdLevelAsasan2->id)
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->where('is_admin', 'user')
+                        ->first();
+                    $getUserAtasan  = $atasan2;
+                } else {
+                    $getUserAtasan  = $atasan;
+                }
             } else {
-                // dd('jabatan 1 not null');
-                $getUserAtasan  = User::with('jabatan')->where('jabatan1_id', $getAsatan->id)->first();
+                $getUserAtasan  = $atasan;
             }
-        } else {
-            $getUserAtasan  = User::with('jabatan')->where('jabatan_id', $getAsatan->id)->first();
-            // dd('atasan not null');
+        } else if ($user->level_jabatan == 3) {
+            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '1')->first();
+            $atasan  = DB::table('users')
+                ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                ->where('jabatans.level_id', $IdLevelAsasan->id)
+                ->where('users.divisi_id', $user->divisi_id)
+                ->where('is_admin', 'user')
+                ->first();
+            if ($atasan == '' || $atasan == NULL) {
+                $atasan1  = DB::table('users')
+                    ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                    ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                    ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                    ->where('jabatans.level_id', $IdLevelAsasan1->id)
+                    ->where('users.divisi_id', $user->divisi_id)
+                    ->where('is_admin', 'user')
+                    ->first();
+                $getUserAtasan  = $atasan1;
+            } else {
+                $getUserAtasan  = $atasan;
+            }
+        } else if ($user->level_jabatan == 2) {
+            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '1')->first();
+            $atasan  = DB::table('users')
+                ->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                ->where('jabatans.level_id', $IdLevelAsasan->id)
+                ->where('users.divisi_id', $user->divisi_id)
+                ->where('is_admin', 'user')
+                ->first();
+            if ($atasan == '' || $atasan == NULL) {
+                $getUserAtasan  = $atasan;
+            } else {
+                $getUserAtasan  = $atasan;
+            }
         }
-        // dd($getUserAtasan);
+
         $record_data    = DB::table('izins')->where('user_id', Auth::user()->id)->orderBy('tanggal', 'DESC')->get();
         return view('users.izin.index', [
             'title'             => 'Tambah Permintaan Cuti Karyawan',
@@ -76,58 +135,69 @@ class IzinUserController extends Controller
     }
     public function izinEditProses(Request $request)
     {
-        $folderPath     = public_path('signature/');
-        $image_parts    = explode(";base64,", $request->signature);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type     = $image_type_aux[1];
-        $image_base64   = base64_decode($image_parts[1]);
-        $uniqid         = date('y-m-d') . '-' . uniqid();
-        $file           = $folderPath . $uniqid . '.' . $image_type;
-        file_put_contents($file, $image_base64);
-        $data                   = Izin::where('id', $request['id'])->first();
-        $data->user_id          = $request->id_user;
-        $data->departements_id  = Departemen::where('id', $request["departements"])->value('id');
-        $data->jabatan_id       = Jabatan::where('id', $request["jabatan"])->value('id');
-        $data->divisi_id        = Divisi::where('id', $request["divisi"])->value('id');
-        $data->telp             = $request->telp;
-        $data->email            = $request->email;
-        $data->fullname         = $request->fullname;
-        $data->izin             = $request->izin;
-        $data->tanggal          = $request->tanggal;
-        $data->jam              = $request->jam;
-        $data->keterangan_izin  = $request->keterangan_izin;
-        $data->approve_atasan   = $request->approve_atasan;
-        $data->id_approve_atasan = $request->id_user_atasan;
-        $data->ttd_pengajuan    = $uniqid;
-        $data->waktu_ttd_pengajuan    = date('Y-m-d');
-        $data->status_izin      = 0;
-        $data->update();
-        Alert::success('Sukses', 'Data Berhasil di Dipdate');
-        return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Dipdate');
+        if ($request->signature !== null) {
+            $folderPath     = public_path('signature/');
+            $image_parts    = explode(";base64,", $request->signature);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type     = $image_type_aux[1];
+            $image_base64   = base64_decode($image_parts[1]);
+            $uniqid         = date('y-m-d') . '-' . uniqid();
+            $file           = $folderPath . $uniqid . '.' . $image_type;
+            file_put_contents($file, $image_base64);
+            $data                   = Izin::where('id', $request['id'])->first();
+            $data->user_id          = $request->id_user;
+            $data->departements_id  = Departemen::where('id', $request["departements"])->value('id');
+            $data->jabatan_id       = Jabatan::where('id', $request["jabatan"])->value('id');
+            $data->divisi_id        = Divisi::where('id', $request["divisi"])->value('id');
+            $data->telp             = $request->telp;
+            $data->email            = $request->email;
+            $data->fullname         = $request->fullname;
+            $data->izin             = $request->izin;
+            $data->tanggal          = $request->tanggal;
+            $data->jam              = $request->jam;
+            $data->keterangan_izin  = $request->keterangan_izin;
+            $data->approve_atasan   = $request->approve_atasan;
+            $data->id_approve_atasan = $request->id_user_atasan;
+            $data->ttd_pengajuan    = $uniqid;
+            $data->waktu_ttd_pengajuan    = date('Y-m-d');
+            $data->status_izin      = 1;
+            $data->update();
+            Alert::success('Sukses', 'Data Berhasil di Dipdate');
+            return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Dipdate');
+        } else {
+            Alert::info('info', 'Tanda Tangan Harus Terisi');
+            return redirect()->back()->with('info', 'Tanda Tangan Harus Terisi');
+        }
     }
 
     public function izinAbsen(Request $request)
     {
         // dd($request->all());
-        $data                   = new Izin();
-        $data->user_id          = $request->id_user;
-        $data->departements_id  = Departemen::where('id', $request["departements"])->value('id');
-        $data->jabatan_id       = Jabatan::where('id', $request["jabatan"])->value('id');
-        $data->divisi_id        = Divisi::where('id', $request["divisi"])->value('id');
-        $data->telp             = $request->telp;
-        $data->email            = $request->email;
-        $data->fullname         = $request->fullname;
-        $data->izin             = $request->izin;
-        $data->tanggal          = $request->tanggal;
-        $data->jam              = $request->jam;
-        $data->keterangan_izin  = $request->keterangan_izin;
-        $data->approve_atasan   = $request->approve_atasan;
-        $data->id_approve_atasan = $request->id_user_atasan;
-        $data->status_izin      = 0;
-        $data->ttd_atasan      = NULL;
-        $data->waktu_approve      = NULL;
-        $data->save();
-        return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Tambahkan');
+        if ($request->id_user_atasan == NULL || $request->id_user_atasan == '') {
+            $request->session()->flash('atasankosong');
+            return redirect('/izin/dashboard');
+        } else {
+
+            $data                   = new Izin();
+            $data->user_id          = $request->id_user;
+            $data->departements_id  = Departemen::where('id', $request["departements"])->value('id');
+            $data->jabatan_id       = Jabatan::where('id', $request["jabatan"])->value('id');
+            $data->divisi_id        = Divisi::where('id', $request["divisi"])->value('id');
+            $data->telp             = $request->telp;
+            $data->email            = $request->email;
+            $data->fullname         = $request->fullname;
+            $data->izin             = $request->izin;
+            $data->tanggal          = $request->tanggal;
+            $data->jam              = $request->jam;
+            $data->keterangan_izin  = $request->keterangan_izin;
+            $data->approve_atasan   = $request->approve_atasan;
+            $data->id_approve_atasan = $request->id_user_atasan;
+            $data->status_izin      = 0;
+            $data->ttd_atasan      = NULL;
+            $data->waktu_approve      = NULL;
+            $data->save();
+            return redirect('/izin/dashboard')->with('success', 'Data Berhasil di Tambahkan');
+        }
     }
 
     public function izinApprove($id)
@@ -146,29 +216,24 @@ class IzinUserController extends Controller
     public function izinApproveProses(Request $request, $id)
     {
         // dd($request->all());
-        $folderPath     = public_path('upload/');
-        $image_parts    = explode(";base64,", $request->ttd);
+        $folderPath     = public_path('signature/');
+        $image_parts    = explode(";base64,", $request->signature);
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type     = $image_type_aux[1];
         $image_base64   = base64_decode($image_parts[1]);
-        $file           = $folderPath . uniqid() . '.' . $image_type;
-        file_put_contents($file, $image_base64);
-        if ($request->ttd != null) {
+        $uniqid         = date('y-m-d') . '-' . uniqid();
+        $file           = $folderPath . $uniqid . '.' . $image_type;
+        if ($request->signature != null) {
             $data = Izin::find($id);
             $data->status_izin  = 1;
             $data->catatan      = $request->catatan;
             $data->waktu_approve = date('Y-m-d H:i:s');
             $data->save();
-            return redirect('/home');
+            Alert::success('Sukses', 'Data Berhasil di Simpan');
+            return redirect('/home')->with('success', 'Data Berhasil di Simpan');
         } else {
-            $data = Izin::find($id);
-            $data->status_izin  = 3;
-            $data->catatan      = $request->catatan;
-            $data->waktu_approve = date('Y-m-d H:i:s');
-            $data->save();
-            return redirect('/home');
+            Alert::info('info', 'Tanda Tangan Harus Terisi');
+            return redirect()->back()->with('info', 'Tanda Tangan Harus Terisi');
         }
-
-        return back()->with('success', 'success Full upload signature');
     }
 }

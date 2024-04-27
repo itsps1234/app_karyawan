@@ -5,6 +5,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <div class="container">
+    @if($get_izin->status_izin == '0')
     @if($get_izin->ttd_pengajuan != '')
     <div class="alert alert-primary light alert-lg alert-dismissible fade show">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
@@ -43,6 +44,8 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
     </div>
+    @else
+    @endif
     @else
     @endif
     <form class="my-2" method="post" action="{{ url('/izin/edit-izin-proses/') }}" enctype="multipart/form-data">

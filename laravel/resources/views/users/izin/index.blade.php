@@ -3,7 +3,31 @@
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+@if(Session::has('atasankosong'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>error!</strong> Atasan Anda Kosong. Hubungi HRD.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>error!</strong> Atasan Anda Kosong. Hubungi HRD.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@else
+@endif
 <div class="container">
     <form class="my-2">
         <div class="input-group">
@@ -38,7 +62,11 @@
                             <input type="hidden" name="departements" value="{{ $user->dept_id }}">
                             <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}">
                             <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id="">
+                            @if($getUserAtasan==NULL)
+                            <input type="hidden" name="id_user_atasan" value="">
+                            @else
                             <input type="hidden" name="id_user_atasan" value="{{ $getUserAtasan->id }}">
+                            @endif
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Name" readonly>
@@ -62,7 +90,11 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Approve By" readonly>
+                            @if($getUserAtasan==NULL)
+                            <input type="text" class="form-control" name="approve_atasan" value="" readonly>
+                            @else
                             <input type="text" class="form-control" name="approve_atasan" value="{{ $getUserAtasan->name }}" readonly>
+                            @endif
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -103,7 +135,12 @@
                     <small class="badge badge-info"><i class="fa fa-spinner"></i> Menunggu Approve</small>
                     @endif
                     @else
-                    <small class="badge badge-success"><i class="far fa-clock"></i> Approved</small>
+                    <small class="badge badge-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                            <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        Disetujui</small>
                     @endif
                 </div>
             </div>

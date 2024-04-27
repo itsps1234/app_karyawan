@@ -50,6 +50,11 @@ class AbsenController extends Controller
 
     public function absenMasuk(Request $request, $id)
     {
+        $lokasi_kerja = Auth::guard('web')->user()->penempatan_kerja;
+        // dd($lokasi_kerja);
+        if ($lokasi_kerja == 'null') {
+        } else {
+        }
         date_default_timezone_set('Asia/Jakarta');
 
         $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
