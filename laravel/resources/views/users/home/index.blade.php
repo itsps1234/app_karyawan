@@ -248,7 +248,7 @@
     <div class="swiper-btn-center-lr">
         <div class="swiper-container tag-group mt-4 dz-swiper recomand-swiper swiper-container-initialized swiper-container-horizontal swiper-container-ios">
             <div class="swiper-wrapper" id="swiper-wrapper-f27986ff6c88d8d9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 10px;">
+                <div class="" role="group" aria-label="1 / 3" style="margin-right: 10px;">
                     @foreach ($dataizin as $dataizin)
                     <a href="{{ url('/izin/approve/'.$dataizin->id) }}">
                         <div class="card job-post">
@@ -261,7 +261,7 @@
                                     <span class="">{{ $dataizin->izin }}</span>
                                     <div class="d-flex align-items-center">
                                         @if ($dataizin->status_izin == 0)
-                                        <small class="badge badge-danger">Pending</small>
+                                        <small class="badge badge-danger">Pendsing</small>
                                         @endif
                                     </div>
                                 </div>
@@ -293,7 +293,9 @@
                 </a>
                 @endforeach
                 @foreach ($datapenugasan as $datapenugasan)
-                @if($datapenugasan->ttd_id_diminta_oleh == NULL && $datapenugasan->waktu_ttd_id_diminta_oleh == NULL)
+                @if($datapenugasan->ttd_id_diminta_oleh == NULL)
+                @if($datapenugasan->id_user_atasan == auth::user()->id)
+                @if($datapenugasan->status_penugasan == 1)
                 <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">
                     <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
                         <div class="card job-post">
@@ -302,18 +304,20 @@
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
                                 </div>
                                 <div class="card-info">
-                                    <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->fullname }}</a></h6>
+                                    <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->id }}</a></h6>
                                     <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
                                     <div class="d-flex align-items-center">
-                                        @if ($datapenugasan->status_penugasan == 1)
+                                        {{-- @if ($datapenugasan->status_penugasan = 1) --}}
                                         <small class="badge badge-danger">Pending</small>
-                                        @endif
+                                        {{-- @endif --}}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </a>
+                @endif
+                @endif
                 @endif
                 @endforeach
             </div>
