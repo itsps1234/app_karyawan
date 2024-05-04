@@ -78,9 +78,11 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
 
     Route::get('/cuti/dashboard', [CutiUserController::class, 'index']);
+    Route::get('/cuti/detail/edit/{id}', [CutiUserController::class, 'cutiEdit']);
+    Route::post('/cuti/edit-cuti-proses', [CutiUserController::class, 'cutiUpdateProses']);
     Route::get('/cuti/approve/{id}', [CutiUserController::class, 'cutiApprove']);
     Route::put('/cuti/tambah-cuti-proses', [CutiUserController::class, 'cutiAbsen']);
-    Route::put('/cuti/approve/proses/{id}', [CutiUserController::class, 'cutiApproveProses']);
+    Route::post('/cuti/approve/proses', [CutiUserController::class, 'cutiApproveProses']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);
@@ -140,8 +142,11 @@ Route::get('/dashboard/holding', [dashboardController::class, 'holding'])->middl
 Route::get('/activity-logs', 'App\Http\Controllers\ActivityLogController@index')->name('activity-logs.index');
 // Route::post('/logout', [authController::class, 'logout'])->middleware('auth');
 Route::get('/karyawan/sp', [karyawanController::class, 'index'])->middleware('admin');
+Route::get('/karyawan-datatable/sp', [karyawanController::class, 'datatable'])->middleware('admin');
 Route::get('/karyawan/sps', [karyawanController::class, 'index'])->middleware('admin');
+Route::get('/karyawan-datatable/sps', [karyawanController::class, 'datatable'])->middleware('admin');
 Route::get('/karyawan/sip', [karyawanController::class, 'index'])->middleware('admin');
+Route::get('/karyawan-datatable/sip', [karyawanController::class, 'datatable'])->middleware('admin');
 Route::get('/karyawan/tambah-karyawan/sp', [karyawanController::class, 'tambahKaryawan'])->middleware('admin');
 Route::get('/karyawan/tambah-karyawan/sps', [karyawanController::class, 'tambahKaryawan'])->middleware('admin');
 Route::get('/karyawan/tambah-karyawan/sip', [karyawanController::class, 'tambahKaryawan'])->middleware('admin');
@@ -151,7 +156,7 @@ Route::post('/karyawan/tambah-karyawan-proses/sip', [karyawanController::class, 
 Route::get('/karyawan/detail/{id}/sp', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sps', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sip', [karyawanController::class, 'detail'])->middleware('admin');
-Route::put('/karyawan/proses-edit/{id}/sp', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::post('/karyawan/proses-edit/{id}/sp', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
 Route::put('/karyawan/proses-edit/{id}/sps', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
 Route::put('/karyawan/proses-edit/{id}/sip', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
 Route::delete('/karyawan/delete/{id}/sp', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');

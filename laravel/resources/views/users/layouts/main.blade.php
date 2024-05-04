@@ -207,7 +207,8 @@
     <!--**********************************
     Scripts
 ***********************************-->
-    @include('users.layouts.js') @yield('js')
+    @include('users.layouts.js')
+    @yield('js')
 </body>
 
 </html>

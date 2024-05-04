@@ -30,13 +30,24 @@
     </button>
 </div>
 @elseif(Session::has('absenmasukoutradius'))
-<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+<div class="alert alert-danger light alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
         <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
         <line x1="15" y1="9" x2="9" y2="15"></line>
         <line x1="9" y1="9" x2="15" y2="15"></line>
     </svg>
-    <strong>error!</strong> Anda Berada Diluar Radius Absen.
+    <strong>Error!</strong> Anda Berada Diluar Radius Absen.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+<div class="alert alert-info light alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    <strong>Info!</strong> Lokasi Kantor Anda di {{$lokasi_kantor}}
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -103,9 +114,48 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('approvecuti_success'))
+<div id="alert_approve_cuti_success" class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Approve Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('kontrakkerjaNULL'))
+<div id="alert_kontrak_kerja_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Kontrak Kerja Anda Kosong. Hubungi HRD
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @endif
 <div class="features-box">
     <div class="row m-b20 g-3">
+        @if($status_absen_skrg=='[]')
+        <div class="alert alert-warning light alert-dismissible fade show">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <strong>Warning!</strong> User Belum Mapping Shift. Harap Hubungi HRD.
+            <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        @else
+        @endif
         @foreach ($status_absen_skrg as $data)
         @if ($data->jam_absen == null && $data->jam_pulang==null)
         <div class="col">
@@ -239,18 +289,18 @@
     </div>
 </div>
 
-@if ($dataizin->count() > 0 || $datacuti->count() > 0 || $datapenugasan->count() > 0)
+@if ($datacuti_tingkat1->count() > 0 || $datacuti_tingkat2->count() > 0|| $dataizin->count() > 0 || $datapenugasan->count() > 0)
 <div class="m-b10">
     <div class="title-bar">
-        <h5 class="title">List Pengajuan</h5>
-        <div class="swiper-defult-pagination pagination-dots style-1 p-0 swiper-pagination-clickable swiper-pagination-bullets"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" tabindex="0" role="button" aria-label="Go to slide 1"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 2"></span><span class="swiper-pagination-bullet" tabindex="0" role="button" aria-label="Go to slide 3"></span></div>
+        <h5 class="dz-title">List Pengajuan</h5>
+        <div class="swiper-defult-pagination pagination-dots style-1 p-0"></div>
     </div>
     <div class="swiper-btn-center-lr">
-        <div class="swiper-container tag-group mt-4 dz-swiper recomand-swiper swiper-container-initialized swiper-container-horizontal swiper-container-ios">
-            <div class="swiper-wrapper" id="swiper-wrapper-f27986ff6c88d8d9" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                <div class="" role="group" aria-label="1 / 3" style="margin-right: 10px;">
-                    @foreach ($dataizin as $dataizin)
-                    <a href="{{ url('/izin/approve/'.$dataizin->id) }}">
+        <div class="swiper-container tag-group mt-4 dz-swiper recomand-swiper">
+            <div class="swiper-wrapper">
+                @foreach ($dataizin as $dataizin)
+                <a href="{{ url('/izin/approve/'.$dataizin->id) }}">
+                    <div class="swiper-slide">
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
@@ -261,28 +311,54 @@
                                     <span class="">{{ $dataizin->izin }}</span>
                                     <div class="d-flex align-items-center">
                                         @if ($dataizin->status_izin == 0)
-                                        <small class="badge badge-danger">Pendsing</small>
+                                        <small class="badge badge-danger">Pending</small>
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </a>
-                    @endforeach
-                </div>
-                @foreach ($datacuti as $datacuti)
+                    </div>
+                </a>
+                @endforeach
+                @foreach ($datacuti_tingkat1 as $datacuti)
                 <a href="{{ url('/cuti/approve/'.$datacuti->id) }}">
-                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 10px;">
+                    <div class="swiper-slide">
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
                                 </div>
                                 <div class="card-info">
-                                    <h6 class="title"><a href="javascript:void(0);">{{ $datacuti->fullname }}</a></h6>
+                                    <h6 class="title">{{ $datacuti->fullname }}</h6>
                                     <span class="">{{ $datacuti->nama_cuti }}</span>
                                     <div class="d-flex align-items-center">
-                                        @if ($datacuti->status_cuti == 0)
+                                        @if ($datacuti->status_cuti == 1)
+                                        <small class="badge badge-danger">Pending</small>
+                                        @elseif ($datacuti->status_cuti == 0)
+                                        <small class="badge badge-danger">Pending</small>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+                @foreach ($datacuti_tingkat2 as $datacuti)
+                <a href="{{ url('/cuti/approve/'.$datacuti->id) }}">
+                    <div class="swiper-slide">
+                        <div class="card job-post">
+                            <div class="card-body">
+                                <div class="media media-80">
+                                    <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                </div>
+                                <div class="card-info">
+                                    <h6 class="title">{{ $datacuti->fullname }}</h6>
+                                    <span class="">{{ $datacuti->nama_cuti }}</span>
+                                    <div class="d-flex align-items-center">
+                                        @if ($datacuti->status_cuti == 1)
+                                        <small class="badge badge-danger">Pending</small>
+                                        @elseif ($datacuti->status_cuti == 0)
                                         <small class="badge badge-danger">Pending</small>
                                         @endif
                                     </div>
@@ -297,14 +373,14 @@
                 @if($datapenugasan->id_user_atasan == auth::user()->id)
                 @if($datapenugasan->status_penugasan == 1)
                 <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">
-                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 3" style="margin-right: 15px;">
+                    <div class="swiper-slide">
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
                                 </div>
                                 <div class="card-info">
-                                    <h6 class="title"><a href="javascript:void(0);">{{ $datapenugasan->id }}</a></h6>
+                                    <h6 class="title">{{ $datapenugasan->fullname }}</h6>
                                     <span class="" style="font-size: 12px">Penugasan {{ $datapenugasan->penugasan }}</span>
                                     <div class="d-flex align-items-center">
                                         {{-- @if ($datapenugasan->status_penugasan = 1) --}}
@@ -482,4 +558,24 @@
     </div>
 </div>
 <!-- Categorie End -->
+@endsection
+@section('js')
+<script>
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_kontrak_kerja_null").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_approve_cuti_success").remove();
+        }, 7000); // 7 secs
+
+    });
+</script>
 @endsection

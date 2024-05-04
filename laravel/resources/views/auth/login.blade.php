@@ -1,75 +1,39 @@
-    {{-- <main class="d-flex align-items-center min-vh-100 py-3 py-md-0">
-        <div class="container">
-            <div class="card login-card">
-                <div class="row no-gutters">
-                    <div class="col-md-5">
-                        <img src="{{asset('assets/page_login/login.jpg')}}" alt="login" class="login-card-img">
-                    </div>
-                    <div class="col-md-7">
-                        <div class="card-body">
-                            <div class="brand-wrapper">
-                                <img src="{{asset('assets/page_login/logo.svg')}}" alt="logo" class="logo">
-                            </div>
-                            <p class="login-card-description">Sign into your account</p>
-                            <form method="POST" id="myForm" action="{{ url('/login-proses') }}">
-                                 @csrf
-                                <div class="form-group">
-                                    <label for="username" class="sr-only">Email</label>
-                                    <input type="text" id="username" class="form-control" @error('username') is-invalid @enderror name="username" value="{{ old('username') }}" autocomplete="username" autofocus placeholder="Username">
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label for="password" class="sr-only">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control" placeholder="***********">
-                                </div>
+<!DOCTYPE html>
+<html lang="en">
 
-                                <button class="btn btn-block login-btn mb-4" type="submit">Login</button>
-                            </form>
-                            <a href="#!" class="forgot-password-link">Forgot password?</a>
-                            <p class="login-card-footer-text">Don't have an account? <a href="#!" class="text-reset">Register here</a></p>
-                            <nav class="login-card-footer-nav">
-                                <a href="#!">Terms of use.</a>
-                                <a href="#!">Privacy policy</a>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main> --}}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
+<head>
 
-        <!-- Meta -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, minimal-ui, viewport-fit=cover">
-        <meta name="theme-color" content="#2196f3">
-        <meta name="author" content="DexignZone" />
-        <meta name="keywords" content="" />
-        <meta name="robots" content="" />
-        <meta name="description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )"/>
-        <meta property="og:title" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
-        <meta property="og:description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
-        <meta property="og:image" content="https://jobie.dexignzone.com/mobile-app/xhtml/social-image.png"/>
-        <meta name="format-detection" content="telephone=no">
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, minimal-ui, viewport-fit=cover">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="author" content="DexignZone" />
+    <meta name="keywords" content="" />
+    <meta name="robots" content="" />
+    <meta name="description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
+    <meta property="og:title" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
+    <meta property="og:description" content="Jobie - Job Portal Mobile App Template ( Bootstrap 5 + PWA )" />
+    <meta property="og:image" content="https://jobie.dexignzone.com/mobile-app/xhtml/social-image.png" />
+    <meta name="format-detection" content="telephone=no">
 
-        <!-- Favicons Icon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+    <!-- Favicons Icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
 
-        <!-- Title -->
-        <title>APPS KARYAWAN</title>
+    <!-- Title -->
+    <title>APPS KARYAWAN</title>
 
-        <!-- Stylesheets -->
-        <link rel="stylesheet" href="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets_users/css/style.css') }}">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets_users/css/style.css') }}">
 
-        <!-- Google Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Racing+Sans+One&display=swap" rel="stylesheet">
 
-    </head>
-    <body>
+</head>
+
+<body>
     <div class="page-wraper">
 
         <!-- Preloader -->
@@ -85,7 +49,7 @@
             <div class="banner-wrapper shape-1">
                 <div class="container inner-wrapper">
                     <h2 class="dz-title">Sign In</h2>
-                    <p class="mb-0">Please sign in to My SP</p>
+                    <p class="mb-0">Please sign in to My SPS</p>
                 </div>
             </div>
             <!-- Banner End -->
@@ -206,5 +170,6 @@
     <script src="{{ asset('assets/assets_users/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/assets_users/js/settings.js') }}"></script>
     <script src="{{ asset('assets/assets_users/js/custom.js') }}"></script>
-    </body>
-    </html>
+</body>
+
+</html>

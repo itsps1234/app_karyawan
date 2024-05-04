@@ -52,6 +52,7 @@ class User extends Authenticatable
         'is_admin',
         'kontrak_kerja',
         'penempatan_kerja',
+        'site_job',
         'provinsi',
         'kabupaten',
         'kecamatan',
@@ -102,6 +103,14 @@ class User extends Authenticatable
     public function Jabatan(): BelongsTo
     {
         return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
+    }
+    public function Departemen(): BelongsTo
+    {
+        return $this->belongsTo(Departemen::class, 'dept_id', 'id');
+    }
+    public function Divisi(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
     }
 
     /**

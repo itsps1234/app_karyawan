@@ -15,6 +15,16 @@ class dashboardController extends Controller
 {
     public function index()
     {
+        // $arr [4,2,1,6]
+        // Echo dadine [2,1,-5...
+        // $arr = [5, 4, 3, 2, 1];
+        // dd(count($arr));
+
+        // foreach ($arr as $a) {
+        // $result = $a;
+        // dd($result);
+        // }
+        // return view('admin.layouts.dashboard');
         $holding = request()->segment(count(request()->segments()));
         // $md5_sp = md5('sp');
         // $holding = md5($get_holding);
@@ -26,7 +36,8 @@ class dashboardController extends Controller
 
         $logs = $logs->orderBy('created_at', 'desc')->limit(5)->get();
 
-        return view('dashboard.index', [
+        return view('admin.dashboard.index', [
+            // 'arr' => $arr,
             'title' => 'Dashboard',
             'jumlah_user' => User::count(),
             'jumlah_masuk' => MappingShift::where('tanggal', $tgl_skrg)->where('status_absen', 'Masuk')->count(),
@@ -44,6 +55,6 @@ class dashboardController extends Controller
     public function holding()
     {
         // dd($sp);
-        return view('dashboard.holding');
+        return view('admin.dashboard.holding');
     }
 }

@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ActivityLog;
+use App\Models\Cuti;
+use App\Models\Izin;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +22,8 @@ class HomeUserController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
+        $lokasi_kantor = Auth::guard('web')->user()->penempatan_kerja;
+        // dd($lokasi_kantor);
         $tanggal = "";
         // $dateweek = \Carbon\Carbon::today();
         // dd($dateweek);
@@ -31,24 +35,47 @@ class HomeUserController extends Controller
         $mapping_shift      = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
         $count_absen_hadir  = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
         $user           = Auth::user()->id;
-        $dataizin       = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
-        $datacuti       = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
+        $dataizin       = Izin::where('id_approve_atasan', $user)
+            ->whereNotNull('ttd_pengajuan')
+            ->where('status_izin', 0)
+            ->get();
+        // get atasan tingkat 
+        $datacuti_tingkat1       = Cuti::where('status_cuti', 0)
+            ->join('users', 'users.id', '=', 'cutis.user_id')
+            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.kategori_cuti_id')
+            ->where('id_user_atasan', $user)
+            ->whereNotNull('ttd_user')
+            ->select('cutis.*', 'users.name', 'users.fullname', 'kategori_cuti.nama_cuti')
+            ->get();
+        $datacuti_tingkat2       = Cuti::where('status_cuti', 1)
+            ->join('users', 'users.id', '=', 'cutis.user_id')
+            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.kategori_cuti_id')
+            ->where('id_user_atasan2', $user)
+            ->whereNotNull('ttd_user')
+            ->select('cutis.*', 'users.name', 'users.fullname', 'kategori_cuti.nama_cuti')
+            ->get();
+        // dd($datacuti_tingkat1);
         $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')
-            ->orWhere('id_user_atasan', $user)->orWhere('id_user_atasan2', $user)->where('penugasans.status_penugasan', '!=', 0)
+            ->orWhere('id_user_atasan', $user)
+            ->orWhere('id_user_atasan2', $user)
+            ->where('penugasans.status_penugasan', '!=', 0)
             ->select('penugasans.*', 'users.fullname')->get();
-        // dd($datapenugasan);
+        // dd($datacuti_tingkat2->count());
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
             $jam_pulang = null;
             $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get();
+            // dd($status_absen_skrg);
             return view('users.home.index', [
                 'title'             => 'Absen',
                 'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->first(),
                 'count_absen_hadir' => $count_absen_hadir,
                 'thnskrg'           => $thnskrg,
+                'lokasi_kantor'     => $lokasi_kantor,
                 'status_absen_skrg' => $status_absen_skrg,
                 'dataizin'          => $dataizin,
-                'datacuti'          => $datacuti,
+                'datacuti_tingkat1' => $datacuti_tingkat1,
+                'datacuti_tingkat2' => $datacuti_tingkat2,
                 'datapenugasan'     => $datapenugasan,
             ]);
         } else {
@@ -82,9 +109,11 @@ class HomeUserController extends Controller
                 'count_absen_hadir' => $count_absen_hadir,
                 'thnskrg'           => $thnskrg,
                 'get_shift'         => $getshift,
+                'lokasi_kantor'     => $lokasi_kantor,
                 'status_absen_skrg' => $status_absen_skrg,
                 'dataizin'          => $dataizin,
-                'datacuti'          => $datacuti,
+                'datacuti_tingkat1' => $datacuti_tingkat1,
+                'datacuti_tingkat2' => $datacuti_tingkat2,
                 'datapenugasan'     => $datapenugasan,
             ]);
         }

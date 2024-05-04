@@ -31,7 +31,7 @@
         <line x1="9" y1="9" x2="9.01" y2="9"></line>
         <line x1="15" y1="9" x2="15.01" y2="9"></line>
     </svg>
-    <strong>Success!</strong> Anda Berhasil Pengajuan Perdin
+    <strong>Success!</strong> Anda Berhasil Pengajuan Perjalanan Dinas
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -44,7 +44,7 @@
         <line x1="9" y1="9" x2="9.01" y2="9"></line>
         <line x1="15" y1="9" x2="15.01" y2="9"></line>
     </svg>
-    <strong>Success!</strong> Anda Berhasil Update Perdin
+    <strong>Success!</strong> Anda Berhasil Update Perjalanan Dinas
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -57,7 +57,7 @@
         <line x1="9" y1="9" x2="9.01" y2="9"></line>
         <line x1="15" y1="9" x2="15.01" y2="9"></line>
     </svg>
-    <strong>Success!</strong> Anda Berhasil Hapus Perdin
+    <strong>Success!</strong> Anda Berhasil Hapus Perjalanan Dinas
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -69,7 +69,7 @@
         <line x1="15" y1="9" x2="9" y2="15"></line>
         <line x1="9" y1="9" x2="15" y2="15"></line>
     </svg>
-    <strong>Warning!</strong> Anda Gagal Pengajuan Perdin.
+    <strong>Warning!</strong> Anda Gagal Pengajuan Perjalanan Dinas.
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>

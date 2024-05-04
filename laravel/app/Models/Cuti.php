@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cuti extends Model
 {
-    use HasFactory,UuidTrait;
+    use HasFactory, UuidTrait;
     protected $guarded = ['id'];
     public $incrementing = false;
     protected $fillable = [
         'user_id',
+        'kategori_cuti_id',
         'nama_cuti',
         'tanggal',
         'tanggal_mulai',
@@ -23,6 +24,7 @@ class Cuti extends Model
         'status_cuti',
         'user_id_backup',
         'ttd_user',
+        'waktu_ttd_user',
         'approve_atasan',
         'approve_atasan2',
         'id_user_atasan',

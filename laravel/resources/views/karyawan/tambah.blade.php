@@ -122,7 +122,7 @@
                     </div>
                     <div class="col">
                         <label for="tgl_lahir">Tanggal Lahir</label>
-                        <input type="datetime" class="form-control @error('tgl_lahir') is-invalid @enderror" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}">
+                        <input type="date" class="form-control @error('tgl_lahir') is-invalid @enderror" id="tgl_lahir" name="tgl_lahir" value="{{ old('tgl_lahir') }}">
                         @error('tgl_lahir')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -237,7 +237,7 @@
                 <div class="form-row">
                     <div class="col">
                         <label for="tgl_join">Tanggal Masuk Perusahaan</label>
-                        <input type="datetime" class="form-control @error('tgl_join') is-invalid @enderror" id="tgl_join" name="tgl_join" value="{{ old('tgl_join') }}">
+                        <input type="date" class="form-control @error('tgl_join') is-invalid @enderror" id="tgl_join" name="tgl_join" value="{{ old('tgl_join') }}">
                         @error('tgl_join')
                         <div class="invalid-feedback">
                             {{ $message }}
@@ -535,9 +535,6 @@
 <br>
 @endsection
 @section('js')
-<script src="{{ url('public/adminlte/plugins/jquery/jquery.min.js') }}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="{{ url('public/adminlte/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
     function bankCheck(that) {

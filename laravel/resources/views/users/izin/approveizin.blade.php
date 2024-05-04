@@ -1,27 +1,19 @@
 @extends('users.izin.layout.main')
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-{{-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css"> --}}
-
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
-
-<link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-
+<script type="text/javascript" src="{{ asset('assets_ttd/assets/signature.js') }}"></script>
 <style>
-    .kbw-signature {
-        width: 100%;
-        height: 200px;
+    body {
+        padding: 15px;
     }
 
-    #sig canvas {
-        width: 100% !important;
-        height: auto;
+    #note {
+        position: absolute;
+        left: 50px;
+        top: 35px;
+        padding: 0px;
+        margin: 0px;
+        cursor: default;
     }
 </style>
 <div class="container">
@@ -97,20 +89,18 @@
             <textarea class="form-control" placeholder="Catatan" name="catatan" style="font-weight: bold"></textarea>
         </div>
         <div class="input-group">
-            <div id="signature-pad" style="width:100%;height:200px; margin: 0 auto;">
-                <div style="border:solid 1px teal; width:100%;height:200px;">
+            <div id="signature-pad" style="border:solid 1px teal; width:100%;height:200px;">
+                <div>
                     <div id="note" onmouseover="my_function();"></div>
-                    <canvas id="the_canvas" style="width: 100%; height: 130px;">
-
-                    </canvas>
-                    <p class="text-primary" style="text-align: center; margin-top: 0%;">{{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
+                    <canvas id="the_canvas" width="auto" height="100px"></canvas>
+                    <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
                     <hr>
+                    <div class="text-center">
+                        <input type="hidden" id="signature" name="signature">
+                        <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                        <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                    </div>
 
-                </div>
-                <div class="text-center" style="margin: 0 auto;">
-                    <input type="hidden" id="signature" name="signature">
-                    <button type="button" id="clear_btn" class="btn btn-sm btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
-                    <button type="submit" id="save_btn" class="btn btn-sm btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Simpan</button>
                 </div>
             </div>
         </div>
@@ -129,7 +119,7 @@
     signaturePad = new SignaturePad(canvas);
 
     clearButton.addEventListener("click", function(event) {
-        document.getElementById("note").innerHTML = "The signature should be inside box";
+        // document.getElementById("note").innerHTML = "The signature should be inside box";
         signaturePad.clear();
     });
     savePNGButton.addEventListener("click", function(event) {

@@ -1,4 +1,4 @@
-@extends('users.izin.layout.main')
+@extends('users.cuti.layout.main')
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -23,8 +23,8 @@
     }
 </style>
 
-@if(Session::has('statuscutisuccess'))
-<div class="alert alert-success light alert-lg alert-dismissible fade show">
+@if(Session::has('addcutisuccess'))
+<div id="alert_addcutisuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
         <circle cx="12" cy="12" r="10"></circle>
         <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
@@ -36,14 +36,87 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
-@elseif(Session::has('statuscutiwarning'))
-<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+@elseif(Session::has('addcutierror1'))
+<div id="alert_addcutierror1" class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
         <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
         <line x1="15" y1="9" x2="9" y2="15"></line>
         <line x1="9" y1="9" x2="15" y2="15"></line>
     </svg>
-    <strong>Warning!</strong> Anda Gagal Pengajuan Cuti.
+    <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('addcutierror2'))
+<div id="alert_addcutierror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('statuscutieditsuccess'))
+<div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Menyimpan Data Cuti
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('statuscutiediterror'))
+<div id="alert_statuscutiediterror" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('statuscutiediterror2'))
+<div id="alert_statuscutiediterror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('atasan1NULL'))
+<div id="alert_atasan1_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Atasan 1 Kosong
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('atasan2NULL'))
+<div id="alert_atasan2_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Warning!</strong> Atasan 2 Kosong
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -81,6 +154,20 @@
                     <div class="modal-body">
                         @method('put')
                         @csrf
+                        @if($user->kuota_cuti=='' || $user->kuota_cuti=='0')
+                        <div class="alert alert-danger light alert-lg alert-dismissible fade show">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                                <line x1="15" y1="9" x2="9" y2="15"></line>
+                                <line x1="9" y1="9" x2="15" y2="15"></line>
+                            </svg>
+                            <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
+                            <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        @else
+                        @endif
                         <div class="input-group">
                             <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
                             {{-- <input type="hidden" name="telp" value="{{ $data_user->telepon }}"> --}}
@@ -88,8 +175,16 @@
                             {{-- <input type="hidden" name="departements" value="{{ $user->dept_id }}"> --}}
                             {{-- <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}"> --}}
                             {{-- <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id=""> --}}
+                            @if($getUserAtasan==null)
+                            <input type="hidden" name="id_user_atasan" value="">
+                            @else
                             <input type="hidden" name="id_user_atasan" value="{{ $getUserAtasan->id }}">
-                            <input type="hidden" name="id_user_atasan2" value="{{ $getUseratasan2->id }}">
+                            @endif
+                            @if($getUserAtasan2==null)
+                            <input type="hidden" name="id_user_atasan2" value="">
+                            @else
+                            <input type="hidden" name="id_user_atasan2" value="{{ $getUserAtasan2->id }}">
+                            @endif
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Nama" readonly>
@@ -97,7 +192,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Kuota Cuti Tahunan" readonly>
-                            <input type="text" class="form-control" name="kuota_cuti" value="{{ $user->kuota_cuti }} Hari" style="font-weight: bold" readonly required>
+                            <input type="text" class="form-control" name="kuota_cuti" value="@if($user->kuota_cuti=='' || $user->kuota_cuti=='0')0 @else{{ $user->kuota_cuti }}@endif Hari" style="font-weight: bold" readonly required>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Kategori Cuti" readonly>
@@ -110,6 +205,12 @@
                             </select>
                         </div>
                         <div class="input-group">
+                            @if($data_user->level_jabatan=='1')
+                            <input type="text" class="form-control" value="Pengganti" readonly>
+                            <select class="form-control" name="user_backup" required>
+                                <option selected value="-">-</option>
+                            </select>
+                            @else
                             <input type="text" class="form-control" value="Pengganti" readonly>
                             <select class="form-control" name="user_backup" required>
                                 <option value="">Pilih Pengganti...</option>
@@ -118,6 +219,7 @@
                                 </option>
                                 @endforeach
                             </select>
+                            @endif
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal Mulai" readonly>
@@ -132,18 +234,11 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Approve By 1" readonly>
-                            <input type="text" class="form-control" name="approve_atasan" value="{{ $getUserAtasan->name }}" readonly>
+                            <input type="text" class="form-control" name="approve_atasan" value="@if($getUserAtasan==null) @else {{ $getUserAtasan->name }} @endif" readonly>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Approve By 2" readonly>
-                            <input type="text" class="form-control" name="approve_atasan2" value="{{ $getUseratasan2->name }}" readonly>
-                        </div>
-                        <div class="input-group">
-                            <label for="signature64">TTD Pemohon</label>
-                            <br>
-                            <div id="sig"></div>
-                            <button id="clear" class="btn btn-danger btn-sm">Clear</button>
-                            <textarea id="signature64" name="ttd_user" style="display: none"></textarea>
+                            <input type="text" class="form-control" name="approve_atasan2" value="@if($getUserAtasan2==null) @else {{ $getUserAtasan2->name }} @endif" readonly>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -167,11 +262,11 @@
     </div>
     @foreach ($record_data as $record_data)
     <div class="notification-content" style="background-color: white">
-        <a href="#" onclick="return false;">
+        <a href="{{url('/cuti/detail/edit/'.$record_data->id)}}">
             <div class="notification">
                 <h6>{{ $record_data->nama_cuti }}</h6>
                 <p>{{ $record_data->keterangan_cuti}}</p>
-                <div class="notification-footer">
+                <div class="notification-footer mt--5">
                     <span>
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -180,9 +275,19 @@
                         {{ $record_data->tanggal}}
                     </span>
                     @if ($record_data->status_cuti == 0)
-                    <small class="badge badge-danger"><i class="far fa-clock"></i> Menunggu</small>
+                    @if($record_data->ttd_user == NULL || $record_data->ttd_user == '')
+                    <small class="badge badge-danger"><i class="far fa-edit"></i>&nbsp;Tambahkan TTD</small>
                     @else
-                    <small class="badge badge-success"><i class="far fa-clock"></i> Disetujui</small>
+                    <small style="display: inline-flex;" class="badge badge-info"><i class="fa fa-spinner"></i>&nbsp;Menunggu Approve Atasan1</small>
+                    @endif
+                    @elseif ($record_data->status_cuti == 1)
+                    @if($record_data->ttd_atasan2 == NULL || $record_data->ttd_atasan2 == '')
+                    <small style="display: inline-flex;" class="badge badge-info"><i class="fa fa-spinner"></i>&nbsp;Menunggu Approve Atasan2</small>
+                    @else
+                    <small class="badge badge-success"><i class="fa fa-check"></i>&nbsp;Disetujui</small>
+                    @endif
+                    @else
+                    <small class="badge badge-success"><i class="fa fa-check"></i>&nbsp;Disetujui</small>
                     @endif
                 </div>
             </div>
@@ -191,15 +296,64 @@
     @endforeach
 
 </div>
-<script type="text/javascript">
-    var sig = $('#sig').signature({
-        syncField: '#signature64',
-        syncFormat: 'PNG'
+@endsection
+@section('js')
+<script>
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_atasan1_null").remove();
+        }, 7000); // 7 secs
+
     });
-    $('#clear').click(function(e) {
-        e.preventDefault();
-        sig.signature('clear');
-        $("#signature64").val('');
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_atasan2_null").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_addcutisuccess").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_addcutierror1").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_addcutierror2").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_statuscutieditsuccess").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_statuscutiediterror").remove();
+        }, 7000); // 7 secs
+
     });
 </script>
 @endsection

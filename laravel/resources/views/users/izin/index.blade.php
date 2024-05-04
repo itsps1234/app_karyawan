@@ -15,17 +15,6 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
-<div class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>error!</strong> Atasan Anda Kosong. Hubungi HRD.
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
 @else
 @endif
 <div class="container">
@@ -61,6 +50,7 @@
                             <input type="hidden" name="email" value="{{ $data_user->email }}">
                             <input type="hidden" name="departements" value="{{ $user->dept_id }}">
                             <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}">
+                            <input type="hidden" name="level_jabatan" value="{{ $user->level_jabatan }}">
                             <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id="">
                             @if($getUserAtasan==NULL)
                             <input type="hidden" name="id_user_atasan" value="">
@@ -89,10 +79,17 @@
                             <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Description"></textarea>
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" value="Approve By" readonly>
                             @if($getUserAtasan==NULL)
-                            <input type="text" class="form-control" name="approve_atasan" value="" readonly>
+                            @if($user->level_jabatan=='1')
+                            <input type="text" class="form-control" value="Diproses" readonly>
+                            <input type="text" class="form-control" name="approve_atasan1" value="HRD" readonly>
+                            <input type="hidden" class="form-control" name="approve_atasan" value="" readonly>
                             @else
+                            <input type="text" class="form-control" value="Approve By" readonly>
+                            <input type="text" class="form-control" name="approve_atasan" value="" readonly>
+                            @endif
+                            @else
+                            <input type="text" class="form-control" value="Approve By" readonly>
                             <input type="text" class="form-control" name="approve_atasan" value="{{ $getUserAtasan->name }}" readonly>
                             @endif
                         </div>

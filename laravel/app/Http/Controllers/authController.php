@@ -55,11 +55,11 @@ class authController extends Controller
 
         if (Auth::attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
-
+            // dd(auth()->user()->is_admin);
             if (auth()->user()->is_admin == "admin") {
                 return redirect()->intended('/dashboard/holding');
                 // return redirect()->intended('/holding');
-            } else {
+            } else if (auth()->user()->is_admin == "user") {
                 return redirect()->intended('/home');
             }
         }
