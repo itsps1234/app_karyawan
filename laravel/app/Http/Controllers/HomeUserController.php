@@ -33,13 +33,9 @@ class HomeUserController extends Controller
         $user           = Auth::user()->id;
         $dataizin       = DB::table('izins')->where('id_approve_atasan', $user)->where('status_izin', 0)->get();
         $datacuti       = DB::table('cutis')->join('users', 'users.id', '=', 'cutis.id_user_atasan')->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.nama_cuti')->where('id_user_atasan', $user)->where('status_cuti', 0)->get();
-<<<<<<< HEAD
-        $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')->orWhere('id_user_atasan', $user)->orWhere('id_user_atasan2', $user)->where('penugasans.status_penugasan', '!=', 0)->select('penugasans.*', 'users.fullname')->get();
-=======
         $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')
-                        ->orWhere('id_user_atasan', $user)->orWhere('id_user_atasan2', $user)->where('penugasans.status_penugasan','!=', 0)
-                        ->select('penugasans.*', 'users.fullname')->get();
->>>>>>> c7054ea8162f14bb78583a31a69e34f8e3f46d0a
+            ->orWhere('id_user_atasan', $user)->orWhere('id_user_atasan2', $user)->where('penugasans.status_penugasan', '!=', 0)
+            ->select('penugasans.*', 'users.fullname')->get();
         // dd($datapenugasan);
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
