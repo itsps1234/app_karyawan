@@ -24,7 +24,7 @@
             <input type="time" value="{{ date('H:i:s') }}" style="font-weight: bold" placeholder="Phone number" class="form-control">
         </div>
     </form>
-    <button id="addForm" class="btn btn-sm btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#myModal">
+    <button id="addForm" class="btn btn-sm btn-primary btn-rounded" style="width: 30%;margin-left: 35%;margin-right: 35%" data-bs-toggle="modal" data-bs-target="#myModal">
         <i class="fa fa-plus" aria-hidden="true"> </i>
         &nbsp; Add
     </button>

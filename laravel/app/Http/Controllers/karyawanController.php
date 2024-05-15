@@ -27,6 +27,7 @@ use Laravolt\Indonesia\IndonesiaService;
 use App\Models\Provincies;
 use App\Models\Regencies;
 use App\Models\Village;
+use PhpParser\Node\Expr\AssignOp\Div;
 use Yajra\DataTables\DataTables;
 
 class karyawanController extends Controller
@@ -48,6 +49,10 @@ class karyawanController extends Controller
             "data_kecamatan" => District::all(),
             "data_desa" => Village::all(),
             "data_lokasi" => Lokasi::all(),
+            "karyawan_laki" => User::where('gender', 'Laki-Laki')->where('kontrak_kerja', $holding)->count(),
+            "karyawan_perempuan" => User::where('gender', 'Perempuan')->where('kontrak_kerja', $holding)->count(),
+            "karyawan_office" => User::where('gender', 'Laki-Laki')->where('kontrak_kerja', $holding)->count(),
+            "karyawan_shift" => User::where('gender', 'Perempuan')->where('kontrak_kerja', $holding)->count(),
         ]);
     }
     public function datatable(Request $request)
@@ -58,9 +63,9 @@ class karyawanController extends Controller
             return DataTables::of($table)
                 ->addColumn('option', function ($row) use ($holding) {
                     $btn = '<button id="btndetail_karyawan" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-success waves-effect waves-light"><span class="tf-icons mdi mdi-eye-outline"></span></button>';
-                    $btn = $btn . '<button type="button" class="btn btn-icon btn-info waves-effect waves-light"><span class="tf-icons mdi mdi-clock-outline"></span></button>';
-                    $btn = $btn . '<button type="button" class="btn btn-icon btn-secondary waves-effect waves-light"><span class="tf-icons mdi mdi-key-outline"></span></button>';
-                    $btn = $btn . '<button type="button" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
+                    $btn = $btn . '<button id="btn_mapping_shift" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-info waves-effect waves-light"><span class="tf-icons mdi mdi-clock-outline"></span></button>';
+                    $btn = $btn . '<button id="btn_edit_password" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-secondary waves-effect waves-light"><span class="tf-icons mdi mdi-key-outline"></span></button>';
+                    $btn = $btn . '<button type="button" id="btn_delete_karyawan" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
                     return $btn;
                 })
                 ->rawColumns(['option'])
@@ -205,6 +210,15 @@ class karyawanController extends Controller
             'rt' => 'required|max:255',
             'rw' => 'required|max:255',
         ]);
+        if ($request['foto_karyawan']) {
+            // dd('ok');
+            $extension     = $request->file('foto_karyawan')->extension();
+            // dd($extension);
+            $img_name         = date('y-m-d') . '-' . Uuid::uuid4() . '.' . $extension;
+            $path           = Storage::putFileAs('public/foto_karyawan/', $request->file('foto_karyawan'), $img_name);
+        } else {
+            $img_name = NULL;
+        }
         // dd($request["addmore"]['4']["jabatan_id"]);
         $get_divisi_id = $request["addmore"]['0']["divisi_id"];
         if ($get_divisi_id == '') {
@@ -261,7 +275,7 @@ class karyawanController extends Controller
                 'npwp' => $validatedData['npwp'],
                 'fullname' => $validatedData['fullname'],
                 'motto' => $validatedData['motto'],
-                'foto_karyawan' => $request['foto_karyawan'],
+                'foto_karyawan' => $img_name,
                 'email' => $validatedData['email'],
                 'telepon' => $validatedData['telepon'],
                 'username' => $validatedData['username'],
@@ -438,12 +452,12 @@ class karyawanController extends Controller
         if ($request['foto_karyawan']) {
             // dd('ok');
             if ($request->foto_karyawan_lama) {
-                Storage::delete($request->foto_karyawan_lama);
+                Storage::delete('public/foto_karyawan/', $request->foto_karyawan_lama);
             }
             $extension     = $request->file('foto_karyawan')->extension();
             // dd($extension);
             $img_name         = date('y-m-d') . '-' . Uuid::uuid4() . '.' . $extension;
-            $path           = Storage::putFileAs('public/foto_karyawan', $request->file('foto_karyawan'), $img_name);
+            $path           = Storage::putFileAs('public/foto_karyawan/', $request->file('foto_karyawan'), $img_name);
         } else {
             $img_name = NULL;
         }
@@ -533,14 +547,38 @@ class karyawanController extends Controller
 
     public function editpassword($id)
     {
-        return view('karyawan.editpassword', [
+        $jabatan = Jabatan::join('users', function ($join) {
+            $join->on('jabatans.id', '=', 'users.jabatan_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+        })->where('users.id', $id)->get();
+        $divisi = Divisi::join('users', function ($join) {
+            $join->on('divisis.id', '=', 'users.divisi_id');
+            $join->orOn('divisis.id', '=', 'users.divisi1_id');
+            $join->orOn('divisis.id', '=', 'users.divisi2_id');
+            $join->orOn('divisis.id', '=', 'users.divisi3_id');
+            $join->orOn('divisis.id', '=', 'users.divisi4_id');
+        })->where('users.id', $id)->get();
+        // dd($jabatan);
+        $no = 1;
+        $no1 = 1;
+        $holding = request()->segment(count(request()->segments()));
+        return view('admin.karyawan.edit_password_karyawan', [
             'title' => 'Edit Password',
-            'karyawan' => User::find($id)
+            'holding' => $holding,
+            'karyawan' => User::find($id),
+            'jabatan_karyawan' => $jabatan,
+            'divisi_karyawan' => $divisi,
+            'no' => $no,
+            'no1' => $no1,
         ]);
     }
 
     public function editPasswordProses(Request $request, $id)
     {
+        $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
             'password' => 'required|min:6|max:255',
         ]);
@@ -554,23 +592,69 @@ class karyawanController extends Controller
             'description' => 'Mengubah password karyawan ' . $request->name,
         ]);
         $request->session()->flash('success', 'Password Berhasil Diganti');
-        return redirect('/karyawan');
+        return redirect()->back();
     }
 
     public function shift($id)
     {
-        // dd($id);
+        $oke = MappingShift::with('Shift')->where('user_id', $id)->orderBy('id', 'desc')->limit(100)->get();
+        // dd($oke);
         $holding = request()->segment(count(request()->segments()));
-        return view('karyawan.mappingshift', [
+        $user = User::with('Jabatan')
+            ->with('Divisi')
+            ->where('kontrak_kerja', $holding)
+            ->where('users.id', $id)
+            ->first();
+        $jabatan = Jabatan::join('users', function ($join) {
+            $join->on('jabatans.id', '=', 'users.jabatan_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+        })->where('users.id', $id)->get();
+        $divisi = Divisi::join('users', function ($join) {
+            $join->on('divisis.id', '=', 'users.divisi_id');
+            $join->orOn('divisis.id', '=', 'users.divisi1_id');
+            $join->orOn('divisis.id', '=', 'users.divisi2_id');
+            $join->orOn('divisis.id', '=', 'users.divisi3_id');
+            $join->orOn('divisis.id', '=', 'users.divisi4_id');
+        })->where('users.id', $id)->get();
+        $no = 1;
+        $no1 = 1;
+        // dd($user);
+        return view('admin.karyawan.mappingshift', [
             'title' => 'Mapping Shift',
-            'karyawan' => User::find($id),
+            'karyawan' => $user,
             'holding' => $holding,
             'shift_karyawan' => MappingShift::where('user_id', $id)->orderBy('id', 'desc')->limit(100)->get(),
-            'shift' => Shift::all()
+            'shift' => Shift::all(),
+            'jabatan_karyawan' => $jabatan,
+            'divisi_karyawan' => $divisi,
+            'no' => $no,
+            'no1' => $no1,
         ]);
     }
 
 
+    public function mapping_shift_datatable(Request $request, $id)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table = MappingShift::join('shifts', 'mapping_shifts.shift_id', 'shifts.id')
+            ->where('mapping_shifts.user_id', $id)
+            ->select('mapping_shifts.*', 'shifts.nama_shift', 'shifts.jam_masuk', 'shifts.jam_keluar')
+            ->limit(100)
+            ->get();
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('option', function ($row) use ($holding) {
+                    $btn = '<button id="btn_edit_mapping_shift" type="button" data-id="' . $row->id . '" data-shift="' . $row->shift_id . '"  data-userid="' . $row->user_id . '" data-tanggal="' . $row->tanggal . '" data-holding="' . $holding . '" class="btn btn-icon btn-warning waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_edit_shift"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
+                    $btn = $btn . '<button id="btn_delete_mapping_shift" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
+                    return $btn;
+                })
+                ->rawColumns(['option'])
+                ->make(true);
+        }
+    }
     public function get_divisi(Request $request)
     {
         $id_departemen    = $request->id_departemen;
@@ -592,7 +676,6 @@ class karyawanController extends Controller
     }
     public function prosesTambahShift(Request $request)
     {
-        // dd($request->all());
         date_default_timezone_set('Asia/Jakarta');
 
         if ($request["tanggal_mulai"] == null) {
@@ -615,10 +698,11 @@ class karyawanController extends Controller
         $daterange = new \DatePeriod($begin, $interval, $end);
 
 
+        // dd($request->all());
         foreach ($daterange as $date) {
             $tanggal = $date->format("Y-m-d");
 
-            if ($request["shift_id"] == 1) {
+            if ($request["shift_id"] == '3ac53e9a-84d6-445e-9b48-fdb8a6b02cb2') {
                 $request["status_absen"] = "Libur";
             } else {
                 $request["status_absen"] = "Tidak Masuk";
@@ -633,7 +717,12 @@ class karyawanController extends Controller
                 'status_absen' => 'required',
             ]);
 
-            MappingShift::create($validatedData);
+            MappingShift::create([
+                'user_id' => User::where('id', $validatedData['user_id'])->value('id'),
+                'shift_id' => Shift::where('id', $validatedData['shift_id'])->value('id'),
+                'tanggal' => $request['tanggal'],
+                'status_absen' => $validatedData['status_absen']
+            ]);
         }
         $holding = request()->segment(count(request()->segments()));
         ActivityLog::create([
@@ -654,7 +743,7 @@ class karyawanController extends Controller
             'activity' => 'delete',
             'description' => 'Menghapus shift karyawan ' . $delete->user->name,
         ]);
-        return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Delete');
+        return redirect()->back()->with('success', 'Data Berhasil di Delete');
     }
 
     public function editShift($id)
@@ -668,28 +757,31 @@ class karyawanController extends Controller
         ]);
     }
 
-    public function prosesEditShift(Request $request, $id)
+    public function prosesEditShift(Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
 
 
-        if ($request["shift_id"] == 1) {
-            $request["status_absen"] = "Libur";
-        } else {
-            $request["status_absen"] = "Tidak Masuk";
-        }
-
+        // if ($request["shift_id_update"] == 1) {
+        //     $request["status_absen"] = "Libur";
+        // } else {
+        //     $request["status_absen"] = "Tidak Masuk";
+        // }
+        // dd($request->all());
         $validatedData = $request->validate([
-            'shift_id' => 'required',
-            'tanggal' => 'required',
-            'status_absen' => 'required'
+            'shift_id_update' => 'required',
+            'tanggal_update' => 'required',
         ]);
 
-        MappingShift::where('id', $id)->update($validatedData);
+        MappingShift::where('id', $request["id_shift"])->update([
+            'user_id' => $request['user_id'],
+            'shift_id' => Shift::where('id', $validatedData['shift_id_update'])->value('id'),
+            'tanggal' => $validatedData['tanggal_update'],
+        ]);
         ActivityLog::create([
             'user_id' => $request->user()->id,
             'activity' => 'update',
-            'description' => 'Mengubah shift karyawan ' . $request->name,
+            'description' => 'Mengubah shift karyawan ' . Auth::guard('web')->user()->name,
         ]);
         $holding = request()->segment(count(request()->segments()));
         return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Update');
@@ -775,7 +867,7 @@ class karyawanController extends Controller
     public function resetCuti()
     {
         $holding = request()->segment(count(request()->segments()));
-        return view('karyawan.masterreset', [
+        return view('admin.karyawan.reset_cuti', [
             'title' => 'Master Data Reset Cuti',
             'holding' => $holding,
             'data_cuti' => ResetCuti::first()

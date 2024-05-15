@@ -94,6 +94,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cuti::class);
     }
+    public function Izin()
+    {
+        return $this->hasMany(Izin::class);
+    }
 
     public function Penugasan()
     {

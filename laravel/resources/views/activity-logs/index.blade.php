@@ -12,24 +12,18 @@
         <div class="card-body">
             <h1>Activity Logs</h1>
 
-            <form action="{{ route('activity-logs.index') }}" method="GET" class="form-inline mb-3">
+            <form class="" method="post" action="javascript:void(0);" method="POST" class="form-inline mb-3">
                 <div class="form-group mr-2">
                     <label for="activity" class="mr-2">Activity:</label>
                     <select name="activity" id="activity" class="form-control">
                         <option value="">All</option>
-                        <option value="create" {{ request()->get('activity') === 'create' ? 'selected' : '' }}>Create
+                        <option value="create">Create
                         </option>
-                        <option value="update" {{ request()->get('activity') === 'update' ? 'selected' : '' }}>Update
+                        <option value="update">Update
                         </option>
-                        <option value="delete" {{ request()->get('activity') === 'delete' ? 'selected' : '' }}>Delete
+                        <option value="delete">Delete
                         </option>
                     </select>
-                </div>
-
-                <div class="form-group mr-2">
-                    <label for="search" class="mr-2">Search:</label>
-                    <input type="text" name="search" id="search" class="form-control"
-                        value="{{ request()->get('search') }}">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Search</button>

@@ -99,7 +99,12 @@
 
         <!-- Preloader -->
         <div id="preloader">
-            <div class="spinner"></div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
         </div>
         <!-- Preloader end-->
 
@@ -189,18 +194,6 @@
         <!-- Theme Color Settings End -->
 
         <!-- PWA Offcanvas -->
-        {{-- <div class="offcanvas offcanvas-bottom pwa-offcanvas">
-		<div class="container">
-			<div class="offcanvas-body small">
-				<img class="logo" src="assets/images/icon.png" alt="">
-				<h5 class="title">Jobie on Your Home Screen</h5>
-				<p class="pwa-text">Install Jobie job portal mobile app template to your home screen for easy access, just like any other app</p>
-				<a href="javascrpit:void(0);" class="btn btn-sm btn-secondary pwa-btn">Add to Home Screen</a>
-				<a href="javascrpit:void(0);" class="btn btn-sm pwa-close light btn-danger ms-2">Maybe later</a>
-			</div>
-		</div>
-	</div>
-	<div class="offcanvas-backdrop pwa-backdrop"></div> --}}
         <!-- PWA Offcanvas End -->
 
     </div>

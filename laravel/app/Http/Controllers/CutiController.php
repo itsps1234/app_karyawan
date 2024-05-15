@@ -16,10 +16,12 @@ class CutiController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         $user_id = auth()->user()->id;
         $user = User::findOrFail(auth()->user()->id);
         return view('cuti.index', [
             'title' => 'Tambah Permintaan Cuti Karyawan',
+            'holding' => $holding,
             'data_user' => $user,
             'data_cuti_user' => Cuti::where('user_id', $user_id)->orderBy('id', 'desc')->get()
         ]);
@@ -29,13 +31,13 @@ class CutiController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
-        if($request["tanggal_mulai"] == null) {
+        if ($request["tanggal_mulai"] == null) {
             $request["tanggal_mulai"] = $request["tanggal_akhir"];
         } else {
             $request["tanggal_mulai"] = $request["tanggal_mulai"];
         }
 
-        if($request["tanggal_akhir"] == null) {
+        if ($request["tanggal_akhir"] == null) {
             $request["tanggal_akhir"] = $request["tanggal_mulai"];
         } else {
             $request["tanggal_akhir"] = $request["tanggal_akhir"];
@@ -46,7 +48,7 @@ class CutiController extends Controller
         $end = $end->modify('+1 day');
 
         $interval = new \DateInterval('P1D'); //referensi : https://en.wikipedia.org/wiki/ISO_8601#Durations
-        $daterange = new \DatePeriod($begin, $interval ,$end);
+        $daterange = new \DatePeriod($begin, $interval, $end);
 
         foreach ($daterange as $date) {
             $request["tanggal"] = $date->format("Y-m-d");
@@ -89,7 +91,8 @@ class CutiController extends Controller
         return redirect('/cuti')->with('success', 'Data Berhasil di Delete');
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         return view('cuti.edit', [
             'title' => 'Edit Permintaan Cuti',
             'data_cuti_user' => Cuti::findOrFail($id)
@@ -151,39 +154,39 @@ class CutiController extends Controller
         $data_cuti = array(
             [
                 'nama' => 'Cuti Dadakan',
-                'nama_cuti' => 'Cuti Dadakan ('.$cuti_dadakan.')'
+                'nama_cuti' => 'Cuti Dadakan (' . $cuti_dadakan . ')'
             ],
             [
                 'nama' => 'Cuti Bersama',
-                'nama_cuti' => 'Cuti Bersama ('.$cuti_bersama.')'
+                'nama_cuti' => 'Cuti Bersama (' . $cuti_bersama . ')'
             ],
             [
                 'nama' => 'Cuti Menikah',
-                'nama_cuti' => 'Cuti Menikah ('.$cuti_menikah.')'
+                'nama_cuti' => 'Cuti Menikah (' . $cuti_menikah . ')'
             ],
             [
                 'nama' => 'Cuti Diluar Tanggungan',
-                'nama_cuti' => 'Cuti Diluar Tanggungan ('.$cuti_diluar_tanggungan.')'
+                'nama_cuti' => 'Cuti Diluar Tanggungan (' . $cuti_diluar_tanggungan . ')'
             ],
             [
                 'nama' => 'Cuti Khusus',
-                'nama_cuti' => 'Cuti Khusus ('.$cuti_khusus.')'
+                'nama_cuti' => 'Cuti Khusus (' . $cuti_khusus . ')'
             ],
             [
                 'nama' => 'Cuti Melahirkan',
-                'nama_cuti' => 'Cuti Melahirkan ('.$cuti_melahirkan.')'
+                'nama_cuti' => 'Cuti Melahirkan (' . $cuti_melahirkan . ')'
             ],
             [
                 'nama' => 'Izin Telat',
-                'nama_cuti' => 'Izin Telat ('.$izin_telat.')'
+                'nama_cuti' => 'Izin Telat (' . $izin_telat . ')'
             ],
             [
                 'nama' => 'Izin Pulang Cepat',
-                'nama_cuti' => 'Izin Pulang Cepat ('.$izin_pulang_cepat.')'
+                'nama_cuti' => 'Izin Pulang Cepat (' . $izin_pulang_cepat . ')'
             ]
         );
 
-        foreach($data_cuti as $dc){
+        foreach ($data_cuti as $dc) {
             echo "<option value='$dc[nama]'>$dc[nama_cuti]</option>";
         }
     }
@@ -192,13 +195,13 @@ class CutiController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
-        if($request["tanggal_mulai"] == null) {
+        if ($request["tanggal_mulai"] == null) {
             $request["tanggal_mulai"] = $request["tanggal_akhir"];
         } else {
             $request["tanggal_mulai"] = $request["tanggal_mulai"];
         }
 
-        if($request["tanggal_akhir"] == null) {
+        if ($request["tanggal_akhir"] == null) {
             $request["tanggal_akhir"] = $request["tanggal_mulai"];
         } else {
             $request["tanggal_akhir"] = $request["tanggal_akhir"];
@@ -209,7 +212,7 @@ class CutiController extends Controller
         $end = $end->modify('+1 day');
 
         $interval = new \DateInterval('P1D'); //referensi : https://en.wikipedia.org/wiki/ISO_8601#Durations
-        $daterange = new \DatePeriod($begin, $interval ,$end);
+        $daterange = new \DatePeriod($begin, $interval, $end);
 
         foreach ($daterange as $date) {
             $request["tanggal"] = $date->format("Y-m-d");
@@ -233,7 +236,7 @@ class CutiController extends Controller
         ActivityLog::create([
             'user_id' => Auth::user()->id,
             'activity' => 'tambah',
-            'description' => 'Menambahkan data cuti karyawan dengan nama '.User::findOrfail($request["user_id"])->name,
+            'description' => 'Menambahkan data cuti karyawan dengan nama ' . User::findOrfail($request["user_id"])->name,
             'time' => date('Y-m-d H:i:s')
         ]);
 
@@ -248,7 +251,7 @@ class CutiController extends Controller
         ActivityLog::create([
             'user_id' => Auth::user()->id,
             'activity' => 'hapus',
-            'description' => 'Menghapus data cuti karyawan dengan nama '.User::findOrfail($delete->user_id)->name,
+            'description' => 'Menghapus data cuti karyawan dengan nama ' . User::findOrfail($delete->user_id)->name,
             'time' => date('Y-m-d H:i:s')
         ]);
         return redirect('/data-cuti')->with('success', 'Data Berhasil di Delete');
@@ -263,10 +266,10 @@ class CutiController extends Controller
     }
 
     public function editAdminProses(Request $request, $id)
-     {
+    {
         $data_cuti = Cuti::where('id', $id)->get();
 
-        foreach($data_cuti as $dc) {
+        foreach ($data_cuti as $dc) {
             $request["cuti_dadakan"] = $dc->User->cuti_dadakan;
             $request["cuti_bersama"] = $dc->User->cuti_bersama;
             $request["cuti_menikah"] = $dc->User->cuti_menikah;
@@ -278,14 +281,14 @@ class CutiController extends Controller
             $user_id = $dc->user_id;
             $foto_cuti = $dc->foto_cuti;
         }
-        
+
         $mapping_shift = MappingShift::where('tanggal', $request['tanggal'])->where('user_id', $user_id)->get();
 
-        if($mapping_shift->count() == 0 ) {
+        if ($mapping_shift->count() == 0) {
             Alert::error('Error', 'Tidak Ada Shift Pada Tanggal ' . $request['tanggal'] . ', Harap Dimapping Terlebih Dahulu');
             return redirect('/data-cuti');
         } else {
-            foreach($mapping_shift as $mp) {
+            foreach ($mapping_shift as $mp) {
                 $mp_id = $mp->id;
                 $status_absen = $mp->status_absen;
                 $shift_masuk = $mp->Shift->jam_masuk;
@@ -303,8 +306,8 @@ class CutiController extends Controller
                 $jarak_pulang = $mp->jarak_pulang;
                 $foto_jam_pulang = $mp->foto_jam_pulang;
             }
-    
-            if($request["status_cuti"] == "Diterima"){
+
+            if ($request["status_cuti"] == "Diterima") {
                 if ($request["nama_cuti"] == "Izin Telat") {
                     $request['status_absen'] = $request["nama_cuti"];
                     $request['jam_absen'] = $shift_masuk;
@@ -336,20 +339,20 @@ class CutiController extends Controller
                 } else {
                     $request['status_absen'] = 'Cuti';
                 }
-                
-                if($request["nama_cuti"] == "Cuti Dadakan") {
+
+                if ($request["nama_cuti"] == "Cuti Dadakan") {
                     $request["cuti_dadakan"] = $request["cuti_dadakan"] - 1;
-                } elseif($request["nama_cuti"] == "Cuti Bersama") {
+                } elseif ($request["nama_cuti"] == "Cuti Bersama") {
                     $request["cuti_bersama"] = $request["cuti_bersama"] - 1;
-                } elseif($request["nama_cuti"] == "Cuti Menikah") {
+                } elseif ($request["nama_cuti"] == "Cuti Menikah") {
                     $request["cuti_menikah"] = $request["cuti_menikah"] - 1;
-                } elseif($request["nama_cuti"] == "Cuti Diluar Tanggungan") {
+                } elseif ($request["nama_cuti"] == "Cuti Diluar Tanggungan") {
                     $request["cuti_diluar_tanggungan"] = $request["cuti_diluar_tanggungan"] - 1;
-                } elseif($request["nama_cuti"] == "Cuti Khusus") {
+                } elseif ($request["nama_cuti"] == "Cuti Khusus") {
                     $request["cuti_khusus"] = $request["cuti_khusus"] - 1;
-                } elseif($request["nama_cuti"] == "Cuti Melahirkan") {
+                } elseif ($request["nama_cuti"] == "Cuti Melahirkan") {
                     $request["cuti_melahirkan"] = $request["cuti_melahirkan"] - 1;
-                } elseif($request["nama_cuti"] == "Izin Telat") {
+                } elseif ($request["nama_cuti"] == "Izin Telat") {
                     $request["izin_telat"] = $request["izin_telat"] - 1;
                 } else {
                     $request["izin_pulang_cepat"] = $request["izin_pulang_cepat"] - 1;
@@ -377,14 +380,14 @@ class CutiController extends Controller
                 $request["jarak_pulang"] = $jarak_pulang;
                 $request["foto_jam_pulang"] = $foto_jam_pulang;
             }
-    
+
             $rules1 = [
                 'nama_cuti' => 'required',
                 'tanggal' => 'required',
                 'status_cuti' => 'required',
                 'catatan' => 'nullable'
             ];
-    
+
             $rules2 = [
                 'cuti_dadakan' => 'required',
                 'cuti_bersama' => 'required',
@@ -395,7 +398,7 @@ class CutiController extends Controller
                 'izin_telat' => 'required',
                 'izin_pulang_cepat' => 'required',
             ];
-    
+
             $rules3 = [
                 'status_absen' => 'required',
                 'jam_absen' => 'nullable',
@@ -411,26 +414,25 @@ class CutiController extends Controller
                 'long_pulang' => 'nullable',
                 'jarak_pulang' => 'nullable'
             ];
-    
+
             $validatedData = $request->validate($rules1);
             $validatedData2 = $request->validate($rules2);
             $validatedData3 = $request->validate($rules3);
-    
-    
+
+
             Cuti::where('id', $id)->update($validatedData);
             User::where('id', $user_id)->update($validatedData2);
             MappingShift::where('id', $mp_id)->update($validatedData3);
-            
+
             ActivityLog::create([
                 'user_id' => Auth::user()->id,
                 'activity' => 'edit',
                 'description' => 'Mengubah data cuti dengan id ' . $id . ' oleh ' . Auth::user()->name,
                 'time' => Carbon::now()
             ]);
-    
+
             $request->session()->flash('success', 'Data Berhasil di Update');
             return redirect('/data-cuti');
         }
     }
-
 }

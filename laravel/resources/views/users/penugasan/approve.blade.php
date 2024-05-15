@@ -16,6 +16,22 @@
         cursor: default;
     }
 </style>
+<div class="fixed-content p-0">
+    <div class="container">
+        <div class="main-content">
+            <div class="left-content">
+                <a href="{{url('home')}}" class="">
+                    <svg width="18" height="18" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.03033 0.46967C9.2966 0.735936 9.3208 1.1526 9.10295 1.44621L9.03033 1.53033L2.561 8L9.03033 14.4697C9.2966 14.7359 9.3208 15.1526 9.10295 15.4462L9.03033 15.5303C8.76406 15.7966 8.3474 15.8208 8.05379 15.6029L7.96967 15.5303L0.96967 8.53033C0.703403 8.26406 0.679197 7.8474 0.897052 7.55379L0.96967 7.46967L7.96967 0.46967C8.26256 0.176777 8.73744 0.176777 9.03033 0.46967Z" fill="#a19fa8" />
+                    </svg>
+                </a>
+            </div>
+            <div class="mid-content">
+                <h5 class="mb-0">Back</h5>
+            </div>
+        </div>
+    </div>
+</div>
 @if(Session::has('penugasansukses'))
 <div class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -45,14 +61,22 @@
 <div class="container">
     <form class="my-2" method="post" action="{{ url('/penugasan/approve/diminta/ttd/'.$id_penugasan->id) }}" enctype="multipart/form-data">
         @csrf
+        @if($penugasan->id_diminta_oleh==Auth::guard('web')->user()->id)
         <input type="hidden" name="status_penugasan" value="2">
+        @elseif($penugasan->id_disahkan_oleh==Auth::guard('web')->user()->id)
+        <input type="hidden" name="status_penugasan" value="3">
+        @elseif($penugasan->id_user_hrd==Auth::guard('web')->user()->id)
+        <input type="hidden" name="status_penugasan" value="4">
+        @elseif($penugasan->id_user_finance==Auth::guard('web')->user()->id)
+        <input type="hidden" name="status_penugasan" value="5">
+        @endif
         <div class="input-group">
             <input type="text" class="form-control" value="Nama" readonly>
             <input type="text" class="form-control" name="" value="{{ $penugasan->fullname }}" style="font-weight: bold" readonly required>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="NIK" readonly>
-            <input type="text" class="form-control" name="" value="{{ Auth::user()->id }}" style="font-weight: bold" readonly required>
+            <input type="text" class="form-control" name="" value="{{ $penugasan->nik }}" style="font-weight: bold" readonly required>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Jabatan" readonly>
@@ -68,7 +92,7 @@
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Asal Kerja" readonly>
-            <input type="text" class="form-control" name="" value="{{ $penugasan->kontrak_kerja }}" style="font-weight: bold" readonly required>
+            <input type="text" class="form-control" name="" value="{{ $penugasan->asal_kerja }}" style="font-weight: bold" readonly required>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Penugasan" readonly>
@@ -108,32 +132,47 @@
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Makan" readonly>
-            <input type="text" class="form-control" name="" value="{{ $penugasan->makan }} {{ $penugasan->id_diminta_oleh }}" readonly style="font-weight: bold" required>
+            <input type="text" class="form-control" name="" value="{{ $penugasan->makan }}" readonly style="font-weight: bold" required>
         </div>
         <hr>
-        @php
-        $diminta = \App\Models\User::where(['id'=>$penugasan->id_diminta_oleh])->first();
-        $disahkan = \App\Models\User::where(['id'=>$penugasan->id_disahkan_oleh])->first();
-        $diproseshrd = \App\Models\User::where(['id'=>'e30d4a42-5562-415c-b1b6-f6b9ccc379a1'])->first();
-        $diprosesfin = \App\Models\User::where(['id'=>'436da676-5782-4f4e-ad50-52b45060430c'])->first();
-        @endphp
-        @if($penugasan->status_penugasan == 1)
         <div class="input-group">
             <input type="text" class="form-control" value="Diajukan oleh" readonly>
             <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">Cek Signature</button>
-            <div class="modal fade" id="exampleModalCenter">
+        </div>
+        <div class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+            <a href="javascript:void(0);" data-bs-target="#modal_ttd" data-bs-toggle="modal">
+                <span class="badge light badge-sm badge-info me-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 28 28" version="1.1">
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <title>ic_fluent_signature_28_filled</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_signature_28_filled" fill="#212121" fill-rule="nonzero">
+                                <path d="M16.4798956,21.0019578 L16.75,21 C17.9702352,21 18.6112441,21.5058032 19.4020627,22.7041662 L19.7958278,23.3124409 C20.1028266,23.766938 20.2944374,23.9573247 20.535784,24.0567929 C20.9684873,24.2351266 21.3271008,24.1474446 22.6440782,23.5133213 L23.0473273,23.3170319 C23.8709982,22.9126711 24.4330286,22.6811606 25.0680983,22.5223931 C25.4699445,22.4219316 25.8771453,22.6662521 25.9776069,23.0680983 C26.0780684,23.4699445 25.8337479,23.8771453 25.4319017,23.9776069 C25.0371606,24.0762922 24.6589465,24.2178819 24.1641364,24.4458997 L23.0054899,25.0032673 C21.4376302,25.7436944 20.9059009,25.8317321 19.964216,25.4436275 C19.3391237,25.1860028 18.9836765,24.813298 18.4635639,24.0180227 L18.2688903,23.7140849 C17.6669841,22.7656437 17.3640608,22.5 16.75,22.5 L16.5912946,22.5037584 C16.1581568,22.5299816 15.8777212,22.7284469 14.009281,24.1150241 C12.2670395,25.4079488 10.9383359,26.0254984 9.24864243,26.0254984 C7.18872869,26.0254984 5.24773367,25.647067 3.43145875,24.8905363 L6.31377803,24.2241784 C7.25769404,24.4250762 8.23567143,24.5254984 9.24864243,24.5254984 C10.5393035,24.5254984 11.609129,24.0282691 13.1153796,22.9104743 L14.275444,22.0545488 C15.5468065,21.1304903 15.8296113,21.016032 16.4798956,21.0019578 L16.4798956,21.0019578 Z M22.7770988,3.22208979 C24.4507223,4.8957133 24.4507566,7.60916079 22.7771889,9.28281324 L21.741655,10.3184475 C22.8936263,11.7199657 22.8521526,13.2053774 21.7811031,14.279556 L18.7800727,17.2805874 L18.7800727,17.2805874 C18.4870374,17.5733384 18.0121637,17.573108 17.7194126,17.2800727 C17.4266616,16.9870374 17.426892,16.5121637 17.7199273,16.2194126 L20.7188969,13.220444 C21.2039571,12.7339668 21.2600021,12.1299983 20.678941,11.3818945 L10.0845437,21.9761011 C9.78635459,22.2743053 9.41036117,22.482705 8.99944703,22.5775313 L2.91864463,23.9807934 C2.37859061,24.1054212 1.89457875,23.6214094 2.0192066,23.0813554 L3.42247794,17.0005129 C3.51729557,16.5896365 3.72566589,16.2136736 4.0238276,15.9154968 L16.7165019,3.22217992 C18.3900415,1.54855555 21.1034349,1.54851059 22.7770988,3.22208979 Z" id="🎨-Color">
+
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Lihat&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            <div class="modal fade" id="modal_ttd">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Signature : {{ $penugasan->fullname }}</h5>
+                            <h5 class="modal-title">TTD : {{ $penugasan->fullname }}</h5>
                         </div>
                         <div class="modal-body">
-                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
-                            {{-- <img width="40px" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                            @if($penugasan->ttd_id_diajukan_oleh=='')
+                            <h6 class="text-center">kosong</h6>
+                            @else
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" style="width: 100%;" alt="">
+                            @endif
+                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
                             {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" alt=""> --}}
-                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_id_diajukan_oleh }}</p>
                         </div>
+                        <p style="text-align:center;font-weight: bold">{{ $penugasan->waktu_ttd_id_diajukan_oleh }}</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
                         </div>
@@ -143,141 +182,238 @@
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Diminta oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
+            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }}" readonly style="font-weight: bold">
+        </div>
+        <div class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+            @if($penugasan->ttd_id_diminta_oleh !='')
+            <a href="javascript:void(0);" data-bs-target="#modal_ttd1" data-bs-toggle="modal">
+                <span class="badge light badge-sm badge-info me-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 28 28" version="1.1">
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <title>ic_fluent_signature_28_filled</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_signature_28_filled" fill="#212121" fill-rule="nonzero">
+                                <path d="M16.4798956,21.0019578 L16.75,21 C17.9702352,21 18.6112441,21.5058032 19.4020627,22.7041662 L19.7958278,23.3124409 C20.1028266,23.766938 20.2944374,23.9573247 20.535784,24.0567929 C20.9684873,24.2351266 21.3271008,24.1474446 22.6440782,23.5133213 L23.0473273,23.3170319 C23.8709982,22.9126711 24.4330286,22.6811606 25.0680983,22.5223931 C25.4699445,22.4219316 25.8771453,22.6662521 25.9776069,23.0680983 C26.0780684,23.4699445 25.8337479,23.8771453 25.4319017,23.9776069 C25.0371606,24.0762922 24.6589465,24.2178819 24.1641364,24.4458997 L23.0054899,25.0032673 C21.4376302,25.7436944 20.9059009,25.8317321 19.964216,25.4436275 C19.3391237,25.1860028 18.9836765,24.813298 18.4635639,24.0180227 L18.2688903,23.7140849 C17.6669841,22.7656437 17.3640608,22.5 16.75,22.5 L16.5912946,22.5037584 C16.1581568,22.5299816 15.8777212,22.7284469 14.009281,24.1150241 C12.2670395,25.4079488 10.9383359,26.0254984 9.24864243,26.0254984 C7.18872869,26.0254984 5.24773367,25.647067 3.43145875,24.8905363 L6.31377803,24.2241784 C7.25769404,24.4250762 8.23567143,24.5254984 9.24864243,24.5254984 C10.5393035,24.5254984 11.609129,24.0282691 13.1153796,22.9104743 L14.275444,22.0545488 C15.5468065,21.1304903 15.8296113,21.016032 16.4798956,21.0019578 L16.4798956,21.0019578 Z M22.7770988,3.22208979 C24.4507223,4.8957133 24.4507566,7.60916079 22.7771889,9.28281324 L21.741655,10.3184475 C22.8936263,11.7199657 22.8521526,13.2053774 21.7811031,14.279556 L18.7800727,17.2805874 L18.7800727,17.2805874 C18.4870374,17.5733384 18.0121637,17.573108 17.7194126,17.2800727 C17.4266616,16.9870374 17.426892,16.5121637 17.7199273,16.2194126 L20.7188969,13.220444 C21.2039571,12.7339668 21.2600021,12.1299983 20.678941,11.3818945 L10.0845437,21.9761011 C9.78635459,22.2743053 9.41036117,22.482705 8.99944703,22.5775313 L2.91864463,23.9807934 C2.37859061,24.1054212 1.89457875,23.6214094 2.0192066,23.0813554 L3.42247794,17.0005129 C3.51729557,16.5896365 3.72566589,16.2136736 4.0238276,15.9154968 L16.7165019,3.22217992 C18.3900415,1.54855555 21.1034349,1.54851059 22.7770988,3.22208979 Z" id="🎨-Color">
+
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Lihat&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @else
+            <a href="javascript:void(0);">
+                <span class="badge light badge-sm badge-danger me-1 mb-1">
+                    Belum&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @endif
+            <div class="modal fade" id="modal_ttd1">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">TTD : {{ $diminta->fullname }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            @if($penugasan->ttd_id_diminta_oleh=='')
+                            <h6 class="text-center">kosong</h6>
+                            @else
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_id_diminta_oleh.'.png') }}" style="width: 100%;" alt="">
+                            @endif
+                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_diminta_oleh.'.png') }}" alt=""> --}}
+                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_id_diminta_oleh }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Disahkan oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
+            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }}" readonly style="font-weight: bold">
+        </div>
+        <div class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+            @if ($penugasan->ttd_id_disahkan_oleh != '')
+            <a href="javascript:void(0);" data-bs-target="#modal_ttd2" data-bs-toggle="modal">
+                <span class="badge light badge-sm badge-info me-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 28 28" version="1.1">
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <title>ic_fluent_signature_28_filled</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_signature_28_filled" fill="#212121" fill-rule="nonzero">
+                                <path d="M16.4798956,21.0019578 L16.75,21 C17.9702352,21 18.6112441,21.5058032 19.4020627,22.7041662 L19.7958278,23.3124409 C20.1028266,23.766938 20.2944374,23.9573247 20.535784,24.0567929 C20.9684873,24.2351266 21.3271008,24.1474446 22.6440782,23.5133213 L23.0473273,23.3170319 C23.8709982,22.9126711 24.4330286,22.6811606 25.0680983,22.5223931 C25.4699445,22.4219316 25.8771453,22.6662521 25.9776069,23.0680983 C26.0780684,23.4699445 25.8337479,23.8771453 25.4319017,23.9776069 C25.0371606,24.0762922 24.6589465,24.2178819 24.1641364,24.4458997 L23.0054899,25.0032673 C21.4376302,25.7436944 20.9059009,25.8317321 19.964216,25.4436275 C19.3391237,25.1860028 18.9836765,24.813298 18.4635639,24.0180227 L18.2688903,23.7140849 C17.6669841,22.7656437 17.3640608,22.5 16.75,22.5 L16.5912946,22.5037584 C16.1581568,22.5299816 15.8777212,22.7284469 14.009281,24.1150241 C12.2670395,25.4079488 10.9383359,26.0254984 9.24864243,26.0254984 C7.18872869,26.0254984 5.24773367,25.647067 3.43145875,24.8905363 L6.31377803,24.2241784 C7.25769404,24.4250762 8.23567143,24.5254984 9.24864243,24.5254984 C10.5393035,24.5254984 11.609129,24.0282691 13.1153796,22.9104743 L14.275444,22.0545488 C15.5468065,21.1304903 15.8296113,21.016032 16.4798956,21.0019578 L16.4798956,21.0019578 Z M22.7770988,3.22208979 C24.4507223,4.8957133 24.4507566,7.60916079 22.7771889,9.28281324 L21.741655,10.3184475 C22.8936263,11.7199657 22.8521526,13.2053774 21.7811031,14.279556 L18.7800727,17.2805874 L18.7800727,17.2805874 C18.4870374,17.5733384 18.0121637,17.573108 17.7194126,17.2800727 C17.4266616,16.9870374 17.426892,16.5121637 17.7199273,16.2194126 L20.7188969,13.220444 C21.2039571,12.7339668 21.2600021,12.1299983 20.678941,11.3818945 L10.0845437,21.9761011 C9.78635459,22.2743053 9.41036117,22.482705 8.99944703,22.5775313 L2.91864463,23.9807934 C2.37859061,24.1054212 1.89457875,23.6214094 2.0192066,23.0813554 L3.42247794,17.0005129 C3.51729557,16.5896365 3.72566589,16.2136736 4.0238276,15.9154968 L16.7165019,3.22217992 C18.3900415,1.54855555 21.1034349,1.54851059 22.7770988,3.22208979 Z" id="🎨-Color">
+
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Lihat&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @else
+            <a href="javascript:void(0);">
+                <span class="badge light badge-sm badge-danger me-1 mb-1">
+                    Belum&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @endif
+            <div class="modal fade" id="modal_ttd2">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">TTD : {{ $disahkan->fullname }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            @if($penugasan->ttd_id_disahkan_oleh=='')
+                            <h6 class="text-center">kosong</h6>
+                            @else
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_id_disahkan_oleh.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                            @endif
+                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_disahkan_oleh.'.png') }}" alt=""> --}}
+                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_id_disahkan_oleh }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Diproses HRD" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
+            <input type="text" class="form-control" name="" value="{{$hrd->name}}" readonly style="font-weight: bold">
+        </div>
+        <div class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+            @if ($penugasan->ttd_proses_hrd != '')
+            <a href="javascript:void(0);" data-bs-target="#modal_ttd3" data-bs-toggle="modal">
+                <span class="badge light badge-sm badge-info me-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 28 28" version="1.1">
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <title>ic_fluent_signature_28_filled</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_signature_28_filled" fill="#212121" fill-rule="nonzero">
+                                <path d="M16.4798956,21.0019578 L16.75,21 C17.9702352,21 18.6112441,21.5058032 19.4020627,22.7041662 L19.7958278,23.3124409 C20.1028266,23.766938 20.2944374,23.9573247 20.535784,24.0567929 C20.9684873,24.2351266 21.3271008,24.1474446 22.6440782,23.5133213 L23.0473273,23.3170319 C23.8709982,22.9126711 24.4330286,22.6811606 25.0680983,22.5223931 C25.4699445,22.4219316 25.8771453,22.6662521 25.9776069,23.0680983 C26.0780684,23.4699445 25.8337479,23.8771453 25.4319017,23.9776069 C25.0371606,24.0762922 24.6589465,24.2178819 24.1641364,24.4458997 L23.0054899,25.0032673 C21.4376302,25.7436944 20.9059009,25.8317321 19.964216,25.4436275 C19.3391237,25.1860028 18.9836765,24.813298 18.4635639,24.0180227 L18.2688903,23.7140849 C17.6669841,22.7656437 17.3640608,22.5 16.75,22.5 L16.5912946,22.5037584 C16.1581568,22.5299816 15.8777212,22.7284469 14.009281,24.1150241 C12.2670395,25.4079488 10.9383359,26.0254984 9.24864243,26.0254984 C7.18872869,26.0254984 5.24773367,25.647067 3.43145875,24.8905363 L6.31377803,24.2241784 C7.25769404,24.4250762 8.23567143,24.5254984 9.24864243,24.5254984 C10.5393035,24.5254984 11.609129,24.0282691 13.1153796,22.9104743 L14.275444,22.0545488 C15.5468065,21.1304903 15.8296113,21.016032 16.4798956,21.0019578 L16.4798956,21.0019578 Z M22.7770988,3.22208979 C24.4507223,4.8957133 24.4507566,7.60916079 22.7771889,9.28281324 L21.741655,10.3184475 C22.8936263,11.7199657 22.8521526,13.2053774 21.7811031,14.279556 L18.7800727,17.2805874 L18.7800727,17.2805874 C18.4870374,17.5733384 18.0121637,17.573108 17.7194126,17.2800727 C17.4266616,16.9870374 17.426892,16.5121637 17.7199273,16.2194126 L20.7188969,13.220444 C21.2039571,12.7339668 21.2600021,12.1299983 20.678941,11.3818945 L10.0845437,21.9761011 C9.78635459,22.2743053 9.41036117,22.482705 8.99944703,22.5775313 L2.91864463,23.9807934 C2.37859061,24.1054212 1.89457875,23.6214094 2.0192066,23.0813554 L3.42247794,17.0005129 C3.51729557,16.5896365 3.72566589,16.2136736 4.0238276,15.9154968 L16.7165019,3.22217992 C18.3900415,1.54855555 21.1034349,1.54851059 22.7770988,3.22208979 Z" id="🎨-Color">
+
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Lihat&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @else
+            <a href="javascript:void(0);">
+                <span class="badge light badge-sm badge-danger me-1 mb-1">
+                    Belum&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @endif
+            <div class="modal fade" id="modal_ttd3">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">TTD : {{ $hrd->name }}</h5>
+                        </div>
+                        <div class=" modal-body">
+                            @if($penugasan->ttd_proses_hrd=='')
+                            <h6 class="text-center">kosong</h6>
+                            @else
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_proses_hrd.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                            @endif
+                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_proses_hrd.'.png') }}" alt=""> --}}
+                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_proses_hrd }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Diproses Finance" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
+            <input type="text" class="form-control" name="" value="{{$finance->name}}" readonly style="font-weight: bold">
+        </div>
+        <div class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+            @if ($penugasan->ttd_proses_finance != '')
+            <a href="javascript:void(0);" data-bs-target="#modal_ttd4" data-bs-toggle="modal">
+                <span class="badge light badge-sm badge-info me-1 mb-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15" height="15" viewBox="0 0 28 28" version="1.1">
+                        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+                        <title>ic_fluent_signature_28_filled</title>
+                        <desc>Created with Sketch.</desc>
+                        <g id="🔍-Product-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="ic_fluent_signature_28_filled" fill="#212121" fill-rule="nonzero">
+                                <path d="M16.4798956,21.0019578 L16.75,21 C17.9702352,21 18.6112441,21.5058032 19.4020627,22.7041662 L19.7958278,23.3124409 C20.1028266,23.766938 20.2944374,23.9573247 20.535784,24.0567929 C20.9684873,24.2351266 21.3271008,24.1474446 22.6440782,23.5133213 L23.0473273,23.3170319 C23.8709982,22.9126711 24.4330286,22.6811606 25.0680983,22.5223931 C25.4699445,22.4219316 25.8771453,22.6662521 25.9776069,23.0680983 C26.0780684,23.4699445 25.8337479,23.8771453 25.4319017,23.9776069 C25.0371606,24.0762922 24.6589465,24.2178819 24.1641364,24.4458997 L23.0054899,25.0032673 C21.4376302,25.7436944 20.9059009,25.8317321 19.964216,25.4436275 C19.3391237,25.1860028 18.9836765,24.813298 18.4635639,24.0180227 L18.2688903,23.7140849 C17.6669841,22.7656437 17.3640608,22.5 16.75,22.5 L16.5912946,22.5037584 C16.1581568,22.5299816 15.8777212,22.7284469 14.009281,24.1150241 C12.2670395,25.4079488 10.9383359,26.0254984 9.24864243,26.0254984 C7.18872869,26.0254984 5.24773367,25.647067 3.43145875,24.8905363 L6.31377803,24.2241784 C7.25769404,24.4250762 8.23567143,24.5254984 9.24864243,24.5254984 C10.5393035,24.5254984 11.609129,24.0282691 13.1153796,22.9104743 L14.275444,22.0545488 C15.5468065,21.1304903 15.8296113,21.016032 16.4798956,21.0019578 L16.4798956,21.0019578 Z M22.7770988,3.22208979 C24.4507223,4.8957133 24.4507566,7.60916079 22.7771889,9.28281324 L21.741655,10.3184475 C22.8936263,11.7199657 22.8521526,13.2053774 21.7811031,14.279556 L18.7800727,17.2805874 L18.7800727,17.2805874 C18.4870374,17.5733384 18.0121637,17.573108 17.7194126,17.2800727 C17.4266616,16.9870374 17.426892,16.5121637 17.7199273,16.2194126 L20.7188969,13.220444 C21.2039571,12.7339668 21.2600021,12.1299983 20.678941,11.3818945 L10.0845437,21.9761011 C9.78635459,22.2743053 9.41036117,22.482705 8.99944703,22.5775313 L2.91864463,23.9807934 C2.37859061,24.1054212 1.89457875,23.6214094 2.0192066,23.0813554 L3.42247794,17.0005129 C3.51729557,16.5896365 3.72566589,16.2136736 4.0238276,15.9154968 L16.7165019,3.22217992 C18.3900415,1.54855555 21.1034349,1.54851059 22.7770988,3.22208979 Z" id="🎨-Color">
+
+                                </path>
+                            </g>
+                        </g>
+                    </svg>
+                    Lihat&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @else
+            <a href="javascript:void(0);">
+                <span class="badge light badge-sm badge-danger me-1 mb-1">
+                    Belum&nbsp;Tanda&nbsp;Tangan
+                </span>
+            </a>
+            @endif
+            <div class="modal fade" id="modal_ttd4">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">TTD : {{ $finance->nama }}</h5>
+                        </div>
+                        <div class="modal-body">
+                            @if($penugasan->ttd_proses_finance=='')
+                            <h6 class="text-center">kosong</h6>
+                            @else
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$penugasan->ttd_proses_finance.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                            @endif
+                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
+                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_proses_finance.'.png') }}" alt=""> --}}
+                            <p style="text-align: center;font-weight: bold">{{ $penugasan->waktu_ttd_proses_finance }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="input-group">
-            <div id="signature-pad">
-                <div style="border:solid 1px teal; width:100%;height:200px;">
+            <div id="signature-pad" style="border:solid 1px teal; width:100%;height:200px;">
+                <div>
                     <div id="note" onmouseover="my_function();"></div>
                     <canvas id="the_canvas" width="auto" height="100px"></canvas>
                     <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
                     <hr>
-                    <div style="margin:10px;">
+                    <div class="text-center">
                         <input type="hidden" id="signature" name="signature">
-                        <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" style="margin-left:5%" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
-                        <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" style="margin-right:5%" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                        <button type="button" id="clear_btn" class="btn btn-sm btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                        <button type="submit" id="save_btn" class="btn btn-sm btn-success btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Approve</button>
                     </div>
 
                 </div>
             </div>
         </div>
-        @elseif($penugasan->status_penugasan == 2)
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diajukan oleh" readonly>
-            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diminta oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Disahkan oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses HRD" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses Finance" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-            <i class="fa fa-refresh" aria-hidden="true"> </i>
-            &nbsp; Setujui
-        </button>
-        @elseif($penugasan->status_penugasan == 3)
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diajukan oleh" readonly>
-            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diminta oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Disahkan oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses HRD" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses Finance" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-            <i class="fa fa-refresh" aria-hidden="true"> </i>
-            &nbsp; Setujui
-        </button>
-        @elseif($penugasan->status_penugasan == 4)
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diajukan oleh" readonly>
-            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diminta oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Disahkan oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses HRD" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses Finance" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Belum Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-            <i class="fa fa-refresh" aria-hidden="true"> </i>
-            &nbsp; Setujui
-        </button>
-        @elseif($penugasan->status_penugasan == 5)
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diajukan oleh" readonly>
-            <input type="text" class="form-control" name="" readonly value="{{ $penugasan->fullname }}" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diminta oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diminta->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Disahkan oleh" readonly>
-            <input type="text" class="form-control" name="" value="{{ $disahkan->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses HRD" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diproseshrd->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <div class="input-group">
-            <input type="text" class="form-control" value="Diproses Finance" readonly>
-            <input type="text" class="form-control" name="" value="{{ $diprosesfin->fullname }} (Sudah Disetujui)" readonly style="font-weight: bold">
-        </div>
-        <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
-            <i class="fa fa-refresh" aria-hidden="true"> </i>
-            &nbsp; Setujui
-        </button>
-        @endif
     </form>
 </div>
 </div>
-
+@endsection
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
     var wrapper = document.getElementById("signature-pad");
     var clearButton = wrapper.querySelector("[data-action=clear]");
@@ -288,7 +424,7 @@
     signaturePad = new SignaturePad(canvas);
 
     clearButton.addEventListener("click", function(event) {
-        document.getElementById("note").innerHTML = "The signature should be inside box";
+        // document.getElementById("note").innerHTML = "The signature should be inside box";
         signaturePad.clear();
     });
     savePNGButton.addEventListener("click", function(event) {

@@ -40,7 +40,12 @@
 
         <!-- Preloader -->
         <div id="preloader">
-            <div class="spinner"></div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
         </div>
         <!-- Preloader end-->
 

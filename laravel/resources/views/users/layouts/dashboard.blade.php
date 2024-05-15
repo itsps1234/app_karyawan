@@ -12,15 +12,13 @@
 
     <link rel="shorcut icon" href="{{ url('assets/img/avatar-1.png') }}">
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-        href="{{ url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}">
+    <link rel="stylesheet" href="{{ url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback') }}">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ url('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Ionicons -->
     <link rel="stylesheet" href="{{ url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css') }}">
     <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet"
-        href="{{ url('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
+    <link rel="stylesheet" href="{{ url('adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
     <!-- iCheck -->
     <link rel="stylesheet" href="{{ url('adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     <!-- JQVMap -->
@@ -35,8 +33,7 @@
     <link rel="stylesheet" href="{{ url('adminlte/plugins/summernote/summernote-bs4.min.css') }}">
 
     {{-- select picker --}}
-    <link rel="stylesheet"
-        href="{{ url('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css') }}">
+    <link rel="stylesheet" href="{{ url('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css') }}">
 
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ url('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -49,54 +46,50 @@
     <link rel="stylesheet" href="{{ url('https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css') }}">
 
     {{-- maps leaflet js --}}
-    <link rel="stylesheet" href="{{ url('https://unpkg.com/leaflet@1.8.0/dist/leaflet.css') }}"
-        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-        crossorigin="" />
-<script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="{{ url('https://unpkg.com/leaflet@1.8.0/dist/leaflet.js') }}"
-        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-        crossorigin=""></script>
+    <link rel="stylesheet" href="{{ url('https://unpkg.com/leaflet@1.8.0/dist/leaflet.css') }}" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{ url('https://unpkg.com/leaflet@1.8.0/dist/leaflet.js') }}" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
     <style type="text/css">
-    body {
-        font-family: "Montserrat", sans-serif;
-        font-size: 16px;
-        line-height: 1.4;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-rendering: optimizeLegibility;
-        height: 100%;
-        /* background: #ffffff; */
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
+        body {
+            font-family: "Montserrat", sans-serif;
+            font-size: 16px;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            height: 100%;
+            /* background: #ffffff; */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
 
-    .content-wrapper {
-        /* padding: 0;
+        .content-wrapper {
+            /* padding: 0;
             margin: 0; */
-        background: url('dist/img/bgWave.svg') center bottom / 100% no-repeat fixed, url('/dist/img/topWave.svg') center top / 100% no-repeat fixed;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-    }
+            background: url('dist/img/bgWave.svg') center bottom / 100% no-repeat fixed, url('/dist/img/topWave.svg') center top / 100% no-repeat fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
 
-    .imgtgl {
-        background: url("dist/img/buttonBlue.svg") 0% 0% / cover rgba(71, 188, 188, 0.07);
-        border-radius: 6px;
-        font-size: 10px;
-        color: rgb(71, 188, 188);
-    }
+        .imgtgl {
+            background: url("dist/img/buttonBlue.svg") 0% 0% / cover rgba(71, 188, 188, 0.07);
+            border-radius: 6px;
+            font-size: 10px;
+            color: rgb(71, 188, 188);
+        }
 
-    .imgjam {
-        background-color: rgb(255, 250, 242);
-        background-image: url("dist/img/buttonOrange.svg");
-        background-size: cover;
-        border-radius: 6px;
-        font-size: 10px;
-        color: rgb(254, 153, 0);
-    }
+        .imgjam {
+            background-color: rgb(255, 250, 242);
+            background-image: url("dist/img/buttonOrange.svg");
+            background-size: cover;
+            border-radius: 6px;
+            font-size: 10px;
+            color: rgb(254, 153, 0);
+        }
     </style>
 
 
@@ -107,8 +100,13 @@
     <div class="wrapper">
 
         <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img src="{{ url('assets/img/logosp.png') }}" alt="SP" height="60" width="60">
+        <div id="preloader">
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
         </div>
 
         @include('partials.topbar')

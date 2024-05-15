@@ -17,6 +17,7 @@ class AbsenController extends Controller
     public function index()
     {
         // dd('ok');
+        $holding = request()->segment(count(request()->segments()));
         date_default_timezone_set('Asia/Jakarta');
         $user_login = auth()->user()->id;
         $tanggal = "";
@@ -39,6 +40,7 @@ class AbsenController extends Controller
         }
         return view('users.home.index', [
             'title' => 'Absen',
+            'holding' => $holding,
             'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get()
         ]);
     }
@@ -80,6 +82,7 @@ class AbsenController extends Controller
             $request["foto_jam_absen"] = $fileName;
 
             $request["status_absen"] = "Masuk";
+            $request["keterangan_absensi"] = "ABSEN SESUAI LOKASI";
 
             $mapping_shift = MappingShift::where('id', $id)->get();
 
@@ -107,7 +110,8 @@ class AbsenController extends Controller
                 'lat_absen' => 'required',
                 'long_absen' => 'required',
                 'jarak_masuk' => 'required',
-                'status_absen' => 'required'
+                'status_absen' => 'required',
+                'keterangan_absensi' => 'required'
             ]);
 
             MappingShift::where('id', $id)->update($validatedData);
@@ -147,6 +151,7 @@ class AbsenController extends Controller
             Storage::put($fileName, $image_base64);
 
             $request["foto_jam_pulang"] = $fileName;
+            $request["keterangan_absensi"] = "ABSEN SESUAI LOKASI";
 
             $mapping_shift = MappingShift::where('id', $id)->get();
             foreach ($mapping_shift as $mp) {
@@ -183,7 +188,8 @@ class AbsenController extends Controller
                 'lat_pulang' => 'required',
                 'long_pulang' => 'required',
                 'pulang_cepat' => 'required',
-                'jarak_pulang' => 'required'
+                'jarak_pulang' => 'required',
+                'keterangan_absensi' => 'required'
             ]);
 
             MappingShift::where('id', $id)->update($validatedData);
@@ -217,6 +223,7 @@ class AbsenController extends Controller
 
     public function dataAbsen(Request $request)
     {
+        $holding = request()->segment(count(request()->segments()));
         date_default_timezone_set('Asia/Jakarta');
         $tglskrg = date('Y-m-d');
         $data_absen = MappingShift::where('tanggal', $tglskrg);
@@ -235,6 +242,7 @@ class AbsenController extends Controller
 
         return view('absen.dataabsen', [
             'title' => 'Data Absen',
+            'holding' => $holding,
             'user' => User::select('id', 'name')->get(),
             'data_absen' => $data_absen->get()
         ]);

@@ -8,20 +8,35 @@ use App\Models\ActivityLog;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Uuid;
+use Yajra\DataTables\Facades\DataTables;
 
 class LokasiController extends Controller
 {
     public function index()
     {
         $holding = request()->segment(count(request()->segments()));
-        return view('lokasi.index', [
+        return view('admin.lokasi.index', [
             'title' => 'Setting Lokasi Kantor',
             'holding' => $holding,
             'data_lokasi' => Lokasi::where('kategori_kantor', $holding)->get(),
             'lokasi' => Lokasi::all()
         ]);
     }
-
+    public function datatable(Request $request)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table = Lokasi::where('kategori_kantor', $holding)->get();
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('option', function ($row) use ($holding) {
+                    $btn = '<button id="btn_edit_lokasi" data-id="' . $row->id . '" data-lokasi="' . $row->lokasi_kantor . '" data-lat="' . $row->lat_kantor . '" data-long="' . $row->long_kantor . '"  data-radius="' . $row->radius . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-warning waves-effect waves-light"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
+                    $btn = $btn . '<button type="button" id="btn_delete_lokasi" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
+                    return $btn;
+                })
+                ->rawColumns(['option'])
+                ->make(true);
+        }
+    }
     public function addLokasi(Request $request)
     {
         // dd($request->all());
@@ -54,20 +69,20 @@ class LokasiController extends Controller
         // dd($request->all());
         $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
-            'lokasi_kantor' => 'required',
-            'kategori_kantor' => 'required',
-            'lat_kantor' => 'required',
-            'long_kantor' => 'required',
-            'radius' => 'required'
+            'lokasi_kantor_update' => 'required',
+            'kategori_kantor_update' => 'required',
+            'lat_kantor_update' => 'required',
+            'long_kantor_update' => 'required',
+            'radius_update' => 'required'
         ]);
 
         Lokasi::where('id', $request->id_lokasi)->update(
             [
-                'kategori_kantor' => $validatedData['kategori_kantor'],
-                'lat_kantor' => $validatedData['lat_kantor'],
-                'lokasi_kantor' => $validatedData['lokasi_kantor'],
-                'long_kantor' => $validatedData['long_kantor'],
-                'radius' => $validatedData['radius'],
+                'kategori_kantor' => $validatedData['kategori_kantor_update'],
+                'lat_kantor' => $validatedData['lat_kantor_update'],
+                'lokasi_kantor' => $validatedData['lokasi_kantor_update'],
+                'long_kantor' => $validatedData['long_kantor_update'],
+                'radius' => $validatedData['radius_update'],
             ]
         );
         ActivityLog::create([

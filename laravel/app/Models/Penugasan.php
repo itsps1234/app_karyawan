@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Penugasan extends Model
 {
-    use HasFactory,UuidTrait;
+    use HasFactory, UuidTrait;
     protected $guarded = ['id'];
     public $incrementing = false;
     public $timestamps = false;
@@ -29,13 +29,14 @@ class Penugasan extends Model
         'id_disahkan_oleh',
         'ttd_id_disahkan_oleh',
         'waktu_ttd_id_disahkan_oleh',
-        'proses_hrd',
+        'id_user_hrd',
         'ttd_proses_hrd',
         'waktu_ttd_proses_hrd',
-        'proses_finance',
+        'id_user_finance',
         'ttd_proses_finance',
         'waktu_ttd_proses_finance',
         'penugasan',
+        'wilayah_penugasan',
         'tanggal_kunjungan',
         'selesai_kunjungan',
         'kegiatan_penugasan',

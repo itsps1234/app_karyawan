@@ -310,7 +310,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/kpi') }}" class="nav-link {{ Request::is('id-kpi*') ? 'active' : '' }}">
+                        <a href="{{ url('/kpi') }}" class="nav-link {{ Request::is('kpi*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-book  biruMuda"></i>
                             <p>
                                 KPI
@@ -318,7 +318,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/my-slip') }}" class="nav-link {{ Request::is('id-kpi*') ? 'active' : '' }}">
+                        <a href="{{ url('/my-slip') }}" class="nav-link {{ Request::is('slip*') ? 'active' : '' }}">
                             <i class="nav-icon fa fa-receipt  biruMuda"></i>
                             <p>
                                 My Slip

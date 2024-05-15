@@ -54,7 +54,7 @@
                                     <div class="row">
                                         <a href="{{ url('dashboard/holding/sip') }}">
                                             <div class="col-12">
-                                                <img src="{{ url('public/holding/assets/img/logosip.png') }}" width="50%" style="margin-right: 25%;margin-left: 25%">
+                                                <img src="{{ url('public/holding/assets/img/logosipbaru.png') }}" width="50%" style="margin-right: 25%;margin-left: 25%">
                                             </div>
                                             <h4 class="title" style="text-align: center;"><a href="">CV. SURYA INTI PANGAN</a></h4>
                                         </a>

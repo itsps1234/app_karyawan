@@ -23,8 +23,9 @@
     <title>APPS KARYAWAN</title>
 
     <!-- Stylesheets -->
-    <link rel="stylesheet" href="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/assets_users/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.css') }}">
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,36 +39,96 @@
 
         <!-- Preloader -->
         <div id="preloader">
-            <div class="spinner"></div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
+            <div class="spinner-grow text-primary spinner-grow-sm me-2" role="status">
+            </div>
         </div>
         <!-- Preloader end-->
 
         <!-- Page Content -->
         <div class="page-content">
+            @if(Session::has('login_error'))
+            <div class="offcanvas offcanvas-bottom show text-center">
+                <div class="container">
+                    <div class="offcanvas-body small">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24">
 
+                            <defs>
+
+                                <style>
+                                    .cls-1 {
+                                        fill: #669df6;
+                                    }
+
+                                    .cls-1,
+                                    .cls-2 {
+                                        fill-rule: evenodd;
+                                    }
+
+                                    .cls-2 {
+                                        fill: #4285f4;
+                                    }
+                                </style>
+
+                            </defs>
+
+                            <title>Icon_24px_ErrorReporting_Color</title>
+
+                            <g data-name="Product Icons">
+
+                                <g>
+
+                                    <polygon id="Fill-1" class="cls-1" points="7 2 2 7 2 17 7 22 12 22 9.5 19.14 8.25 19.14 4.86 15.75 4.86 8.25 8.25 4.86 9.5 4.86 12 2 7 2" />
+
+                                    <polygon id="Fill-2" class="cls-1" points="14.5 2 12 4.86 15.75 4.86 19.14 8.25 19.14 15.75 15.75 19.14 12 19.14 14.5 22 17 22 22 17 22 7 17 2 14.5 2" />
+
+                                    <polygon id="Fill-3" class="cls-2" points="12 17 9.5 14.5 12 12 9.5 9.5 12 7 9.5 7 7 9.5 7 14.5 9.5 17 12 17" />
+
+                                    <polygon id="Fill-4" class="cls-2" points="14.5 7 12 9.5 14.5 12 12 14.5 14.5 17 17 14.5 17 9.5 14.5 7" />
+
+                                </g>
+
+                            </g>
+
+                        </svg>
+                        <h5 class="title">ANDA GAGAL LOGIN</h5>
+                        <p class="pwa-text">Pastikan Username dan Password Sesuai</p>
+                    </div>
+                </div>
+            </div>
+            @else
+            @endif
             <!-- Banner -->
             <div class="banner-wrapper shape-1">
                 <div class="container inner-wrapper">
-                    <h2 class="dz-title">Sign In</h2>
-                    <p class="mb-0">Please sign in to My SPS</p>
+                    <h2 class="dz-title">SIGN IN</h2>
+                    <p class="mb-0">PLEASE SIGN IN TO APP HRD</p>
                 </div>
             </div>
             <!-- Banner End -->
-
             <div class="container">
+
                 <div class="account-area">
                     <form method="POST" action="{{ url('/login-proses') }}">
                         @csrf
                         <div class="input-group">
-                            <input type="text" id="username" class="form-control" @error('username') is-invalid @enderror name="username" value="{{ old('username') }}" autocomplete="username" autofocus placeholder="Username">
+                            <input type="text" id="username" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" autocomplete="username" autofocus placeholder="Username">
+                            @error('username')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="input-group">
-                            {{-- <input type="password" placeholder="Password" id="dz-password" class="form-control be-0"> --}}
-                            <input type="password" name="password" id="dz-password" id="password" class="form-control be-0" placeholder="***********">
+                            <input type="password" name="password" id="dz-password" id="password" class="form-control be-0 @error('password') is-invalid @enderror" placeholder="***********">
                             <span class="input-group-text show-pass">
                                 <i class="fa fa-eye-slash"></i>
                                 <i class="fa fa-eye"></i>
                             </span>
+                            @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <a href="forgot-password.html" class="btn-link d-block text-center">Forgot your password?</a>
                         <div class="input-group">
@@ -170,6 +231,25 @@
     <script src="{{ asset('assets/assets_users/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/assets_users/js/settings.js') }}"></script>
     <script src="{{ asset('assets/assets_users/js/custom.js') }}"></script>
+    <script src="{{asset('assets/assets_users/vendor/swiper/swiper-bundle.min.js')}}"></script>
+    <script>
+        $("document").ready(function() {
+            // console.log('ok');
+            setTimeout(function() {
+                // console.log('ok1');
+                $("#alert_logout_success").remove();
+            }, 7000); // 7 secs
+
+        });
+        $("document").ready(function() {
+            // console.log('ok');
+            setTimeout(function() {
+                // console.log('ok1');
+                $("#alert_login_error").remove();
+            }, 7000); // 7 secs
+
+        });
+    </script>
 </body>
 
 </html>

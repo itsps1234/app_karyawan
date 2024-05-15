@@ -26,12 +26,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="avatar">
                                     <div class="avatar-initial bg-primary rounded shadow">
-                                        <i class="mdi mdi-trending-up mdi-24px"></i>
+                                        <i class="mdi mdi-account-tie mdi-24px"></i>
                                     </div>
                                 </div>
                                 <div class="ms-3">
                                     <div class="small mb-1">Karyawan Laki- Laki</div>
-                                    <h5 class="mb-0">245k</h5>
+                                    <h5 class="mb-0">{{$karyawan_laki}}&nbsp;Orang</h5>
                                 </div>
                             </div>
                         </div>
@@ -39,12 +39,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="avatar">
                                     <div class="avatar-initial bg-success rounded shadow">
-                                        <i class="mdi mdi-account-outline mdi-24px"></i>
+                                        <i class="mdi mdi-account-tie mdi-24px"></i>
                                     </div>
                                 </div>
                                 <div class="ms-3">
                                     <div class="small mb-1">Karyawan Perempuan</div>
-                                    <h5 class="mb-0">12.5k</h5>
+                                    <h5 class="mb-0">{{$karyawan_perempuan}}&nbsp;Orang</h5>
                                 </div>
                             </div>
                         </div>
@@ -52,12 +52,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="avatar">
                                     <div class="avatar-initial bg-warning rounded shadow">
-                                        <i class="mdi mdi-cellphone-link mdi-24px"></i>
+                                        <i class="mdi mdi-account-tie mdi-24px"></i>
                                     </div>
                                 </div>
                                 <div class="ms-3">
                                     <div class="small mb-1">Karyawan Office</div>
-                                    <h5 class="mb-0">1.54k</h5>
+                                    <h5 class="mb-0">{{$karyawan_office}}&nbsp;Orang</h5>
                                 </div>
                             </div>
                         </div>
@@ -65,12 +65,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="avatar">
                                     <div class="avatar-initial bg-info rounded shadow">
-                                        <i class="mdi mdi-currency-usd mdi-24px"></i>
+                                        <i class="mdi mdi-account-tie mdi-24px"></i>
                                     </div>
                                 </div>
                                 <div class="ms-3">
                                     <div class="small mb-1">Karyawan Shift</div>
-                                    <h5 class="mb-0">$88k</h5>
+                                    <h5 class="mb-0">{{$karyawan_shift}}&nbsp;Orang</h5>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                     <hr class="my-5">
                     <button type="button" class="btn btn-sm btn-primary waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#modal_tambah_karyawan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
                     <div class="modal fade" id="modal_tambah_karyawan" data-bs-backdrop="static" tabindex="-1">
-                        <div class="modal-dialog modal-lg">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
                             <form method="post" action="{{ url('/karyawan/tambah-karyawan-proses/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-header">
@@ -86,6 +86,20 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                        <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded" id="template_foto_karyawan" />
+
+                                        <div class="button-wrapper">
+                                            <label for="foto_karyawan" class="btn btn-primary me-2 mb-3" tabindex="0">
+                                                <span class="d-none d-sm-block">Upload Foto</span>
+                                                <i class="mdi mdi-tray-arrow-up d-block d-sm-none"></i>
+                                                <input type="file" name="foto_karyawan" id="foto_karyawan" class="account-file-input" hidden accept="image/png, image/jpeg" />
+                                            </label>
+
+                                            <div class="text-muted small">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                        </div>
+                                    </div>
+                                    <br>
                                     <div class="row g-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
@@ -110,8 +124,9 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col mb-4 mt-2">
+                                    <br>
+                                    <div class="row g-2">
+                                        <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" id="fullname" name="fullname" class="form-control @error('fullname') is-invalid @enderror" placeholder="Masukkan Fullname" value="{{ old('fullname') }}" />
                                                 <label for="fullname">Fullname</label>
@@ -122,7 +137,19 @@
                                             </span>
                                             @enderror
                                         </div>
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" id="motto" name="motto" class="form-control @error('motto') is-invalid @enderror" placeholder="Masukkan motto" value="{{ old('motto') }}" />
+                                                <label for="motto">Motto</label>
+                                            </div>
+                                            @error('motto')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
                                     </div>
+                                    <br>
                                     <div class="row g-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
@@ -147,7 +174,8 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="row g-2 mt-2">
+                                    <br>
+                                    <div class="row g-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="Masukkan Tempat Lahir" value="{{ old('tempat_lahir') }}" />
@@ -176,30 +204,6 @@
                                                 <label for="tgl_join">Tanggal Join Perusahaan</label>
                                             </div>
                                             @error('tgl_join')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="file" accept="image/png, image/gif, image/jpeg" id="foto_karyawan" name="foto_karyawan" class="form-control @error('foto_karyawan') is-invalid @enderror" placeholder="Masukkan foto_karyawan" value="{{ old('foto_karyawan') }}" />
-                                                <label for="foto_karyawan">Foto Karyawan</label>
-                                            </div>
-                                            @error('foto_karyawan')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" id="motto" name="motto" class="form-control @error('motto') is-invalid @enderror" placeholder="Masukkan motto" value="{{ old('motto') }}" />
-                                                <label for="motto">Motto</label>
-                                            </div>
-                                            @error('motto')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -638,13 +642,14 @@
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
+    let holding = window.location.pathname.split("/").pop();
     var table = $('#table_karyawan').DataTable({
         "scrollY": true,
         "scrollX": true,
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ url('karyawan-datatable/sp') }}",
+            url: "{{ url('karyawan-datatable') }}" + '/' + holding,
         },
         columns: [{
                 data: "id",
@@ -997,8 +1002,8 @@
 </script>
 <script>
     $(document).on("click", "#btndetail_karyawan", function() {
-        console.log('ok');
         let id = $(this).data('id');
+        // console.log(id);
         let holding = $(this).data("holding");
         let url = "{{ url('/karyawan/detail/')}}" + '/' + id + '/' + holding;
         $.ajax({
@@ -1019,6 +1024,107 @@
             },
 
         })
+    });
+    $('#foto_karyawan').change(function() {
+
+        let reader = new FileReader();
+        console.log(reader);
+        reader.onload = (e) => {
+
+            $('#template_foto_karyawan').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(this.files[0]);
+
+    });
+    $(document).on("click", "#btn_mapping_shift", function() {
+        // console.log('ok');
+        let id = $(this).data('id');
+        let holding = $(this).data("holding");
+        let url = "{{ url('/karyawan/shift/')}}" + '/' + id + '/' + holding;
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: false,
+            // data: {
+            //     id_kecamatan: id_kecamatan
+            // },
+            success: function(response) {
+                // console.log(response);
+                window.location.assign(url);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
+    });
+    $(document).on("click", "#btn_edit_password", function() {
+        let id = $(this).data('id');
+        let holding = $(this).data("holding");
+        // console.log(holding);
+        let url = "{{ url('/karyawan/edit-password/')}}" + '/' + id + '/' + holding;
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: false,
+            // data: {
+            //     id_kecamatan: id_kecamatan
+            // },
+            success: function(response) {
+                // console.log(response);
+                window.location.assign(url);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
+    });
+    $(document).on('click', '#btn_delete_karyawan', function() {
+        var id = $(this).data('id');
+        let holding = $(this).data("holding");
+        console.log(id);
+        Swal.fire({
+            title: 'Apakah kamu yakin?',
+            text: "Kamu tidak dapat mengembalikan data ini",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: "{{ url('/karyawan/delete/') }}" + '/' + id + '/' + holding,
+                    type: "GET",
+                    error: function() {
+                        alert('Something is wrong');
+                    },
+                    success: function(data) {
+                        Swal.fire({
+                            title: 'Terhapus!',
+                            text: 'Data anda berhasil di hapus.',
+                            icon: 'success',
+                            timer: 1500
+                        })
+                        $('#table_karyawan').DataTable().ajax.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Cancelled!',
+                    text: 'Your data is safe :',
+                    icon: 'error',
+                    timer: 1500
+                })
+            }
+        });
+
     });
 </script>
 @endsection

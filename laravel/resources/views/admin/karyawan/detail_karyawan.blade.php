@@ -24,19 +24,15 @@
                             @if($karyawan->foto_karyawan == null)
                             <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded" id="template_foto_karyawan" />
                             @else
-                            <img src="{{Storage::url('foto_karyawan/'.$karyawan->foto_karyawan)}}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded" id="uploadedAvatar" />
+                            <img src="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/{{$karyawan->foto_karyawan}}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded" id="template_foto_karyawan" />
                             @endif
                             <div class="button-wrapper">
                                 <label for="foto_karyawan" class="btn btn-primary me-2 mb-3" tabindex="0">
                                     <span class="d-none d-sm-block">Upload Foto</span>
                                     <i class="mdi mdi-tray-arrow-up d-block d-sm-none"></i>
-                                    <input type="text" name="foto_karyawan_lama" value="{{ $karyawan->foto_karyawan }}">
+                                    <input type="hidden" name="foto_karyawan_lama" value="{{ $karyawan->foto_karyawan }}">
                                     <input type="file" name="foto_karyawan" id="foto_karyawan" class="account-file-input" hidden accept="image/png, image/jpeg" />
                                 </label>
-                                <button type="button" class="btn btn-outline-danger account-image-reset mb-3">
-                                    <i class="mdi mdi-reload d-block d-sm-none"></i>
-                                    <span class="d-none d-sm-block">Reset</span>
-                                </button>
 
                                 <div class="text-muted small">Allowed JPG, GIF or PNG. Max size of 800K</div>
                             </div>

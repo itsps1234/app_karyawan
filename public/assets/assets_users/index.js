@@ -14,7 +14,8 @@ const installText = document.querySelector('.pwa-text');
 /* for ios start */
 function isThisDeviceRunningiOS(){
   if (['iPad Simulator', 'iPhone Simulator','iPod Simulator', 'iPad','iPhone','iPod','ios'].includes(navigator.platform) || navigator.userAgent.indexOf('Mac OS X') != -1){
-	installText.innerHTML = 'Install Jobie job portal mobile app template to your home screen for easy access click to safari share option "Add to Home Screen".';
+	installText.innerHTML = document.querySelector('.pwa-text');
+  //pwaBtn.style.display = 'none';
 	pwaBtn.remove();
 	return true;
   }

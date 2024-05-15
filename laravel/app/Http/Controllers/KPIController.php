@@ -16,6 +16,7 @@ class KPIController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         $Auth   = Auth::User()->id;
         //dd(date('Y-m-d'));
         $from1  = date('2024-01-01');
@@ -56,8 +57,8 @@ class KPIController extends Controller
         $data12 = MappingShift::where('user_id', $Auth)->whereBetween('tanggal', [$from1, $to1])->get();
         return view('kpi.index', [
             'data01' => $data01,
-            'title' => 'KPI'
+            'title' => 'KPI',
+            'holding' => $holding,
         ]);
     }
-
 }

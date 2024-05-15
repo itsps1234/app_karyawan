@@ -22,7 +22,22 @@
         height: auto;
     }
 </style>
-
+<div class="fixed-content p-0">
+    <div class="container">
+        <div class="main-content">
+            <div class="left-content">
+                <a href="{{url('home')}}" class="">
+                    <svg width="18" height="18" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.03033 0.46967C9.2966 0.735936 9.3208 1.1526 9.10295 1.44621L9.03033 1.53033L2.561 8L9.03033 14.4697C9.2966 14.7359 9.3208 15.1526 9.10295 15.4462L9.03033 15.5303C8.76406 15.7966 8.3474 15.8208 8.05379 15.6029L7.96967 15.5303L0.96967 8.53033C0.703403 8.26406 0.679197 7.8474 0.897052 7.55379L0.96967 7.46967L7.96967 0.46967C8.26256 0.176777 8.73744 0.176777 9.03033 0.46967Z" fill="#a19fa8" />
+                    </svg>
+                </a>
+            </div>
+            <div class="mid-content">
+                <h5 class="mb-0">Back</h5>
+            </div>
+        </div>
+    </div>
+</div>
 @if(Session::has('penugasansukses'))
 <div class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -62,27 +77,28 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
-@elseif(Session::has('penugasangagal'))
+@elseif(Session::has('penugasangagal1'))
 <div class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
         <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
         <line x1="15" y1="9" x2="9" y2="15"></line>
         <line x1="9" y1="9" x2="15" y2="15"></line>
     </svg>
-    <strong>Warning!</strong> Anda Gagal Pengajuan Perjalanan Dinas.
+    <strong>Gagal!</strong> Tanggal Pengajuan Anda Sudah Terlewat.
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
 @endif
 <div class="container">
+
     <form class="my-2">
         <div class="input-group">
             <input type="date" value="{{ date('Y-m-d') }}" readonly style="font-weight: bold" placeholder="Phone number" class="form-control">
             <input type="time" value="{{ date('H:i:s') }}" readonly style="font-weight: bold" placeholder="Phone number" class="form-control">
         </div>
     </form>
-    <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
+    <button id="addForm" class="btn btn-sm btn-primary btn-rounded" style="width: 30%;margin-left: 35%;margin-right: 35%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
         <i class="fa fa-plus" aria-hidden="true"> </i>
         &nbsp; Add
     </button>
@@ -98,7 +114,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">From Penugasan</h5>
+                    <h5 class="modal-title">Form Penugasan</h5>
                     <button class="btn-close" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -133,7 +149,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="NIK" readonly>
-                            <input type="text" class="form-control" name="" value="{{ Auth::user()->id }}" style="font-weight: bold" readonly required>
+                            <input type="text" class="form-control" name="" value="{{ Auth::user()->nik }}" style="font-weight: bold" readonly required>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Jabatan" readonly>
@@ -149,22 +165,48 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Asal Kerja" readonly>
-                            <select class="form-control" name="asal_kerja" required>
+                            <input type="text" name="asal_kerja" class="form-control" value="{{$user->penempatan_kerja}}" readonly>
+                            <!-- <select class="form-control" name="asal_kerja" required>
                                 <option value="">Pilih Asal Kerja...</option>
                                 <option value="CV. SUMBER PANGAN - KEDIRI">CV. Sumber Pangan (Kediri)</option>
                                 <option value="CV. SUMBER PANGAN - TUBAN">CV. Sumber Pangan (Tuban)</option>
                                 <option value="PT. SURYA PANGAN SEMESTA - KEDIRI">PT. Surya Pangan Semesta (Kediri)</option>
                                 <option value="PT. SURYA PANGAN SEMESTA - NGAWI">PT. Surya Pangan Semesta (Ngawi)</option>
                                 <option value="PT. SURYA PANGAN SEMESTA - SUBANG">PT. Surya Pangan Semesta (Subang)</option>
-                            </select>
+                            </select> -->
                         </div>
                         <div class="input-group">
-                            <input type="text" class="form-control" value="Penugasan" readonly>
+                            <input type="text" class="form-control" value="Lokasi Penugasan" readonly>
                             <select class="form-control" name="penugasan" required>
                                 <option value="">Pilih Penugasan...</option>
                                 <option value="Dalam Kota">Dalam Kota</option>
                                 <option value="Luar Kota">Luar Kota</option>
                             </select>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="Wilayah Penugasan" readonly>
+                            <select class="form-control" id="wilayah_penugasan" name="wilayah_penugasan" required>
+                                <option value="">Wilayah Penugasan...</option>
+                                <option value="Wilayah Kantor">Wilayah Kantor</option>
+                                <option value="Diluar Kantor">Diluar Kantor</option>
+                            </select>
+                        </div>
+                        <div id="alamat_dikunjungi" class="input-group">
+                            <input type="text" class="form-control" value="Lokasi Kantor" readonly>
+                            <select class="form-control" name="alamat_dikunjungi" style="font-weight: bold">
+                                <option selected disabled value="">-- Pilih Kantor --</option>
+                                @foreach($lokasi_kantor as $lokasi)
+                                <option value="{{$lokasi->lokasi_kantor}}">{{$lokasi->lokasi_kantor}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div id="alamat_dikunjungi1" class="input-group">
+                            <input type="text" class="form-control" value="Alamat" readonly>
+                            <input type="text" class="form-control" name="alamat_dikunjungi1" style="font-weight: bold">
+                        </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="PIC dikunjungi" readonly>
+                            <input type="text" class="form-control" name="pic_dikunjungi" style="font-weight: bold" required>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal Kunjungan" readonly>
@@ -176,14 +218,6 @@
                         </div>
                         <div class="input-group">
                             <textarea class="form-control" name="kegiatan_penugasan" style="font-weight: bold" required placeholder="Kegiatan penugasan"></textarea>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="PIC dikunjungi" readonly>
-                            <input type="text" class="form-control" name="pic_dikunjungi" style="font-weight: bold" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="Alamat" readonly>
-                            <input type="text" class="form-control" name="alamat_dikunjungi" style="font-weight: bold" required>
                         </div>
                         <hr>
                         <div class="input-group">
@@ -228,23 +262,25 @@
                         <hr>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diajukan oleh" readonly>
-                            <input type="text" class="form-control" name="diajukan_oleh" value="{{ Auth::user()->fullname }}" readonly>
+                            <input type="text" class="form-control" name="diajukan_oleh" value="{{ Auth::user()->name }}" readonly>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diminta oleh" readonly>
-                            <input type="text" class="form-control" name="diminta_oleh" value="{{ $getUserAtasan->fullname }}" readonly>
+                            <input type="text" class="form-control" name="diminta_oleh" value="{{ $getUserAtasan->name }}" readonly>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Disahkan oleh" readonly>
-                            <input type="text" class="form-control" name="disahkan_oleh" value="{{ $getUseratasan2->fullname }}" readonly>
+                            <input type="text" class="form-control" name="disahkan_oleh" value="{{ $getUseratasan2->name }}" readonly>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses HRD" readonly>
-                            <input type="text" class="form-control" name="proses_hrd" value="HRD" readonly>
+                            <input type="text" class="form-control" value="{{$hrd->name}}" readonly>
+                            <input type="hidden" class="form-control" name="proses_hrd" value="{{$hrd->id}}" readonly>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses Finance" readonly>
-                            <input type="text" class="form-control" name="proses_finance" value="ACC FINANCE" readonly>
+                            <input type="text" class="form-control" value="{{$finance->name}}" readonly>
+                            <input type="hidden" class="form-control" name="proses_finance" value="{{$finance->id}}" readonly>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -291,7 +327,18 @@
                     @elseif($record_data->status_penugasan == 1)
                     <small class="badge light badge-warning"><i class="fa fa-pencil"> </i> Proses TTD Diminta</small>
                     @elseif($record_data->status_penugasan == 2)
-                    <small class="badge light badge-info"><i class="fa fa-pencil"> </i> Proses TTD Disahkan</small>
+                    <small class="badge light badge-secondary"><i class="fa fa-pencil"> </i> Proses TTD Disahkan</small>
+                    @elseif($record_data->status_penugasan == 3)
+                    <small class="badge light badge-info"><i class="fa fa-pencil"> </i> Proses TTD HRD</small>
+                    @elseif($record_data->status_penugasan == 4)
+                    <small class="badge light badge-primary"><i class="fa fa-pencil"> </i> Proses TTD FINANCE</small>
+                    @elseif($record_data->status_penugasan == 5)
+                    <small class="badge light badge-success">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                            <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        Penugasan Telah Disetujui</small>
                     @endif
                 </div>
             </div>
@@ -301,15 +348,22 @@
 
 </div>
 
+@endsection
+@section('js')
 <script type="text/javascript">
-    var sig = $('#sig').signature({
-        syncField: '#signature64',
-        syncFormat: 'PNG'
-    });
-    $('#clear').click(function(e) {
-        e.preventDefault();
-        sig.signature('clear');
-        $("#signature64").val('');
+    $(document).ready(function() {
+        $('#alamat_dikunjungi').hide();
+        $('#alamat_dikunjungi1').hide();
+        $('body').on("change", "#wilayah_penugasan", function() {
+            var id = $(this).val();
+            if (id == 'Wilayah Kantor') {
+                $('#alamat_dikunjungi').show();
+                $('#alamat_dikunjungi1').hide();
+            } else {
+                $('#alamat_dikunjungi1').show();
+                $('#alamat_dikunjungi').hide();
+            }
+        });
     });
 </script>
 @endsection

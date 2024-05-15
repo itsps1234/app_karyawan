@@ -56,14 +56,17 @@ class authController extends Controller
         if (Auth::attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
             // dd(auth()->user()->is_admin);
-            if (auth()->user()->is_admin == "admin") {
+            if (auth()->user()->is_admin == 'admin') {
+                $request->session()->flash('login_success');
                 return redirect()->intended('/dashboard/holding');
                 // return redirect()->intended('/holding');
-            } else if (auth()->user()->is_admin == "user") {
+            } else if (auth()->user()->is_admin == 'user') {
+                $request->session()->flash('login_success');
                 return redirect()->intended('/home');
             }
         }
 
+        $request->session()->flash('login_error');
         return back()->with('loginError', 'Login Gagal!');
     }
 
@@ -72,6 +75,7 @@ class authController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        $request->session()->flash('logout_success');
         return redirect('/');
     }
 }

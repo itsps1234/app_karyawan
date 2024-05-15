@@ -9,7 +9,7 @@
 <script type="text/javascript" src="http://keith-wood.name/js/jquery.signature.js"></script>
 
 <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/css/bootstrap-datepicker.css" rel="stylesheet">
 <style>
     .kbw-signature {
         width: fit-content;
@@ -129,7 +129,7 @@
             <input type="time" value="{{ date('H:i:s') }}" readonly style="font-weight: bold" placeholder="Phone number" class="form-control">
         </div>
     </form>
-    <button id="addForm" class="btn btn-primary btn-rounded" style="width: 50%;margin-left: 25%;margin-right: 25%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
+    <button id="addForm" class="btn btn-sm btn-primary btn-rounded" style="width: 30%;margin-left: 35%;margin-right: 35%" data-bs-toggle="modal" data-bs-target="#modal_pengajuan_cuti">
         <i class="fa fa-plus" aria-hidden="true"> </i>
         &nbsp; Add
     </button>
@@ -145,7 +145,7 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">From Permission</h5>
+                    <h5 class="modal-title">Form Pengajuan Cuti</h5>
                     <button class="btn-close" data-bs-dismiss="modal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -223,7 +223,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal Mulai" readonly>
-                            <input type="date" name="tanggal_mulai" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                            <input type="text" name="tanggal_mulai" id="tanggal_mulai" value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal Selesai" readonly>
@@ -242,8 +242,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary float-right">Submit</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-primary float-right">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -298,6 +298,12 @@
 </div>
 @endsection
 @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript">
+    $('.date').datepicker({
+        format: 'mm-dd-yyyy'
+    });
+</script>
 <script>
     $("document").ready(function() {
         // console.log('ok');

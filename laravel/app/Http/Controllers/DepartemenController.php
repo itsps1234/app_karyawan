@@ -5,19 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Departemen;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Uuid;
+use Yajra\DataTables\Facades\DataTables;
 
 class DepartemenController extends Controller
 {
     public function index()
     {
         $holding = request()->segment(count(request()->segments()));
-        return view('departemen.index', [
+        return view('admin.departemen.index', [
             'title' => 'Master Departemen',
             'holding' => $holding,
             'data_departemen' => Departemen::all()
         ]);
     }
-
+    public function datatable(Request $request)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table = Departemen::all();
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('option', function ($row) use ($holding) {
+                    $btn = '<button id="btn_edit_dept" data-id="' . $row->id . '" data-dept="' . $row->nama_departemen . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-warning waves-effect waves-light"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
+                    $btn = $btn . '<button type="button" id="btn_delete_dept" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
+                    return $btn;
+                })
+                ->rawColumns(['option'])
+                ->make(true);
+        }
+    }
     public function create()
     {
         $holding = request()->segment(count(request()->segments()));
@@ -53,14 +68,16 @@ class DepartemenController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $holding = request()->segment(count(request()->segments()));
         $validatedData = $request->validate([
-            'nama_departemen' => 'required|max:255',
+            'nama_departemen_update' => 'required|max:255',
         ]);
 
-        Departemen::where('id', $id)->update($validatedData);
+        Departemen::where('id', $request->id_departemen)->update([
+            'nama_departemen' => $validatedData['nama_departemen_update'],
+        ]);
         return redirect('/departemen/' . $holding)->with('success', 'Data Berhasil di Update');
     }
 

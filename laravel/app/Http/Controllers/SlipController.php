@@ -15,9 +15,10 @@ class SlipController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('id-card.index', [
-            'title' => 'Id card'
+            'title' => 'Id card',
+            'holding' => $holding,
         ]);
     }
-
 }

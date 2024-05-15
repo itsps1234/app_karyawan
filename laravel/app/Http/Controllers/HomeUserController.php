@@ -11,6 +11,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ActivityLog;
 use App\Models\Cuti;
 use App\Models\Izin;
+use App\Models\Penugasan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,18 @@ class HomeUserController extends Controller
         // dd($blnskrg);
         $tglkmrn            = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift      = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->first();
-        $count_absen_hadir  = MappingShift::where('user_id', $user_login)->whereMonth('tanggal', $blnskrg)->where('status_absen', 'Masuk')->count();
+        $count_absen_hadir  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Masuk')->where('tanggal', '<=', $tglskrg)
+            ->whereMonth('tanggal', $blnskrg)
+            ->count();
+        $count_absen_sakit  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Sakit')->where('tanggal', '<=', $tglskrg)
+            ->whereMonth('tanggal', $blnskrg)
+            ->count();
+        $count_absen_izin  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Izin')->where('tanggal', '<=', $tglskrg)
+            ->whereMonth('tanggal', $blnskrg)
+            ->count();
+        $count_absen_telat  = MappingShift::where('user_id', $user_login)->where('status_absen', 'telat')->where('tanggal', '<=', $tglskrg)
+            ->whereMonth('tanggal', $blnskrg)
+            ->count();
         $user           = Auth::user()->id;
         $dataizin       = Izin::where('id_approve_atasan', $user)
             ->whereNotNull('ttd_pengajuan')
@@ -56,11 +68,48 @@ class HomeUserController extends Controller
             ->get();
         // dd($datacuti_tingkat1);
         $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')
-            ->orWhere('id_user_atasan', $user)
-            ->orWhere('id_user_atasan2', $user)
-            ->where('penugasans.status_penugasan', '!=', 0)
-            ->select('penugasans.*', 'users.fullname')->get();
-        // dd($datacuti_tingkat2->count());
+            ->where('id_diminta_oleh', $user)
+            ->orWhere('id_disahkan_oleh', $user)
+            ->orWhere('id_user_hrd', $user)
+            ->orWhere('id_user_finance', $user)
+            ->where('penugasans.status_penugasan', '!=', 5)
+            ->select('penugasans.*', 'users.fullname')
+            ->get();
+        // dd($datapenugasan);
+        $data_user_penugasaan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')
+            ->where('id_user', $user)
+            ->where('penugasans.status_penugasan', '5')
+            ->select('penugasans.*', 'users.name')->get();
+        // dd(count($data_user_penugasaan));
+        if (count($data_user_penugasaan) != 0) {
+            foreach ($data_user_penugasaan as $user_penugasan) {
+                if ($user_penugasan->wilayah_penugasan == 'Diluar Kantor') {
+                    $kantor_penugasan = NULL;
+                    $cek_absensi      = MappingShift::where('user_id', $user_login)
+                        ->where('status_absen', 'Tidak Masuk')
+                        ->whereBetween('tanggal', [$user_penugasan->tanggal_kunjungan, $user_penugasan->selesai_kunjungan])
+                        ->update([
+                            'jam_absen' => '07:45:00',
+                            'telat' => '0',
+                            'jam_pulang' => '17:00:00',
+                            'lembur' => '0',
+                            'pulang_cepat' => '0',
+                            'keterangan_absensi' => 'ABSENSI PENUGASAN DILUAR WILAYAH KANTOR',
+                            'status_absen' => 'Masuk',
+                        ]);
+                } else if ($user_penugasan->wilayah_penugasan == 'Wilayah Kantor') {
+                    $kantor_penugasan = $user_penugasan->alamat_dikunjungi;
+                    $cek_absensi      = MappingShift::where('user_id', $user_login)
+                        ->where('status_absen', 'Tidak Masuk')
+                        ->whereBetween('tanggal', [$user_penugasan->tanggal_kunjungan, $user_penugasan->selesai_kunjungan])
+                        ->update([
+                            'keterangan_absensi' => 'ABSENSI PENUGASAN WILAYAH KANTOR',
+                        ]);
+                }
+            }
+        } else {
+            $kantor_penugasan = NULL;
+        }
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
             $jam_pulang = null;
@@ -77,6 +126,10 @@ class HomeUserController extends Controller
                 'datacuti_tingkat1' => $datacuti_tingkat1,
                 'datacuti_tingkat2' => $datacuti_tingkat2,
                 'datapenugasan'     => $datapenugasan,
+                'count_absen_izin'     => $count_absen_izin,
+                'count_absen_sakit'     => $count_absen_sakit,
+                'count_absen_telat'     => $count_absen_telat,
+                'kantor_penugasan'     => $kantor_penugasan,
             ]);
         } else {
             $jam_absen = $mapping_shift->jam_absen;
@@ -115,6 +168,10 @@ class HomeUserController extends Controller
                 'datacuti_tingkat1' => $datacuti_tingkat1,
                 'datacuti_tingkat2' => $datacuti_tingkat2,
                 'datapenugasan'     => $datapenugasan,
+                'count_absen_izin'     => $count_absen_izin,
+                'count_absen_sakit'     => $count_absen_sakit,
+                'count_absen_telat'     => $count_absen_telat,
+                'kantor_penugasan'     => $kantor_penugasan,
             ]);
         }
     }
@@ -356,78 +413,88 @@ class HomeUserController extends Controller
     {
         $lokasi_kerja = Auth::guard('web')->user()->penempatan_kerja;
         if ($lokasi_kerja == '' || $lokasi_kerja == NULL) {
-            $request->session()->flash('lokaikerjanull', 'Gagal Absen Masuk');
+            $request->session()->flash('lokasikerjanull', 'Gagal Absen Masuk');
             return redirect('/home');
         } else {
-            date_default_timezone_set('Asia/Jakarta');
-            $user_login = auth()->user()->id;
-            $lokasi_kantor = Lokasi::where('lokasi_kantor', Auth::guard('web')->user()->penempatan_kerja)->first();
-            $lat_kantor = $lokasi_kantor->lat_kantor;
-            $long_kantor = $lokasi_kantor->long_kantor;
-            // dd($long_kantor);
-            $tglskrg = date('Y-m-d');
-            $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
-            // dd($request["jarak_masuk"], $lokasi_kantor->radius);
-            if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
-                // dd('oke');
-                $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
+            $cek_penugasan = MappingShift::where('id', $id)
+                ->where('keterangan_absensi', 'ABSENSI PENUGASAN WILAYAH KANTOR')
+                ->first();
+            if ($cek_penugasan != '' || $cek_penugasan != NULL) {
+                $request->session()->flash('penugasan_wilayah_kantor');
                 return redirect('/home');
             } else {
-                // dd('gak oke');
-                $foto_jam_absen = $request["foto_jam_absen"];
-
-                $image_parts = explode(";base64,", $foto_jam_absen);
-
-                $image_base64 = base64_decode($image_parts[1]);
-                $fileName = 'foto_jam_absen/' . uniqid() . '.png';
-                // dd($image_parts);
-                Storage::put($fileName, $image_base64);
-
-
-                $request["foto_jam_absen"] = $fileName;
-
-                $request["status_absen"] = "Masuk";
-
-                $mapping_shift = MappingShift::where('id', $id)->get();
-
-                foreach ($mapping_shift as $mp) {
-                    $shift = $mp->Shift->jam_masuk;
-                    $tanggal = $mp->tanggal;
-                }
-
-                $tgl_skrg = date("Y-m-d");
-
-                $awal  = strtotime($tanggal . $shift);
-                $akhir = strtotime($tgl_skrg . $request["jam_absen"]);
-                $diff  = $akhir - $awal;
-
-                if ($diff <= 0) {
-                    $request["telat"] = 0;
+                // dd('ok1');
+                date_default_timezone_set('Asia/Jakarta');
+                $user_login = auth()->user()->id;
+                $lokasi_kantor = Lokasi::where('lokasi_kantor', $lokasi_kerja)->first();
+                $lat_kantor = $lokasi_kantor->lat_kantor;
+                $long_kantor = $lokasi_kantor->long_kantor;
+                // dd($lokasi_kantor);
+                $tglskrg = date('Y-m-d');
+                $request["jarak_masuk"] = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
+                // dd($request["jarak_masuk"], $lokasi_kantor->radius);
+                if ($request["jarak_masuk"] > $lokasi_kantor->radius) {
+                    // dd('oke');
+                    $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
+                    return redirect('/home');
                 } else {
-                    $request["telat"] = $diff;
+                    // dd('gak oke');
+                    // dd($request["jam_absen"]);
+                    $foto_jam_absen = $request["foto_jam_absen"];
+
+                    $image_parts = explode(";base64,", $foto_jam_absen);
+
+                    $image_base64 = base64_decode($image_parts[1]);
+                    $fileName = 'foto_jam_absen/' . uniqid() . '.png';
+                    // dd($image_parts);
+                    Storage::put($fileName, $image_base64);
+
+
+                    $request["foto_jam_absen"] = $fileName;
+
+                    $mapping_shift = MappingShift::where('id', $id)->get();
+
+                    foreach ($mapping_shift as $mp) {
+                        $shift = $mp->Shift->jam_masuk;
+                        $tanggal = $mp->tanggal;
+                    }
+
+                    $tgl_skrg = date("Y-m-d");
+
+                    $awal  = strtotime($tanggal . $shift);
+                    $akhir = strtotime($tgl_skrg . date('H:i:s'));
+                    $diff  = $akhir - $awal;
+
+                    if ($diff <= 0) {
+                        $telat = 0;
+                    } else {
+                        $telat = $diff;
+                    }
+
+
+                    // dd(date('H:i:s'));
+                    $update = MappingShift::where('id', $id)->first();
+                    $update->jam_absen = date('H:i:s');
+                    $update->telat = $telat;
+                    $update->foto_jam_absen = $request['foto_jam_absen'];
+                    $update->lat_absen = $request['lat_absen'];
+                    $update->long_absen = $request['long_absen'];
+                    $update->jarak_masuk = $request['jarak_masuk'];
+                    $update->status_absen = 'Masuk';
+                    $update->keterangan_absensi = 'Sesuai Lokasi';
+                    $update->update();
+
+                    ActivityLog::create([
+                        'user_id' => Auth::user()->id,
+                        'activity' => 'tambah',
+                        'description' => 'Absen Masuk Pada Tanggal ' . $tanggal,
+                        'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
+                    ]);
+
+                    // dd($tglskrg);
+                    $request->session()->flash('absenmasuksuccess', 'Berhasil Absen Masuk');
+                    return redirect('home');
                 }
-
-                $validatedData = $request->validate([
-                    'jam_absen' => 'required',
-                    'telat' => 'nullable',
-                    'foto_jam_absen' => 'required',
-                    'lat_absen' => 'required',
-                    'long_absen' => 'required',
-                    'jarak_masuk' => 'required',
-                    'status_absen' => 'required'
-                ]);
-
-                MappingShift::where('id', $id)->update($validatedData);
-                ActivityLog::create([
-                    'user_id' => Auth::user()->id,
-                    'activity' => 'tambah',
-                    'description' => 'Absen Masuk Pada Tanggal ' . $tanggal,
-                    'status_absen_skrg' => MappingShift::where('user_id', $user_login)->where('tanggal', $tglskrg)->get(),
-                ]);
-
-                // dd($tglskrg);
-                $request->session()->flash('absenmasuksuccess', 'Berhasil Absen Masuk');
-                return redirect('home');
             }
         }
     }
@@ -436,7 +503,7 @@ class HomeUserController extends Controller
     {
         $lokasi_kerja = Auth::guard('web')->user()->penempatan_kerja;
         if ($lokasi_kerja == '' || $lokasi_kerja == NULL) {
-            $request->session()->flash('lokaikerjanull', 'Gagal Absen Masuk');
+            $request->session()->flash('lokasikerjanull', 'Gagal Absen Masuk');
             return redirect('/home');
         } else {
             date_default_timezone_set('Asia/Jakarta');

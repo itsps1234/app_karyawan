@@ -15,20 +15,24 @@ class DokumenController extends Controller
 {
     public function index()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('dokumen.index', [
             'title' => 'Data Dokumen Karyawan',
+            'holding' => $holding,
             'data_dokumen' => Sip::all()
         ]);
     }
 
     public function tambah()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('dokumen.tambah', [
             'title' => 'Tambah Data Dokumen',
+            'holding' => $holding,
             'data_user' => User::all()
         ]);
     }
-    
+
     public function tambahProses(Request $request)
     {
         $validatedData = $request->validate([
@@ -84,7 +88,7 @@ class DokumenController extends Controller
         ]);
         return redirect('/dokumen')->with('success', 'Dokumen Berhasil Diupdate');
     }
-    
+
     public function delete($id)
     {
         $dokumen = Sip::findOrFail($id);
@@ -97,18 +101,22 @@ class DokumenController extends Controller
         ]);
         return redirect('/dokumen')->with('success', 'Dokumen Berhasil Didelete');
     }
-    
+
     public function myDokumen()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('dokumen.mydokumen', [
             'title' => 'Data Dokumen Saya',
+            'holding' => $holding,
             'data_dokumen' => Sip::where('user_id', auth()->user()->id)->get()
         ]);
     }
 
     public function myDokumenTambah()
     {
+        $holding = request()->segment(count(request()->segments()));
         return view('dokumen.mydokumentambah', [
+            'holding' => $holding,
             'title' => 'Tambah Data Dokumen'
         ]);
     }

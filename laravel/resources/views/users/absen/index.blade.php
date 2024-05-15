@@ -108,6 +108,7 @@
                                     <input type="hidden" name="telat">
                                     <input type="hidden" name="jarak_masuk">
                                     <input type="hidden" name="status_absen">
+                                    <input type="hidden" name="keterangan_absensi">
                                     <center>
                                         <button style="background-color: white" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
                                     </center>
@@ -149,6 +150,7 @@
                                     <input type="hidden" name="long_pulang" id="long">
                                     <input type="hidden" name="pulang_cepat">
                                     <input type="hidden" name="jarak_pulang">
+                                    <input type="hidden" name="keterangan_absensi">
                                     <center>
                                         <button type="submit" class="btn btn-lokasisaya" style="background-color: white" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
                                     </center>
