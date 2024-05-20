@@ -80,12 +80,14 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);
     Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
 
+    Route::get('/get_cuti', [CutiUserController::class, 'get_cuti']);
     Route::get('/cuti/dashboard', [CutiUserController::class, 'index']);
     Route::get('/cuti/detail/edit/{id}', [CutiUserController::class, 'cutiEdit']);
     Route::post('/cuti/edit-cuti-proses', [CutiUserController::class, 'cutiUpdateProses']);
     Route::get('/cuti/approve/{id}', [CutiUserController::class, 'cutiApprove']);
     Route::put('/cuti/tambah-cuti-proses', [CutiUserController::class, 'cutiAbsen']);
     Route::post('/cuti/approve/proses', [CutiUserController::class, 'cutiApproveProses']);
+    Route::get('/cuti/cetak_form_cuti/{id}', [CutiUserController::class, 'cetak_form_cuti']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);

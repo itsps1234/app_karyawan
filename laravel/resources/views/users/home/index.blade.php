@@ -127,6 +127,19 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('approvecuti_not_approve'))
+<div id="alert_approve_cuti_success" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Tolak Approve Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('approvecuti_success'))
 <div id="alert_approve_cuti_success" class="alert alert-success light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -448,16 +461,24 @@
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
+                                    @if($datacuti->foto_karyawan!='')
+                                    <img src="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/{{$datacuti->foto_karyawan}}" alt="/">
+                                    @else
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                    @endif
                                 </div>
                                 <div class="card-info">
-                                    <h6 class="title">{{ $datacuti->fullname }}</h6>
+                                    <h6 class="title">{{ $datacuti->name }}</h6>
+                                    @if($datacuti->nama_cuti=='Diluar Cuti Tahunan')
+                                    <span class="">{{ $datacuti->KategoriCuti->nama_cuti }}</span>
+                                    @else
                                     <span class="">{{ $datacuti->nama_cuti }}</span>
+                                    @endif
                                     <div class="d-flex align-items-center">
                                         @if ($datacuti->status_cuti == 1)
-                                        <small class="badge badge-danger">Pending</small>
+                                        <small class="badge badge-danger"><i class="fa fa-spinner"></i>&nbsp;Pending</small>
                                         @elseif ($datacuti->status_cuti == 0)
-                                        <small class="badge badge-danger">Pending</small>
+                                        <small class="badge badge-danger"><i class="fa fa-spinner"></i>&nbsp;Pending</small>
                                         @endif
                                     </div>
                                 </div>
@@ -472,26 +493,31 @@
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
+                                    @if($datacuti->foto_karyawan!='')
+                                    <img src="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/{{$datacuti->foto_karyawan}}" alt="/">
+                                    @else
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                    @endif
                                 </div>
                                 <div class="card-info">
-                                    <h6 class="title">{{ $datacuti->fullname }}</h6>
+                                    <h6 class="title">{{ $datacuti->name }}</h6>
+                                    @if($datacuti->nama_cuti=='Diluar Cuti Tahunan')
+                                    <span class="">{{ $datacuti->KategoriCuti->nama_cuti }}</span>
+                                    @else
                                     <span class="">{{ $datacuti->nama_cuti }}</span>
+                                    @endif
                                     <div class="d-flex align-items-center">
-                                        @if ($datacuti->status_cuti == 1)
-                                        <small class="badge badge-danger">Pending</small>
-                                        @elseif ($datacuti->status_cuti == 0)
-                                        <small class="badge badge-danger">Pending</small>
+                                        @if ($datacuti->status_cuti == 2)
+                                        <small class="badge badge-danger"><i class="fa fa-spinner"></i>&nbsp;Pending</small>
+                                        @elseif ($datacuti->status_cuti == 3)
+                                        <small class="badge badge-success"><i class="fa fa-spinner"></i>&nbsp;Selesai</small>
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </a>
-                @endforeach
-                @foreach ($datapenugasan as $datapenugasan)
-                @if($datapenugasan->status_penugasan == 1)
+                </a @endforeach @foreach ($datapenugasan as $datapenugasan) @if($datapenugasan->status_penugasan == 1)
                 @if($datapenugasan->id_user_atasan == auth::user()->id)
                 @if($datapenugasan->ttd_id_diminta_oleh == NULL)
                 <a href="{{ url('/penugasan/approve/diminta/show/'.$datapenugasan->id) }}">

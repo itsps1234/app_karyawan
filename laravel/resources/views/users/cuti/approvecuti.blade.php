@@ -28,33 +28,31 @@
 <div class="container">
     <!-- Modal -->
     <div class="container">
-        <form class="my-2" method="post" action="{{ url('/cuti/approve/proses') }}" enctype="multipart/form-data">
+        <form id="form_approve" class="my-2" method="post" enctype="multipart/form-data">
             @csrf
             <div class="input-group">
-                <input type="hidden" name="id" value="{{ $data->id }}">
-                <input type="hidden" name="status_cuti" value="{{ $data->status_cuti }}">
-                <input type="hidden" name="user_id_atasan1" value="{{ $data->id_user_atasan }}">
-                <input type="hidden" name="user_id_atasan2" value="{{ $data->id_user_atasan2 }}">
+                <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+                <input type="hidden" id="status_cuti" name="status_cuti" value="{{ $data->status_cuti }}">
+                <input type="hidden" id="user_id_atasan1" name="user_id_atasan1" value="{{ $data->id_user_atasan }}">
+                <input type="hidden" id="user_id_atasan2" name="user_id_atasan2" value="{{ $data->id_user_atasan2 }}">
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" value="Nama" readonly>
-                <input type="text" class="form-control" name="fullname" value="{{ $data->fullname }}" style="font-weight: bold" readonly required>
+                <input type="text" class="form-control" id="fullname" name="fullname" value="{{ $data->name }}" style="font-weight: bold" readonly required>
             </div>
             <div class="modal fade" id="modal_ttd">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">TTD : {{ $data->fullname }}</h5>
+                            <h5 class="modal-title">TTD : {{ $data->name }}</h5>
                         </div>
                         <div class="modal-body">
                             @if($data->ttd_user=='')
                             <h6 class="text-center">kosong</h6>
                             @else
-                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$data->ttd_user.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                            <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$data->ttd_user.'.png') }}" style="width: 100%;" alt="">
                             @endif
-                            {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
-                            {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" alt=""> --}}
-                            <p style="text-align: center;font-weight: bold">{{ $data->waktu_ttd_pengajuan }}</p>
+                            <p style="text-align: center;font-weight: bold">{{ \Carbon\Carbon::parse($data->waktu_ttd_user)->isoFormat('D MMMM Y HH:m')}} WIB</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
@@ -81,10 +79,21 @@
                     </span>
                 </a>
             </div>
+            @if($data->nama_cuti=='Diluar Cuti Tahunan')
             <div class="input-group">
                 <input type="text" class="form-control" value="Kategori Cuti" readonly>
                 <input type="text" class="form-control" style="font-weight: bold" value="{{ $data->nama_cuti }}" readonly>
             </div>
+            <div class="input-group">
+                <input type="text" class="form-control" value="Pilihan Cuti" readonly>
+                <input type="text" class="form-control" style="font-weight: bold" value="{{ $data->KategoriCuti->nama_cuti }}" readonly>
+            </div>
+            @else
+            <div class="input-group">
+                <input type="text" class="form-control" value="Kategori Cuti" readonly>
+                <input type="text" class="form-control" style="font-weight: bold" value="{{ $data->nama_cuti }}" readonly>
+            </div>
+            @endif
             <div class="input-group">
                 <input type="text" class="form-control" value="Nama Pengganti" readonly>
                 @if($get_id_backup=='')
@@ -95,33 +104,38 @@
             </div>
             <div class="input-group">
                 <input type="text" name="jam" value="Tanggal Mulai" readonly required placeholder="Phone number" class="form-control">
-                <input type="date" name="tanggal" value="{{ $data->tanggal_mulai }}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                <input type="text" name="tanggal" value="{{ \Carbon\Carbon::parse($data->tanggal_mulai)->isoFormat('D MMMM Y')}}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
             </div>
             <div class="input-group">
                 <input type="text" name="jam" value="Tanggal Selesai" readonly required placeholder="Phone number" class="form-control">
-                <input type="date" name="tanggal" value="{{ $data->tanggal_selesai }}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                <input type="text" name="tanggal" value="{{ \Carbon\Carbon::parse($data->tanggal_selesai)->isoFormat('D MMMM Y')}}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
             </div>
             <div class="input-group">
                 <input type="text" name="jam" value="Total Pengajuan" readonly required placeholder="Phone number" class="form-control">
+                @if($data->nama_cuti=='Diluar Cuti Tahunan')
+                <input type="text" name="tanggal" value="{{ $data->total_cuti }} Hari" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                @else
                 <input type="text" name="tanggal" value="{{ $data->total_cuti }} Dari @if($data->kuota_cuti==0 || $data->kuota_cuti=='')0 @else{{ $data->kuota_cuti }}@endif Kuota Cuti" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                @endif
             </div>
             <div class="input-group">
                 <textarea class="form-control" placeholder="Catatan" name="keterangan_izin" readonly style="font-weight: bold" required>{{ $data->keterangan_cuti }}</textarea>
             </div>
             <div class="input-group">
-                <input class="form-control" placeholder="Catatan Atasan" name="catatan" style="font-weight: bold" />
+                <input class="form-control" placeholder="Catatan Atasan" id="catatan" name="catatan" required style="font-weight: bold" />
             </div>
             <div class="input-group">
                 <div id="signature-pad" style="border:solid 1px teal; width:100%;height:200px;">
                     <div>
                         <div id="note" onmouseover="my_function();"></div>
                         <canvas id="the_canvas" width="auto" height="100px"></canvas>
-                        <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->fullname }} {{ date('Y-m-d') }}</p>
+                        <p class="text-primary" style="text-align: center">Ttd : {{ Auth::user()->name }} {{ date('d-m-Y') }}</p>
                         <hr>
                         <div class="text-center">
                             <input type="hidden" id="signature" name="signature">
-                            <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
-                            <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                            <button type="button" id="clear_btn" class="btn btn-sm btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                            <button type="button" id="not_approve_btn" class="btn btn-sm btn-warning btn-rounded" data-action="not_save-png"><i class="fa fa-times" aria-hidden="true"> </i> &nbsp; Not Approve</button>
+                            <button type="button" id="approve_btn" class="btn btn-sm btn-success btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Approve</button>
                         </div>
 
                     </div>
@@ -160,5 +174,83 @@
     function my_function() {
         document.getElementById("note").innerHTML = "";
     }
+</script>
+<script type="text/javascript">
+    $(function() {
+        $(document).on('click', '#approve_btn', function(e) {
+            e.preventDefault();
+            var canvas = document.getElementById("the_canvas");
+            var dataUrl = canvas.toDataURL();
+            var approve = 'approve';
+            var id = $('#id').val();
+            var status_cuti = $('#status_cuti').val();
+            var user_id_atasan1 = $('#user_id_atasan1').val();
+            var user_id_atasan2 = $('#user_id_atasan2').val();
+            var signature = dataUrl;
+            var catatan = $('#catatan').val();
+            $.ajax({
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    approve: approve,
+                    id: id,
+                    status_cuti: status_cuti,
+                    user_id_atasan1: user_id_atasan1,
+                    user_id_atasan2: user_id_atasan2,
+                    signature: signature,
+                    catatan: catatan,
+                },
+                url: "{{ url('/cuti/approve/proses') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                },
+                error: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+                }
+            });
+        });
+        $(document).on('click', '#not_approve_btn', function(e) {
+            e.preventDefault();
+            var approve = 'not_approve';
+            var canvas = document.getElementById("the_canvas");
+            var dataUrl = canvas.toDataURL();
+            var id = $('#id').val();
+            var status_cuti = $('#status_cuti').val();
+            var user_id_atasan1 = $('#user_id_atasan1').val();
+            var user_id_atasan2 = $('#user_id_atasan2').val();
+            var signature = dataUrl;
+            var catatan = $('#catatan').val();
+            $.ajax({
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    approve: approve,
+                    id: id,
+                    status_cuti: status_cuti,
+                    user_id_atasan1: user_id_atasan1,
+                    user_id_atasan2: user_id_atasan2,
+                    signature: signature,
+                    catatan: catatan,
+                },
+                url: "{{ url('/cuti/approve/proses') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                },
+                error: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                }
+            });
+        });
+    });
 </script>
 @endsection

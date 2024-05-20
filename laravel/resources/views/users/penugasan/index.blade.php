@@ -275,17 +275,17 @@
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses HRD" readonly>
                             <input type="text" class="form-control" value="{{$hrd->name}}" readonly>
-                            <input type="hidden" class="form-control" name="proses_hrd" value="{{$hrd->id}}" readonly>
+                            <input type="hidden" class="form-control" name="proses_hrd" value="{{$hrd->id}}">
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Diproses Finance" readonly>
                             <input type="text" class="form-control" value="{{$finance->name}}" readonly>
-                            <input type="hidden" class="form-control" name="proses_finance" value="{{$finance->id}}" readonly>
+                            <input type="hidden" class="form-control" name="proses_finance" value="{{$finance->id}}">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary float-right">Submit</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-primary float-right">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </form>
             </div>
@@ -294,60 +294,69 @@
     </div>
 </div>
 
-{{-- <hr width="90%" style="margin-left: 5%;margin-right: 5%"> --}}
-<div class="container">
-    <div class="detail-content">
-        <div class="flex-1">
-            <h4>Riwayat</h4>
-        </div>
-    </div>
-    @foreach ($record_data as $record_data)
-    <div class="notification-content" style="background-color: white">
-        @if ($record_data->status_penugasan != 0)
-        <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
-            <small class="badge badge-success" style="float: right;padding-right:10px "><i class="fa fa-save"></i> </small>
-        </a>
-        @else
-        <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
-        @endif
-        <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
-            <div class="notification">
-                <h6>{{ $record_data->fullname }}</h6>
-                <p>{{ $record_data->kegiatan_penugasan}}</p>
-                <div class="notification-footer">
-                    <span>
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                            <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                        {{ $record_data->tanggal_pengajuan}}
-                    </span>
-                    @if ($record_data->status_penugasan == 0 )
-                    <small class="badge light badge-danger"><i class="fa fa-pencil"> </i> Tambahkan TTD</small>
-                    @elseif($record_data->status_penugasan == 1)
-                    <small class="badge light badge-warning"><i class="fa fa-pencil"> </i> Proses TTD Diminta</small>
-                    @elseif($record_data->status_penugasan == 2)
-                    <small class="badge light badge-secondary"><i class="fa fa-pencil"> </i> Proses TTD Disahkan</small>
-                    @elseif($record_data->status_penugasan == 3)
-                    <small class="badge light badge-info"><i class="fa fa-pencil"> </i> Proses TTD HRD</small>
-                    @elseif($record_data->status_penugasan == 4)
-                    <small class="badge light badge-primary"><i class="fa fa-pencil"> </i> Proses TTD FINANCE</small>
-                    @elseif($record_data->status_penugasan == 5)
-                    <small class="badge light badge-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
-                            <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                        </svg>
-                        Penugasan Telah Disetujui</small>
-                    @endif
-                </div>
+<hr width="90%" style="margin-top: -15%;">
+<div class="page-content bottom-content">
+    <div class="container">
+        <div class="detail-content">
+            <div class="flex-1">
+                <h4>Riwayat</h4>
             </div>
-        </a>
+        </div>
+        @foreach ($record_data as $record_data)
+        <div class="notification-content" style="background-color: white">
+            @if ($record_data->status_penugasan = 0)
+            <a href="{{ url('/penugasan/detail/delete/'.$record_data->id) }}">
+                <small class="badge badge-success" style="float: right;padding-right:10px ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 6.52381C3 6.12932 3.32671 5.80952 3.72973 5.80952H8.51787C8.52437 4.9683 8.61554 3.81504 9.45037 3.01668C10.1074 2.38839 11.0081 2 12 2C12.9919 2 13.8926 2.38839 14.5496 3.01668C15.3844 3.81504 15.4756 4.9683 15.4821 5.80952H20.2703C20.6733 5.80952 21 6.12932 21 6.52381C21 6.9183 20.6733 7.2381 20.2703 7.2381H3.72973C3.32671 7.2381 3 6.9183 3 6.52381Z" fill="#1C274C" />
+                        <path opacity="0.5" d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12405C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001Z" fill="#1C274C" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z" fill="#1C274C" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z" fill="#1C274C" />
+                    </svg>
+                </small>
+            </a>
+            @else
+            <small class="badge badge-danger" style="float: right;padding-right:10px "><i class="fa fa-trash"></i> </small>
+            @endif
+            <a href="{{ url('penugasan/detail/edit/'.$record_data->id) }}">
+                <div class="notification">
+                    <h6>{{ $record_data->fullname }}</h6>
+                    <p>{{ $record_data->kegiatan_penugasan}}</p>
+                    <div class="notification-footer">
+                        <span>
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 11C8.76142 11 11 8.76142 11 6C11 3.23858 8.76142 1 6 1C3.23858 1 1 3.23858 1 6C1 8.76142 3.23858 11 6 11Z" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M6 3V6L8 7" stroke="#787878" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            {{ \Carbon\Carbon::parse($record_data->tanggal_pengajuan)->format('d-m-Y')}}
+                        </span>
+                        @if ($record_data->status_penugasan == 0 )
+                        <small class="badge light badge-danger"><i class="fa fa-pencil"> </i> Tambahkan TTD</small>
+                        @elseif($record_data->status_penugasan == 1)
+                        <small class="badge light badge-warning"><i class="fa fa-pencil"> </i> Proses TTD Diminta</small>
+                        @elseif($record_data->status_penugasan == 2)
+                        <small class="badge light badge-secondary"><i class="fa fa-pencil"> </i> Proses TTD Disahkan</small>
+                        @elseif($record_data->status_penugasan == 3)
+                        <small class="badge light badge-info"><i class="fa fa-pencil"> </i> Proses TTD HRD</small>
+                        @elseif($record_data->status_penugasan == 4)
+                        <small class="badge light badge-primary"><i class="fa fa-pencil"> </i> Proses TTD FINANCE</small>
+                        @elseif($record_data->status_penugasan == 5)
+                        <small class="badge light badge-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                                <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            Penugasan Telah Disetujui
+                        </small>
+                        @endif
+                    </div>
+                </div>
+            </a>
+        </div>
+        @endforeach
+
     </div>
-    @endforeach
-
 </div>
-
 @endsection
 @section('js')
 <script type="text/javascript">

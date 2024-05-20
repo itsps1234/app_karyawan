@@ -52,21 +52,21 @@ class HomeUserController extends Controller
             ->where('status_izin', 0)
             ->get();
         // get atasan tingkat 
-        $datacuti_tingkat1       = Cuti::where('status_cuti', 0)
+        $datacuti_tingkat1       = Cuti::with('KategoriCuti')
+            ->where('status_cuti', 1)
             ->join('users', 'users.id', '=', 'cutis.user_id')
-            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.kategori_cuti_id')
             ->where('id_user_atasan', $user)
             ->whereNotNull('ttd_user')
-            ->select('cutis.*', 'users.name', 'users.fullname', 'kategori_cuti.nama_cuti')
+            ->select('cutis.*', 'users.name', 'users.foto_karyawan')
             ->get();
-        $datacuti_tingkat2       = Cuti::where('status_cuti', 1)
+        $datacuti_tingkat2       = Cuti::with('KategoriCuti')
+            ->where('status_cuti', 2)
             ->join('users', 'users.id', '=', 'cutis.user_id')
-            ->join('kategori_cuti', 'kategori_cuti.id', '=', 'cutis.kategori_cuti_id')
             ->where('id_user_atasan2', $user)
             ->whereNotNull('ttd_user')
-            ->select('cutis.*', 'users.name', 'users.fullname', 'kategori_cuti.nama_cuti')
+            ->select('cutis.*', 'users.name', 'users.foto_karyawan')
             ->get();
-        // dd($datacuti_tingkat1);
+        // dd($datacuti_tingkat2);
         $datapenugasan  = DB::table('penugasans')->join('users', 'users.id', 'penugasans.id_user')
             ->where('id_diminta_oleh', $user)
             ->orWhere('id_disahkan_oleh', $user)

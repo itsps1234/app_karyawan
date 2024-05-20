@@ -364,7 +364,7 @@ class PenugasanController extends Controller
         $data->budget_hotel                 = $request->budget_hotel;
         $data->makan                        = $request->makan;
         $data->ttd_id_diajukan_oleh         = $uniqid;
-        $data->waktu_ttd_id_diajukan_oleh   = date('Y-m-d h:i:s');
+        $data->waktu_ttd_id_diajukan_oleh   = date('Y-m-d H:i:s');
         $data->status_penugasan             = 1;
         $data->save();
         $request->session()->flash('updatesukses', 'Berhasil Membuat Perdin');
@@ -422,22 +422,22 @@ class PenugasanController extends Controller
         $image_type_aux = explode("image/", $image_parts[0]);
         $image_type     = $image_type_aux[1];
         $image_base64   = base64_decode($image_parts[1]);
-        $uniqid         = date('y-m-d') . '-' . uniqid();
+        $uniqid         = date('Y-m-d') . '-' . uniqid();
         $file           = $folderPath . $uniqid . '.' . $image_type;
         file_put_contents($file, $image_base64);
         $data                               = Penugasan::find($id);
         if ($request->status_penugasan == 2) {
             $data->ttd_id_diminta_oleh          = $uniqid;
-            $data->waktu_ttd_id_diminta_oleh    = date('Y-m-d h:i:s');
+            $data->waktu_ttd_id_diminta_oleh    = date('Y-m-d H:i:s');
         } else if ($request->status_penugasan == 3) {
             $data->ttd_id_disahkan_oleh          = $uniqid;
-            $data->waktu_ttd_id_disahkan_oleh    = date('Y-m-d h:i:s');
+            $data->waktu_ttd_id_disahkan_oleh    = date('Y-m-d H:i:s');
         } else if ($request->status_penugasan == 4) {
             $data->ttd_proses_hrd          = $uniqid;
-            $data->waktu_ttd_proses_hrd    = date('Y-m-d h:i:s');
+            $data->waktu_ttd_proses_hrd    = date('Y-m-d H:i:s');
         } else if ($request->status_penugasan == 5) {
             $data->ttd_proses_finance          = $uniqid;
-            $data->waktu_ttd_proses_finance    = date('Y-m-d h:i:s');
+            $data->waktu_ttd_proses_finance    = date('Y-m-d H:i:s');
         }
         $data->status_penugasan             = $request->status_penugasan;
         $data->save();

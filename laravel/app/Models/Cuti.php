@@ -41,4 +41,8 @@ class Cuti extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function KategoriCuti()
+    {
+        return $this->belongsTo(KategoriCuti::class);
+    }
 }

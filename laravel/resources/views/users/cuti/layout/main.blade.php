@@ -27,7 +27,7 @@
 
     <!-- Stylesheets -->
     @include('users.layouts.css') @yield('css')
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,7 +100,6 @@
         </div>
     </div>
     @include('users.layouts.menubar')
-    @include('users.layouts.colorsetting')
     @include('users.layouts.js') @yield('js')
 </body>
 
