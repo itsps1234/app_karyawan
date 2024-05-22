@@ -717,11 +717,11 @@ class karyawanController extends Controller
                 'status_absen' => 'required',
             ]);
 
-            MappingShift::create([
+            MappingShift::insert([
                 'user_id' => User::where('id', $validatedData['user_id'])->value('id'),
                 'shift_id' => Shift::where('id', $validatedData['shift_id'])->value('id'),
-                'tanggal' => $request['tanggal'],
-                'status_absen' => $validatedData['status_absen']
+                'tanggal' => $validatedData['tanggal'],
+                'status_absen' => $validatedData['status_absen'],
             ]);
         }
         $holding = request()->segment(count(request()->segments()));

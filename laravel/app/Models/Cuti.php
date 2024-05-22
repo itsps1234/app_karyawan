@@ -35,6 +35,7 @@ class Cuti extends Model
         'waktu_approve2',
         'catatan',
         'catatan2',
+        'no_form_cuti',
     ];
 
     public function User()

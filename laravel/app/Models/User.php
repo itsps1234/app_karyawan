@@ -23,6 +23,7 @@ class User extends Authenticatable
     public $incrementing = false;
     protected $guarded = ['id'];
     protected $fillable = [
+        'nomor_identitas_karyawan',
         'name',
         'nik',
         'npwp',

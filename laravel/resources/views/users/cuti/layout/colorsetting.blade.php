@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom">
+<!-- <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom">
     <div class="offcanvas-body small">
         <ul class="theme-color-settings">
             <li>
@@ -63,4 +63,4 @@
             </li>
         </ul>
     </div>
-</div>
+</div> -->

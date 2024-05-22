@@ -17,16 +17,17 @@
     }
 </style>
 <div class="container">
-    <form class="my-2" method="post" action="{{ url('/izin/approve/proses/'.$data->id) }}" enctype="multipart/form-data">
-        @method('put')
+    <form id="form_approve" class="my-2" method="post" enctype="multipart/form-data">
         @csrf
         <div class="input-group">
-            <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
+            <input type="hidden" id="id" name="id" value="{{ $data->id }}">
+            <input type="hidden" id="id_user" name="id_user" value="{{ Auth::user()->id }}">
             <input type="hidden" name="telp" value="{{ $user->telepon }}">
             <input type="hidden" name="email" value="{{ $user->email }}">
             <input type="hidden" name="departements" value="{{ $user->dept_id }}">
             <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}">
             <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id="">
+            <input type="hidden" name="status_izin" value="2" id="status_izin">
             {{-- <input type="hidden" name="id_user_atasan" value="{{ $getUserAtasan->id }}"> --}}
         </div>
         <div class="input-group">
@@ -43,11 +44,9 @@
                         @if($data->ttd_pengajuan=='')
                         <h6 class="text-center">kosong</h6>
                         @else
-                        <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$data->ttd_pengajuan.'.png') }}" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="">
+                        <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$data->ttd_pengajuan.'.png') }}" style="width: 100%;" alt="">
                         @endif
-                        {{-- <img width="100%" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/"> --}}
-                        {{-- <img src="{{ url('signature/'.$penugasan->ttd_id_diajukan_oleh.'.png') }}" alt=""> --}}
-                        <p style="text-align: center;font-weight: bold">{{ $data->waktu_ttd_pengajuan }}</p>
+                        <p style="text-align: center;font-weight: bold">{{ \Carbon\Carbon::parse($data->waktu_ttd_pengajuan)->isoFormat('D MMMM Y HH:m')}} WIB</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
@@ -79,14 +78,26 @@
             <input type="text" class="form-control" style="font-weight: bold" value="{{ $data->izin }}" readonly>
         </div>
         <div class="input-group">
-            <input type="date" name="tanggal" value="{{ $data->tanggal }}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
-            <input type="time" name="jam" value="{{ $data->jam }}" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+            <input type="text" class="form-control" value="Tanggal" readonly>
+            <input type="date" name="tanggal" value="{{$data->tanggal}}" readonly style="font-weight: bold" required placeholder="Tanggal" class="form-control">
+        </div>
+        <div id="jam_masuk_kerja" class="input-group">
+            <input type="text" class="form-control" value="Jam Masuk Kerja" readonly>
+            <input type="time" id="jam_masuk" name="jam_masuk" value="{{$data->jam_masuk_kerja}}" readonly style="font-weight: bold" required placeholder="Jam Masuk Kerja" class="form-control">
+        </div>
+        <div id="jam_datang" class="input-group">
+            <input type="text" class="form-control" value="Jam Datang" readonly>
+            <input type="time" id="jam" name="jam" value="{{$data->jam}}" readonly style="font-weight: bold" required placeholder="Jam Datang" class="form-control">
+        </div>
+        <div id="form_terlambat" class="input-group">
+            <input type="text" class="form-control" value="Terlambat" readonly>
+            <input type="text" id="terlambat" name="terlambat" value="{{$data->terlambat}}" readonly style="font-weight: bold" required placeholder="Terlambat" class="form-control">
         </div>
         <div class="input-group">
             <textarea class="form-control" placeholder="Catatan" name="keterangan_izin" readonly style="font-weight: bold" required>{{ $data->keterangan_izin }}</textarea>
         </div>
         <div class="input-group">
-            <textarea class="form-control" placeholder="Catatan" name="catatan" style="font-weight: bold"></textarea>
+            <textarea class="form-control" placeholder="Catatan" id="catatan" name="catatan" style="font-weight: bold"></textarea>
         </div>
         <div class="input-group">
             <div id="signature-pad" style="border:solid 1px teal; width:100%;height:200px;">
@@ -97,8 +108,9 @@
                     <hr>
                     <div class="text-center">
                         <input type="hidden" id="signature" name="signature">
-                        <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
-                        <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                        <button type="button" id="clear_btn" class="btn btn-sm btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                        <button type="button" id="not_approve_btn" class="btn btn-sm btn-warning btn-rounded" data-action="not_save-png"><i class="fa fa-times" aria-hidden="true"> </i> &nbsp; Not Approve</button>
+                        <button type="button" id="approve_btn" class="btn btn-sm btn-success btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Approve</button>
                     </div>
 
                 </div>
@@ -136,5 +148,101 @@
     function my_function() {
         document.getElementById("note").innerHTML = "";
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var izin = '{{$data->izin}}';
+        if (izin == 'Datang Terlambat') {
+            $('#jam_masuk_kerja').show();
+            $('#jam_datang').show();
+            $('#form_terlambat').show();
+        } else if (izin == 'Sakit') {
+            $('#jam_masuk_kerja').hide();
+            $('#jam_datang').hide();
+            $('#form_terlambat').hide();
+        } else if (izin == 'Pulang Cepat') {
+            $('#jam_masuk_kerja').hide();
+            $('#form_terlambat').hide();
+            $('#jam_datang').hide();
+        } else if (izin == 'Tidak Masuk (Mendadak)') {
+            $('#jam_masuk_kerja').hide();
+            $('#jam_datang').hide();
+            $('#form_terlambat').hide();
+        }
+    });
+</script>
+<script type="text/javascript">
+    $(function() {
+        $(document).on('click', '#approve_btn', function(e) {
+            e.preventDefault();
+            var canvas = document.getElementById("the_canvas");
+            var dataUrl = canvas.toDataURL();
+            var approve = 'approve';
+            var id = $('#id').val();
+            var id_user = $('#id_user').val();
+            var status_izin = $('#status_izin').val();
+            var signature = dataUrl;
+            var catatan = $('#catatan').val();
+            $.ajax({
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    approve: approve,
+                    id: id,
+                    id_user: id_user,
+                    status_izin: status_izin,
+                    signature: signature,
+                    catatan: catatan,
+                },
+                url: "{{ url('/izin/approve/proses') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                },
+                error: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+                }
+            });
+        });
+        $(document).on('click', '#not_approve_btn', function(e) {
+            e.preventDefault();
+            var approve = 'not_approve';
+            var canvas = document.getElementById("the_canvas");
+            var dataUrl = canvas.toDataURL();
+            var id = $('#id').val();
+            var id_user = $('#id_user').val();
+            var status_izin = $('#status_izin').val();
+            var signature = dataUrl;
+            var catatan = $('#catatan').val();
+            $.ajax({
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    approve: approve,
+                    id: id,
+                    id_user: id_user,
+                    status_izin: status_izin,
+                    signature: signature,
+                    catatan: catatan,
+                },
+                url: "{{ url('/izin/approve/proses') }}",
+                type: "POST",
+                dataType: 'json',
+                success: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                },
+                error: function(data) {
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
+
+                }
+            });
+        });
+    });
 </script>
 @endsection

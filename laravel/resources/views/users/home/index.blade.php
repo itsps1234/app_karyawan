@@ -128,7 +128,7 @@
     </button>
 </div>
 @elseif(Session::has('approvecuti_not_approve'))
-<div id="alert_approve_cuti_success" class="alert alert-danger light alert-lg alert-dismissible fade show">
+<div id="alert_approve_cuti_not_approve" class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
         <circle cx="12" cy="12" r="10"></circle>
         <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
@@ -149,6 +149,32 @@
         <line x1="15" y1="9" x2="15.01" y2="9"></line>
     </svg>
     <strong>Success!</strong> Anda Berhasil Approve Cuti.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('approveizin_not_approve'))
+<div id="alert_approve_izin_not_approve" class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Tolak Approve Izin.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@elseif(Session::has('approveizin_success'))
+<div id="alert_approve_izin_success" class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Approve Izin.
     <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
         <i class="fa-solid fa-xmark"></i>
     </button>
@@ -439,14 +465,18 @@
                         <div class="card job-post">
                             <div class="card-body">
                                 <div class="media media-80">
+                                    @if($dataizin->User->foto_karyawan != '')
+                                    <img src="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/{{$dataizin->User->foto_karyawan}}" alt="/">
+                                    @else
                                     <img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                                    @endif
                                 </div>
                                 <div class="card-info">
                                     <h6 class="title">{{ $dataizin->fullname }}</h6>
                                     <span class="">{{ $dataizin->izin }}</span>
                                     <div class="d-flex align-items-center">
-                                        @if ($dataizin->status_izin == 0)
-                                        <small class="badge badge-danger">Pending</small>
+                                        @if ($dataizin->status_izin == 1)
+                                        <small class="badge badge-danger"><i class="fa fa-spinner"></i>&nbsp;Pending</small>
                                         @endif
                                     </div>
                                 </div>
@@ -803,6 +833,30 @@
         setTimeout(function() {
             // console.log('ok1');
             $("#alert_approve_cuti_success").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_approve_cuti_not_approve").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_approve_izin_success").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_approve_izin_not_approve").remove();
         }, 7000); // 7 secs
 
     });

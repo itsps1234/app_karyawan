@@ -18,8 +18,7 @@
     }
 </style>
 <div class="container">
-    @if($get_izin->status_izin == '0')
-    @if($get_izin->ttd_pengajuan != '')
+    @if($get_izin->status_izin == '1')
     <div class="alert alert-primary light alert-lg alert-dismissible fade show">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
 
@@ -58,8 +57,6 @@
         </button>
     </div>
     @else
-    @endif
-    @else
     <div class="alert alert-success light alert-dismissible fade show">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
             <polyline points="9 11 12 14 22 4"></polyline>
@@ -90,17 +87,29 @@
             <input type="text" class="form-control" name="fullname" value="{{ $get_izin->fullname }}" style="font-weight: bold" readonly required>
         </div>
         <div class="input-group">
-            <input type="text" class="form-control" value="Permission Category" readonly>
-            <select name="izin" id="" @if($get_izin->ttd_pengajuan != '') disabled @else @endif style="font-weight: bold" class="form-control" required>
+            <input type="text" class="form-control" value="Kategori Izin" readonly>
+            <select name="izin" id="izin" @if($get_izin->ttd_pengajuan != '') disabled @else @endif style="font-weight: bold" class="form-control" required>
                 <option value="">--Pilih Izin--</option>
-                <option value="Pulang Cepat" {{ $get_izin->izin == 'Pulang Cepat' ? 'selected' : '' }}>Pulang Cepat</option>
-                <option value="Telat Masuk" {{ $get_izin->izin == 'Telat Masuk' ? 'selected' : '' }}>Telat Masuk</option>
-                <option value="Keluar Kantor" {{ $get_izin->izin == 'Keluar Kantor' ? 'selected' : '' }}>Keluar Kantor</option>
+                @foreach($kategori_izin as $izin)
+                <option value="{{$izin->nama_izin}}" {{ $izin->nama_izin == $get_izin->izin? 'selected' : '' }}>{{$izin->nama_izin}}</option>
+                @endforeach
             </select>
         </div>
         <div class="input-group">
-            <input type="date" name="tanggal" @if($get_izin->ttd_pengajuan != '') readonly @else @endif value="{{ date('Y-m-d') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
-            <input type="time" name="jam" @if($get_izin->ttd_pengajuan != '') readonly @else @endif value="{{ date('H:i:s') }}" style="font-weight: bold" required placeholder="Phone number" class="form-control">
+            <input type="text" class="form-control" value="Tanggal" readonly>
+            <input type="date" name="tanggal" value="{{$get_izin->tanggal}}" readonly style="font-weight: bold" required placeholder="Tanggal" class="form-control">
+        </div>
+        <div id="jam_masuk_kerja" class="input-group">
+            <input type="text" class="form-control" value="Jam Masuk Kerja" readonly>
+            <input type="time" id="jam_masuk" name="jam_masuk" value="{{$get_izin->jam_masuk_kerja}}" readonly style="font-weight: bold" required placeholder="Jam Masuk Kerja" class="form-control">
+        </div>
+        <div id="jam_datang" class="input-group">
+            <input type="text" class="form-control" value="Jam Datang" readonly>
+            <input type="time" id="jam" name="jam" value="{{$get_izin->jam}}" readonly style="font-weight: bold" required placeholder="Jam Datang" class="form-control">
+        </div>
+        <div id="form_terlambat" class="input-group">
+            <input type="text" class="form-control" value="Terlambat" readonly>
+            <input type="text" id="terlambat" name="terlambat" value="{{$get_izin->terlambat}}" readonly style="font-weight: bold" required placeholder="Terlambat" class="form-control">
         </div>
         <div class="input-group">
             <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Description" @if($get_izin->ttd_pengajuan != '') disabled @else @endif >{{$get_izin->keterangan_izin}}</textarea>
@@ -131,8 +140,8 @@
                     <hr>
                     <div class="text-center">
                         <input type="hidden" id="signature" name="signature">
-                        <button type="button" id="clear_btn" class="btn btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
-                        <button type="submit" id="save_btn" class="btn btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Update</button>
+                        <button type="button" id="clear_btn" class="btn btn-sm btn-danger btn-rounded" data-action="clear"><i class="fa fa-refresh" aria-hidden="true"> </i> &nbsp; Clear</button>
+                        <button type="submit" id="save_btn" class="btn btn-sm btn-primary btn-rounded" data-action="save-png"><i class="fa fa-save" aria-hidden="true"> </i> &nbsp; Simpan</button>
                     </div>
 
                 </div>
@@ -180,5 +189,88 @@
     function my_function() {
         document.getElementById("note").innerHTML = "";
     }
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var izin = '{{$get_izin->izin}}';
+        if (izin == 'Datang Terlambat') {
+            $('#jam_masuk_kerja').show();
+            $('#jam_datang').show();
+            $('#form_terlambat').show();
+        } else if (izin == 'Sakit') {
+            $('#jam_masuk_kerja').hide();
+            $('#jam_datang').hide();
+            $('#form_terlambat').hide();
+        } else if (izin == 'Pulang Cepat') {
+            $('#jam_masuk_kerja').hide();
+            $('#form_terlambat').hide();
+            $('#jam_datang').hide();
+        } else if (izin == 'Tidak Masuk (Mendadak)') {
+            $('#jam_masuk_kerja').hide();
+            $('#jam_datang').hide();
+            $('#form_terlambat').hide();
+        }
+        $('body').on("change", "#izin", function() {
+            var id = $(this).val();
+            // console.log(id);
+            if (id == 'Sakit') {
+                $('#jam_masuk_kerja').hide();
+                $('#jam_datang').hide();
+                $('#form_terlambat').hide();
+            } else if (id == 'Tidak Masuk (Mendadak)') {
+                $('#jam_masuk_kerja').hide();
+                $('#jam_datang').hide();
+                $('#form_terlambat').hide();
+            } else if (id == 'Pulang Cepat') {
+                $('#jam_masuk_kerja').hide();
+                $('#jam_datang').hide();
+                $('#form_terlambat').hide();
+            } else if (id == 'Datang Terlambat') {
+                $('#jam_masuk_kerja').show();
+                $('#jam_datang').show();
+                $('#form_terlambat').show();
+
+                var awal = $('#jam_masuk').val();
+                var akhir = $('#jam').val();
+                var time1 = awal.split(":");
+                var time2 = akhir.split(":");
+                var ok1 = time1[0] + time1[1];
+                var ok2 = time2[0] + time2[1];
+                if (ok1 < ok2) {
+                    var jam = (time2[0] - time1[0]);
+                    var menit = (time2[1] - time1[1]);
+                    // hours = Math.floor((diff / 60));
+                    // minutes = (diff % 60);
+                    console.log('jam = ' + jam);
+                    console.log('menit = ' + menit);
+                    // console.log('MENIT = ' + minutes);
+                    $('#terlambat').val(Math.abs(jam) + ' Jam, ' + Math.abs(menit) + ' Menit')
+                } else {
+                    var diff1 = getTimeDiff('24:00', '{time1}', 'm');
+                    var diff2 = getTimeDiff('{time2}', '00:00', 'm');
+                    var totalDiff = diff1 + diff2;
+                    hours = Math.floor((totalDiff / 60));
+                    minutes = (totalDiff % 60);
+                };
+                var hasil = ((akhir - awal)) / 1000;
+
+            } else {
+                $('#kategori_cuti').hide();
+                $('#kuota_hari').hide();
+                $('#id_cuti').val('');
+                $('#name_form_tanggal').val('Tanggal Cuti');
+                var start = moment().subtract(-14, 'days');
+                $('input[id="date_range_cuti"]').daterangepicker({
+                    drops: 'up',
+                    minDate: start,
+                    startDate: start,
+                    endDate: start,
+                    autoApply: true,
+                }, function(start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
+            }
+        });
+    });
 </script>
 @endsection

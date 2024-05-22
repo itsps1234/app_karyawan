@@ -74,6 +74,19 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('hapus_cuti_sukses'))
+<div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+    </svg>
+    <strong>Success!</strong> Anda Berhasil Menghapus Data Cuti
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @elseif(Session::has('statuscutiediterror'))
 <div id="alert_statuscutiediterror" class="alert alert-danger light alert-lg alert-dismissible fade show">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -274,7 +287,7 @@
         <div class="notification-content" style="background-color: white">
             @if ($record_data->status_cuti == 0 || $record_data->status_cuti=='NOT APPROVE')
             <!-- <a href="{{ url('/cuti/detail/delete/'.$record_data->id) }}"> -->
-            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#delete" aria-controls="offcanvasBottom">
+            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#delete{{$record_data->id}}" aria-controls="offcanvasBottom">
                 <small class="badge light badge-danger" style="float: right;padding-right:10px; box-shadow: 0px 0px 4px;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M3 6.52381C3 6.12932 3.32671 5.80952 3.72973 5.80952H8.51787C8.52437 4.9683 8.61554 3.81504 9.45037 3.01668C10.1074 2.38839 11.0081 2 12 2C12.9919 2 13.8926 2.38839 14.5496 3.01668C15.3844 3.81504 15.4756 4.9683 15.4821 5.80952H20.2703C20.6733 5.80952 21 6.12932 21 6.52381C21 6.9183 20.6733 7.2381 20.2703 7.2381H3.72973C3.32671 7.2381 3 6.9183 3 6.52381Z" fill="#1C274C" />
@@ -284,19 +297,16 @@
                     </svg>
                 </small>
             </a>
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#delete" aria-controls="offcanvasBottom">Toggle bottom offcanvas</button>
-
-            <div class="offcanvas offcanvas-bottom" tabindex="-1" id="delete" aria-labelledby="offcanvasBottomLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Offcanvas bottom</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body small">
-                    ...
+            <div class="offcanvas offcanvas-bottom" tabindex="-1" id="delete{{$record_data->id}}" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-body text-center small">
+                    <h5 class="title">KONFIRMASI HAPUS</h5>
+                    <p>Apakah Anda Ingin Menghapus Pengajuan Cuti?</p>
+                    <a href="{{url('/cuti/delete_cuti/'.$record_data->id)}}" class="btn btn-sm btn-danger light pwa-btn">Hapus</a>
+                    <a href="javascrpit:void(0);" class="btn btn-sm light btn-primary ms-2" data-bs-dismiss="offcanvas" aria-label="Close">Batal</a>
                 </div>
             </div>
-            @else
-            <a href="javascript:void(0);">
+            @elseif($record_data->status_cuti==3)
+            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#download{{$record_data->id}}" aria-controls="offcanvasBottom">
                 <small class="badge light badge-success" style="float: right;padding-right:10px; box-shadow: 0px 0px 4px;">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="18" width="18" version="1.1" id="Capa_1" viewBox="0 0 48 48" xml:space="preserve">
                         <g>
@@ -310,6 +320,26 @@
                     </svg>
                 </small>
             </a>
+            <div class="offcanvas offcanvas-bottom" tabindex="-1" id="download{{$record_data->id}}" aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-body text-center small">
+                    <h5 class="title">FORM PENGAJUAN CUTI</h5>
+                    <p>Apakah Anda Ingin Download Form Pengajuan Cuti?</p>
+                    <a href="{{url('/cuti/cetak_form_cuti/'.$record_data->id)}}" class="btn btn-sm btn-danger light pwa-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="18" width="18" version="1.1" id="Capa_1" viewBox="0 0 48 48" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <path d="M47.987,21.938c-0.006-0.091-0.023-0.178-0.053-0.264c-0.011-0.032-0.019-0.063-0.033-0.094    c-0.048-0.104-0.109-0.202-0.193-0.285c-0.001-0.001-0.001-0.001-0.001-0.001L42,15.586V10c0-0.022-0.011-0.041-0.013-0.063    c-0.006-0.088-0.023-0.173-0.051-0.257c-0.011-0.032-0.019-0.063-0.034-0.094c-0.049-0.106-0.11-0.207-0.196-0.293l-9-9    c-0.086-0.086-0.187-0.148-0.294-0.197c-0.03-0.013-0.06-0.022-0.09-0.032c-0.086-0.03-0.174-0.047-0.264-0.053    C32.038,0.01,32.02,0,32,0H7C6.448,0,6,0.448,6,1v14.586l-5.707,5.707c0,0-0.001,0.001-0.002,0.002    c-0.084,0.084-0.144,0.182-0.192,0.285c-0.014,0.031-0.022,0.062-0.033,0.094c-0.03,0.086-0.048,0.173-0.053,0.264    C0.011,21.96,0,21.978,0,22v19c0,0.552,0.448,1,1,1h5v5c0,0.552,0.448,1,1,1h34c0.552,0,1-0.448,1-1v-5h5c0.552,0,1-0.448,1-1V22    C48,21.978,47.989,21.96,47.987,21.938z M44.586,21H42v-2.586L44.586,21z M38.586,9H33V3.414L38.586,9z M8,2h23v8    c0,0.552,0.448,1,1,1h8v5v5H8v-5V2z M6,18.414V21H3.414L6,18.414z M40,46H8v-4h32V46z M46,40H2V23h5h34h5V40z" />
+                                    <path d="M18.254,26.72c-0.323-0.277-0.688-0.473-1.097-0.586c-0.408-0.113-0.805-0.17-1.19-0.17h-3.332V38h2.006v-4.828h1.428    c0.419,0,0.827-0.074,1.224-0.221c0.397-0.147,0.748-0.374,1.054-0.68c0.306-0.306,0.552-0.688,0.74-1.148    c0.187-0.459,0.281-0.994,0.281-1.606c0-0.68-0.105-1.247-0.315-1.7C18.843,27.364,18.577,26.998,18.254,26.72z M16.971,31.005    c-0.306,0.334-0.697,0.501-1.173,0.501h-1.156v-3.825h1.156c0.476,0,0.867,0.147,1.173,0.442c0.306,0.295,0.459,0.765,0.459,1.411    C17.43,30.18,17.277,30.67,16.971,31.005z" />
+                                    <polygon points="30.723,38 32.78,38 32.78,32.832 35.857,32.832 35.857,31.081 32.764,31.081 32.764,27.8 36.112,27.8     36.112,25.964 30.723,25.964   " />
+                                    <path d="M24.076,25.964H21.05V38h3.009c1.553,0,2.729-0.524,3.528-1.572c0.799-1.049,1.198-2.525,1.198-4.429    c0-1.904-0.399-3.386-1.198-4.446C26.788,26.494,25.618,25.964,24.076,25.964z M26.55,33.843c-0.13,0.528-0.315,0.967-0.552,1.318    c-0.238,0.351-0.521,0.615-0.85,0.79c-0.329,0.176-0.686,0.264-1.071,0.264h-0.969v-8.466h0.969c0.385,0,0.742,0.088,1.071,0.264    c0.329,0.175,0.612,0.439,0.85,0.79c0.238,0.351,0.422,0.793,0.552,1.326s0.196,1.156,0.196,1.87    C26.746,32.702,26.68,33.316,26.55,33.843z" />
+                                </g>
+                            </g>
+                        </svg>
+                        &nbsp;Download
+                    </a>
+                    <a href="javascrpit:void(0);" class="btn btn-sm light btn-primary ms-2" data-bs-dismiss="offcanvas" aria-label="Close">Batal</a>
+                </div>
+            </div>
             @endif
             <a href="{{url('/cuti/detail/edit/'.$record_data->id)}}">
                 <div class="notification">
@@ -348,7 +378,7 @@
                                 <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
                             </svg>
-                            Disetujui</small>
+                            Pengajuan Disetujui</small>
                         @endif
                     </div>
                 </div>

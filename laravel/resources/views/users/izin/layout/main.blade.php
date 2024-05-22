@@ -26,7 +26,7 @@
     {{-- <link rel="manifest" href="{{ asset('assets/assets_users/manifest.json') }}"> --}}
 
     <!-- Stylesheets -->
-    @include('users.layouts.css') @yield('css')
+    @include('users.izin.layout.css') @yield('css')
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -100,9 +100,8 @@
 
         </div>
     </div>
-    @include('users.layouts.menubar')
-    @include('users.layouts.colorsetting')
-    @include('users.layouts.js') @yield('js')
+    @include('users.izin.layout.menubar')
+    @include('users.izin.layout.js') @yield('js')
 </body>
 
 </html>

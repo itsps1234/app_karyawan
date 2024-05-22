@@ -26,7 +26,7 @@
     {{-- <link rel="manifest" href="{{ asset('assets/assets_users/manifest.json') }}"> --}}
 
     <!-- Stylesheets -->
-    @include('users.layouts.css') @yield('css')
+    @include('users.cuti.layout.css') @yield('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -99,8 +99,8 @@
 
         </div>
     </div>
-    @include('users.layouts.menubar')
-    @include('users.layouts.js') @yield('js')
+    @include('users.cuti.layout.menubar')
+    @include('users.cuti.layout.js') @yield('js')
 </body>
 
 </html>

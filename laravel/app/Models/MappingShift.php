@@ -10,7 +10,7 @@ class MappingShift extends Model
 {
     use HasFactory, UuidTrait;
     protected $guarded = ['id'];
-    public $incrementing = false;
+    public $incrementing = true;
     protected $fillable = [
         'user_id',
         'shift_id',

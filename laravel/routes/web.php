@@ -78,7 +78,9 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::post('/izin/edit-izin-proses', [IzinUserController::class, 'izinEditProses']);
     Route::get('/izin/detail/edit/{id}', [IzinUserController::class, 'izinEdit']);
     Route::get('/izin/approve/{id}', [IzinUserController::class, 'izinApprove']);
-    Route::put('/izin/approve/proses/{id}', [IzinUserController::class, 'izinApproveProses']);
+    Route::post('/izin/approve/proses', [IzinUserController::class, 'izinApproveProses']);
+    Route::get('/izin/cetak_form_izin/{id}', [IzinUserController::class, 'cetak_form_izin']);
+    Route::get('/izin/delete_izin/{id}', [IzinUserController::class, 'delete_izin']);
 
     Route::get('/get_cuti', [CutiUserController::class, 'get_cuti']);
     Route::get('/cuti/dashboard', [CutiUserController::class, 'index']);
@@ -88,6 +90,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/cuti/tambah-cuti-proses', [CutiUserController::class, 'cutiAbsen']);
     Route::post('/cuti/approve/proses', [CutiUserController::class, 'cutiApproveProses']);
     Route::get('/cuti/cetak_form_cuti/{id}', [CutiUserController::class, 'cetak_form_cuti']);
+    Route::get('/cuti/delete_cuti/{id}', [CutiUserController::class, 'delete_cuti']);
 
     Route::get('/penugasan/dashboard', [PenugasanController::class, 'index']);
     Route::get('/penugasan/detail/edit/{id}', [PenugasanController::class, 'penugasanEdit']);

@@ -22,6 +22,8 @@ class Izin extends Model
         'email',
         'fullname',
         'izin',
+        'terlambat',
+        'pulang_cepat',
         'tanggal',
         'jam',
         'keterangan_izin',
@@ -30,13 +32,19 @@ class Izin extends Model
         'waktu_ttd_pengajuan',
         'approve_atasan',
         'id_approve_atasan',
+        'ttd_atasan',
         'status_izin',
         'waktu_approve',
         'catatan',
+        'no_form_izin',
     ];
 
     public function User(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    public function KategoriIzin(): BelongsTo
+    {
+        return $this->belongsTo(KategoriIzin::class);
     }
 }

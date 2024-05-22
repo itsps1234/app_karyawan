@@ -47,9 +47,9 @@ class HomeUserController extends Controller
             ->whereMonth('tanggal', $blnskrg)
             ->count();
         $user           = Auth::user()->id;
-        $dataizin       = Izin::where('id_approve_atasan', $user)
+        $dataizin       = Izin::with('User')->where('id_approve_atasan', $user)
             ->whereNotNull('ttd_pengajuan')
-            ->where('status_izin', 0)
+            ->where('status_izin', 1)
             ->get();
         // get atasan tingkat 
         $datacuti_tingkat1       = Cuti::with('KategoriCuti')

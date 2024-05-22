@@ -146,7 +146,7 @@
                     @if(Auth::user()->foto_karyawan == '' || Auth::user()->foto_karyawan == NULL)
                     <a href="{{route('profile')}}"><img src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" class="rounded-circle" alt="author-image"></a>
                     @else
-                    <a href="{{route('profile')}}"><img src="{{asset('storage/')}}/{{ Auth::user()->foto_karyawan }}" class="rounded-circle" alt="author-image"></a>
+                    <a href="{{route('profile')}}"><img src="{{ url('https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/'.Auth::user()->foto_karyawan) }}" class="rounded-circle" alt="author-image"></a>
                     @endif
                 </div>
             </div>

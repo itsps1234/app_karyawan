@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\MappingShift;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\ActivityLog;
+use App\Models\Departemen;
+use App\Models\Divisi;
 use App\Models\Izin;
+use App\Models\Jabatan;
 use App\Models\KategoriCuti;
 use App\Models\LevelJabatan;
 use App\Models\ResetCuti;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use DB;
@@ -890,6 +893,22 @@ class CutiUserController extends Controller
             return redirect('cuti/dashboard');
         } else {
         }
+        // No form
+        $count_tbl_cuti = Cuti::count();
+        $countstr = strlen($count_tbl_cuti + 1);
+        if ($countstr == '1') {
+            $no = '0000' . $count_tbl_cuti + 1;
+        } else if ($countstr == '2') {
+            $no = '000' . $count_tbl_cuti + 1;
+        } else if ($countstr == '3') {
+            $no = '00' . $count_tbl_cuti + 1;
+        } else if ($countstr == '4') {
+            $no = '0' . $count_tbl_cuti + 1;
+        } else {
+            $no = $count_tbl_cuti + 1;
+        }
+        $no_form = Auth::user()->kontrak_kerja . '/FCT/' . date('Y/m/d') . '/' . $no;
+        // dd($no_form);
         if ($request->cuti == 'Diluar Cuti Tahunan') {
             $jumlah_hari = explode(' ', $request->jumlah_cuti);
             $jumlah_kuota = explode(' ', $request->kuota_cuti);
@@ -924,6 +943,7 @@ class CutiUserController extends Controller
                 'waktu_approve2' => NULL,
                 'catatan' => NULL,
                 'catatan2' => NULL,
+                'no_form_cuti' => $no_form,
             ]);
         } else {
             // cuti tahunan
@@ -963,6 +983,7 @@ class CutiUserController extends Controller
                         'waktu_approve2' => NULL,
                         'catatan' => NULL,
                         'catatan2' => NULL,
+                        'no_form_cuti' => $no_form,
                     ]);
 
                     $request->session()->flash('addcutisuccess', 'Berhasil');
@@ -1026,13 +1047,42 @@ class CutiUserController extends Controller
         }
     }
 
+    public function delete_cuti(Request $request, $id)
+    {
+        // dd($id);
+        $query = Cuti::where('id', $id)->delete();
+        $request->session()->flash('hapus_cuti_sukses');
+        return redirect('cuti/dashboard');
+    }
     public function cetak_form_cuti($id)
     {
+        $jabatan = Jabatan::join('users', function ($join) {
+            $join->on('jabatans.id', '=', 'users.jabatan_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+        })->where('users.id', Auth::user()->id)->get();
+        $divisi = Divisi::join('users', function ($join) {
+            $join->on('divisis.id', '=', 'users.divisi_id');
+            $join->orOn('divisis.id', '=', 'users.divisi1_id');
+            $join->orOn('divisis.id', '=', 'users.divisi2_id');
+            $join->orOn('divisis.id', '=', 'users.divisi3_id');
+            $join->orOn('divisis.id', '=', 'users.divisi4_id');
+        })->where('users.id', Auth::user()->id)->get();
+        $cuti = Cuti::where('id', $id)->first();
+        $departemen = Departemen::where('id', Auth::user()->dept_id)->first();
+        $pengganti = User::where('id', $cuti->user_id_backup)->first();
+        // dd(Cuti::with('KategoriCuti')->with('User')->where('cutis.id', $id)->where('cutis.status_cuti', '3')->first());
         $data = [
             'title' => 'domPDF in Laravel 10',
-            'data' => Cuti::with('KetegoriCuti')->join('users', 'users.id', '=', 'cutis.user_id')->where('user_id', $id)->where('status_cuti', '3')->first(),
+            'data_cuti' => Cuti::with('KategoriCuti')->with('User')->where('cutis.id', $id)->where('cutis.status_cuti', '3')->first(),
+            'jabatan' => $jabatan,
+            'divisi' => $divisi,
+            'departemen' => $departemen,
+            'pengganti' => $pengganti,
         ];
-        $pdf = PDF::loadView('.document', $data);
-        return $pdf->stram('document.pdf');
+        $pdf = PDF::loadView('users/cuti/form_cuti', $data);
+        return $pdf->download('FORM_PENGAJUAN_CUTI_' . Auth::user()->name . '_' . date('Y-m-d H:i:s') . '.pdf');
     }
 }
