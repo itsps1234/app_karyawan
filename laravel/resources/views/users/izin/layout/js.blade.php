@@ -6,6 +6,7 @@
 <script src="{{ asset('assets/assets_users/js/dz.carousel.js') }}"></script><!-- Swiper -->
 <script src="{{ asset('assets/assets_users/vendor/swiper/swiper-bundle.min.js') }}"></script><!-- Swiper -->
 <script src="{{ asset('assets/assets_user/vendor/imageuplodify/imageuploadify.min.js') }}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
 
 <script>

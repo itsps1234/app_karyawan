@@ -297,6 +297,7 @@ class karyawanController extends Controller
                 'izin_telat' => $validatedData['izin_telat'],
                 'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
                 'is_admin' => $request['is_admin'],
+                'kategori' => $request['kategori'],
                 'kontrak_kerja' => $holding,
                 'penempatan_kerja' => $validatedData['penempatan_kerja'],
                 'site_job' => $validatedData['site_job'],
@@ -430,6 +431,7 @@ class karyawanController extends Controller
             'provinsi' => 'required',
             'kabupaten' => 'required',
             'kecamatan' => 'required',
+            'kategori' => 'required',
             'site_job' => 'required',
             'desa' => 'required',
             'rt' => 'required|max:255',
@@ -491,6 +493,8 @@ class karyawanController extends Controller
                 'izin_telat' => $validatedData['izin_telat'],
                 'izin_pulang_cepat' => $validatedData['izin_pulang_cepat'],
                 'is_admin' => $request['is_admin'],
+                'site_job' => $validatedData['site_job'],
+                'kategori' => $request['kategori'],
                 'kontrak_kerja' => $validatedData['kontrak_kerja'],
                 'penempatan_kerja' => $validatedData['penempatan_kerja'],
                 'provinsi' => Provincies::where('code', $validatedData['provinsi'])->value('code'),
@@ -639,11 +643,13 @@ class karyawanController extends Controller
     public function mapping_shift_datatable(Request $request, $id)
     {
         $holding = request()->segment(count(request()->segments()));
+
         $table = MappingShift::join('shifts', 'mapping_shifts.shift_id', 'shifts.id')
             ->where('mapping_shifts.user_id', $id)
             ->select('mapping_shifts.*', 'shifts.nama_shift', 'shifts.jam_masuk', 'shifts.jam_keluar')
             ->limit(100)
             ->get();
+        // dd($table);
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('option', function ($row) use ($holding) {

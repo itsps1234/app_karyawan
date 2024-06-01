@@ -40,7 +40,7 @@
         <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }}{{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
-                <div data-i18n="Data Master">Data Master</div>
+                <div data-i18n="Data Master">Data&nbsp;Master</div>
             </a>
 
             <ul class="menu-sub">
@@ -85,6 +85,15 @@
                     </a>
                 </li>
             </ul>
+        </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ASSET</span>
+        </li>
+        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
+            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
+                <div data-i18n="Blank">Data Asset</div>
+            </a>
         </li>
         @elseif($holding=='sps')
         <li class="menu-item {{ Request::is('dashboard*') ? 'active' : '' }}">
@@ -142,6 +151,15 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ASSET</span>
+        </li>
+        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
+            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
+                <div data-i18n="Blank">Data Asset</div>
+            </a>
+        </li>
         @else
         <li class="menu-item {{ Request::is('dashboard*') ? 'active' : '' }}">
             <a href="{{ url('/dashboard/holding/'.$holding) }}" class="menu-link">
@@ -198,7 +216,17 @@
                 </li>
             </ul>
         </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ASSET</span>
+        </li>
+        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
+            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
+                <div data-i18n="Blank">Data Asset</div>
+            </a>
+        </li>
         @endif
+
 
         <li class="menu-header fw-medium mt-4">
             <span class="menu-header-text">ABSENSI</span>

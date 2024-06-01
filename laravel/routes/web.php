@@ -26,7 +26,9 @@ use App\Http\Controllers\HomeUserController;
 use App\Http\Controllers\HistoryUserController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AbsenUserController;
+use App\Http\Controllers\AccessController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\IzinUserController;
 use App\Http\Controllers\CutiUserController;
 use App\Http\Controllers\DepartemenController;
@@ -68,6 +70,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::get('/home/maps/{lat}/{long}', [HomeUserController::class, 'maps']);
     Route::get('/home/my-absen', [HomeUserController::class, 'myAbsen']);
     Route::get('/home/my-location', [HomeUserController::class, 'myLocation']);
+    Route::get('/home/form_datang_terlambat', [HomeUserController::class, 'form_datang_terlambat']);
 
     Route::get('/absen/dashboard', [AbsenUserController::class, 'index']);
     route::get('/absen/data-absensi', [AbsenUserController::class, 'recordabsen']);
@@ -81,6 +84,7 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::post('/izin/approve/proses', [IzinUserController::class, 'izinApproveProses']);
     Route::get('/izin/cetak_form_izin/{id}', [IzinUserController::class, 'cetak_form_izin']);
     Route::get('/izin/delete_izin/{id}', [IzinUserController::class, 'delete_izin']);
+    Route::post('/izin/datang_terlambat_proses', [HomeUserController::class, 'proses_izin_datang_terlambat']);
 
     Route::get('/get_cuti', [CutiUserController::class, 'get_cuti']);
     Route::get('/cuti/dashboard', [CutiUserController::class, 'index']);
@@ -106,8 +110,10 @@ Route::middleware('auth', 'log.activity')->group(function () {
     Route::put('/penugasan/tambah-penugasan-proses', [PenugasanController::class, 'tambahPenugasan']);
     Route::put('/penugasan/approve/proses/{id}', [PenugasanController::class, 'penugasanApproveProses']);
 
+    // Menu bar
     Route::get('/history', [HistoryUserController::class, 'index'])->name('history');
 
+    Route::get('/absen', [HomeUserController::class, 'HomeAbsen'])->name('absen');
     Route::get('/profile', [ProfileUserController::class, 'index'])->name('profile');
 
     Route::put('/absen/masuk/{id}', [AbsenController::class, 'absenMasuk']);
@@ -203,8 +209,8 @@ Route::get('/karyawan/shift/{id}/sp', [karyawanController::class, 'shift'])->mid
 Route::get('/karyawan/shift/{id}/sps', [karyawanController::class, 'shift'])->middleware('admin');
 Route::get('/karyawan/shift/{id}/sip', [karyawanController::class, 'shift'])->middleware('admin');
 Route::get('/karyawan/mapping_shift_datatable/{id}/sp', [karyawanController::class, 'mapping_shift_datatable'])->middleware('admin');
-Route::get('/karyawan/mapping_shift_datatable{id}/sps', [karyawanController::class, 'mapping_shift_datatable'])->middleware('admin');
-Route::get('/karyawan/mapping_shift_datatable{id}/sip', [karyawanController::class, 'mapping_shift_datatable'])->middleware('admin');
+Route::get('/karyawan/mapping_shift_datatable/{id}/sps', [karyawanController::class, 'mapping_shift_datatable'])->middleware('admin');
+Route::get('/karyawan/mapping_shift_datatable/{id}/sip', [karyawanController::class, 'mapping_shift_datatable'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sp', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sps', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
 Route::post('/karyawan/shift/proses-tambah-shift/sip', [karyawanController::class, 'prosesTambahShift'])->middleware('admin');
@@ -217,6 +223,23 @@ Route::get('/karyawan/edit-shift/{id}/sip', [karyawanController::class, 'editShi
 //
 Route::get('/karyawan/get_divisi', [karyawanController::class, 'get_divisi'])->middleware('admin');
 Route::get('/karyawan/get_jabatan', [karyawanController::class, 'get_jabatan'])->middleware('admin');
+
+// ACCESS
+Route::get('/asset/sp', [AssetController::class, 'index'])->middleware('admin');
+Route::get('/asset-datatable/sp', [AssetController::class, 'datatable'])->middleware('admin');
+Route::get('/asset/sps', [AssetController::class, 'index'])->middleware('admin');
+Route::get('/asset-datatable/sps', [AssetController::class, 'datatable'])->middleware('admin');
+Route::get('/asset/sip', [AssetController::class, 'index'])->middleware('admin');
+Route::get('/asset-datatable/sip', [AssetController::class, 'datatable'])->middleware('admin');
+
+
+// ACCESS
+Route::get('/access/sp', [AccessController::class, 'index'])->middleware('admin');
+Route::get('/access-datatable/sp', [AccessController::class, 'datatable'])->middleware('admin');
+Route::get('/access/sps', [AccessController::class, 'index'])->middleware('admin');
+Route::get('/access-datatable/sps', [AccessController::class, 'datatable'])->middleware('admin');
+Route::get('/access/sip', [AccessController::class, 'index'])->middleware('admin');
+Route::get('/access-datatable/sip', [AccessController::class, 'datatable'])->middleware('admin');
 
 // Route::put('/karyawan/proses-edit-shift/{id}', [karyawanController::class, 'prosesEditShift'])->middleware('auth');
 // Route::get('/absen', [AbsenController::class, 'index'])->middleware('auth');

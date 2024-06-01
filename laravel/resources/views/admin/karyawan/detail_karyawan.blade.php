@@ -343,29 +343,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="text" class="form-control" readonly value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif">
-                                    <input type="hidden" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="{{$holding}}">
+                                    <input type="text" class="form-control" readonly value="@if($karyawan->kontrak_kerja =='SP')CV. SUMBER PANGAN @elseif($karyawan->kontrak_kerja =='SPS') PT. SURYA PANGAN SEMESTA @elseif($karyawan->kontrak_kerja =='SIP') CV. SURYA INTI PANGAN  @endif">
+                                    <input type="hidden" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="{{$karyawan->kontrak_kerja}}">
                                     <label for="kontrak_kerja">Kontrak Kerja</label>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-floating form-floating-outline">
-                                    <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
-                                        <option selected disabled value=""> Pilih Site Job</option>
-                                        @foreach ($data_lokasi as $a)
-                                        @if(old('site_job',$karyawan->site_job) == $a["lokasi_kantor"])
-                                        <option value="{{ $a["lokasi_kantor"] }}" selected>{{ $a["lokasi_kantor"] }}</option>
-                                        @else
-                                        <option value="{{ $a["lokasi_kantor"] }}">{{ $a["lokasi_kantor"] }}</option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                    <label for="site_job">Site yang Dipegang</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
                                         <option selected disabled value=""> Pilih Lokasi Penempatan</option>
@@ -378,6 +363,21 @@
                                         @endforeach
                                     </select>
                                     <label for="penempatan_kerja">Penempatan Kerja</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating form-floating-outline">
+                                    <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
+                                        <option selected disabled value=""> Pilih Site Job</option>
+                                        @foreach ($data_lokasi as $a)
+                                        @if(old('site_job',$karyawan->site_job) == $a["lokasi_kantor"])
+                                        <option value="{{ $a["lokasi_kantor"] }}" selected>{{ $a["lokasi_kantor"] }}</option>
+                                        @else
+                                        <option value="{{ $a["lokasi_kantor"] }}">{{ $a["lokasi_kantor"] }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                    <label for="site_job">Site yang Dipegang</label>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -401,6 +401,30 @@
                                         @endforeach
                                     </select>
                                     <label for="is_admin">Level User</label>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <?php $kategori = array(
+                                    [
+                                        "kategori" => "Karyawan Bulanan"
+                                    ],
+                                    [
+                                        "kategori" => "Karyawan Harian"
+                                    ]
+                                );
+                                ?>
+                                <div class="form-floating form-floating-outline">
+                                    <select name="kategori" id="kategori" class="form-control selectpicker" data-live-search="true">
+                                        <option value="">Pilih Kategori</option>
+                                        @foreach ($kategori as $a)
+                                        @if(old('kategori', $karyawan->kategori) == $a["kategori"])
+                                        <option value="{{ $a["kategori"] }}" selected>{{ $a["kategori"] }}</option>
+                                        @else
+                                        <option value="{{ $a["kategori"] }}">{{ $a["kategori"] }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                    <label for="kategori">Kategori Karyawan</label>
                                 </div>
                             </div>
                             <small class="text-light fw-medium mt-5">ALAMAT</small>

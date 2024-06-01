@@ -444,7 +444,7 @@
         if (cuti == 'Cuti Tahunan') {
             $('#kategori_cuti').hide();
             $('#kuota_hari').hide();
-            var mulai = '{{$get_cuti->tanggal_selesai}}';
+            var mulai = '{{$get_cuti->tanggal_mulai}}';
             var selesai = '{{$get_cuti->tanggal_selesai}}';
             $('#name_form_tanggal').val('Tanggal Mulai Cuti');
             var start = moment(mulai);

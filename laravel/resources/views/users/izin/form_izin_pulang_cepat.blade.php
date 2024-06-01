@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>FORM PERMINTAAN IZIN</title>
+    <title>FORM SURAT IZIN KELUAR/PULANG CEPAT</title>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('public/kpi/bower_components/font-awesome/css/font-awesome.min.css')}}">
@@ -12,19 +12,83 @@
 <body style="margin: 0px;">
     <table border="0" style="margin-top: -45px;" class="kop" width="100%">
         <tr>
-            <td style="width:25%;"> <img src="{{ url('public/holding/assets/img/logosp.png') }}" width="80px" class="images"> </td>
-            <td>
+            @if($data_izin->User->kontrak_kerja=='SP')
+            <td style="width:10%;"> <img src="{{ url('public/holding/assets/img/logosp.png') }}" width="80px" class="images"> </td>
+            @elseif($data_izin->User->kontrak_kerja=='SPS')
+            <td style="width:10%;"> <img src="{{ url('public/holding/assets/img/logosps.png') }}" width="80px" class="images"> </td>
+            @elseif($data_izin->User->kontrak_kerja=='SIP')
+            <td style="width:10%;"> <img src="{{ url('public/holding/assets/img/logosip.png') }}" width="80px" class="images"> </td>
+            @endif
+            <td style="width:60%;">
+                @if($data_izin->User->kontrak_kerja=='SP')
                 <h4 style="text-align: center;">CV. SUMBER PANGAN</h4>
+                @elseif($data_izin->User->kontrak_kerja=='SPS')
+                <h4 style="text-align: center;">PT. SURYA PANGAN SEMESTA</h4>
+                @elseif($data_izin->User->kontrak_kerja=='SIP')
+                <h4 style="text-align: center;">CV. SURYA INTI PANGAN</h4>
+                @endif
             </td>
-            <td style="width: 40px;">
-            </td>
-            <td>
+            <td style="width: 30%; vertical-align: bottom; font-size:6pt; text-align: right;">
+                @if($data_izin->User->kontrak_kerja=='SP')
+                @if($data_izin->User->kontrak_site=='KEDIRI')
+                <p>Jl. Raya Sambirobyong No.88 Kayen Kidul - KEDIRI <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @elseif($data_izin->User->kontrak_site=='TUBAN')
+                <p>Jl. Raya Sambirobyong No.88 Kayen Kidul - TUBAN <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @endif
+                @elseif($data_izin->User->kontrak_kerja=='SPS')
+                @if($data_izin->User->kontrak_site=='KEDIRI')
+
+                <p>Jl. Dusun Bringin No.300, Bringin, Wonosari - KEDIRI <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @elseif($data_izin->User->kontrak_site=='NGAWI')
+                <p>Jl. Raya Madiun-Ngawi KM No.13, Tambakromo - NGAWI <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @elseif($data_izin->User->kontrak_site=='SUBUANG')
+                <p>Jl. Pusaka Jaya Kebondanas - SUBANG <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @endif
+                @elseif($data_izin->User->kontrak_kerja=='SIP')
+                <p>Jl. Raya Sambirobyong No.88 Kayen Kidul - KEDIRI <br>
+                    Telp: 0354-548466, 0354-546859, Fax: 0354548465 <br>
+                    Website:
+                    <a href="www.beraskediri.com">
+                        www.beraskediri.com
+                    </a>
+                </p>
+                @endif
             </td>
         </tr>
     </table>
     <hr style="margin-top: -5px; border: 1px solid black;">
     <div style="margin-top: -10px; text-align: center;">
-        <h6>FORMULIR KETERANGAN <br>DATANG TERLAMBAT</h6>
+        <h6>SURAT IZIN <br>KELUAR / PULANG CEPAT</h6>
     </div>
     <table style="margin-top: 10px; border-bottom: black; font-size: 11pt;" width="100%">
         <tbody style="margin-top: 10%;">
@@ -58,17 +122,15 @@
     </table>
     <table border="1" style="margin-top: 2%; font-size: 11pt;" width="100%">
         <thead style="background-color:#E6E6FA;">
-            <th style="text-align: center;">Jam&nbsp;Masuk&nbsp;Kerja</th>
-            <th style="text-align: center;">Jam&nbsp;Datang</th>
-            <th style="text-align: center;">Terlambat</th>
-            <th style="text-align: center;">Alasan</th>
+            <th style="text-align: center;">Jam&nbsp;Keluar</th>
+            <th style="text-align: center;">Jam Pulang</th>
+            <th style="text-align: center;">Tujuan&nbsp;/&nbsp;Alasan</th>
         </thead>
         <tbody>
-            <tr>
-                <td>{{$data_izin->jam_masuk_kerja}} WIB</td>
-                <td>{{$data_izin->jam}}</td>
-                <td>{{$data_izin->terlambat}}</td>
-                <td>{{$data_izin->keterangan_izin}}</td>
+            <tr style="text-align: center;">
+                <td>@if($data_izin->pulang_cepat=='') - @else{{$data_izin->pulang_cepat}} WIB @endif</td>
+                <td>@if($jam_kerja->Shift->jam_keluar=='') - @else{{$jam_kerja->Shift->jam_keluar}} WIB @endif</td>
+                <td>@if($data_izin->keterangan_izin=='') - @else{{$data_izin->keterangan_izin}}@endif</td>
             </tr>
         </tbody>
     </table>

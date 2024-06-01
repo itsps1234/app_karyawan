@@ -96,7 +96,7 @@ class AbsenController extends Controller
             $awal  = strtotime($tanggal . $shift);
             $akhir = strtotime($tgl_skrg . $request["jam_absen"]);
             $diff  = $akhir - $awal;
-
+            dd($diff);
             if ($diff <= 0) {
                 $request["telat"] = 0;
             } else {

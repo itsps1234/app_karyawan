@@ -519,102 +519,12 @@
                                                 <label for="kategori">Kategori Karyawan</label>
                                             </div>
                                         </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
-                                                    <option selected disabled value=""> Pilih Site..</option>
-                                                    @foreach ($data_lokasi as $a)
-                                                    @if(old('site_job') == $a["lokasi_kantor"])
-                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="site_job">Site yang Dipegang</label>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" readonly id="kontrak_kerja" name="kontrak_kerja" class="form-control @error('kontrak_kerja') is-invalid @enderror" placeholder="Masukkan Kontrak" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif" />
                                                 <label for="kontrak_kerja">Kontrak Kerja</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
-                                                    <option selected disabled value=""> Pilih Lokasi Penempatan</option>
-                                                    @foreach ($data_lokasi as $a)
-                                                    @if(old('penempatan_kerja') == $a["lokasi_kantor"])
-                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="penempatan_kerja">Penempatan Kerja</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <small class="text-light fw-medium mt-5">ALAMAT</small>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('provinsi') is-invalid @enderror" id="id_provinsi" name="provinsi">
-                                                    <option value=""> Pilih Provinsi </option>
-                                                    @foreach($data_provinsi as $data)
-                                                    <option value="{{$data->code}}">{{$data->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="id_provinsi">Provinsi</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('kabupaten') is-invalid @enderror" id="id_kabupaten" name="kabupaten">
-                                                    <option value=""> Pilih Kabupaten / Kota</option>
-                                                </select>
-                                                <label for="id_kabupaten">Kabupaten</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('kecamatan') is-invalid @enderror" id="id_kecamatan" name="kecamatan">
-                                                    <option value=""> Pilih kecamatan</option>
-                                                </select>
-                                                <label for="id_kecamatan">kecamatan</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('desa') is-invalid @enderror" id="id_desa" name="desa">
-                                                    <option value=""> Pilih Desa</option>
-                                                </select>
-                                                <label for="id_desa">Desa</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="number" id="rt" name="rt" class="form-control @error('rt') is-invalid @enderror" placeholder="Masukkan RT" value="{{ old('rt') }}" />
-                                                <label for="rt">RT</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="number" id="rw" name="rw" class="form-control @error('rw') is-invalid @enderror" placeholder="Masukkan RW" value="{{ old('rw') }}" />
-                                                <label for="rw">RW</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <textarea id="alamat" name="alamat" class="form-control @error('alamat') is-invalid @enderror" placeholder="Masukkan Alamat" value="{{ old('alamat') }}"></textarea>
-                                                <label for="alamat">Keterangan Alamat(Jalan / Dusun)</label>
                                             </div>
                                         </div>
                                     </div>

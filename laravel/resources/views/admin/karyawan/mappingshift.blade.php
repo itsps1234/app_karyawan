@@ -65,7 +65,7 @@
                                 <td>&nbsp;</td>
                                 <td>:</td>
                                 <td>
-                                    @if($karyawan->kontrak_kerja=='sp') CV. SUMBER PANGAN @elseif($karyawan->kontrak_kerja=='sps') PT. SURYA PANGAN SEMESTA @endif
+                                    @if($karyawan->kontrak_kerja=='SP') CV. SUMBER PANGAN @elseif($karyawan->kontrak_kerja=='SPS') PT. SURYA PANGAN SEMESTA @endif
                                 </td>
                             </tr>
                         </table>
@@ -216,6 +216,7 @@
 <script>
     let holding = window.location.pathname.split("/");
     console.log(holding[3]);
+    console.log(holding[4]);
     var table = $('#table_mapping_shift').DataTable({
         "scrollY": true,
         "scrollX": true,

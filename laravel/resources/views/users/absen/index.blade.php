@@ -24,6 +24,28 @@
 <?php $skstatus = "-" ?>
 @endif
 <!-- Features -->
+@if(Session::has('jam_kerja_kurang'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>Peringatan!</strong>&nbsp; Jam Kerja Anda Kurang Dari 6 Jam.
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" version="1.1" id="Layer_1" width="20" height="20" viewBox="0 0 256 240" enable-background="new 0 0 256 240" xml:space="preserve">
+        <path d="M108.327,28.998c11.331,0,20.516,9.185,20.516,20.516s-9.185,20.516-20.516,20.516S87.81,60.845,87.81,49.514  S96.996,28.998,108.327,28.998z M33.069,153.324l-0.189-0.189l0,0c-0.851-0.567-1.607-1.04-2.269-1.796l2.269,26L4.327,217.804  c-4.065,5.862-2.647,13.804,3.025,17.869c5.862,4.065,13.804,2.647,17.869-3.025l30.822-44.436c1.607-2.269,2.647-5.295,2.269-8.32  l-1.04-12.574L33.069,153.324z M117.876,237.942h122.341l-22.88-71.381c0,0-12.953,3.215-38.574,30.443  c-0.567,0.567-1.229,1.229-1.796,1.796l-61.832-35.738c1.04-1.985,1.229-4.255,0.851-6.713L94.05,75.041  c-1.796-7.942-8.887-13.993-17.207-13.993H35.905c-3.025,0-6.051,1.607-7.753,4.255L7.731,100.757  c-2.647,4.255-1.04,9.738,3.215,12.196l22.88,13.142l-3.025,5.105c-3.687,6.051-1.607,13.804,4.633,17.207L86.77,178v46.894  c0,7.091,5.673,12.764,12.764,12.764s12.764-5.673,12.764-12.764v-53.512l56.821,32.902c-11.724,6.713-25.149,7.942-34.698,13.614  C122.697,224.895,117.876,237.942,117.876,237.942z M38.174,118.626l-15.033-8.698l0,0l17.869-30.822h20.044L38.174,118.626z   M71.171,137.724l14.182-24.771l10.589,38.952L71.171,137.724z M203.459,2c-27.879,0-50.541,22.621-50.541,50.459  c0,27.879,22.662,50.541,50.541,50.541S254,80.338,254,52.459C253.918,24.621,231.257,2,203.459,2z M203.459,93.014  c-22.377,0-40.555-18.178-40.555-40.555s18.178-40.555,40.555-40.555s40.555,18.178,40.555,40.555  C243.77,74.836,225.591,93.014,203.459,93.014z M228.648,42.596c-0.937-1.549-2.894-2.609-5.136-1.467l-17.893,7.989V27.963  c0-1.141-0.408-2.16-1.141-2.935l-0.041-0.041c-0.734-0.652-1.59-0.937-2.609-0.937c-1.956,0-3.994,1.467-3.994,3.913v27.675  c0,1.508,0.856,2.935,2.201,3.668c0.693,0.326,1.304,0.489,1.875,0.489c0.611,0,1.304-0.204,1.956-0.489l23.11-11.046  c1.019-0.53,1.753-1.386,2.079-2.405C229.3,44.797,229.178,43.615,228.648,42.596L228.648,42.596z" />
+    </svg>
+    <strong>&nbsp;Jam Kerja Kurang dari 6 jam Dianggap Tidak Masuk</strong>
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
+@endif
 <div class="">
     <div class="row m-b20 g-3">
         <div class="col-12">
@@ -151,6 +173,7 @@
                                     <input type="hidden" name="pulang_cepat">
                                     <input type="hidden" name="jarak_pulang">
                                     <input type="hidden" name="keterangan_absensi">
+                                    <input type="hidden" name="jam_masuk" value="{{$skjamab}}">
                                     <center>
                                         <button type="submit" class="btn btn-lokasisaya" style="background-color: white" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
                                     </center>
@@ -180,10 +203,8 @@
                             @else
                             <div class="card col-lg-12">
                                 <div class="mt-5">
-                                    <div class="mb-5">
-                                        <center>
-                                            <h2>Anda Sudah Selesai Absen</h2>
-                                        </center>
+                                    <div class="mb-5 text-center">
+                                        <h2>Anda Sudah Selesai Absen</h2>
                                     </div>
                                 </div>
                             </div>

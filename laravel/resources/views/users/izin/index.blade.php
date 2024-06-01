@@ -1,46 +1,100 @@
 @extends('users.izin.layout.main')
 @section('title') APPS | KARYAWAN - SP @endsection
+@section('css')
+<style>
+    .modal-backdrop.show:nth-of-type(even) {
+        z-index: 1051 !important;
+    }
+</style>
+@endsection
 @section('content')
-@if(Session::has('atasankosong'))
-<div class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>error!</strong> Atasan Anda Kosong. Hubungi HRD.
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('izinsuccess'))
-<div class="alert alert-success light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
-    </svg>
-    <strong>Sukses!</strong> Anda Berhasil Menyimpan Data Izin.
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('hapus_izin_sukses'))
-<div id="alert_hapus_izin_sukses" class="alert alert-success light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
-    </svg>
-    <strong>Success!</strong> Anda Berhasil Menghapus Data Izin
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@endif
 <div class="container">
+    @if(Session::has('atasankosong'))
+    <div id="alert_atasankosong" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>error!</strong> &nbsp;Atasan Anda Kosong. Hubungi HRD.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('absen_masuk_kosong'))
+    <div id="alert_atasankosong" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>error!</strong> &nbsp;Anda Belum Absensi Masuk. Silahkan Absensi Masuk Terlebih Dahulu
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('absen_pulang_terisi'))
+    <div id="alert_atasankosong" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>error!</strong> &nbsp;Anda Sudah Absensi Pulang.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('mapping_kosong'))
+    <div id="alert_atasankosong" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>error!</strong> &nbsp;Mapping Shift Kosong. Hubungi HRD.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('izineditsuccess'))
+    <div id="alert_izineditsuccess" class="alert alert-success light alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+        </svg>
+        <strong>Sukses!</strong> Data Anda Berhasil Disimpan
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('izinsuccess'))
+    <div id="alert_addizin_success" class="alert alert-success light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <strong>Sukses!</strong> Anda Berhasil Menyimpan Data Izin.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('hapus_izin_sukses'))
+    <div id="alert_hapus_izin_sukses" class="alert alert-success light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <strong>Success!</strong> Anda Berhasil Menghapus Data Izin
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @endif
     @if($jam_kerja=='' || $jam_kerja==NULL)
     <div id="alert_kontrak_kerja_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -66,6 +120,7 @@
     </button>
 
     <!-- Modal -->
+
     <div class="modal fade" id="myModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <!-- Modal content-->
@@ -80,6 +135,32 @@
                     <div class="modal-body">
                         @method('post')
                         @csrf
+                        <div id="alert_pulang_cepat" class="alert alert-primary light alert-lg alert-dismissible fade show">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-4.52 0 69.472 69.472">
+                                <g id="Group_4" data-name="Group 4" transform="translate(-651.45 -155.8)">
+                                    <circle id="Ellipse_4" data-name="Ellipse 4" cx="28.716" cy="28.716" r="28.716" transform="translate(652.95 157.3)" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="3" />
+                                    <path id="Path_11" data-name="Path 11" d="M697.51,186.016H681.667V163.846" fill="none" stroke="#814dff" stroke-miterlimit="10" stroke-width="3" />
+                                    <circle id="Ellipse_5" data-name="Ellipse 5" cx="28.716" cy="28.716" r="28.716" transform="translate(652.95 166.34)" fill="none" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" opacity="0.15" />
+                                </g>
+                            </svg>
+                            &nbsp;Izin Pulang Cepat Minimal Jam &nbsp;<b>{{$jam_min_plg_cpt}} WIB</b>
+                            <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div id="alert_kepentingan_pribadi" class="alert alert-primary light alert-lg alert-dismissible fade show">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="-4.52 0 69.472 69.472">
+                                <g id="Group_4" data-name="Group 4" transform="translate(-651.45 -155.8)">
+                                    <circle id="Ellipse_4" data-name="Ellipse 4" cx="28.716" cy="28.716" r="28.716" transform="translate(652.95 157.3)" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="3" />
+                                    <path id="Path_11" data-name="Path 11" d="M697.51,186.016H681.667V163.846" fill="none" stroke="#814dff" stroke-miterlimit="10" stroke-width="3" />
+                                    <circle id="Ellipse_5" data-name="Ellipse 5" cx="28.716" cy="28.716" r="28.716" transform="translate(652.95 166.34)" fill="none" stroke="#000000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" opacity="0.15" />
+                                </g>
+                            </svg>
+                            &nbsp;Kepentingan Pribadi Maksimal 4 Jam selebihnya itu Dianggap Tidak Masuk</b>
+                            <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
                         <div class="input-group">
                             <input type="hidden" name="id_user" value="{{ Auth::user()->id }}">
                             <input type="hidden" name="telp" value="{{ $data_user->telepon }}">
@@ -109,11 +190,48 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Tanggal" readonly>
-                            <input type="date" name="tanggal" value="{{ date('Y-m-d') }}" readonly style="font-weight: bold" required placeholder="Tanggal" class="form-control">
+                            <input type="text" id="tanggal" name="tanggal" value="{{ \Carbon\Carbon::now()->format('d/m/Y')}}" readonly style="font-weight: bold" required placeholder="Tanggal" class="form-control">
+                        </div>
+                        <div id="form_kepentingan" class="input-group">
+                            <input type="text" class="form-control" value="Kepentingan" readonly>
+                            <select name="kepentingan" id="kepentingan" class="form-control">
+                                <option disabled selected value="">Jenis Kepentingan</option>
+                                <option value="Kepentingan Pribadi">Kepentingan Pribadi</option>
+                                <option value="Kepentingan Kantor">Kepentingan Kantor</option>
+                            </select>
+                        </div>
+                        <div id="form_jam_pulang_cepat" class="input-group">
+                            <input type="text" class="form-control" value="Jam Keluar" readonly>
+                            <input type="time" name="jam_pulang_cepat" id="jam_pulang_cepat" value="@if($jam_kerja=='') @else{{$jam_min_plg_cpt}}@endif" min="" style="font-weight: bold" placeholder="Jam Pulang" class="form-control">
+                        </div>
+                        <div id="form_jam_keluar" class="input-group">
+                            <input type="text" class="form-control" value="Jam Keluar" readonly>
+                            <input type="time" name="jam_keluar" id="jam_keluar" value="" style="font-weight: bold" placeholder="Jam Keluar" class="form-control">
+                        </div>
+                        <div id="form_jam_kembali" class="input-group">
+                            <input type="text" class="form-control" value="Jam Kembali" readonly>
+                            <input type="time" name="jam_kembali" id="jam_kembali" value="" style="font-weight: bold" placeholder="Jam Kembali" class="form-control">
+                        </div>
+                        <label id="label_file_sakit" class="text-info" for="file_sakit">Upload Surat Dokter</label>
+                        <div id="form_file_sakit" class="input-group">
+                            <input type="file" name="file_sakit" id="file_sakit" class="form-control" placeholder="Upload" accept="image/*">
+                        </div>
+                        <div id="modal_surat" class="text-center" style="margin-top: -4%;margin-bottom: 2%;">
+                            <a href="javascript:void(0);" id="btn_modal_surat">
+                                <span class="badge light badge-sm badge-info me-1 mb-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
+                                        <path d="M15.3929 4.05365L14.8912 4.61112L15.3929 4.05365ZM19.3517 7.61654L18.85 8.17402L19.3517 7.61654ZM21.654 10.1541L20.9689 10.4592V10.4592L21.654 10.1541ZM3.17157 20.8284L3.7019 20.2981H3.7019L3.17157 20.8284ZM20.8284 20.8284L20.2981 20.2981L20.2981 20.2981L20.8284 20.8284ZM14 21.25H10V22.75H14V21.25ZM2.75 14V10H1.25V14H2.75ZM21.25 13.5629V14H22.75V13.5629H21.25ZM14.8912 4.61112L18.85 8.17402L19.8534 7.05907L15.8947 3.49618L14.8912 4.61112ZM22.75 13.5629C22.75 11.8745 22.7651 10.8055 22.3391 9.84897L20.9689 10.4592C21.2349 11.0565 21.25 11.742 21.25 13.5629H22.75ZM18.85 8.17402C20.2034 9.3921 20.7029 9.86199 20.9689 10.4592L22.3391 9.84897C21.9131 8.89241 21.1084 8.18853 19.8534 7.05907L18.85 8.17402ZM10.0298 2.75C11.6116 2.75 12.2085 2.76158 12.7405 2.96573L13.2779 1.5653C12.4261 1.23842 11.498 1.25 10.0298 1.25V2.75ZM15.8947 3.49618C14.8087 2.51878 14.1297 1.89214 13.2779 1.5653L12.7405 2.96573C13.2727 3.16993 13.7215 3.55836 14.8912 4.61112L15.8947 3.49618ZM10 21.25C8.09318 21.25 6.73851 21.2484 5.71085 21.1102C4.70476 20.975 4.12511 20.7213 3.7019 20.2981L2.64124 21.3588C3.38961 22.1071 4.33855 22.4392 5.51098 22.5969C6.66182 22.7516 8.13558 22.75 10 22.75V21.25ZM1.25 14C1.25 15.8644 1.24841 17.3382 1.40313 18.489C1.56076 19.6614 1.89288 20.6104 2.64124 21.3588L3.7019 20.2981C3.27869 19.8749 3.02502 19.2952 2.88976 18.2892C2.75159 17.2615 2.75 15.9068 2.75 14H1.25ZM14 22.75C15.8644 22.75 17.3382 22.7516 18.489 22.5969C19.6614 22.4392 20.6104 22.1071 21.3588 21.3588L20.2981 20.2981C19.8749 20.7213 19.2952 20.975 18.2892 21.1102C17.2615 21.2484 15.9068 21.25 14 21.25V22.75ZM21.25 14C21.25 15.9068 21.2484 17.2615 21.1102 18.2892C20.975 19.2952 20.7213 19.8749 20.2981 20.2981L21.3588 21.3588C22.1071 20.6104 22.4392 19.6614 22.5969 18.489C22.7516 17.3382 22.75 15.8644 22.75 14H21.25ZM2.75 10C2.75 8.09318 2.75159 6.73851 2.88976 5.71085C3.02502 4.70476 3.27869 4.12511 3.7019 3.7019L2.64124 2.64124C1.89288 3.38961 1.56076 4.33855 1.40313 5.51098C1.24841 6.66182 1.25 8.13558 1.25 10H2.75ZM10.0298 1.25C8.15538 1.25 6.67442 1.24842 5.51887 1.40307C4.34232 1.56054 3.39019 1.8923 2.64124 2.64124L3.7019 3.7019C4.12453 3.27928 4.70596 3.02525 5.71785 2.88982C6.75075 2.75158 8.11311 2.75 10.0298 2.75V1.25Z" fill="#1C274C" />
+                                        <path opacity="0.5" d="M6 14.5H14" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path opacity="0.5" d="M6 18H11.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                        <path opacity="0.5" d="M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22" stroke="#1C274C" stroke-width="1.5" />
+                                    </svg>
+                                    Lihat&nbsp;Surat
+                                </span>
+                            </a>
                         </div>
                         <div id="jam_masuk_kerja" class="input-group">
                             <input type="text" class="form-control" value="Jam Masuk Kerja" readonly>
-                            <input type="time" id="jam_masuk" name="jam_masuk" value="@if($jam_kerja=='' || $jam_kerja==NULL)Mapping Belum Tersedia @else {{$jam_kerja->Shift->jam_masuk}} @endif" readonly style="font-weight: bold" required placeholder="Jam Masuk Kerja" class="form-control">
+                            <input type="text" id="jam_masuk" name="jam_masuk" value="@if($jam_kerja=='' || $jam_kerja==NULL)Mapping Belum Tersedia @else {{$jam_kerja->Shift->jam_masuk}} @endif" readonly style="font-weight: bold" required placeholder="Jam Masuk Kerja" class="form-control">
                         </div>
                         <div id="jam_datang" class="input-group">
                             <input type="text" class="form-control" value="Jam Datang" readonly>
@@ -124,7 +242,27 @@
                             <input type="text" id="terlambat" name="terlambat" value="" readonly style="font-weight: bold" required placeholder="Terlambat" class="form-control">
                         </div>
                         <div class="input-group">
-                            <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Description"></textarea>
+                            <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Keterangan Izin"></textarea>
+                        </div>
+                        <div id="form_user_backup" class="input-group">
+                            @if($data_user->level_jabatan=='1')
+                            <input type="text" class="form-control" value="Pengganti" readonly>
+                            <select class="form-control" name="user_backup">
+                                <option selected value="-">-</option>
+                            </select>
+                            @else
+                            <input type="text" class="form-control" value="Pengganti" readonly>
+                            <select class="form-control" name="user_backup">
+                                <option value="">Pilih Pengganti...</option>
+                                @foreach($get_user_backup as $data)
+                                <option value="{{$data->id}}">{{$data->name}}
+                                </option>
+                                @endforeach
+                            </select>
+                            @endif
+                        </div>
+                        <div id="form_catatan_backup" class="input-group">
+                            <textarea class="form-control" name="catatan_backup" style="font-weight: bold" placeholder="Catatan Selama Tidak Masuk"></textarea>
                         </div>
                         <div class="input-group">
                             @if($getUserAtasan==NULL)
@@ -150,13 +288,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal_surat_dokter">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">SURAT KETERANGAN SAKIT </h5>
+                </div>
+                <div class="modal-body">
+                    <img src="" alt="" id="template_foto_izin">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <hr width="90%" style="margin-left: 5%;margin-right: 5%">
 <div class="container">
     <div class="detail-content">
         <div class="flex-1">
-            <h4>History.</h4>
+            <h4>History Permintaan Izin.</h4>
         </div>
     </div>
     @foreach ($record_data as $record_data)
@@ -182,6 +335,8 @@
             </div>
         </div>
         @elseif($record_data->status_izin == 2)
+        @if($record_data->izin=='Sakit')
+        @else
         <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#download{{$record_data->id}}" aria-controls="offcanvasBottom">
             <small class="badge light badge-success" style="float: right;padding-right:10px; box-shadow: 0px 0px 4px;">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="18" width="18" version="1.1" id="Capa_1" viewBox="0 0 48 48" xml:space="preserve">
@@ -196,9 +351,18 @@
                 </svg>
             </small>
         </a>
+        @endif
         <div class="offcanvas offcanvas-bottom" tabindex="-1" id="download{{$record_data->id}}" aria-labelledby="offcanvasBottomLabel">
             <div class="offcanvas-body text-center small">
-                <h5 class="title">FORM PENGAJUAN IZIN</h5>
+                @if($record_data->izin=='Datang Terlambat')
+                <h5 class="title">FORM PENGAJUAN IZIN TERLAMBAT</h5>
+                @elseif($record_data->izin=='Pulang Cepat')
+                <h5 class="title">FORM PENGAJUAN IZIN PULANG CEPAT</h5>
+                @elseif($record_data->izin=='Keluar Kantor')
+                <h5 class="title">FORM PENGAJUAN IZIN KELUAR KANTOR</h5>
+                @elseif($record_data->izin=='Tidak Masuk (Mendadak)')
+                <h5 class="title">FORM PENGAJUAN IZIN TIDAK MASUK</h5>
+                @endif
                 <p>Apakah Anda Ingin Download Form Pengajuan Izin?</p>
                 <a href="{{url('/izin/cetak_form_izin/'.$record_data->id)}}" class="btn btn-sm btn-danger light pwa-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" height="18" width="18" version="1.1" id="Capa_1" viewBox="0 0 48 48" xml:space="preserve">
@@ -235,7 +399,9 @@
                     <small class="badge light badge-danger"><i class="far fa-edit"></i> Tambahkan TTD</small>
                     @elseif($record_data->status_izin == 1)
                     <small class="badge light badge-primary"><i class="fa fa-spinner"></i> Menunggu Approve</small>
-                    @else
+                    @elseif($record_data->status_izin == 'NOT APPROVE')
+                    <small class="badge light badge-danger"><i class="fa fa-minus"></i> Permintaan Ditolak </small>
+                    @elseif($record_data->status_izin ==2)
                     <small class="badge light badge-success">
                         <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
                             <path d="M8.5 12.5L10.5 14.5L15.5 9.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
@@ -252,6 +418,7 @@
 </div>
 @endsection
 @section('js')
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script>
     $("document").ready(function() {
         // console.log('ok');
@@ -261,61 +428,221 @@
         }, 7000); // 7 secs
 
     });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_izineditsuccess").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_addizin_success").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_atasankosong").remove();
+        }, 7000); // 7 secs
+
+    });
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
+        var jm_plg_cpt = '{{$jam_min_plg_cpt}}';
+        console.log(jm_plg_cpt);
+        $('#modal_surat').hide();
         $('#jam_masuk_kerja').hide();
         $('#jam_datang').hide();
         $('#form_terlambat').hide();
+        $('#label_file_sakit').hide();
+        $('#form_file_sakit').hide();
+        $('#form_jam_pulang_cepat').hide();
+        $('#form_jam_kembali').hide();
+        $('#form_jam_keluar').hide();
+        $('#form_user_backup').hide();
+        $('#form_catatan_backup').hide();
+        $('#alert_pulang_cepat').hide();
+        $('#form_kepentingan').hide();
+        $('#alert_kepentingan_pribadi').hide();
         $('body').on("change", "#izin", function() {
             var id = $(this).val();
             // console.log(id);
             if (id == 'Sakit') {
+                $('#modal_surat').show();
+                $('#form_file_sakit').show();
+                $('#label_file_sakit').show();
                 $('#jam_masuk_kerja').hide();
                 $('#jam_datang').hide();
                 $('#form_terlambat').hide();
+                $('#form_jam_kembali').hide();
+                $('#form_jam_keluar').hide();
+                $('#form_jam_pulang_cepat').hide();
+                $('#form_user_backup').hide();
+                $('#form_catatan_backup').hide();
+                $('#alert_pulang_cepat').hide();
+                $('#form_kepentingan').hide();
+                $('#alert_kepentingan_pribadi').hide();
+                $("#tanggal").prop('disabled', false);
+                var start = moment();
+                $('input[id="tanggal"]').daterangepicker({
+                    drops: 'down',
+                    minDate: start,
+                    startDate: start,
+                    endDate: start,
+                    autoApply: true,
+                }, function(start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
             } else if (id == 'Tidak Masuk (Mendadak)') {
+                $('#form_user_backup').show();
+                $('#form_catatan_backup').show();
+                $('#modal_surat').hide();
                 $('#jam_masuk_kerja').hide();
                 $('#form_terlambat').hide();
                 $('#jam_datang').hide();
+                $('#form_file_sakit').hide();
+                $('#label_file_sakit').hide();
+                $('#form_jam_pulang_cepat').hide();
+                $('#form_jam_kembali').hide();
+                $('#form_kepentingan').hide();
+                $('#form_jam_keluar').hide();
+                $('#alert_pulang_cepat').hide();
+                $('#alert_kepentingan_pribadi').hide();
+                $("#tanggal").prop('disabled', false);
+                var start = moment().subtract(-1, 'days');
+                $('input[id="tanggal"]').daterangepicker({
+                    drops: 'down',
+                    minDate: start,
+                    startDate: start,
+                    endDate: start,
+                    autoApply: true,
+                }, function(start, end, label) {
+                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                });
             } else if (id == 'Pulang Cepat') {
+                $('#form_jam_pulang_cepat').show();
+                $('#modal_surat').hide();
                 $('#jam_masuk_kerja').hide();
                 $('#form_terlambat').hide();
                 $('#jam_datang').hide();
+                $('#form_file_sakit').hide();
+                $('#label_file_sakit').hide();
+                $('#form_jam_kembali').hide();
+                $('#alert_kepentingan_pribadi').hide();
+                $('#form_jam_keluar').hide();
+                $('#form_kepentingan').hide();
+                $('#form_user_backup').hide();
+                $('#form_catatan_backup').hide();
+                $("#tanggal").prop('disabled', true);
+                var date = new Date();
+                $('input[id="tanggal"]').val(date.toISOString().slice(0, 10));
+                if (jm_plg_cpt == '') {
+                    $('#alert_pulang_cepat').hide();
+                } else {
+                    $('#alert_pulang_cepat').show();
+                }
+            } else if (id == 'Keluar Kantor') {
+                $('#form_jam_kembali').hide();
+                $('#form_jam_keluar').hide();
+                $('#form_jam_pulang_cepat').hide();
+                $('#modal_surat').hide();
+                $('#jam_masuk_kerja').hide();
+                $('#form_terlambat').hide();
+                $('#jam_datang').hide();
+                $('#form_file_sakit').hide();
+                $('#label_file_sakit').hide();
+                $('#form_catatan_backup').hide();
+                $('#alert_pulang_cepat').hide();
+                $('#form_kepentingan').show();
+                $('#form_user_backup').hide();
+                $('body').on("change", "#kepentingan", function() {
+                    var kepentingan = $(this).val();
+                    if (kepentingan == 'Kepentingan Kantor') {
+                        $('#alert_kepentingan_pribadi').hide();
+                        $('#form_jam_kembali').show();
+                        $('#form_jam_keluar').show();
+                    } else {
+                        $('#alert_kepentingan_pribadi').show();
+                        $('#form_jam_kembali').show();
+                        $('#form_jam_keluar').show();
+                        $('body').on("change", "#jam_keluar", function() {
+                            var jam_klr = $(this).val();
+                            var hour = moment.utc(jam_klr, 'hh:mm').add(4, 'hour').format('HH:mm');
+                            // console.log(hour);
+                            $('#jam_kembali').attr({
+                                min: jam_klr,
+                                max: hour,
+                            });
+
+                        });
+                    }
+                });
+                $("#tanggal").prop('disabled', true);
+                var date = new Date();
+                $('input[id="tanggal"]').val(date.toISOString().slice(0, 10));
             } else if (id == 'Datang Terlambat') {
+                $('#form_jam_kembali').hide();
+                $('#form_jam_keluar').hide();
+                $('#modal_surat').hide();
+                $('#form_user_backup').hide();
                 $('#jam_masuk_kerja').show();
                 $('#jam_datang').show();
                 $('#form_terlambat').show();
+                $('#form_file_sakit').hide();
+                $('#alert_pulang_cepat').hide();
+                $('#label_file_sakit').hide();
+                $('#form_kepentingan').hide();
+                $('#form_jam_pulang_cepat').hide();
+                $("#tanggal").prop('disabled', true);
+                $('#form_catatan_backup').hide();
+                var date = new Date();
+                $('input[id="tanggal"]').val(date.toISOString().slice(0, 10));
+                var awal = $('#jam_masuk').val().split(":"),
+                    akhir = $('#jam').val().split(":");
+                var hours1 = parseInt(awal[0], 10),
+                    hours2 = parseInt(akhir[0], 10),
+                    mins1 = parseInt(awal[1], 10),
+                    mins2 = parseInt(akhir[1], 10);
+                var hours = hours2 - hours1,
+                    mins = 0;
+                // get hours
+                if (hours < 0) hours = 24 + hours;
 
-                var awal = $('#jam_masuk').val();
-                var akhir = $('#jam').val();
-                var time1 = awal.split(":");
-                var time2 = akhir.split(":");
-                var ok1 = time1[0] + time1[1];
-                var ok2 = time2[0] + time2[1];
-                if (ok1 < ok2) {
-                    var jam = (time2[0] - time1[0]);
-                    var menit = (time2[1] - time1[1]);
-                    // hours = Math.floor((diff / 60));
-                    // minutes = (diff % 60);
-                    console.log('jam = ' + jam);
-                    console.log('menit = ' + menit);
-                    // console.log('MENIT = ' + minutes);
-                    $('#terlambat').val(Math.abs(jam) + ' Jam, ' + Math.abs(menit) + ' Menit')
+                // get minutes
+                if (mins2 >= mins1) {
+                    mins = mins2 - mins1;
                 } else {
-                    var diff1 = getTimeDiff('24:00', '{time1}', 'm');
-                    var diff2 = getTimeDiff('{time2}', '00:00', 'm');
-                    var totalDiff = diff1 + diff2;
-                    hours = Math.floor((totalDiff / 60));
-                    minutes = (totalDiff % 60);
-                };
-                var hasil = ((akhir - awal)) / 1000;
+                    mins = (mins2 + 60) - mins1;
+                    hours--;
+                }
+
+                // convert to fraction of 60
+                mins = (mins - 5); // -5 toleransi telat 5 menit
+                console.log(mins);
+
+                // hours += mins;
+                // hours = hours.toFixed(2);
+                $("#terlambat").val(hours + ' Jam, ' + mins + ' Menit');
 
             } else {
+                $('#form_catatan_backup').hide();
                 $('#kategori_cuti').hide();
                 $('#kuota_hari').hide();
                 $('#id_cuti').val('');
+                $('#form_user_backup').hide();
+                $('#form_kepentingan').hide();
+                $("#tanggal").prop('disabled', true);
                 $('#name_form_tanggal').val('Tanggal Cuti');
+                $('#alert_pulang_cepat').hide();
+                var date = new Date();
+                $('input[id="tanggal"]').val(date.toISOString().slice(0, 10));
                 var start = moment().subtract(-14, 'days');
                 $('input[id="date_range_cuti"]').daterangepicker({
                     drops: 'up',
@@ -327,6 +654,29 @@
                     console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
                 });
             }
+        });
+        $('body').on("change", "#file_sakit", function() {
+
+            let reader = new FileReader();
+            console.log(reader);
+            reader.onload = (e) => {
+
+                $('#template_foto_izin').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(this.files[0]);
+
+        });
+        $('body').on("click", "#btn_modal_surat", function() {
+
+            $('#modal_surat_dokter').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            $("#modal_surat_dokter").modal("show");
+
         });
     });
 </script>
