@@ -68,6 +68,14 @@
                                     @if($karyawan->kontrak_kerja=='SP') CV. SUMBER PANGAN @elseif($karyawan->kontrak_kerja=='SPS') PT. SURYA PANGAN SEMESTA @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <th>Penempatan Kerja</th>
+                                <td>&nbsp;</td>
+                                <td>:</td>
+                                <td>
+                                    {{$karyawan->penempatan_kerja}}
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

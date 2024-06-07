@@ -186,6 +186,17 @@
 					{{ csrf_field() }}
 				</form>
 			</li>
+			@if(Auth::user()->access_1=='on')
+			<li class="nav-label">ACCESS</li>
+			<li class="nav-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+				<a class="nav-link">
+					<span class="dz-icon bg-blue light">
+						<i class="fa-solid fa-users"></i>
+					</span>
+					<span>Mapping Shift Kuli</span>
+				</a>
+			</li>
+			@endif
 			<li class="nav-label">Settings</li>
 			<li class="nav-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
 				<a class="nav-link">

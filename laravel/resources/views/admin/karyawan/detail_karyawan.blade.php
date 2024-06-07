@@ -39,61 +39,87 @@
                         </div>
                     </div>
                     <div class="card-body pt-2 mt-1">
-
                         <div class="row mt-2 gy-4">
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input class="form-control @error('nik') is-invalid @enderror" type="number" id="nik" name="nik" value="{{old('nik', $karyawan->nik)}}" autofocus />
                                     <label for="nik">NIK</label>
                                 </div>
+                                @error('nik')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input class="form-control @error('npwp') is-invalid @enderror" type="number" id="npwp" name="npwp" value="{{old('npwp', $karyawan->npwp)}}" />
                                     <label for="npwp">NPWP</label>
                                 </div>
+                                @error('npwp')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $karyawan->name) }}">
                                     <label for="name">Nama</label>
                                 </div>
+                                @error('name')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input class="form-control @error('fullname') is-invalid @enderror" type="text" name="fullname" id="fullname" value="{{ old('fullname', $karyawan->fullname)}}" />
                                     <label for="fullname">Fullname</label>
                                 </div>
+                                @error('fullname')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $karyawan->email) }}">
                                     <label for="email">E-mail</label>
                                 </div>
+                                @error('email')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon" name="telepon" value="{{ old('telepon', $karyawan->telepon) }}">
                                     <label for="telepon">Telepon</label>
                                 </div>
+                                @error('telepon')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control @error('tempat_lahir') is-invalid @enderror" id="tempat_lahir" name="tempat_lahir" value="{{ old('tempat_lahir',$karyawan->tempat_lahir) }}">
                                     <label for="tempat_lahir">Tempat Lahir</label>
                                 </div>
+                                @error('tempat_lahir')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
                                     <input class="form-control" type="date" id="tgl_lahir" value="{{$karyawan->tgl_lahir}}" name="tgl_lahir" placeholder="Tanggal Lahir" />
                                     <label for="tgl_lahir">Tanggal Lahir</label>
                                 </div>
+                                @error('tgl_lahir')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
                                     <input type="date" class="form-control @error('tgl_join') is-invalid @enderror" id="tgl_join" name="tgl_join" value="{{ old('tgl_join', $karyawan->tgl_join) }}">
                                     <label for="tgl_join">Tanggal Join Perusahaan</label>
                                 </div>
+                                @error('tgl_join')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
@@ -101,6 +127,9 @@
                                     <input type="hidden" name="password" value="{{ $karyawan->password }}">
                                     <label for="username">Username</label>
                                 </div>
+                                @error('username')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
@@ -130,6 +159,9 @@
                                     </select>
                                     <label for="gender">Kelamin</label>
                                 </div>
+                                @error('gender')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
@@ -153,8 +185,11 @@
                                     </select>
                                     <label for="status_nikah">Status Nikah</label>
                                 </div>
+                                @error('status_nikah')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <?php $bank = array(
                                         [
@@ -182,16 +217,50 @@
                                     </select>
                                     <label for="nama_bank">Nama Bank</label>
                                 </div>
+                                @error('nama_bank')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="number" class="form-control  @error('nomor_rekening') is-invalid @enderror" id="nomor_rekening" name="nomor_rekening" value="{{old('nomor_rekening', $karyawan->nomor_rekening) }}" placeholder="Nomor Rekening" />
                                     <label for="nomor_rekening">Nomor Rekening</label>
                                 </div>
+                                @error('nomor_rekening')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
+                                <?php $kategori = array(
+                                    [
+                                        "kategori" => "Karyawan Bulanan"
+                                    ],
+                                    [
+                                        "kategori" => "Karyawan Harian"
+                                    ]
+                                );
+                                ?>
+                                <div class="form-floating form-floating-outline">
+                                    <select name="kategori" id="kategori" class="form-control selectpicker" data-live-search="true">
+                                        <option value="">Pilih Kategori</option>
+                                        @foreach ($kategori as $a)
+                                        @if(old('kategori', $karyawan->kategori) == $a["kategori"])
+                                        <option value="{{ $a["kategori"] }}" selected>{{ $a["kategori"] }}</option>
+                                        @else
+                                        <option value="{{ $a["kategori"] }}">{{ $a["kategori"] }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                    <label for="kategori">Kategori Karyawan</label>
+                                </div>
+                                @error('kategori')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div id="form_departemen" class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <select name="departemen_id" id="id_departemen" class="form-control @error('departemen_id') is-invalid @enderror">
+                                        <option value=""> Pilih Departemen</option>
                                         @foreach ($data_departemen as $dj)
                                         @if(old('departemen_id', $karyawan->dept_id) == $dj->id)
                                         <option value="{{ $dj->id }}" selected>{{ $dj->nama_departemen }}</option>
@@ -202,8 +271,11 @@
                                     </select>
                                     <label for="id_departemen">Departemen</label>
                                 </div>
+                                @error('departemen_id')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div id="form_divisi" class="col-md-6">
                                 <?php
                                 $data_divisi = App\Models\Divisi::Where('dept_id', $karyawan->dept_id)->get();
                                 // echo $kec;
@@ -211,15 +283,39 @@
                                 <div class="form-floating form-floating-outline">
                                     <select name="divisi_id" id="id_divisi" class="form-control @error('divisi_id') is-invalid @enderror">
                                         @foreach ($data_divisi as $divisi)
+                                        @if(old('divisi_id', $karyawan->divisi_id) == $divisi["id"])
                                         <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
+                                        @else
+                                        <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     <label for="id_divisi">Divisi</label>
                                 </div>
+                                @error('divisi_id')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div id="form_bagian" class="col-md-3">
                                 <?php
-                                $data_jabatan = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi_id)->get();
+                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->divisi_id)->get();
+                                // echo $kec;
+                                ?>
+                                <div class="form-floating form-floating-outline">
+                                    <select name="bagian_id" id="id_bagian" class="form-control @error('bagian_id') is-invalid @enderror">
+                                        @foreach ($data_bagian as $bagian)
+                                        <option value="{{$bagian->id}}" {{($bagian->id == $karyawan->bagian_id) ? 'selected' : ''}}>{{$bagian->nama_bagian}}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="id_bagian">Bagian</label>
+                                </div>
+                                @error('bagian_id')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div id="form_jabatan" class="col-md-3">
+                                <?php
+                                $data_jabatan = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian_id)->get();
                                 $data_jabatan1 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi1_id)->get();
                                 $data_jabatan2 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi2_id)->get();
                                 $data_jabatan3 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi3_id)->get();
@@ -234,8 +330,11 @@
                                     </select>
                                     <label for="id_jabatan">Jabatan</label>
                                 </div>
+                                @error('jabatan_id')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-12">
+                            <div id="form_jabatan_more" class="col-md-12">
                                 <div class="accordion mt-3" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
@@ -343,12 +442,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div id="form_kontrak" class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" class="form-control" readonly value="@if($karyawan->kontrak_kerja =='SP')CV. SUMBER PANGAN @elseif($karyawan->kontrak_kerja =='SPS') PT. SURYA PANGAN SEMESTA @elseif($karyawan->kontrak_kerja =='SIP') CV. SURYA INTI PANGAN  @endif">
                                     <input type="hidden" class="form-control" id="kontrak_kerja" name="kontrak_kerja" value="{{$karyawan->kontrak_kerja}}">
                                     <label for="kontrak_kerja">Kontrak Kerja</label>
                                 </div>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
@@ -364,8 +464,62 @@
                                     </select>
                                     <label for="penempatan_kerja">Penempatan Kerja</label>
                                 </div>
+                                @error('penempatan_kerja')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-6">
+                            <div id="form_tgl_mulai_kontrak" class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="date" class="form-control @error('tgl_mulai_kontrak') is-invalid @enderror" id="tgl_mulai_kontrak" name="tgl_mulai_kontrak" value="{{old('tgl_mulai_kontrak', $karyawan->tgl_mulai_kontrak) }}" />
+                                    <label for="tgl_mulai_kontrak">Tanggal Mulai Kontrak</label>
+                                </div>
+                                @error('tgl_mulai_kontrak')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div id="form_tgl_selesai_kontrak" class="col-md-3">
+                                <div class="form-floating form-floating-outline">
+                                    <input type="date" class="form-control @error('tgl_selesai_kontrak') is-invalid @enderror" id="tgl_selesai_kontrak" name="tgl_selesai_kontrak" value="{{old('tgl_selesai_kontrak', $karyawan->tgl_selesai_kontrak) }}" />
+                                    <label for=" tgl_selesai_kontrak">Tanggal Selesai Kontrak</label>
+                                </div>
+                                @error('tgl_selesai_kontrak')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div id="form_lama_kontrak" class="col-md-6">
+                                <?php $lama_kontrak_kerja = array(
+                                    [
+                                        "lama_kontrak_kerja" => "6 bulan"
+                                    ],
+                                    [
+                                        "lama_kontrak_kerja" => "1 tahun"
+                                    ],
+                                    [
+                                        "lama_kontrak_kerja" => "2 bahun"
+                                    ],
+                                    [
+                                        "lama_kontrak_kerja" => "tetap"
+                                    ]
+                                );
+                                ?>
+                                <div class="form-floating form-floating-outline">
+                                    <select name="lama_kontrak_kerja" id="lama_kontrak_kerja" class="form-control selectpicker @error('lama_kontrak_kerja') is-invalid @enderror" data-live-search="true">
+                                        <option value="">Pilih Kontrak</option>
+                                        @foreach ($lama_kontrak_kerja as $a)
+                                        @if(old('lama_kontrak_kerja', $karyawan->lama_kontrak_kerja) == $a["lama_kontrak_kerja"])
+                                        <option value="{{ $a["lama_kontrak_kerja"] }}" selected>{{ $a["lama_kontrak_kerja"] }}</option>
+                                        @else
+                                        <option value="{{ $a["lama_kontrak_kerja"] }}">{{ $a["lama_kontrak_kerja"] }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                    <label for="lama_kontrak_kerja">Lama Kontrak</label>
+                                </div>
+                                @error('lama_kontrak_kerja')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
+                            </div>
+                            <div id="form_site" class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
                                         <option selected disabled value=""> Pilih Site Job</option>
@@ -379,8 +533,11 @@
                                     </select>
                                     <label for="site_job">Site yang Dipegang</label>
                                 </div>
+                                @error('site_job')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-3">
+                            <div id="form_level" class="col-md-6">
                                 <?php $is_admin = array(
                                     [
                                         "is_admin" => "admin"
@@ -402,31 +559,11 @@
                                     </select>
                                     <label for="is_admin">Level User</label>
                                 </div>
+                                @error('is_admin')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
-                            <div class="col-md-3">
-                                <?php $kategori = array(
-                                    [
-                                        "kategori" => "Karyawan Bulanan"
-                                    ],
-                                    [
-                                        "kategori" => "Karyawan Harian"
-                                    ]
-                                );
-                                ?>
-                                <div class="form-floating form-floating-outline">
-                                    <select name="kategori" id="kategori" class="form-control selectpicker" data-live-search="true">
-                                        <option value="">Pilih Kategori</option>
-                                        @foreach ($kategori as $a)
-                                        @if(old('kategori', $karyawan->kategori) == $a["kategori"])
-                                        <option value="{{ $a["kategori"] }}" selected>{{ $a["kategori"] }}</option>
-                                        @else
-                                        <option value="{{ $a["kategori"] }}">{{ $a["kategori"] }}</option>
-                                        @endif
-                                        @endforeach
-                                    </select>
-                                    <label for="kategori">Kategori Karyawan</label>
-                                </div>
-                            </div>
+
                             <small class="text-light fw-medium mt-5">ALAMAT</small>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
@@ -438,6 +575,9 @@
                                     </select>
                                     <label for="id_provinsi">Provinsi</label>
                                 </div>
+                                @error('provinsi')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <?php
@@ -455,6 +595,9 @@
                                     </select>
                                     <label for="id_kabupaten">Kabupaten</label>
                                 </div>
+                                @error('kabupaten')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
@@ -466,6 +609,9 @@
                                     </select>
                                     <label for="id_kecamatan">kecamatan</label>
                                 </div>
+                                @error('kecamatan')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
@@ -477,30 +623,45 @@
                                     </select>
                                     <label for="id_desa">Desa</label>
                                 </div>
+                                @error('desa')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
                                     <input type="number" id="rt" name="rt" class="form-control @error('rt') is-invalid @enderror" placeholder="Masukkan RT" value="{{ old('rt', $karyawan->rt) }}" />
                                     <label for="rt">RT</label>
                                 </div>
+                                @error('rt')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-3">
                                 <div class="form-floating form-floating-outline">
                                     <input type="number" id="rw" name="rw" class="form-control @error('rw') is-invalid @enderror" placeholder="Masukkan RW" value="{{ old('rw',$karyawan->rw) }}" />
                                     <label for="rw">RW</label>
                                 </div>
+                                @error('rw')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating form-floating-outline">
                                     <input type="text" id="alamat" name="alamat" class="form-control @error('alamat') is-invalid @enderror" placeholder="Masukkan Alamat" value="{{ old('alamat',$karyawan->alamat) }}" />
                                     <label for="alamat">Keterangan Alamat(Jalan / Dusun)</label>
                                 </div>
+                                @error('alamat')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                             <div class="col-md-12">
                                 <div class="form-floating form-floating-outline">
-                                    <input type="number" id="kuota_cuti" name="kuota_cuti" class="form-control @error('kuota_cuti') is-invalid @enderror" placeholder="Masukkan Cuti Tahunan" value="{{ old('kuota_cuti',$karyawan->kuota_cuti) }}" />
+                                    <input type="number" id="kuota_cuti" name="kuota_cuti" class="form-control @error('kuota_cuti') is-invalid @enderror" placeholder="Masukkan Cuti Tahunan" value="{{ old('kuota_cuti',$karyawan->kuota_cuti_tahunan) }}" />
                                     <label for="kuota_cuti">Kuota Cuti Tahunan</label>
                                 </div>
+                                @error('kuota_cuti')
+                                <p class="alert alert-danger">{{$message}}</p>
+                                @enderror
                             </div>
                         </div>
                         <div class="mt-4">
@@ -569,6 +730,67 @@
         }
     }
     $(function() {
+        var kategori = '{{$karyawan->kategori}}';
+        if (kategori == 'Karyawan Harian') {
+            $('#form_departemen').hide();
+            $('#form_divisi').hide();
+            $('#form_jabatan_more').hide();
+            $('#form_jabatan').hide();
+            $('#form_lama_kotrak').hide();
+            $('#form_kontrak').hide();
+            $('#form_tgl_kontrak_kerja').hide();
+            $('#form_level').hide();
+            $('#form_tgl_mulai_kontrak').hide();
+            $('#form_tgl_selesai_kontrak').hide();
+            $('#form_site').hide();
+            $('#form_lama_kontrak').hide();
+        } else {
+            $('#form_departemen').show();
+            $('#form_divisi').show();
+            $('#form_jabatan_more').show();
+            $('#form_jabatan').show();
+            $('#form_lama_kotrak').show();
+            $('#form_kontrak').show();
+            $('#form_tgl_kontrak_kerja').show();
+            $('#form_level').show();
+            $('#form_lama_kontrak').show();
+            $('#form_tgl_mulai_kontrak').show();
+            $('#form_tgl_selesai_kontrak').show();
+            $('#form_site').show();
+        }
+        $('#kategori').on('change', function() {
+            var id = $(this).val();
+            if (id == 'Karyawan Harian') {
+                $('#form_departemen').hide();
+                $('#form_divisi').hide();
+                $('#form_jabatan_more').hide();
+                $('#form_jabatan').hide();
+                $('#form_lama_kotrak').hide();
+                $('#form_kontrak').hide();
+                $('#form_tgl_kontrak_kerja').hide();
+                $('#form_level').hide();
+                $('#form_tgl_mulai_kontrak').hide();
+                $('#form_tgl_selesai_kontrak').hide();
+                $('#form_site').hide();
+                $('#form_lama_kontrak').hide();
+            } else {
+                $('#form_departemen').show();
+                $('#form_divisi').show();
+                $('#form_jabatan_more').show();
+                $('#form_jabatan').show();
+                $('#form_lama_kotrak').show();
+                $('#form_kontrak').show();
+                $('#form_tgl_kontrak_kerja').show();
+                $('#form_level').show();
+                $('#form_lama_kontrak').show();
+                $('#form_tgl_mulai_kontrak').show();
+                $('#form_tgl_selesai_kontrak').show();
+                $('#form_site').show();
+            }
+        });
+
+    });
+    $(function() {
         $('#id_departemen').on('change', function() {
             let id_departemen = $('#id_departemen').val();
             // console.log(id_departemen);
@@ -597,17 +819,17 @@
         })
         $('#id_divisi').on('change', function() {
             let id_divisi = $('#id_divisi').val();
-            // console.log(id_divisi);
+            console.log(id_divisi);
             $.ajax({
                 type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
+                url: "{{url('karyawan/get_bagian')}}",
                 data: {
                     id_divisi: id_divisi
                 },
                 cache: false,
 
                 success: function(msg) {
-                    $('#id_jabatan').html(msg);
+                    $('#id_bagian').html(msg);
                 },
                 error: function(data) {
                     console.log('error:', data)
@@ -688,6 +910,27 @@
 
                 success: function(msg) {
                     $('#id_jabatan4').html(msg);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        })
+
+        $('#id_bagian').on('change', function() {
+            let id_bagian = $('#id_bagian').val();
+            // console.log(id_bagian);
+            $.ajax({
+                type: 'GET',
+                url: "{{url('karyawan/get_jabatan')}}",
+                data: {
+                    id_bagian: id_bagian
+                },
+                cache: false,
+
+                success: function(msg) {
+                    $('#id_jabatan').html(msg);
                 },
                 error: function(data) {
                     console.log('error:', data)

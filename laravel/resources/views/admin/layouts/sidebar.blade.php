@@ -37,7 +37,7 @@
                 <div data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }}{{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }}{{ Request::is('bagian*') ? 'active open' : '' }}{{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div data-i18n="Data Master">Data&nbsp;Master</div>
@@ -64,11 +64,6 @@
                         <div data-i18n="Fluid">Lokasi</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('reset-cuti*') ? 'active' : '' }}">
-                    <a href="{{ url('/reset-cuti/'.$holding) }}" class="menu-link">
-                        <div data-i18n="Blank">Reset Cuti</div>
-                    </a>
-                </li>
                 <li class="menu-item {{ Request::is('departemen*') ? 'active' : '' }}">
                     <a href="{{ url('/departemen/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank"> Departmen</div>
@@ -79,6 +74,11 @@
                         <div data-i18n="Blank">Divisi</div>
                     </a>
                 </li>
+                <li class="menu-item {{ Request::is('bagian*') ? 'active' : '' }}">
+                    <a href="{{ url('/bagian/'.$holding) }}" class="menu-link">
+                        <div data-i18n="Blank">Bagian</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ Request::is('jabatan*') ? 'active' : '' }}">
                     <a href="{{ url('/jabatan/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank">Jabatan</div>
@@ -86,13 +86,52 @@
                 </li>
             </ul>
         </li>
+        {{-- <li class="menu-item {{ Request::is('asset*') ? 'active open' : '' }}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
+            <div data-i18n="Data Master">Data&nbsp;Inventaris</div>
+        </a>
+
+        <ul class="menu-sub">
+            <li class="menu-item {{ Request::is('karyawan*') ? 'active' : '' }}">
+                <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                    <div data-i18n="Data Karyawan">Data Inventaris</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Request::is('karyawan*') ? 'active' : '' }}">
+                <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                    <div data-i18n="Data Karyawan">Peminjaman</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Request::is('karyawan*') ? 'active' : '' }}">
+                <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                    <div data-i18n="Data Karyawan">Pengembalian</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Request::is('karyawan*') ? 'active' : '' }}">
+                <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+                    <div data-i18n="Data Karyawan">History Peminjaman</div>
+                </a>
+            </li>
+        </ul>
+        </li> --}}
+
         <li class="menu-header fw-medium mt-4">
-            <span class="menu-header-text">ASSET</span>
+            <span class="menu-header-text">INVENTARIS</span>
         </li>
-        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
-            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+        <li class="menu-item {{ Request::is('inventaris*') ? 'active' : '' }}">
+            <a href="{{ url('/inventaris/'.$holding) }}" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
-                <div data-i18n="Blank">Data Asset</div>
+                <div data-i18n="Blank">Data Inventaris</div>
+            </a>
+        </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ACCESS</span>
+        </li>
+        <li class="menu-item {{ Request::is('access*') ? 'active' : '' }}">
+            <a href="{{ url('/access/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-account-key"></i>
+                <div data-i18n="Blank">User Access</div>
             </a>
         </li>
         @elseif($holding=='sps')
@@ -102,7 +141,7 @@
                 <div data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }}{{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div data-i18n="Data Master">Data Master</div>
@@ -129,11 +168,11 @@
                         <div data-i18n="Fluid">Lokasi</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('reset-cuti*') ? 'active' : '' }}">
+                <!-- <li class="menu-item {{ Request::is('reset-cuti*') ? 'active' : '' }}">
                     <a href="{{ url('/reset-cuti/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank">Reset Cuti</div>
                     </a>
-                </li>
+                </li> -->
                 <li class="menu-item {{ Request::is('departemen*') ? 'active' : '' }}">
                     <a href="{{ url('/departemen/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank"> Departmen</div>
@@ -144,6 +183,11 @@
                         <div data-i18n="Blank">Divisi</div>
                     </a>
                 </li>
+                <li class="menu-item {{ Request::is('bagian*') ? 'active' : '' }}">
+                    <a href="{{ url('/bagian/'.$holding) }}" class="menu-link">
+                        <div data-i18n="Blank">Bagian</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ Request::is('jabatan*') ? 'active' : '' }}">
                     <a href="{{ url('/jabatan/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank">Jabatan</div>
@@ -152,12 +196,21 @@
             </ul>
         </li>
         <li class="menu-header fw-medium mt-4">
-            <span class="menu-header-text">ASSET</span>
+            <span class="menu-header-text">INVENTARIS</span>
         </li>
-        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
-            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+        <li class="menu-item {{ Request::is('inventaris*') ? 'active' : '' }}">
+            <a href="{{ url('/inventaris/'.$holding) }}" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
-                <div data-i18n="Blank">Data Asset</div>
+                <div data-i18n="Blank">Data Inventaris</div>
+            </a>
+        </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ACCESS</span>
+        </li>
+        <li class="menu-item {{ Request::is('access*') ? 'active' : '' }}">
+            <a href="{{ url('/access/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
+                <div data-i18n="Blank">User Access</div>
             </a>
         </li>
         @else
@@ -167,7 +220,7 @@
                 <div data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }}{{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div data-i18n="Data Master">Data Master</div>
@@ -194,11 +247,11 @@
                         <div data-i18n="Fluid">Lokasi</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('reset-cuti*') ? 'active' : '' }}">
+                <!-- <li class="menu-item {{ Request::is('reset-cuti*') ? 'active' : '' }}">
                     <a href="{{ url('/reset-cuti/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank">Reset Cuti</div>
                     </a>
-                </li>
+                </li> -->
                 <li class="menu-item {{ Request::is('departemen*') ? 'active' : '' }}">
                     <a href="{{ url('/departemen/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank"> Departmen</div>
@@ -209,6 +262,11 @@
                         <div data-i18n="Blank">Divisi</div>
                     </a>
                 </li>
+                <li class="menu-item {{ Request::is('bagian*') ? 'active' : '' }}">
+                    <a href="{{ url('/bagian/'.$holding) }}" class="menu-link">
+                        <div data-i18n="Blank">Bagian</div>
+                    </a>
+                </li>
                 <li class="menu-item {{ Request::is('jabatan*') ? 'active' : '' }}">
                     <a href="{{ url('/jabatan/'.$holding) }}" class="menu-link">
                         <div data-i18n="Blank">Jabatan</div>
@@ -217,12 +275,21 @@
             </ul>
         </li>
         <li class="menu-header fw-medium mt-4">
-            <span class="menu-header-text">ASSET</span>
+            <span class="menu-header-text">INVENTARIS</span>
         </li>
-        <li class="menu-item {{ Request::is('asset*') ? 'active' : '' }}">
-            <a href="{{ url('/asset/'.$holding) }}" class="menu-link">
+        <li class="menu-item {{ Request::is('inventaris*') ? 'active' : '' }}">
+            <a href="{{ url('/inventaris/'.$holding) }}" class="menu-link">
                 <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
-                <div data-i18n="Blank">Data Asset</div>
+                <div data-i18n="Blank">Data Inventaris</div>
+            </a>
+        </li>
+        <li class="menu-header fw-medium mt-4">
+            <span class="menu-header-text">ACCESS</span>
+        </li>
+        <li class="menu-item {{ Request::is('access*') ? 'active' : '' }}">
+            <a href="{{ url('/access/'.$holding) }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-archive-outline"></i>
+                <div data-i18n="Blank">User Access</div>
             </a>
         </li>
         @endif

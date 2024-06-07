@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class authController extends Controller
 {
@@ -52,19 +53,27 @@ class authController extends Controller
         ]);
 
         // dd('ok');
-        $remember_me = $request->has('remember') ? true : false;
-
-        if (Auth::attempt($credentials, $remember_me)) {
-            $request->session()->regenerate();
-            // dd(auth()->user()->is_admin);
-            if (auth()->user()->is_admin == 'admin') {
-                $request->session()->flash('login_success');
-                return redirect()->intended('/dashboard/holding');
-                // return redirect()->intended('/holding');
-            } else if (auth()->user()->is_admin == 'user') {
-                $request->session()->flash('login_success');
-                return redirect()->intended('/home');
-            }
+        $fieldType = filter_var($credentials['username'], FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $array = $credentials['username'];
+        // $oke = json_encode($array);
+        // dd($array);
+        if ($fieldType == "username") {
+            $data = User::where('username', $array)->first();
+        } else {
+            $data = User::where('email', $array)->first();
+        }
+        if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'admin'))) {
+            // dd('admin');
+            Alert::success('Berhasil', 'Selamat Datang ' . $data->name);
+            return redirect('/dashboard/holding')->with('Berhasil', 'Selamat Datang ' . $data->name);
+        } else if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'user'))) {
+            // dd('user');
+            Alert::success('Berhasil', 'Selamat Datang ' . $data->name);
+            return redirect('/home')->with('Berhasil', 'Selamat Datang ' . $data->name);
+        } else {
+            // dd('gagal');
+            $request->session()->flash('login_error');
+            return redirect('/');
         }
 
         $request->session()->flash('login_error');

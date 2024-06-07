@@ -138,7 +138,7 @@ class CutiUserController extends Controller
         $kuota_cuti     = DB::table('users')->where('id', $request->id_user)->first();
         // dd($file_save);
         if ($request->tanggal_mulai >= $hMin14) {
-            if ($kuota_cuti->kuota_cuti >= $data_interval) {
+            if ($kuota_cuti->kuota_cuti_tahunan >= $data_interval) {
                 // dd('input cuti');
                 if ($request->ttd_user != null) {
                     $ttd_user = $file_save;

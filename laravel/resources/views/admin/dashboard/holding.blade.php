@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Login Basic - Pages | Materio - Bootstrap Material Design Admin Template</title>
+    <title>HRD | App</title>
 
     <meta name="description" content="" />
 
@@ -40,6 +40,30 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{asset('admin/assets/js/config.js')}}"></script>
+    <style>
+        .logo {
+            width: 150px;
+            /* height: 30px; */
+        }
+
+        @media screen and (max-width: 1190px) {
+            .logo {
+                width: 130px;
+            }
+        }
+
+        @media screen and (max-width: 990px) {
+            .logo {
+                width: 100px;
+            }
+        }
+
+        @media screen and (max-width: 760px) {
+            .logo {
+                width: 150px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -49,35 +73,40 @@
         <div class="authentication-wrapper authentication-basic">
             <div class="container-xxl flex-grow-1">
                 <div class="row">
-                    <h1 class="text-center">Welcome to <span>APP HRD</span></h1>
+                    <h1 class="text-center">Welcome to <span> HRD APP</span></h1>
                     <!-- Congratulations card -->
                     <div class="col-md-4 col-lg-4">
                         <a href="{{ url('dashboard/holding/sp') }}">
-                            <div class="card">
+                            <div class="card" style="height: 200px;">
                                 <div class="card-body">
-                                    <h4 class="card-title mb-1">CV. SUMBER PANGAN</h4>
-                                    <p class="pb-0">Best seller of the month</p>
-                                    <h4 class="text-primary mb-1">$42.8k</h4>
-                                    <p class="mb-2 pb-1">78% of target 🚀</p>
+                                    <figure>
+                                        <blockquote class="blockquote">
+                                            <h4 class="card-title mb-1">CV. SUMBER PANGAN</h4>
+                                        </blockquote>
+                                        <figcaption class="blockquote-footer" style="margin: 0;">
+                                            Lokasi <cite title="Source Title">Pabrik</cite>
+                                            <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
+                                        </figcaption>
+                                    </figure>
                                 </div>
                                 <img src="{{asset('admin/assets/img/icons/misc/triangle-light.png')}}" class="scaleX-n1-rtl position-absolute bottom-0 end-0" width="166" alt="triangle background" data-app-light-img="icons/misc/triangle-light.png" data-app-dark-img="icons/misc/triangle-dark.png" />
-                                <img src="{{ url('public/holding/assets/img/logosp.png') }}" class="scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" width="150" alt="view sales" />
+                                <img src="{{ url('public/holding/assets/img/logosp.png') }}" class="logo scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" alt="view sales" />
                             </div>
                         </a>
                     </div>
                     <div class="col-md-4 col-lg-4">
                         <a href="{{ url('dashboard/holding/sps') }}">
-                            <div class="card">
+                            <div class="card" style="height: 200px;">
                                 <div class="card-body">
-                                    <figure class="mt-2">
+                                    <figure>
                                         <blockquote class="blockquote">
                                             <h4 class="card-title mb-1">PT. SURYA PANGAN SEMESTA</h4>
                                         </blockquote>
-                                        <figcaption class="blockquote-footer">
+                                        <figcaption class="blockquote-footer" style="margin: 0;">
                                             Lokasi <cite title="Source Title">Pabrik</cite>
-                                            <p><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
-                                            <p><i class="mdi mdi-google-maps"></i>Kabupaten Ngawi, Jawa Timur</p>
-                                            <p><i class="mdi mdi-google-maps"></i>Kabupaten Subang, Jawa Barat</p>
+                                            <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
+                                            <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Ngawi, Jawa Timur</p>
+                                            <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Subang, Jawa Barat</p>
                                         </figcaption>
                                     </figure>
                                 </div>
@@ -88,13 +117,13 @@
                     </div>
                     <div class="col-md-4 col-lg-4">
                         <a href="{{ url('dashboard/holding/sip') }}">
-                            <div class="card">
+                            <div class="card" style="height: 200px;">
                                 <div class="card-body">
-                                    <figure class="mt-2">
+                                    <figure>
                                         <blockquote class="blockquote">
                                             <h4 class="card-title mb-1">CV. SURYA INTI PANGAN</h4>
                                         </blockquote>
-                                        <figcaption class="blockquote-footer">
+                                        <figcaption class="blockquote-footer" style="margin: 0;">
                                             Lokasi <cite title="Source Title">Pabrik</cite>
                                             <p><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
                                         </figcaption>

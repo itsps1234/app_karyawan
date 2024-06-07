@@ -26,7 +26,7 @@
 
   <!-- Template Main CSS File -->
   <link href="{{ url('public/holding/assets/css/style.css') }}" rel="stylesheet">
-
+  @yield('style')
   <!-- =======================================================
   * Template Name: BizLand
   * Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/

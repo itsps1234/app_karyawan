@@ -168,7 +168,7 @@
                     <div class="modal-body">
                         @method('put')
                         @csrf
-                        @if($user->kuota_cuti=='' || $user->kuota_cuti=='0')
+                        @if($user->kuota_cuti_tahunan=='' || $user->kuota_cuti_tahunan=='0')
                         <div class="alert alert-danger light alert-lg alert-dismissible fade show">
                             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
                                 <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
@@ -206,7 +206,7 @@
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Kuota Cuti Tahunan" readonly>
-                            <input type="text" class="form-control" name="kuota_cuti" value="@if($user->kuota_cuti=='' || $user->kuota_cuti=='0')0 @else{{ $user->kuota_cuti }}@endif Hari" style="font-weight: bold" readonly required>
+                            <input type="text" class="form-control" name="kuota_cuti" value="@if($user->kuota_cuti_tahunan=='' || $user->kuota_cuti_tahunan=='0')0 @else{{ $user->kuota_cuti_tahunan }}@endif Hari" style="font-weight: bold" readonly required>
                         </div>
                         <div class="input-group">
                             <input type="text" class="form-control" value="Kategori Cuti" readonly>

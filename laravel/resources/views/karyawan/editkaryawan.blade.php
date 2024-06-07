@@ -384,7 +384,7 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <label for="kuota_cuti">Kuota Cuti</label>
-                                        <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti',$karyawan->kuota_cuti) }}">
+                                        <input type="number" class="form-control @error('kuota_cuti') is-invalid @enderror" id="kuota_cuti" name="kuota_cuti" value="{{ old('kuota_cuti',$karyawan->kuota_cuti_tahunan) }}">
                                         @error('kuota_cuti')
                                         <div class="invalid-feedback">
                                             {{ $message }}

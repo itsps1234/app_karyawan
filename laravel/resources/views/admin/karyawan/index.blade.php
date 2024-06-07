@@ -56,7 +56,7 @@
                                     </div>
                                 </div>
                                 <div class="ms-3">
-                                    <div class="small mb-1">Karyawan Office</div>
+                                    <div class="small mb-1">Karyawan Bulanan</div>
                                     <h5 class="mb-0">{{$karyawan_office}}&nbsp;Orang</h5>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                                 <div class="ms-3">
-                                    <div class="small mb-1">Karyawan Shift</div>
+                                    <div class="small mb-1">Karyawan Harian</div>
                                     <h5 class="mb-0">{{$karyawan_shift}}&nbsp;Orang</h5>
                                 </div>
                             </div>
@@ -77,6 +77,7 @@
                     </div>
                     <hr class="my-5">
                     <button type="button" class="btn btn-sm btn-primary waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#modal_tambah_karyawan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
+                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#modal_import_karyawan"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
                     <div class="modal fade" id="modal_tambah_karyawan" data-bs-backdrop="static" tabindex="-1">
                         <div class="modal-dialog modal-dialog-scrollable modal-lg">
                             <form method="post" action="{{ url('/karyawan/tambah-karyawan-proses/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
@@ -99,8 +100,7 @@
                                             <div class="text-muted small">Allowed JPG, GIF or PNG. Max size of 800K</div>
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="number" id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror" placeholder="Masukkan NIK" value="{{ old('nik') }}" />
@@ -124,8 +124,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" id="fullname" name="fullname" class="form-control @error('fullname') is-invalid @enderror" placeholder="Masukkan Fullname" value="{{ old('fullname') }}" />
@@ -149,8 +148,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Masukkan Email" value="{{ old('email') }}" />
@@ -174,8 +172,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <input type="text" id="tempat_lahir" name="tempat_lahir" class="form-control @error('tempat_lahir') is-invalid @enderror" placeholder="Masukkan Tempat Lahir" value="{{ old('tempat_lahir') }}" />
@@ -193,17 +190,6 @@
                                                 <label for="tgl_lahir">Tanggal Lahir</label>
                                             </div>
                                             @error('tgl_lahir')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="date" id="tgl_join" name="tgl_join" class="form-control @error('tgl_join') is-invalid @enderror" value="{{ old('tgl_join') }}" />
-                                                <label for="tgl_join">Tanggal Join Perusahaan</label>
-                                            </div>
-                                            @error('tgl_join')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -353,6 +339,165 @@
                                         </div>
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
+                                                <?php $kategori = array(
+                                                    [
+                                                        "level" => "Karyawan Harian"
+                                                    ],
+                                                    [
+                                                        "level" => "Karyawan Bulanan"
+                                                    ]
+                                                );
+                                                ?>
+                                                <select class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kategori">
+                                                    <option value="">Pilih Kategori</option>
+                                                    @foreach ($kategori as $a)
+                                                    @if(old('kategori') == $a["level"])
+                                                    <option value="{{ $a['level'] }}" selected>{{ $a['level'] }}</option>
+                                                    @else
+                                                    <option value="{{ $a['level'] }}">{{ $a['level'] }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <label for="kategori">Kategori Karyawan</label>
+                                            </div>
+                                            @error('kategori')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
+                                                    <option selected disabled value=""> Pilih Lokasi Penempatan</option>
+                                                    @foreach ($data_lokasi as $a)
+                                                    @if(old('penempatan_kerja') == $a["lokasi_kantor"])
+                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
+                                                    @else
+                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <label for="penempatan_kerja">Penempatan Kerja</label>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="date" id="tgl_join" name="tgl_join" class="form-control @error('tgl_join') is-invalid @enderror" value="{{ old('tgl_join') }}" />
+                                                <label for="tgl_join">Tanggal Join Perusahaan</label>
+                                            </div>
+                                            @error('tgl_join')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div id="form_level_site" class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <?php $is_admin = array(
+                                                    [
+                                                        "level" => "admin"
+                                                    ],
+                                                    [
+                                                        "level" => "user"
+                                                    ]
+                                                );
+                                                ?>
+                                                <select class="form-control @error('is_admin') is-invalid @enderror" name="is_admin" id="is_admin">
+                                                    <option value="">Pilih Level</option>
+                                                    @foreach ($is_admin as $a)
+                                                    @if(old('is_admin') == $a["level"])
+                                                    <option value="{{ $a['level'] }}" selected>{{ $a['level'] }}</option>
+                                                    @else
+                                                    <option value="{{ $a['level'] }}">{{ $a['level'] }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <label for="is_admin">Level User</label>
+                                            </div>
+                                            @error('is_admin')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
+                                                    <option selected disabled value=""> Pilih Site..</option>
+                                                    @foreach ($data_lokasi as $a)
+                                                    @if(old('site_job') == $a["lokasi_kantor"])
+                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
+                                                    @else
+                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <label for="site_job">Site yang Dipegang</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="form_kontrak_kerja" class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="text" readonly id="kontrak_kerja" name="kontrak_kerja" class="form-control @error('kontrak_kerja') is-invalid @enderror" placeholder="Masukkan Kontrak" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif" />
+                                                <label for="kontrak_kerja">Kontrak Kerja</label>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <?php $get_kontrak = array(
+                                                [
+                                                    "kontrak" => "6 Bulan"
+                                                ],
+                                                [
+                                                    "kontrak" => "1 Tahun"
+                                                ],
+                                                [
+                                                    "kontrak" => "2 Tahun"
+                                                ]
+                                            );
+                                            ?>
+                                            <div class="form-floating form-floating-outline">
+                                                <select name="lama_kontrak_kerja" id="lama_kontrak_kerja" class="form-control  @error('lama_kontrak_kerja') is-invalid @enderror">
+                                                    <option selected disabled value="">Pilih Kontrak</option>
+                                                    @foreach ($get_kontrak as $g)
+                                                    @if(old('lama_kontrak_kerja') == $g['kontrak'])
+                                                    <option value="{{ $g['kontrak'] }}" selected>{{ $g['kontrak'] }}</option>
+                                                    @else
+                                                    <option value="{{ $g['kontrak'] }}">{{ $g['kontrak'] }}</option>
+                                                    @endif
+                                                    @endforeach
+                                                </select>
+                                                <label for="tgl_join">Lama Kontrak Kerja</label>
+                                            </div>
+                                            @error('tgl_join')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div id="form_tgl_kontrak_kerja" class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="date" id="tgl_mulai_kontrak" name="tgl_mulai_kontrak" class="form-control @error('tgl_mulai_kontrak') is-invalid @enderror" placeholder="Masukkan Kontrak" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif" />
+                                                <label for="tgl_mulai_kontrak">Tanggal Mulai Kontrak</label>
+                                            </div>
+                                        </div>
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="date" id="tgl_selesai_kontrak" name="tgl_selesai_kontrak" class="form-control @error('tgl_selesai_kontrak') is-invalid @enderror" placeholder="Masukkan Kontrak" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif" />
+                                                <label for="tgl_selesai_kontrak">Tanggal Selesai Kontrak</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="form_departemen_divisi" class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
                                                 <select name="departemen_id" id="id_departemen" class="form-control @error('departemen_id') is-invalid @enderror ">
                                                     <option value="">Pilih Departemen</option>
                                                     @foreach ($data_departemen as $dj)
@@ -371,8 +516,6 @@
                                             </span>
                                             @enderror
                                         </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <select name="addmore[0][divisi_id]" id="id_divisi" class="form-control  @error('addmore[0][divisi_id]') is-invalid @enderror">
@@ -380,15 +523,24 @@
                                                 <label for=" id_divisi">Divisi</label>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div id="form_bagian_jabatan" class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <select name="addmore[0][bagian_id]" id="id_bagian" class="form-control @error('addmore[0][bagian_id]') is-invalid @enderror">
+                                                </select>
+                                                <label for="id_bagian">Bagian</label>
+                                            </div>
+                                        </div>
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <select name="addmore[0][jabatan_id]" id="id_jabatan" class="form-control @error('addmore[0][jabatan_id]') is-invalid @enderror">
                                                 </select>
-                                                <label for=" id_jabatan">Jabatan</label>
+                                                <label for="id_jabatan">Jabatan</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row g-2">
+                                    <div id="form_jabatan_more" class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="accordion mt-3" id="accordionExample">
                                                 <div class="accordion-item">
@@ -467,94 +619,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <?php $is_admin = array(
-                                                    [
-                                                        "level" => "admin"
-                                                    ],
-                                                    [
-                                                        "level" => "user"
-                                                    ]
-                                                );
-                                                ?>
-                                                <select class="form-control @error('is_admin') is-invalid @enderror" name="is_admin" id="is_admin">
-                                                    <option value="">Pilih Level</option>
-                                                    @foreach ($is_admin as $a)
-                                                    @if(old('is_admin') == $a["level"])
-                                                    <option value="{{ $a['level'] }}" selected>{{ $a['level'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['level'] }}">{{ $a['level'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="is_admin">Level User</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <?php $kategori = array(
-                                                    [
-                                                        "level" => "Karyawan Harian"
-                                                    ],
-                                                    [
-                                                        "level" => "Karyawan Bulanan"
-                                                    ]
-                                                );
-                                                ?>
-                                                <select class="form-control @error('kategori') is-invalid @enderror" name="kategori" id="kategori">
-                                                    <option value="">Pilih Kategori</option>
-                                                    @foreach ($kategori as $a)
-                                                    @if(old('kategori') == $a["level"])
-                                                    <option value="{{ $a['level'] }}" selected>{{ $a['level'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['level'] }}">{{ $a['level'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="kategori">Kategori Karyawan</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
-                                                    <option selected disabled value=""> Pilih Site..</option>
-                                                    @foreach ($data_lokasi as $a)
-                                                    @if(old('site_job') == $a["lokasi_kantor"])
-                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="site_job">Site yang Dipegang</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-2 mt-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <input type="text" readonly id="kontrak_kerja" name="kontrak_kerja" class="form-control @error('kontrak_kerja') is-invalid @enderror" placeholder="Masukkan Kontrak" value="@if($holding =='sp')CV. SUMBER PANGAN @elseif($holding =='sps') PT. SURYA PANGAN SEMESTA @elseif($holding =='sip') CV. SURYA INTI PANGAN  @endif" />
-                                                <label for="kontrak_kerja">Kontrak Kerja</label>
-                                            </div>
-                                        </div>
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('penempatan_kerja') is-invalid @enderror" id="penempatan_kerja" name="penempatan_kerja">
-                                                    <option selected disabled value=""> Pilih Lokasi Penempatan</option>
-                                                    @foreach ($data_lokasi as $a)
-                                                    @if(old('penempatan_kerja') == $a["lokasi_kantor"])
-                                                    <option value="{{ $a['lokasi_kantor'] }}" selected>{{ $a['lokasi_kantor'] }}</option>
-                                                    @else
-                                                    <option value="{{ $a['lokasi_kantor'] }}">{{ $a['lokasi_kantor'] }}</option>
-                                                    @endif
-                                                    @endforeach
-                                                </select>
-                                                <label for="penempatan_kerja">Penempatan Kerja</label>
                                             </div>
                                         </div>
                                     </div>
@@ -638,7 +702,37 @@
                             </form>
                         </div>
                     </div>
-                    <table class="table" id="table_karyawan">
+                    <div class="modal fade" id="modal_import_karyawan" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <form method="post" action="{{ url('/karyawan/ImportKaryawan/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="backDropModalTitle">Import Karyawan</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="file" id="file_excel" name="file_excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="form-control" placeholder="Masukkan File" />
+                                                <label for="file_excel">File Excel</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mt-2">
+                                        <a href="{{asset('')}}" type="button" download="" class="btn btn-sm btn-primary"> Download Format Excel</a>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <table class="table" id="table_karyawan" style="width: 100%;">
                         <thead class="table-primary">
                             <tr>
                                 <th>No.</th>
@@ -790,14 +884,14 @@
             // console.log(id_divisi);
             $.ajax({
                 type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
+                url: "{{url('karyawan/get_bagian')}}",
                 data: {
                     id_divisi: id_divisi
                 },
                 cache: false,
 
                 success: function(msg) {
-                    $('#id_jabatan').html(msg);
+                    $('#id_bagian').html(msg);
                 },
                 error: function(data) {
                     console.log('error:', data)
@@ -1025,6 +1119,13 @@
     });
 </script>
 <script>
+    $('#form_departemen').hide();
+    $('#form_bagian_jabatan').hide();
+    $('#form_jabatan_more').hide();
+    $('#form_lama_kotrak').hide();
+    $('#form_kontrak_kerja').hide();
+    $('#form_tgl_kontrak_kerja').hide();
+    $('#form_level_site').hide();
     $(document).on("click", "#btndetail_karyawan", function() {
         let id = $(this).data('id');
         // console.log(id);
@@ -1049,6 +1150,27 @@
 
         })
     });
+    $('#kategori').change(function() {
+        var value = $(this).val();
+        if (value == 'Karyawan Bulanan') {
+            $('#form_departemen').show();
+            $('#form_bagian_jabatan').show();
+            $('#form_jabatan_more').show();
+            $('#form_lama_kotrak').show();
+            $('#form_kontrak_kerja').show();
+            $('#form_tgl_kontrak_kerja').show();
+            $('#form_level_site').show();
+        } else if (value == 'Karyawan Harian') {
+            $('#form_departemen').hide();
+            $('#form_bagian_jabatan').hide();
+            $('#form_jabatan_more').hide();
+            $('#form_lama_kotrak').hide();
+            $('#form_kontrak_kerja').hide();
+            $('#form_tgl_kontrak_kerja').hide();
+            $('#form_level_site').hide();
+        }
+
+    });
     $('#foto_karyawan').change(function() {
 
         let reader = new FileReader();
@@ -1072,11 +1194,8 @@
             contentType: false,
             cache: false,
             processData: false,
-            // data: {
-            //     id_kecamatan: id_kecamatan
-            // },
             success: function(response) {
-                // console.log(response);
+                console.log(response);
                 window.location.assign(url);
             },
             error: function(data) {

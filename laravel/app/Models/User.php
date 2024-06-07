@@ -41,18 +41,13 @@ class User extends Authenticatable
         'gender',
         'tgl_join',
         'status_nikah',
-        'kuota_cuti',
-        'cuti_dadakan',
-        'cuti_bersama',
-        'cuti_menikah',
-        'cuti_diluar_tanggungan',
-        'cuti_khusus',
-        'cuti_melahirkan',
-        'izin_telat',
-        'izin_pulang_cepat',
+        'kuota_cuti_tahunan',
         'is_admin',
         'kategori',
+        'tgl_mulai_kontrak',
+        'tgl_selesai_kontrak',
         'kontrak_kerja',
+        'lama_kontrak_kerja',
         'kontrak_site',
         'penempatan_kerja',
         'site_job',
@@ -75,6 +70,7 @@ class User extends Authenticatable
         'jabatan3_id',
         'divisi4_id',
         'jabatan4_id',
+        'access_1',
     ];
 
 
@@ -111,6 +107,22 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
     }
+    public function Jabatan1(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan1_id', 'id');
+    }
+    public function Jabatan2(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan2_id', 'id');
+    }
+    public function Jabatan3(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan3_id', 'id');
+    }
+    public function Jabatan4(): BelongsTo
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan4_id', 'id');
+    }
     public function Departemen(): BelongsTo
     {
         return $this->belongsTo(Departemen::class, 'dept_id', 'id');
@@ -118,6 +130,22 @@ class User extends Authenticatable
     public function Divisi(): BelongsTo
     {
         return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
+    }
+    public function Divisi1(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class, 'divisi1_id', 'id');
+    }
+    public function Divisi2(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class, 'divisi2_id', 'id');
+    }
+    public function Divisi3(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class, 'divisi3_id', 'id');
+    }
+    public function Divisi4(): BelongsTo
+    {
+        return $this->belongsTo(Divisi::class, 'divisi4_id', 'id');
     }
 
     /**

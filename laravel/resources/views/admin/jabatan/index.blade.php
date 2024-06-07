@@ -43,9 +43,7 @@
                                                 <label for="nama_divisi" class="float-left">Nama Divisi</label>
                                             </div>
                                             @error('nama_divisi')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                            <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -53,35 +51,80 @@
                                     <div class="row g-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control @error('nama_jabatan') is-invalid @enderror" id="nama_jabatan" name="nama_jabatan" autofocus value="{{ old('nama_jabatan') }}">
+                                                <select class="form-control @error('nama_bagian') is-invalid @enderror" id="nama_bagian" name="nama_bagian" autofocus value="{{ old('nama_bagian') }}">
+                                                    <option value=""> Pilih Bagian</option>
+                                                </select>
+                                                <label for="nama_bagian" class="float-left">Nama Bagian</label>
+                                            </div>
+                                            @error('nama_bagian')
+                                            <p class="alert alert-danger">{{$message}}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row g-2">
+                                        <div class="col mb-2">
+                                            <?php $get_jabatan = array(
+                                                [
+                                                    "nama" => "DIREKTUR"
+                                                ],
+                                                [
+                                                    "nama" => "HEAD"
+                                                ],
+                                                [
+                                                    "nama" => "MANAGER"
+                                                ],
+                                                [
+                                                    "nama" => "REGIONAL MANAGER"
+                                                ],
+                                                [
+                                                    "nama" => "JUNIOR MANAGER"
+                                                ],
+                                                [
+                                                    "nama" => "SUPERVISOR"
+                                                ],
+                                                [
+                                                    "nama" => "KOORDINATOR"
+                                                ],
+                                                [
+                                                    "nama" => "OPERATOR"
+                                                ],
+                                                [
+                                                    "nama" => "STAFF"
+                                                ],
+                                                [
+                                                    "nama" => "ADMIN"
+                                                ],
+                                                [
+                                                    "nama" => "ASM"
+                                                ],
+                                                [
+                                                    "nama" => "SALES"
+                                                ],
+                                                [
+                                                    "nama" => "SOPIR"
+                                                ],
+                                                [
+                                                    "nama" => "KERNET"
+                                                ],
+                                            );
+                                            ?>
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="form-control @error('nama_jabatan') is-invalid @enderror" id="nama_jabatan" name="nama_jabatan">
+                                                    <option selected disabled value="">Nama Jabatan</option>
+                                                    @foreach($get_jabatan as $jabatan)
+                                                    <option value="{{$jabatan['nama']}}"> {{$jabatan['nama']}}</option>
+                                                    @endforeach
+                                                </select>
                                                 <label for="nama_jabatan" class="float-left">Nama Jabatan</label>
                                             </div>
                                             @error('nama_jabatan')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                            <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('level_jabatan') is-invalid @enderror" id="level_jabatan" name="level_jabatan" autofocus value="{{ old('level_jabatan') }}">
-                                                    <option value=""> Pilih Level</option>
-                                                    @foreach($get_level as $data)
-                                                    <option value="{{$data->id}}">{{$data->level_jabatan}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="level_jabatan" class="float-left">Level Jabatan</label>
-                                            </div>
-                                            @error('level_jabatan')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                            @enderror
-                                        </div>
-                                    </div>
+                                    <input type="hidden" class="form-control @error('level_jabatan') is-invalid @enderror" id="level_jabatan" name="level_jabatan" readonly value="{{ old('level_jabatan') }}">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -104,7 +147,6 @@
                                 <div class="modal-body">
                                     <div class="row g-2">
                                         <div class="col mb-2">
-                                            <input type="hidden" name="id_jabatan" id="id_jabatan" value="">
                                             <div class="form-floating form-floating-outline">
                                                 <select class="form-control @error('nama_divisi_update') is-invalid @enderror" id="nama_divisi_update" name="nama_divisi_update" autofocus value="{{ old('nama_divisi_update') }}">
                                                     <option value=""> Pilih Divisi</option>
@@ -115,9 +157,25 @@
                                                 <label for="nama_divisi_update" class="float-left">Nama Divisi</label>
                                             </div>
                                             @error('nama_divisi_update')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
+                                            <p class="alert alert-danger">{{$message}}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="row g-2">
+                                        <div class="col mb-2">
+                                            <input type="hidden" name="id_jabatan" id="id_jabatan" value="">
+                                            <div class="form-floating form-floating-outline">
+                                                <select class="form-control @error('nama_bagian_update') is-invalid @enderror" id="nama_bagian_update" name="nama_bagian_update" autofocus value="{{ old('nama_bagian_update') }}">
+                                                    <option value=""> Pilih Bagian</option>
+                                                    @foreach($data_bagian as $s)
+                                                    <option value="{{$s->id}}">{{$s->nama_bagian}}</option>
+                                                    @endforeach
+                                                </select>
+                                                <label for="nama_bagian_update" class="float-left">Nama Bagian</label>
                                             </div>
+                                            @error('nama_bagian_update')
+                                            <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -129,9 +187,7 @@
                                                 <label for="nama_jabatan_update" class="float-left">Nama Jabatan</label>
                                             </div>
                                             @error('nama_jabatan_update')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                            <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -148,9 +204,7 @@
                                                 <label for="level_jabatan_update" class="float-left">Level Jabatan</label>
                                             </div>
                                             @error('level_jabatan_update')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
+                                            <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
                                     </div>
@@ -169,6 +223,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Divisi</th>
+                                <th>Bagian</th>
                                 <th>Nama&nbsp;Jabatan</th>
                                 <th>Level</th>
                                 <th>Opsi</th>
@@ -211,6 +266,10 @@
                 name: 'nama_divisi'
             },
             {
+                data: 'nama_bagian',
+                name: 'nama_bagian'
+            },
+            {
                 data: 'nama_jabatan',
                 name: 'nama_jabatan'
             },
@@ -229,17 +288,116 @@
     });
 </script>
 <script>
+    $('#nama_divisi').on('change', function() {
+        let id_divisi = $(this).val();
+        let url = "{{url('/jabatan/get_bagian')}}" + "/" + id_divisi;
+        // console.log(id_divisi);
+        // console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: false,
+            // data: {
+            //     id_divisi: id_divisi
+            // },
+            success: function(response) {
+                // console.log(response);
+                $('#nama_bagian').html(response);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
+    })
+    $('#nama_jabatan').on('change', function() {
+        let id = $(this).val();
+        if (id == 'DIREKTUR') {
+            $('#level_jabatan').val('0');
+        } else if (id == 'HEAD') {
+            $('#level_jabatan').val('1');
+        } else if (id == 'MANAGER') {
+            $('#level_jabatan').val('2');
+        } else if (id == 'REGIONAL MANAGER') {
+            $('#level_jabatan').val('2');
+        } else if (id == 'JUNIOR MANAGER') {
+            $('#level_jabatan').val('3');
+        } else if (id == 'SUPERVISOR') {
+            $('#level_jabatan').val('4');
+        } else if (id == 'KOORDINATOR') {
+            $('#level_jabatan').val('5');
+        } else if (id == 'ASM') {
+            $('#level_jabatan').val('5');
+        } else if (id == 'ADMIN') {
+            $('#level_jabatan').val('6');
+        } else if (id == 'SALES') {
+            $('#level_jabatan').val('6');
+        } else if (id == 'STAFF') {
+            $('#level_jabatan').val('6');
+        } else if (id == 'OPERATOR') {
+            $('#level_jabatan').val('6');
+        } else if (id == 'SOPIR') {
+            $('#level_jabatan').val('6');
+        } else if (id == 'KERNET') {
+            $('#level_jabatan').val('6');
+        } else {
+            $('#level_jabatan').val('7');
+        }
+
+    })
+    $('#nama_jabatan_update').on('change', function() {
+        let id = $(this).val();
+        if (id == 'DIREKTUR') {
+            $('#level_jabatan_update').val('0');
+        } else if (id == 'HEAD') {
+            $('#level_jabatan_update').val('1');
+        } else if (id == 'MANAGER') {
+            $('#level_jabatan_update').val('2');
+        } else if (id == 'REGIONAL MANAGER') {
+            $('#level_jabatan_update').val('2');
+        } else if (id == 'JUNIOR MANAGER') {
+            $('#level_jabatan_update').val('3');
+        } else if (id == 'SUPERVISOR') {
+            $('#level_jabatan_update').val('4');
+        } else if (id == 'KOORDINATOR') {
+            $('#level_jabatan_update').val('5');
+        } else if (id == 'ASM') {
+            $('#level_jabatan_update').val('5');
+        } else if (id == 'ADMIN') {
+            $('#level_jabatan_update').val('6');
+        } else if (id == 'SALES') {
+            $('#level_jabatan_update').val('6');
+        } else if (id == 'STAFF') {
+            $('#level_jabatan_update').val('6');
+        } else if (id == 'OPERATOR') {
+            $('#level_jabatan_update').val('6');
+        } else if (id == 'SOPIR') {
+            $('#level_jabatan_update').val('6');
+        } else if (id == 'KERNET') {
+            $('#level_jabatan_update').val('6');
+        } else {
+            $('#level_jabatan_update').val('7');
+        }
+
+    })
     $(document).on("click", "#btn_edit_jabatan", function() {
         let id = $(this).data('id');
+        let bagian = $(this).data("bagian");
         let divisi = $(this).data("divisi");
         let level = $(this).data("level");
         let jabatan = $(this).data("jabatan");
         let holding = $(this).data("holding");
-        // console.log(divisi);
+        console.log(bagian);
         $('#id_jabatan').val(id);
         $('#nama_divisi_update option').filter(function() {
             // console.log($(this).val().trim());
             return $(this).val().trim() == divisi
+        }).prop('selected', true)
+        $('#nama_bagian_update option').filter(function() {
+            // console.log($(this).val().trim());
+            return $(this).val().trim() == bagian
         }).prop('selected', true)
         $('#level_jabatan_update option').filter(function() {
             // console.log($(this).val().trim());

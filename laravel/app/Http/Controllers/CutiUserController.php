@@ -828,7 +828,7 @@ class CutiUserController extends Controller
             } else {
                 $uniqid = NULL;
             }
-            if ($kuota_cuti->kuota_cuti >= $data_interval) {
+            if ($kuota_cuti->kuota_cuti_tahunan >= $data_interval) {
                 $data = Cuti::where('id', $request->id)->first();
                 $data->user_id                  = User::where('id', Auth::user()->id)->value('id');
                 $data->kategori_cuti_id         = KategoriCuti::where('id', $kategori_cuti)->value('id');
@@ -872,7 +872,7 @@ class CutiUserController extends Controller
             ->where('users.id', Auth()->user()->id)->first();
         $data   = Cuti::with('KategoriCuti')->where('cutis.id', $id)
             ->join('users', 'users.id', '=', 'cutis.user_id')
-            ->select('cutis.*', 'users.name', 'users.fullname', 'users.kuota_cuti')
+            ->select('cutis.*', 'users.name', 'users.fullname', 'users.kuota_cuti_tahunan')
             ->first();
         // dd($data);
         $get_id_backup = User::where('id', $data->user_id_backup)->first();
@@ -960,7 +960,7 @@ class CutiUserController extends Controller
             $format_hmin14 = date('Y-m-d', strtotime($hMin14));
             $kuota_cuti     = DB::table('users')->where('id', $request->id_user)->first();
             if ($format_startDate >= $format_hmin14) {
-                if ($kuota_cuti->kuota_cuti >= $data_interval) {
+                if ($kuota_cuti->kuota_cuti_tahunan >= $data_interval) {
                     Cuti::create([
                         'user_id' => User::where('id', Auth::user()->id)->value('id'),
                         'kategori_cuti_id' => KategoriCuti::where('id', $kategori_cuti)->value('id'),
@@ -1032,7 +1032,7 @@ class CutiUserController extends Controller
                 $data->update();
 
                 $user_cuti = User::where('id', $data->user_id)->first();
-                $user_cuti->kuota_cuti = ($user_cuti->kuota_cuti) - ($data->total_cuti);
+                $user_cuti->kuota_cuti_tahunan = ($user_cuti->kuota_cuti_tahunan) - ($data->total_cuti);
                 $user_cuti->update();
             } else if ($request->status_cuti == '1') {
                 $data = Cuti::where('id', $request->id)->first();

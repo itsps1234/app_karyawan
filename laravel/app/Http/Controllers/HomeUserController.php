@@ -1010,7 +1010,7 @@ class HomeUserController extends Controller
                         // dd($jam_kerja);
                         $kontrak = Auth::guard('web')->user()->kontrak_kerja;
                         if ($user->level_jabatan == 4) {
-                            // dd($kontrak);
+                            // dd("ok");
                             $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '3')->first();
                             $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '2')->first();
                             $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '1')->first();
@@ -1044,7 +1044,7 @@ class HomeUserController extends Controller
                                 ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
                                 ->first();
                             // dd($atasan1);
-                            // dd($atasan);
+                            dd($atasan);
                             if ($atasan == '' || $atasan == NULL) {
                                 $atasan1 = DB::table('users')
                                     ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
@@ -1219,7 +1219,9 @@ class HomeUserController extends Controller
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
                                             $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
                                         });
-                                    })->where('users.divisi_id', $user->divisi_id)
+                                    })
+                                    ->where('users.is_admin', 'user')
+                                    ->where('users.divisi_id', $user->divisi_id)
                                     ->orWhere('users.divisi1_id', $user->divisi_id)
                                     ->orWhere('users.divisi2_id', $user->divisi_id)
                                     ->orWhere('users.divisi3_id', $user->divisi_id)
@@ -1305,6 +1307,7 @@ class HomeUserController extends Controller
                                 }
                             }
                         } else {
+                            // dd($user->level_jabatan);
                             $atasan = DB::table('users')
                                 ->join('jabatans', function ($join) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
@@ -1346,7 +1349,7 @@ class HomeUserController extends Controller
                                 ->first();
                             // dd($atasan);
                             $get_user_backup = NULL;
-                            $getUserAtasan = NULL;
+                            $getUserAtasan = $atasan;
                         }
                         return view('users.absen.form_datang_terlambat', [
                             'jam_datang' => date('H:i:s'),

@@ -187,7 +187,7 @@
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Kuota Cuti Tahunan" readonly>
-            <input type="text" class="form-control" name="kuota_cuti" value="{{ $user->kuota_cuti }} Hari" style="font-weight: bold" readonly required>
+            <input type="text" class="form-control" name="kuota_cuti" value="{{ $user->kuota_cuti_tahunan }} Hari" style="font-weight: bold" readonly required>
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Kategori Cuti" readonly>

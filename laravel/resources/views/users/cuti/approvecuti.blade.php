@@ -115,7 +115,7 @@
                 @if($data->nama_cuti=='Diluar Cuti Tahunan')
                 <input type="text" name="tanggal" value="{{ $data->total_cuti }} Hari" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
                 @else
-                <input type="text" name="tanggal" value="{{ $data->total_cuti }} Dari @if($data->kuota_cuti==0 || $data->kuota_cuti=='')0 @else{{ $data->kuota_cuti }}@endif Kuota Cuti" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
+                <input type="text" name="tanggal" value="{{ $data->total_cuti }} Dari @if($data->kuota_cuti_tahunan==0 || $data->kuota_cuti_tahunan=='')0 @else{{ $data->kuota_cuti_tahunan }}@endif Kuota Cuti" readonly style="font-weight: bold" required placeholder="Phone number" class="form-control">
                 @endif
             </div>
             <div class="input-group">

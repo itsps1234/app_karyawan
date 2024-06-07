@@ -375,7 +375,7 @@ class IzinUserController extends Controller
                 ->first();
             // dd($atasan);
             $get_user_backup = NULL;
-            $getUserAtasan = NULL;
+            $getUserAtasan = $atasan;
         }
         $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal', date('Y-m-d'))->first();
         $record_data    = DB::table('izins')->where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
@@ -869,7 +869,7 @@ class IzinUserController extends Controller
                 $potong_cuti2hari = ($plus_1 * 2);
                 $get_kuota_cuti = User::where('id', $request->id_user)->first();
                 if ($request->foto_izin == NULL) {
-                    if ($get_kuota_cuti->kuota_cuti > $potong_cuti2hari) {
+                    if ($get_kuota_cuti->kuota_cuti_tahunan > $potong_cuti2hari) {
                         if ($request->approve == 'not_approve') {
                             $data = Izin::where('id', $request->id)->first();
                             $data->status_izin  = 'NOT APPROVE';
@@ -877,7 +877,7 @@ class IzinUserController extends Controller
                             $data->waktu_approve = date('Y-m-d H:i:s');
                             $data->update();
                             $user_pengajuan = User::where('id', $request->id_user)->first();
-                            $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti2hari);
+                            $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti2hari);
                             $user_pengajuan->update();
                             $alert = $request->session()->flash('approveizin_not_approve');
                             return response()->json($alert);
@@ -888,7 +888,7 @@ class IzinUserController extends Controller
                             $data->waktu_approve = date('Y-m-d H:i:s');
                             $data->update();
                             $user_pengajuan = User::where('id', $request->id_user)->first();
-                            $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti2hari);
+                            $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti2hari);
                             $user_pengajuan->update();
                             $alert = $request->session()->flash('approveizin_success');
                             return response()->json($alert);
@@ -924,7 +924,7 @@ class IzinUserController extends Controller
                         // dd('ok1');
                     }
                 } else {
-                    if ($get_kuota_cuti->kuota_cuti > $potong_cuti1hari) {
+                    if ($get_kuota_cuti->kuota_cuti_tahunan > $potong_cuti1hari) {
                         if ($request->approve == 'not_approve') {
                             $data = Izin::where('id', $request->id)->first();
                             $data->status_izin  = 'NOT APPROVE';
@@ -932,7 +932,7 @@ class IzinUserController extends Controller
                             $data->waktu_approve = date('Y-m-d H:i:s');
                             $data->update();
                             $user_pengajuan = User::where('id', $request->id_user)->first();
-                            $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti1hari);
+                            $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti1hari);
                             $user_pengajuan->update();
                             $alert = $request->session()->flash('approveizin_not_approve');
                             return response()->json($alert);
@@ -1001,7 +1001,7 @@ class IzinUserController extends Controller
                 $potong_cuti1hari = ($plus_1);
                 $potong_cuti2hari = ($plus_1 * 2);
                 $get_kuota_cuti = User::where('id', $request->id_user)->first();
-                if ($get_kuota_cuti->kuota_cuti > $plus_1) {
+                if ($get_kuota_cuti->kuota_cuti_tahunan > $plus_1) {
                     if ($request->approve == 'not_approve') {
                         $data = Izin::where('id', $request->id)->first();
                         $data->status_izin  = 'NOT APPROVE';
@@ -1009,7 +1009,7 @@ class IzinUserController extends Controller
                         $data->waktu_approve = date('Y-m-d H:i:s');
                         $data->update();
                         $user_pengajuan = User::where('id', $request->id_user)->first();
-                        $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti2hari);
+                        $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti2hari);
                         $user_pengajuan->update();
                         $update_izin = Izin::where('id', $request->id)->where('user_id', $request->id_user)->where('izin', 'Tidak Masuk (Mendadak)')->where('status_izin', '1')->get();
                         // dd($update_izin);
@@ -1030,7 +1030,7 @@ class IzinUserController extends Controller
                         $data->waktu_approve = date('Y-m-d H:i:s');
                         $data->update();
                         $user_pengajuan = User::where('id', $request->id_user)->first();
-                        $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti1hari);
+                        $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti1hari);
                         $user_pengajuan->update();
                         $update_izin = Izin::where('id', $request->id)->where('user_id', $request->id_user)->where('izin', 'Tidak Masuk (Mendadak)')->where('status_izin', '1')->get();
                         // dd($update_izin);
@@ -1053,7 +1053,7 @@ class IzinUserController extends Controller
                         $data->waktu_approve = date('Y-m-d H:i:s');
                         $data->update();
                         $user_pengajuan = User::where('id', $request->id_user)->first();
-                        $user_pengajuan->kuota_cuti = ($get_kuota_cuti->kuota_cuti - $potong_cuti2hari);
+                        $user_pengajuan->kuota_cuti_tahunan = ($get_kuota_cuti->kuota_cuti_tahunan - $potong_cuti2hari);
                         $user_pengajuan->update();
                         $update_izin = Izin::where('id', $request->id)->where('user_id', $request->id_user)->where('izin', 'Tidak Masuk (Mendadak)')->where('status_izin', '1')->get();
                         // dd($update_izin);

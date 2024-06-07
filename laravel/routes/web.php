@@ -28,12 +28,14 @@ use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\AbsenUserController;
 use App\Http\Controllers\AccessController;
 use App\Http\Controllers\ActivityLogController;
-use App\Http\Controllers\AssetController;
+use App\Http\Controllers\BagianController;
+use App\Http\Controllers\InventarisController;
 use App\Http\Controllers\IzinUserController;
 use App\Http\Controllers\CutiUserController;
 use App\Http\Controllers\DepartemenController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\PenugasanController;
+use App\Models\Jabatan;
 use Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
@@ -173,8 +175,8 @@ Route::get('/karyawan/detail/{id}/sp', [karyawanController::class, 'detail'])->m
 Route::get('/karyawan/detail/{id}/sps', [karyawanController::class, 'detail'])->middleware('admin');
 Route::get('/karyawan/detail/{id}/sip', [karyawanController::class, 'detail'])->middleware('admin');
 Route::post('/karyawan/proses-edit/{id}/sp', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
-Route::put('/karyawan/proses-edit/{id}/sps', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
-Route::put('/karyawan/proses-edit/{id}/sip', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::post('/karyawan/proses-edit/{id}/sps', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
+Route::post('/karyawan/proses-edit/{id}/sip', [karyawanController::class, 'editKaryawanProses'])->middleware('admin');
 Route::get('/karyawan/delete/{id}/sp', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
 Route::get('/karyawan/delete/{id}/sps', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
 Route::get('/karyawan/delete/{id}/sip', [karyawanController::class, 'deleteKaryawan'])->middleware('admin');
@@ -184,6 +186,9 @@ Route::get('/karyawan/edit-password/{id}/sip', [karyawanController::class, 'edit
 Route::put('/karyawan/edit-password-proses/{id}/sp', [karyawanController::class, 'editPasswordProses'])->middleware('admin');
 Route::put('/karyawan/edit-password-proses/{id}/sps', [karyawanController::class, 'editPasswordProses'])->middleware('admin');
 Route::put('/karyawan/edit-password-proses/{id}/sip', [karyawanController::class, 'editPasswordProses'])->middleware('admin');
+Route::post('/karyawan/ImportKaryawan/sp', [karyawanController::class, 'ImportKaryawan'])->middleware('admin');
+
+// SHIFT
 Route::get('/shift/sp', [ShiftController::class, 'index'])->middleware('admin');
 Route::get('/shift/sps', [ShiftController::class, 'index'])->middleware('admin');
 Route::get('/shift/sip', [ShiftController::class, 'index'])->middleware('admin');
@@ -222,16 +227,22 @@ Route::get('/karyawan/edit-shift/{id}/sps', [karyawanController::class, 'editShi
 Route::get('/karyawan/edit-shift/{id}/sip', [karyawanController::class, 'editShift'])->middleware('admin');
 //
 Route::get('/karyawan/get_divisi', [karyawanController::class, 'get_divisi'])->middleware('admin');
+Route::get('/karyawan/get_bagian', [karyawanController::class, 'get_bagian'])->middleware('admin');
 Route::get('/karyawan/get_jabatan', [karyawanController::class, 'get_jabatan'])->middleware('admin');
 
-// ACCESS
-Route::get('/asset/sp', [AssetController::class, 'index'])->middleware('admin');
-Route::get('/asset-datatable/sp', [AssetController::class, 'datatable'])->middleware('admin');
-Route::get('/asset/sps', [AssetController::class, 'index'])->middleware('admin');
-Route::get('/asset-datatable/sps', [AssetController::class, 'datatable'])->middleware('admin');
-Route::get('/asset/sip', [AssetController::class, 'index'])->middleware('admin');
-Route::get('/asset-datatable/sip', [AssetController::class, 'datatable'])->middleware('admin');
-
+// INVENTARIS 
+Route::get('/inventaris/sp', [InventarisController::class, 'index'])->middleware('admin');
+Route::get('/inventaris-datatable/sp', [InventarisController::class, 'datatable'])->middleware('admin');
+Route::get('/inventaris/sps', [InventarisController::class, 'index'])->middleware('admin');
+Route::get('/inventaris-datatable/sps', [InventarisController::class, 'datatable'])->middleware('admin');
+Route::get('/inventaris/sip', [InventarisController::class, 'index'])->middleware('admin');
+Route::get('/inventaris-datatable/sip', [InventarisController::class, 'datatable'])->middleware('admin');
+Route::post('/inventaris/tambah-inventaris-proses/sp', [InventarisController::class, 'tambahInventarisProses'])->middleware('admin');
+Route::post('/inventaris/tambah-inventaris-proses/sps', [InventarisController::class, 'tambahInventarisProses'])->middleware('admin');
+Route::post('/inventaris/tambah-inventaris-proses/sip', [InventarisController::class, 'tambahInventarisProses'])->middleware('admin');
+Route::post('/inventaris/proses-edit/sp', [InventarisController::class, 'editInventarisProses'])->middleware('admin');
+Route::post('/inventaris/proses-edit/sps', [InventarisController::class, 'editInventarisProses'])->middleware('admin');
+Route::post('/inventaris/proses-edit/sip', [InventarisController::class, 'editInventarisProses'])->middleware('admin');
 
 // ACCESS
 Route::get('/access/sp', [AccessController::class, 'index'])->middleware('admin');
@@ -240,6 +251,8 @@ Route::get('/access/sps', [AccessController::class, 'index'])->middleware('admin
 Route::get('/access-datatable/sps', [AccessController::class, 'datatable'])->middleware('admin');
 Route::get('/access/sip', [AccessController::class, 'index'])->middleware('admin');
 Route::get('/access-datatable/sip', [AccessController::class, 'datatable'])->middleware('admin');
+Route::get('/access/add_access/{id}/sp', [AccessController::class, 'add_access'])->middleware('admin');
+Route::post('/access/access_save_add/sp', [AccessController::class, 'access_save_add'])->middleware('admin');
 
 // Route::put('/karyawan/proses-edit-shift/{id}', [karyawanController::class, 'prosesEditShift'])->middleware('auth');
 // Route::get('/absen', [AbsenController::class, 'index'])->middleware('auth');
@@ -349,6 +362,32 @@ Route::post('/divisi/update/sip', [DivisiController::class, 'update'])->middlewa
 Route::get('/divisi/delete/{id}/sp', [DivisiController::class, 'delete'])->middleware('admin');
 Route::get('/divisi/delete/{id}/sps', [DivisiController::class, 'delete'])->middleware('admin');
 Route::get('/divisi/delete/{id}/sip', [DivisiController::class, 'delete'])->middleware('admin');
+
+// MASTER BAGIAN
+Route::get('/bagian/sp', [BagianController::class, 'index'])->middleware('admin');
+Route::get('/bagian/sps', [BagianController::class, 'index'])->middleware('admin');
+Route::get('/bagian/sip', [BagianController::class, 'index'])->middleware('admin');
+Route::get('/bagian-datatable/sp', [BagianController::class, 'datatable'])->middleware('admin');
+Route::get('/bagian-datatable/sps', [BagianController::class, 'datatable'])->middleware('admin');
+Route::get('/bagian-datatable/sip', [BagianController::class, 'datatable'])->middleware('admin');
+Route::get('/bagian/create/sp', [BagianController::class, 'create'])->middleware('admin');
+Route::get('/bagian/create/sps', [BagianController::class, 'create'])->middleware('admin');
+Route::get('/bagian/create/sip', [BagianController::class, 'create'])->middleware('admin');
+Route::post('/bagian/insert/sp', [BagianController::class, 'insert'])->middleware('admin');
+Route::post('/bagian/insert/sps', [BagianController::class, 'insert'])->middleware('admin');
+Route::post('/bagian/insert/sip', [BagianController::class, 'insert'])->middleware('admin');
+Route::get('/bagian/edit/{id}/sp', [BagianController::class, 'edit'])->middleware('admin');
+Route::get('/bagian/edit/{id}/sps', [BagianController::class, 'edit'])->middleware('admin');
+Route::get('/bagian/edit/{id}/sip', [BagianController::class, 'edit'])->middleware('admin');
+Route::post('/bagian/update/sp', [BagianController::class, 'update'])->middleware('admin');
+Route::post('/bagian/update/sps', [BagianController::class, 'update'])->middleware('admin');
+Route::post('/bagian/update/sip', [BagianController::class, 'update'])->middleware('admin');
+Route::get('/bagian/delete/{id}/sp', [BagianController::class, 'delete'])->middleware('admin');
+Route::get('/bagian/delete/{id}/sps', [BagianController::class, 'delete'])->middleware('admin');
+Route::get('/bagian/delete/{id}/sip', [BagianController::class, 'delete'])->middleware('admin');
+Route::get('/bagian/get_divisi/{id}', [BagianController::class, 'get_divisi'])->middleware('admin');
+
+
 // MASTER JABATAN
 Route::get('/jabatan/sp', [jabatanController::class, 'index'])->middleware('admin');
 Route::get('/jabatan/sps', [jabatanController::class, 'index'])->middleware('admin');
@@ -371,6 +410,7 @@ Route::post('/jabatan/update/sip', [jabatanController::class, 'update'])->middle
 Route::get('/jabatan/delete/{id}/sp', [jabatanController::class, 'delete'])->middleware('admin');
 Route::get('/jabatan/delete/{id}/sps', [jabatanController::class, 'delete'])->middleware('admin');
 Route::get('/jabatan/delete/{id}/sip', [jabatanController::class, 'delete'])->middleware('admin');
+Route::get('/jabatan/get_bagian/{id}', [jabatanController::class, 'get_bagian'])->middleware('admin');
 
 // GET ALAMAT
 Route::get('/karyawan/get_kabupaten/{id}', [karyawanController::class, 'get_kabupaten'])->middleware('admin');
