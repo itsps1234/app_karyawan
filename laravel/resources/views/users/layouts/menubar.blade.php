@@ -12,11 +12,13 @@
             </svg>
         </a>
         <a href="{{ route('absen') }}" class="nav-link {{ request()->routeIs('absen') ? 'active':'' }}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M7 3H5C3.89543 3 3 3.89543 3 5V7M3 17V19C3 20.1046 3.89543 21 5 21H7M17 21H19C20.1046 21 21 20.1046 21 19V17M21 7V5C21 3.89543 20.1046 3 19 3H17" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                <circle cx="12" cy="9" r="3" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                <path d="M17 16C17 13.7909 14.7614 12 12 12C9.23858 12 7 13.7909 7 16" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            </svg>
+            <span class="dz-icon" style="background-color: #F3F2F3; position: fixed; bottom: 1%; height: 70px; width: 70px; border-radius: 50px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.1);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50px" height="50px" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 3H5C3.89543 3 3 3.89543 3 5V7M3 17V19C3 20.1046 3.89543 21 5 21H7M17 21H19C20.1046 21 21 20.1046 21 19V17M21 7V5C21 3.89543 20.1046 3 19 3H17" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    <circle cx="12" cy="9" r="3" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                    <path d="M17 16C17 13.7909 14.7614 12 12 12C9.23858 12 7 13.7909 7 16" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+                </svg>
+            </span>
         </a>
         <a href="{{ route('profile') }}" class="nav-link {{ request()->routeIs('profile') ? 'active':'' }}">
             <svg id="Layer_1" width="24" height="24" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.88 116.17">

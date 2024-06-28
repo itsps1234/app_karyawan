@@ -120,7 +120,7 @@
                             </form>
                         </div>
                     </div>
-                    <table class="table" id="table_access_karyawan">
+                    <table class="table" id="table_access_karyawan" style="width: 100%;">
                         <thead class="table-primary">
                             <tr>
                                 <th>No.</th>
@@ -419,6 +419,9 @@
                 } else if (parsed.kontrak_kerja == 'SIP') {
                     $('#td_kontrak_kerja').text('CV. SURYA INTI PANGAN');
                 }
+                if (parsed.access_1 == 'on') {
+
+                }
                 $('#id_karyawan').val(parsed.id);
             },
             error: function(data) {
@@ -438,54 +441,6 @@
 
         reader.readAsDataURL(this.files[0]);
 
-    });
-    $(document).on("click", "#btn_mapping_shift", function() {
-        // console.log('ok');
-        let id = $(this).data('id');
-        let holding = $(this).data("holding");
-        let url = "{{ url('/karyawan/shift/')}}" + '/' + id + '/' + holding;
-        $.ajax({
-            url: url,
-            method: 'GET',
-            contentType: false,
-            cache: false,
-            processData: false,
-            // data: {
-            //     id_kecamatan: id_kecamatan
-            // },
-            success: function(response) {
-                // console.log(response);
-                window.location.assign(url);
-            },
-            error: function(data) {
-                console.log('error:', data)
-            },
-
-        })
-    });
-    $(document).on("click", "#btn_edit_password", function() {
-        let id = $(this).data('id');
-        let holding = $(this).data("holding");
-        // console.log(holding);
-        let url = "{{ url('/karyawan/edit-password/')}}" + '/' + id + '/' + holding;
-        $.ajax({
-            url: url,
-            method: 'GET',
-            contentType: false,
-            cache: false,
-            processData: false,
-            // data: {
-            //     id_kecamatan: id_kecamatan
-            // },
-            success: function(response) {
-                // console.log(response);
-                window.location.assign(url);
-            },
-            error: function(data) {
-                console.log('error:', data)
-            },
-
-        })
     });
     $(document).on('click', '#btn_delete_karyawan', function() {
         var id = $(this).data('id');

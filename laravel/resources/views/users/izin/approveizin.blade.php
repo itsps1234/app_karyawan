@@ -281,6 +281,7 @@
         });
         $(document).on('click', '#not_approve_btn', function(e) {
             e.preventDefault();
+            console.log('ok');
             var approve = 'not_approve';
             var canvas = document.getElementById("the_canvas");
             var dataUrl = canvas.toDataURL();
@@ -288,6 +289,7 @@
             var id_user = $('#id_user').val();
             var status_izin = $('#status_izin').val();
             var signature = dataUrl;
+            var izin = $('#izin').val();
             var catatan = $('#catatan').val();
             var tanggal = $('#tanggal').val();
             var tanggal_selesai = $('#tanggal_selesai').val();
@@ -298,6 +300,7 @@
                     id: id,
                     id_user: id_user,
                     status_izin: status_izin,
+                    izin: izin,
                     signature: signature,
                     catatan: catatan,
                     tanggal: tanggal,

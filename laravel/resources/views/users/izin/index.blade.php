@@ -167,7 +167,7 @@
                             <input type="hidden" name="email" value="{{ $data_user->email }}">
                             <input type="hidden" name="departements" value="{{ $user->dept_id }}">
                             <input type="hidden" name="jabatan" value="{{ $user->jabatan_id }}">
-                            <input type="hidden" name="level_jabatan" value="{{ $user->level_jabatan }}">
+                            <input type="hidden" name="level_jabatan" value="@if(Auth::user()->kategori=='Karyawan Harian')@else{{ $user->level_jabatan }}@endif">
                             <input type="hidden" name="divisi" value="{{ $user->divisi_id }}" id="">
                             @if($getUserAtasan==NULL)
                             <input type="hidden" name="id_user_atasan" value="">
@@ -244,6 +244,7 @@
                         <div class="input-group">
                             <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Keterangan Izin"></textarea>
                         </div>
+                        @if($data_user->kategori=='Karyawan Bulanan')
                         <div id="form_user_backup" class="input-group">
                             @if($data_user->level_jabatan=='1')
                             <input type="text" class="form-control" value="Pengganti" readonly>
@@ -261,6 +262,7 @@
                             </select>
                             @endif
                         </div>
+                        @endif
                         <div id="form_catatan_backup" class="input-group">
                             <textarea class="form-control" name="catatan_backup" style="font-weight: bold" placeholder="Catatan Selama Tidak Masuk"></textarea>
                         </div>
@@ -456,7 +458,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         var jm_plg_cpt = '{{$jam_min_plg_cpt}}';
-        console.log(jm_plg_cpt);
+        var jm_kerja = '{{$jam_kerja}}';
+        console.log(jm_kerja);
         $('#modal_surat').hide();
         $('#jam_masuk_kerja').hide();
         $('#jam_datang').hide();
@@ -625,11 +628,17 @@
 
                 // convert to fraction of 60
                 mins = (mins - 5); // -5 toleransi telat 5 menit
-                console.log(mins);
+                // console.log(awal);
 
                 // hours += mins;
                 // hours = hours.toFixed(2);
-                $("#terlambat").val(hours + ' Jam, ' + mins + ' Menit');
+                if (jm_kerja == '') {
+                    $("#terlambat").val('Mapping Shift Belum Tersedia');
+
+                } else {
+                    $("#terlambat").val(hours + ' Jam, ' + mins + ' Menit');
+
+                }
 
             } else {
                 $('#form_catatan_backup').hide();

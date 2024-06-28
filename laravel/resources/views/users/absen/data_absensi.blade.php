@@ -3,8 +3,8 @@
 @section('content')
 <!-- Categorie -->
 <div class="categorie-section">
-    <div class="title-bar">
-        <h5 class="dz-title">Data Absensi
+    <div class="title-bar" style="margin-top: 10%;">
+        <h5 class="dz-title">Record Data Absensi
             <select class="month" style="width: max-content;border-radius: 0px; background-color:transparent; color: var(--primary); border: none;outline: none;" name="" id="month">
                 <option value="01">Januari</option>
                 <option value="02">Februari</option>
@@ -27,8 +27,9 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Tanggal</th>
+                    <th scope="col">Tanggal&nbsp;Masuk</th>
                     <th scope="col">Jam&nbsp;Masuk</th>
+                    <th scope="col">Tanggal&nbsp;Pulang</th>
                     <th scope="col">Jam&nbsp;Pulang</th>
                 </tr>
             </thead>
@@ -66,12 +67,16 @@
                         }
                     },
                     {
-                        data: 'tanggal',
-                        name: 'tanggal'
+                        data: 'tanggal_masuk',
+                        name: 'tanggal_masuk'
                     },
                     {
                         data: 'jam_absen',
                         name: 'jam_absen'
+                    },
+                    {
+                        data: 'tanggal_pulang',
+                        name: 'tanggal_pulang'
                     },
                     {
                         data: 'jam_pulang',

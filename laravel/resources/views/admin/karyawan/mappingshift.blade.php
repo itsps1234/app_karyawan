@@ -202,10 +202,11 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>No.</th>
-                                <th>Tanggal</th>
-                                <th>Shift Karyawan</th>
-                                <th>Jam Masuk</th>
-                                <th>Jam Keluar</th>
+                                <th>Shift&nbsp;Karyawan</th>
+                                <th>Tanggal&nbsp;Masuk</th>
+                                <th>Jam&nbsp;Masuk</th>
+                                <th>Tanggal&nbsp;Pulang</th>
+                                <th>Jam&nbsp;Keluar</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -241,16 +242,20 @@
                 }
             },
             {
-                data: 'tanggal',
-                name: 'tanggal'
-            },
-            {
                 data: 'nama_shift',
                 name: 'nama_shift'
             },
             {
+                data: 'tanggal_masuk',
+                name: 'tanggal_masuk'
+            },
+            {
                 data: 'jam_masuk',
                 name: 'jam_masuk'
+            },
+            {
+                data: 'tanggal_pulang',
+                name: 'tanggal_pulang'
             },
             {
                 data: 'jam_keluar',
@@ -274,6 +279,7 @@
         let tanggal = $(this).data("tanggal");
         let shift = $(this).data("shift");
         let holding = $(this).data("holding");
+        console.log(tanggal);
         $('#id_shift').val(id);
         $('#tanggal_update').val(tanggal);
         $('#user_id').val(user_id);

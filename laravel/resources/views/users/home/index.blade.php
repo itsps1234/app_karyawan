@@ -364,7 +364,7 @@
         <div class="col-4">
             <p style="font-size: 8pt; font-weight: bold; text-align: right;">Jam Kerja : </p>
             <div class="main-content" style="margin-top: -22%; float: right;">
-                <p style="font-size: 8pt; font-weight:bold;" style="margin-top: -50%;">@if($jam_kerja=='')__-__ @else{{$jam_kerja->shift->jam_masuk}} - {{$jam_kerja->shift->jam_keluar}}@endif&nbsp;</p>
+                <p style="font-size: 8pt; font-weight:bold;" style="margin-top: -50%;">@if($jam_kerja=='')__-__ @else {{$jam_kerja->shift->jam_masuk}}-{{$jam_kerja->shift->jam_keluar}}@endif&nbsp;</p>
                 <svg xmlns="http://www.w3.org/2000/svg" style="margin-top: -20%;" width="17" height="17" viewBox="-4.52 0 69.472 69.472">
                     <g id="Group_4" data-name="Group 4" transform="translate(-651.45 -155.8)">
                         <circle id="Ellipse_4" data-name="Ellipse 4" cx="28.716" cy="28.716" r="28.716" transform="translate(652.95 157.3)" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="3" />
@@ -401,9 +401,9 @@
 
                                     function customClock() {
                                         var time = new Date();
-                                        var hrs = time.getHours();
-                                        var min = time.getMinutes();
-                                        var sec = time.getSeconds();
+                                        var hrs = (time.getHours() < 10 ? '0' : '') + time.getHours();
+                                        var min = (time.getMinutes() < 10 ? '0' : '') + time.getMinutes();
+                                        var sec = (time.getSeconds() < 10 ? '0' : '') + time.getSeconds();
                                         document.getElementById('jam_masuk').innerHTML = hrs + ":" + min + ":" + sec;
                                     }
                                 </script>
@@ -470,9 +470,9 @@
 
                                     function customClock() {
                                         var time = new Date();
-                                        var hrs = time.getHours();
-                                        var min = time.getMinutes();
-                                        var sec = time.getSeconds();
+                                        var hrs = (time.getHours() < 10 ? '0' : '') + time.getHours();
+                                        var min = (time.getMinutes() < 10 ? '0' : '') + time.getMinutes();
+                                        var sec = (time.getSeconds() < 10 ? '0' : '') + time.getSeconds();
                                         document.getElementById('jam_pulang').innerHTML = hrs + ":" + min + ":" + sec;
                                     }
                                 </script>
@@ -915,12 +915,61 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24" />
-                                    <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                    <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-                                </g>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 64 64" data-name="Layer 1" id="Layer_1">
+                                <defs>
+                                    <style>
+                                        .cls-1 {
+                                            fill: #e7ecef;
+                                        }
+
+                                        .cls-2 {
+                                            fill: #ffbc0a;
+                                        }
+
+                                        .cls-3 {
+                                            fill: #8b8c89;
+                                        }
+
+                                        .cls-4 {
+                                            fill: #bc6c25;
+                                        }
+
+                                        .cls-5 {
+                                            fill: #a3cef1;
+                                        }
+
+                                        .cls-6 {
+                                            fill: #dda15e;
+                                        }
+
+                                        .cls-7 {
+                                            fill: #6096ba;
+                                        }
+
+                                        .cls-8 {
+                                            fill: #274c77;
+                                        }
+                                    </style>
+                                </defs>
+                                <circle class="cls-5" cx="47" cy="17" r="13" />
+                                <circle class="cls-2" cx="47" cy="17" r="9" />
+                                <path class="cls-6" d="M26.58,38.04l-3,1.29c-1.01,.43-2.15,.43-3.15,0l-3-1.29c-1.47-.63-2.42-2.08-2.42-3.68v-5.36c0-3.31,2.69-6,6-6h2c3.31,0,6,2.69,6,6v5.36c0,1.6-.95,3.05-2.42,3.68Z" />
+                                <path class="cls-8" d="M35.14,44c-1.82-1.85-4.35-3-7.14-3h-3c0,1.66-1.34,3-3,3s-3-1.34-3-3h-3c-5.52,0-10,4.48-10,10v7H28l4-14h3.14Z" />
+                                <path class="cls-6" d="M17,54h2c1.1,0,2,.9,2,2v2h-4v-4h0Z" />
+                                <path class="cls-8" d="M12,30.73c-.29,.17-.64,.27-1,.27-1.1,0-2-.9-2-2s.9-2,2-2c.42,0,.81,.13,1.14,.36" />
+                                <path class="cls-8" d="M32,30.73c.29,.17,.64,.27,1,.27,1.1,0,2-.9,2-2s-.9-2-2-2c-.42,0-.81,.13-1.14,.36" />
+                                <path class="cls-4" d="M19,38.71l1.42,.61c1.01,.44,2.15,.44,3.16,0l1.42-.61v2.29c0,1.66-1.34,3-3,3s-3-1.34-3-3v-2.29Z" />
+                                <polyline class="cls-3" points="28 58 32 44 54 44 50 58" />
+                                <path class="cls-8" d="M28.4,26.38h-.01c-.57-.23-1.23-.38-2.06-.38-4.33,0-4.33,4-8.67,4-1.13,0-1.97-.27-2.66-.67v-.33c0-3.31,2.69-6,6-6h2c2.37,0,4.42,1.38,5.39,3.38h.01Z" />
+                                <path class="cls-1" d="M29,33.6v-4.6c0-3.31-2.69-6-6-6h-2c-3.31,0-6,2.69-6,6v4h-2c-.55,0-1-.45-1-1v-3c0-5.52,4.48-10,10-10,2.76,0,5.26,1.12,7.07,2.93s2.93,4.31,2.93,7.07v3.18c0,.48-.34,.89-.8,.98l-2.2,.44Z" />
+                                <path class="cls-5" d="M41,50c.55,0,1,.45,1,1s-.45,1-1,1v-2Z" />
+                                <path class="cls-7" d="M22,35h0c-.11-.54,.24-1.07,.78-1.18l8.22-1.64v-2.86c0-4.79-3.61-8.98-8.38-9.3-5.24-.35-9.62,3.81-9.62,8.98v3h2v2h-2c-1.1,0-2-.9-2-2v-2.68c0-5.72,4.24-10.74,9.94-11.27,6.54-.62,12.06,4.53,12.06,10.95v3.18c0,.95-.67,1.77-1.61,1.96l-8.22,1.64c-.54,.11-1.07-.24-1.18-.78Z" />
+                                <path class="cls-7" d="M22,58h-2v-2c0-.55-.45-1-1-1h-7c-.55,0-1-.45-1-1v-4c0-.27,.11-.52,.29-.71l1.29-1.29c.39-.39,1.02-.39,1.41,0h0c.39,.39,.39,1.02,0,1.41l-1,1v2.59h6c1.66,0,3,1.34,3,3v2Z" />
+                                <rect class="cls-5" height="2" width="50" x="4" y="58" />
+                                <path class="cls-7" d="M47,16c-.55,0-1-.45-1-1s.45-1,1-1,1,.45,1,1h2c0-1.3-.84-2.4-2-2.82v-1.18h-2v1.18c-1.16,.41-2,1.51-2,2.82,0,1.65,1.35,3,3,3,.55,0,1,.45,1,1s-.45,1-1,1-1-.45-1-1h-2c0,1.3,.84,2.4,2,2.82v1.18h2v-1.18c1.16-.41,2-1.51,2-2.82,0-1.65-1.35-3-3-3Z" />
+                                <path class="cls-7" d="M44.02,29.66c-.01,.11-.02,.23-.02,.34,0,1.66,1.34,3,3,3s3-1.34,3-3c0-.11-.01-.23-.02-.34-.96,.22-1.95,.34-2.98,.34s-2.02-.12-2.98-.34Z" />
+                                <circle class="cls-7" cx="43" cy="36" r="2" />
+                                <circle class="cls-7" cx="38" cy="40" r="2" />
                             </svg>
                         </div>
                         <div class="col">
@@ -940,11 +989,23 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none">
-                                <path d="M20 8.25V18C20 21 18.21 22 16 22H8C5.79 22 4 21 4 18V8.25C4 5 5.79 4.25 8 4.25C8 4.87 8.24997 5.43 8.65997 5.84C9.06997 6.25 9.63 6.5 10.25 6.5H13.75C14.99 6.5 16 5.49 16 4.25C18.21 4.25 20 5 20 8.25Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M16 4.25C16 5.49 14.99 6.5 13.75 6.5H10.25C9.63 6.5 9.06997 6.25 8.65997 5.84C8.24997 5.43 8 4.87 8 4.25C8 3.01 9.01 2 10.25 2H13.75C14.37 2 14.93 2.25 15.34 2.66C15.75 3.07 16 3.63 16 4.25Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path opacity="0.4" d="M8 13H12" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                <path opacity="0.4" d="M8 17H16" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="50" width="50" version="1.1" id="Capa_1" viewBox="0 0 512 512" xml:space="preserve">
+                                <path style="fill:#F5CDB3;" d="M65.782,447.977c-26.082,0.131-47.724-20.174-49.271-46.224L0.089,125.22  C-0.69,112.118,3.68,99.498,12.394,89.682c8.714-9.815,20.729-15.649,33.832-16.426l197.075-11.705  c27.292-1.634,50.364,19.195,51.964,46.14l16.424,276.531c1.608,27.046-19.092,50.358-46.137,51.965L68.477,447.889  C67.576,447.943,66.674,447.973,65.782,447.977z" />
+                                <path style="fill:#F0A479;" d="M295.266,107.69c-1.6-26.944-24.672-47.774-51.964-46.14l-96.81,5.75l21.531,374.677l97.531-5.793  c27.046-1.607,47.744-24.918,46.137-51.965L295.266,107.69z" />
+                                <path style="fill:#707070;" d="M101.305,139.914c-18.99,0-34.673-14.861-35.705-33.832l-1.902-35.013  C62.63,51.372,77.783,34.477,97.477,33.406l92.497-5.026c19.821-1.088,36.597,14.159,37.663,33.78l1.902,35.012  c1.07,19.695-14.083,36.59-33.78,37.661l-92.497,5.026C102.608,139.896,101.954,139.914,101.305,139.914z" />
+                                <path style="fill:#FF8546;" d="M169.37,477.637c-6.666,0-12.984-3.967-15.663-10.518L87.734,305.73  c-3.535-8.647,0.61-18.522,9.257-22.057c8.647-3.533,18.521,0.61,22.057,9.257l65.974,161.388  c3.535,8.647-0.609,18.522-9.257,22.057C173.67,477.232,171.502,477.637,169.37,477.637z" />
+                                <path style="fill:#CCF7F5;" d="M481.427,483.674H238.523c-16.858,0-30.573-13.715-30.573-30.574V223.803  c0-4.487,1.783-8.789,4.955-11.959l98.892-98.892c3.172-3.172,7.474-4.955,11.961-4.955h157.669  c16.858,0,30.573,13.715,30.573,30.574V453.1C512,469.958,498.285,483.674,481.427,483.674z" />
+                                <g>
+                                    <path style="fill:#74D6D0;" d="M481.427,106.913H357.978v375.676h123.449c16.858,0,30.573-13.715,30.573-30.574V137.488   C512,120.629,498.285,106.913,481.427,106.913z" />
+                                    <path style="fill:#74D6D0;" d="M481.427,106.913H371.144v375.676h110.283c16.858,0,30.573-13.715,30.573-30.574V137.488   C512,120.629,498.285,106.913,481.427,106.913z" />
+                                </g>
+                                <path style="fill:#F4F4F4;" d="M334.673,110.29c-2.9-2.952-6.935-4.788-11.399-4.788c-0.024,0-0.344,0.017-0.344,0.017  c-4.178,0.09-7.958,1.776-10.755,4.48l-0.005-0.006L211.646,210.605l0.001,0.001c-2.307,2.771-3.696,6.332-3.696,10.22  c0,8.828,7.157,15.986,15.985,15.986c0.198,0,0.39-0.023,0.586-0.029c0.196,0.008,0.388,0.029,0.586,0.029h97.847  c9.242,0,16.735-7.493,16.735-16.735v-97.847C339.689,117.551,337.766,113.328,334.673,110.29z" />
+                                <path style="fill:#E0E0E0;" d="M334.673,110.29c-2.9-2.952-6.935-4.788-11.399-4.788c-0.024,0-0.344,0.017-0.344,0.017  c-4.178,0.09-7.958,1.776-10.755,4.48l-0.005-0.006l-55.835,55.883v70.934h66.619c9.242,0,16.735-7.493,16.735-16.735v-97.847  C339.689,117.551,337.766,113.328,334.673,110.29z" />
+                                <g>
+                                    <path style="fill:#575757;" d="M451.012,300.21H303.723c-9.341,0-16.914-7.573-16.914-16.914c0-9.341,7.573-16.914,16.914-16.914   h147.289c9.341,0,16.914,7.573,16.914,16.914C467.926,292.637,460.353,300.21,451.012,300.21z" />
+                                    <path style="fill:#575757;" d="M451.012,350.529H303.723c-9.341,0-16.914-7.573-16.914-16.914c0-9.341,7.573-16.914,16.914-16.914   h147.289c9.341,0,16.914,7.573,16.914,16.914C467.926,342.956,460.353,350.529,451.012,350.529z" />
+                                    <path style="fill:#575757;" d="M451.012,400.848H303.723c-9.341,0-16.914-7.573-16.914-16.914c0-9.341,7.573-16.914,16.914-16.914   h147.289c9.341,0,16.914,7.573,16.914,16.914C467.926,393.275,460.353,400.848,451.012,400.848z" />
+                                </g>
                             </svg>
                         </div>
                         <div class="col">
@@ -964,14 +1025,22 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none">
-                                <g opacity="0.4">
-                                    <path d="M9.56055 18V13" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M12 15.5H7" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" viewBox="0 0 496 496" xml:space="preserve" width="50" height="50">
+                                <path style="fill:#50BB75;" d="M416,462.4c0,19.2-12.8,33.6-32.8,33.6H112.8c-20,0-32.8-14.4-32.8-33.6V52.8  C80,33.6,92.8,16,112.8,16h269.6c20.8,0,33.6,17.6,33.6,36.8V462.4z" />
+                                <path style="fill:#0AA06E;" d="M80,52.8C80,33.6,92.8,16,112.8,16h269.6c20.8,0,33.6,17.6,33.6,36.8v409.6  c0,19.2-14.4,33.6-35.2,33.6" />
+                                <path style="fill:#40406B;" d="M320,36c0,3.2-4.8,4-8,4H184c-3.2,0-8-0.8-8-4V4.8c0-2.4,4.8-4.8,8-4.8h128c3.2,0,8,2.4,8,4.8V36z" />
+                                <rect x="128" y="72" style="fill:#EAEAEA;" width="240" height="376" />
+                                <polyline style="fill:#DDDDDD;" points="128,72 368,72 368,448 " />
+                                <rect x="160" y="104" style="fill:#A8A8A8;" width="56" height="56" />
+                                <g>
+                                    <rect x="152" y="184" style="fill:#C4C4C4;" width="192" height="16" />
+                                    <rect x="152" y="232" style="fill:#C4C4C4;" width="192" height="16" />
+                                    <rect x="152" y="280" style="fill:#C4C4C4;" width="192" height="16" />
+                                    <rect x="152" y="328" style="fill:#C4C4C4;" width="192" height="16" />
+                                    <rect x="152" y="376" style="fill:#C4C4C4;" width="88" height="16" />
                                 </g>
-                                <path d="M8 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M16 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M15.8098 3.41992C19.1498 3.53992 20.8398 4.76992 20.9398 9.46992L21.0698 15.6399C21.1498 19.7599 20.1998 21.8299 15.1998 21.9399L9.19983 22.0599C4.19983 22.1599 3.15983 20.1199 3.07983 16.0099L2.93983 9.82992C2.83983 5.12992 4.48983 3.82992 7.80983 3.57992L15.8098 3.41992Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                                <polygon style="fill:#F15249;" points="344,376 320,376 320,360 296,360 296,376 272,376 272,400 296,400 296,424 320,424 320,400   344,400 " />
+                                <rect x="248" y="112" style="fill:#E88610;" width="96" height="32" />
                             </svg>
                         </div>
                         <div class="col">
@@ -991,14 +1060,16 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none">
-                                <g id="style=doutone">
-                                    <g id="clock">
-                                        <path id="vector (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M12 4.75C7.44621 4.75 3.75 8.44621 3.75 13C3.75 17.5538 7.44621 21.25 12 21.25C16.5538 21.25 20.25 17.5538 20.25 13C20.25 8.44621 16.5538 4.75 12 4.75ZM2.25 13C2.25 7.61779 6.61779 3.25 12 3.25C17.3822 3.25 21.75 7.61779 21.75 13C21.75 18.3822 17.3822 22.75 12 22.75C6.61779 22.75 2.25 18.3822 2.25 13Z" fill="#000000" />
-                                        <path id="vector (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd" d="M11.667 8.20898C12.0812 8.20898 12.417 8.54477 12.417 8.95898V12.649C12.417 12.771 12.4646 12.9586 12.5772 13.1561C12.6899 13.3536 12.827 13.4899 12.9313 13.5518L12.9333 13.5529L15.7233 15.2179C16.079 15.4302 16.1953 15.8906 15.983 16.2463C15.7708 16.602 15.3103 16.7183 14.9546 16.506L12.1666 14.8422C12.1663 14.842 12.1659 14.8418 12.1656 14.8416C11.7844 14.6154 11.4809 14.2615 11.2742 13.8991C11.0674 13.5364 10.917 13.0939 10.917 12.649V8.95898C10.917 8.54477 11.2528 8.20898 11.667 8.20898Z" fill="#BFBFBF" />
-                                        <path id="line (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M17.4379 1.50345C17.7121 1.19304 18.1861 1.16374 18.4965 1.438L22.2434 4.74864C22.5539 5.0229 22.5832 5.49687 22.3089 5.80728C22.0346 6.11769 21.5607 6.14699 21.2503 5.87273L17.5033 2.56209C17.1929 2.28783 17.1636 1.81386 17.4379 1.50345Z" fill="#BFBFBF" />
-                                        <path id="line (Stroke)_2" fill-rule="evenodd" clip-rule="evenodd" d="M6.56203 1.50345C6.28776 1.19304 5.81379 1.16374 5.50339 1.438L1.75643 4.74864C1.44602 5.0229 1.41672 5.49687 1.69098 5.80728C1.96524 6.11769 2.43921 6.14699 2.74962 5.87273L6.49658 2.56209C6.80699 2.28783 6.83629 1.81386 6.56203 1.50345Z" fill="#BFBFBF" />
-                                    </g>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="-10.98 0 84.878 84.878">
+                                <g id="time_cronometer" data-name="time cronometer" transform="translate(-873.556 -236.194)">
+                                    <path id="Path_120" data-name="Path 120" d="M905.016,262.253a27.362,27.362,0,1,0,27.358,27.358A27.357,27.357,0,0,0,905.016,262.253Z" fill="#f4f4f4" />
+                                    <path id="Path_121" data-name="Path 121" d="M905.016,236.194a10.863,10.863,0,1,0,10.859,10.862A10.869,10.869,0,0,0,905.016,236.194Zm0,19.774a8.912,8.912,0,1,1,8.91-8.912A8.91,8.91,0,0,1,905.016,255.968Z" fill="#163844" />
+                                    <path id="Path_122" data-name="Path 122" d="M930.582,289.611a25.571,25.571,0,1,1-25.566-25.566A25.564,25.564,0,0,1,930.582,289.611Z" fill="#27b7ff" />
+                                    <path id="Path_123" data-name="Path 123" d="M905.016,258.151a31.46,31.46,0,1,0,31.461,31.46A31.455,31.455,0,0,0,905.016,258.151Zm0,58.826a27.362,27.362,0,1,1,27.358-27.366A27.36,27.36,0,0,1,905.016,316.977Z" fill="#163844" />
+                                    <path id="Path_124" data-name="Path 124" d="M879.871,257.257l-3.808,3.8a1.841,1.841,0,0,0,0,2.605l5.26,5.261a31.625,31.625,0,0,1,6.9-5.917l-5.751-5.752A1.841,1.841,0,0,0,879.871,257.257Zm54.093,3.8-3.8-3.8a1.846,1.846,0,0,0-2.609,0l-5.752,5.752a31.718,31.718,0,0,1,6.9,5.917l5.26-5.257A1.849,1.849,0,0,0,933.964,261.06Z" fill="#576d78" />
+                                    <path id="Path_125" data-name="Path 125" d="M887.755,274.2,902.1,288.652l3.706,1.891.482.434,2.3,4.731,1.314-1.462h0l1.909-2.13-5.255-1.767-2.573-3.774Z" fill="#163844" />
+                                    <path id="Path_126" data-name="Path 126" d="M909.315,289.611a4.3,4.3,0,1,1-4.3-4.3A4.306,4.306,0,0,1,909.315,289.611Z" fill="#f4f4f4" />
+                                    <path id="Path_127" data-name="Path 127" d="M908.809,251.808h-7.585a1.841,1.841,0,0,0-1.843,1.845v5.031a30.054,30.054,0,0,1,11.27,0v-5.031A1.848,1.848,0,0,0,908.809,251.808Z" fill="#576d78" />
                                 </g>
                             </svg>
                         </div>
@@ -1022,18 +1093,20 @@
         <h5 class="dz-title">1 Minggu Terakhir</h5>
     </div>
     <div class="card">
-        <table id="datatableHome" class="table table-striped table-hover" style="width: 100%">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Tanggal</th>
-                    <th scope="col">Jam&nbsp;Masuk</th>
-                    <th scope="col">Jam&nbsp;Pulang</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table" id="datatableHome" style="width:100%;">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tanggal</th>
+                        <th scope="col">Jam&nbsp;Masuk</th>
+                        <th scope="col">Jam&nbsp;Pulang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <!-- Categorie End -->

@@ -108,7 +108,7 @@
             <input type="hidden" name="email" value="{{ $get_izin->email }}">
             <input type="hidden" name="departements" value="{{ $get_izin->departements_id }}">
             <input type="hidden" name="jabatan" value="{{ $get_izin->jabatan_id }}">
-            <input type="hidden" name="level_jabatan" value="{{ $user->level_jabatan }}">
+            <input type="hidden" name="level_jabatan" value="@if(Auth::user()->kategori=='Karyawan Harian')@else{{ $user->level_jabatan }}@endif">
             <input type="hidden" name="divisi" value="{{ $get_izin->divisi_id }}">
             <input type="hidden" name="id_user_atasan" value="{{ $get_izin->id_approve_atasan }}">
         </div>
@@ -192,6 +192,7 @@
         <div class="input-group">
             <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Description" @if($get_izin->ttd_pengajuan != '') disabled @else @endif >{{$get_izin->keterangan_izin}}</textarea>
         </div>
+        @if($user->kategori=='Karyawan Bulanan')
         <div id="form_user_backup" class="input-group">
             @if($user->level_jabatan=='1')
             <input type="text" class="form-control" value="Pengganti" readonly>
@@ -209,6 +210,7 @@
             </select>
             @endif
         </div>
+        @endif
         <div id="form_catatan_backup" class="input-group">
             <textarea class="form-control" name="catatan_backup" style="font-weight: bold" placeholder="Catatan Selama Tidak Masuk" @if($get_izin->ttd_pengajuan != '') disabled @else @endif >{{$get_izin->catatan_backup}}</textarea>
         </div>

@@ -23,7 +23,7 @@ class AbsenController extends Controller
         $tanggal = "";
         $tglskrg = date('Y-m-d');
         $tglkmrn = date('Y-m-d', strtotime('-1 days'));
-        $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal', $tglkmrn)->get();
+        $mapping_shift = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->get();
         if ($mapping_shift->count() > 0) {
             foreach ($mapping_shift as $mp) {
                 $jam_absen = $mp->jam_absen;
@@ -41,7 +41,7 @@ class AbsenController extends Controller
         return view('users.home.index', [
             'title' => 'Absen',
             'holding' => $holding,
-            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal', $tanggal)->get()
+            'shift_karyawan' => MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tanggal)->get()
         ]);
     }
 

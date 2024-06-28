@@ -209,8 +209,8 @@ $(document).ready(function () {
               }
             },
             {
-              data: 'tanggal', 
-              name: 'tanggal'
+              data: 'tanggal_masuk', 
+              name: 'tanggal_masuk'
             },
             {data: 'jam_absen', name: 'jam_absen'},
             {data: 'jam_pulang', name: 'jam_pulang'},

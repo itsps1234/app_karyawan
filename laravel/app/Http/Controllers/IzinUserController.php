@@ -18,6 +18,7 @@ use App\Models\Departemen;
 use App\Models\Divisi;
 use App\Models\KategoriIzin;
 use App\Models\LevelJabatan;
+use App\Models\Lokasi;
 use DateTime;
 use DB;
 use Ramsey\Uuid\Uuid;
@@ -28,356 +29,2867 @@ class IzinUserController extends Controller
     {
         $user_id        = Auth()->user()->id;
         $kontrak = Auth::guard('web')->user()->kontrak_kerja;
-        $user = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-            ->join('level_jabatans', 'jabatans.level_id', '=', 'level_jabatans.id')
-            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-            ->where('users.id', Auth()->user()->id)->first();
+        $site_job = Auth::guard('web')->user()->site_job;
+        $lokasi_site_job = Lokasi::where('lokasi_kantor', $site_job)->first();
         // dd($user);
         if ($kontrak == '') {
             $request->session()->flash('kontrakkerjaNULL');
             return redirect('/home');
         }
-        if ($user->level_jabatan == 4) {
-            // dd($kontrak);
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '3')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '1')->first();
-            $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
-                ->where('is_admin', 'user')
-                ->where('users.id', '!=', Auth::user()->id)
-                ->where('users.divisi_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi1_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi2_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi3_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi4_id', Auth::user()->divisi_id)
-                ->get();
-            $atasan = DB::table('users')
-                ->join('jabatans', function ($join) use ($IdLevelAsasan) {
-                    $join->on('jabatans.id', '=', 'users.jabatan_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
-                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
-                    });
-                })
-                ->where('users.is_admin', 'user')
-                ->where('users.divisi_id', $user->divisi_id)
-                ->orWhere('users.divisi1_id', $user->divisi_id)
-                ->orWhere('users.divisi2_id', $user->divisi_id)
-                ->orWhere('users.divisi3_id', $user->divisi_id)
-                ->orWhere('users.divisi4_id', $user->divisi_id)
-                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
-                ->first();
-            // dd($atasan1);
-            // dd($atasan);
-            if ($atasan == '' || $atasan == NULL) {
-                $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
-                        $join->on('jabatans.id', '=', 'users.jabatan_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
-                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
-                        });
-                    })
-                    ->where('users.is_admin', 'user')
-                    ->where('users.divisi_id', $user->divisi_id)
-                    ->orWhere('users.divisi1_id', $user->divisi_id)
-                    ->orWhere('users.divisi2_id', $user->divisi_id)
-                    ->orWhere('users.divisi3_id', $user->divisi_id)
-                    ->orWhere('users.divisi4_id', $user->divisi_id)
-                    ->where('users.divisi_id', $user->divisi1_id)
-                    ->orWhere('users.divisi1_id', $user->divisi1_id)
-                    ->orWhere('users.divisi2_id', $user->divisi1_id)
-                    ->orWhere('users.divisi3_id', $user->divisi1_id)
-                    ->orWhere('users.divisi4_id', $user->divisi1_id)
-                    ->where('users.divisi_id', $user->divisi2_id)
-                    ->orWhere('users.divisi1_id', $user->divisi2_id)
-                    ->orWhere('users.divisi2_id', $user->divisi2_id)
-                    ->orWhere('users.divisi3_id', $user->divisi2_id)
-                    ->orWhere('users.divisi4_id', $user->divisi2_id)
-                    ->where('users.divisi_id', $user->divisi3_id)
-                    ->orWhere('users.divisi1_id', $user->divisi3_id)
-                    ->orWhere('users.divisi2_id', $user->divisi3_id)
-                    ->orWhere('users.divisi3_id', $user->divisi3_id)
-                    ->orWhere('users.divisi4_id', $user->divisi3_id)
-                    ->where('users.divisi_id', $user->divisi4_id)
-                    ->orWhere('users.divisi1_id', $user->divisi4_id)
-                    ->orWhere('users.divisi2_id', $user->divisi4_id)
-                    ->orWhere('users.divisi3_id', $user->divisi4_id)
-                    ->orWhere('users.divisi4_id', $user->divisi4_id)
-                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
-                    ->first();
-                // dd($atasan1);
-                if ($atasan1->kontrak_kerja == $kontrak) {
-                    $getUserAtasan  = $atasan1;
-                } else {
-                    $getUserAtasan  = NULL;
-                }
-                if ($atasan1 == '' || $atasan1 == NULL) {
-                    $atasan2 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+        if (Auth::user()->kategori == 'Karyawan Bulanan') {
+            $user = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                ->join('level_jabatans', 'jabatans.level_id', '=', 'level_jabatans.id')
+                ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                ->where('users.id', Auth()->user()->id)->first();
+
+            if ($user->level_jabatan == 6) {
+                $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '5')->first();
+                $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '4')->first();
+                $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '3')->first();
+                $IdLevelAsasan3  = LevelJabatan::where('level_jabatan', '2')->first();
+                $IdLevelAsasan4  = LevelJabatan::where('level_jabatan', '1')->first();
+                // dd($lokasi_site_job->kategori_kantor);
+                if ($lokasi_site_job->kategori_kantor == 'sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
                             });
                         })
-                        ->where('users.is_admin', 'user')
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
                         ->where('users.divisi_id', $user->divisi_id)
-                        ->orWhere('users.divisi1_id', $user->divisi1_id)
-                        ->orWhere('users.divisi2_id', $user->divisi2_id)
-                        ->orWhere('users.divisi3_id', $user->divisi3_id)
-                        ->orWhere('users.divisi4_id', $user->divisi4_id)
-                        ->where('users.divisi_id', $user->divisi1_id)
-                        ->orWhere('users.divisi1_id', $user->divisi1_id)
-                        ->orWhere('users.divisi2_id', $user->divisi1_id)
-                        ->orWhere('users.divisi3_id', $user->divisi1_id)
-                        ->orWhere('users.divisi4_id', $user->divisi1_id)
-                        ->where('users.divisi_id', $user->divisi2_id)
-                        ->orWhere('users.divisi1_id', $user->divisi2_id)
-                        ->orWhere('users.divisi2_id', $user->divisi2_id)
-                        ->orWhere('users.divisi3_id', $user->divisi2_id)
-                        ->orWhere('users.divisi4_id', $user->divisi2_id)
-                        ->where('users.divisi_id', $user->divisi3_id)
-                        ->orWhere('users.divisi1_id', $user->divisi3_id)
-                        ->orWhere('users.divisi2_id', $user->divisi3_id)
-                        ->orWhere('users.divisi3_id', $user->divisi3_id)
-                        ->orWhere('users.divisi4_id', $user->divisi3_id)
-                        ->where('users.divisi_id', $user->divisi4_id)
-                        ->orWhere('users.divisi1_id', $user->divisi4_id)
-                        ->orWhere('users.divisi2_id', $user->divisi4_id)
-                        ->orWhere('users.divisi3_id', $user->divisi4_id)
-                        ->orWhere('users.divisi4_id', $user->divisi4_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
                         ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
                         ->first();
-                    if ($atasan2->_kerja == $kontrak) {
-                        $getUserAtasan  = $atasan2;
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
                     } else {
-                        $getUserAtasan  = NULL;
-                    }
-                } else {
-                    if ($atasan1 == $kontrak) {
                         $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
                     } else {
-                        $getUserAtasan  = NULL;
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sip') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $atasan = DB::table('users')
+                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            });
+                                        })
+                                        ->where('is_admin', 'user')
+                                        ->where('users.dept_id', $user->dept_id)
+                                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                        ->first();
+                                    if ($atasan == '') {
+                                        $getUserAtasan  = NULL;
+                                    } else {
+                                        $getUserAtasan  = $atasan;
+                                    }
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                }
+            } else if ($user->level_jabatan == 5) {
+                $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '4')->first();
+                $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '3')->first();
+                $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '2')->first();
+                $IdLevelAsasan3  = LevelJabatan::where('level_jabatan', '1')->first();
+                if ($lokasi_site_job->kategori_kantor == 'sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.dept_id', $user->dept_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sip') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                    ->where('users.dept_id', $user->dept_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                    ->where('users.dept_id', $user->dept_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                    ->where('users.dept_id', $user->dept_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->where('users.dept_id', $user->dept_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                }
+            } else if ($user->level_jabatan == 4) {
+                $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '3')->first();
+                $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '2')->first();
+                $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '1')->first();
+                if ($lokasi_site_job->kategori_kantor == 'sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.dept_id', $user->dept_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $getUserAtasan  = NULL;
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $getUserAtasan  = NULL;
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sip') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $getUserAtasan  = NULL;
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $getUserAtasan  = NULL;
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $getUserAtasan  = NULL;
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->where('users.divisi_id', $user->divisi_id)
+                            ->orWhere('users.divisi1_id', $user->divisi_id)
+                            ->orWhere('users.divisi2_id', $user->divisi_id)
+                            ->orWhere('users.divisi3_id', $user->divisi_id)
+                            ->orWhere('users.divisi4_id', $user->divisi_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $atasan = DB::table('users')
+                                ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                                    $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    });
+                                })
+                                ->where('is_admin', 'user')
+                                ->where('users.divisi_id', $user->divisi_id)
+                                ->orWhere('users.divisi1_id', $user->divisi_id)
+                                ->orWhere('users.divisi2_id', $user->divisi_id)
+                                ->orWhere('users.divisi3_id', $user->divisi_id)
+                                ->orWhere('users.divisi4_id', $user->divisi_id)
+                                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                ->first();
+                            if ($atasan == '') {
+                                $atasan = DB::table('users')
+                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                        $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        });
+                                    })
+                                    ->where('is_admin', 'user')
+                                    ->where('users.divisi_id', $user->divisi_id)
+                                    ->orWhere('users.divisi1_id', $user->divisi_id)
+                                    ->orWhere('users.divisi2_id', $user->divisi_id)
+                                    ->orWhere('users.divisi3_id', $user->divisi_id)
+                                    ->orWhere('users.divisi4_id', $user->divisi_id)
+                                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                                    ->first();
+                                if ($atasan == '') {
+                                    $getUserAtasan  = NULL;
+                                } else {
+                                    $getUserAtasan  = $atasan;
+                                }
+                            } else {
+                                $getUserAtasan  = $atasan;
+                            }
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                }
+            } else if ($user->level_jabatan == 3) {
+                $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '2')->first();
+                $IdLevelAsasan1 = LevelJabatan::where('level_jabatan', '1')->first();
+                if ($lokasi_site_job->kategori_kantor == 'sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sip') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                }
+            } else if ($user->level_jabatan == 2) {
+                $IdLevelAsasan = LevelJabatan::where('level_jabatan', '1')->first();
+                $IdLevelAsasan1 = LevelJabatan::where('level_jabatan', '0')->first();
+                if ($lokasi_site_job->kategori_kantor == 'sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SPS)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'sip') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereIn('site_job', ['ALL SITES (SP, SPS, SIP)', $site_job])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SP)', 'CV. SUMBER PANGAN - KEDIRI', 'CV. SUMBER PANGAN - TUBAN'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereIn('site_job', ['ALL SITES (SP)', 'ALL SITES (SP, SPS, SIP)', $site_job])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->whereNotIn('site_job', ['ALL SITES (SPS)', 'PT. SURYA PANGAN SEMESTA - KEDIRI', 'PT. SURYA PANGAN SEMESTA - NGAWI', 'PT. SURYA PANGAN SEMESTA - SUBANG'])
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
+                    }
+                } else if ($lokasi_site_job->kategori_kantor == 'all') {
+                    $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
+                        ->where('id', '!=', Auth::user()->id)
+                        ->where('is_admin', 'user')
+                        ->where('divisi_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi1_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi2_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi3_id', Auth::user()->divisi_id)
+                        ->orWhere('divisi4_id', Auth::user()->divisi_id)
+                        ->get();
+                    $atasan = DB::table('users')
+                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                            $join->on('jabatans.id', '=', 'users.jabatan_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                            $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                                $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            });
+                        })
+                        ->where('is_admin', 'user')
+                        ->where('users.divisi_id', $user->divisi_id)
+                        ->orWhere('users.divisi1_id', $user->divisi_id)
+                        ->orWhere('users.divisi2_id', $user->divisi_id)
+                        ->orWhere('users.divisi3_id', $user->divisi_id)
+                        ->orWhere('users.divisi4_id', $user->divisi_id)
+                        ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                        ->first();
+                    // jika atasan tingkat 1 
+                    // dd($atasan);
+                    if ($atasan == '') {
+                        $atasan = DB::table('users')
+                            ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                                $join->on('jabatans.id', '=', 'users.jabatan_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
+                                $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                                    $query->on('level_jabatans.id', '=', 'jabatans.level_id');
+                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                });
+                            })
+                            ->where('is_admin', 'user')
+                            ->where('users.dept_id', $user->dept_id)
+                            ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                            ->first();
+                        // dd($atasan);
+                        if ($atasan == '') {
+                            // dd('oke1');
+                            $getUserAtasan  = NULL;
+                        } else {
+                            $getUserAtasan  = $atasan;
+                        }
+                    } else {
+                        $getUserAtasan  = $atasan;
                     }
                 }
             } else {
-                if ($atasan->kontrak_kerja == $kontrak) {
-                    $getUserAtasan  = $atasan;
-                } else {
-                    $getUserAtasan  = NULL;
-                }
-            }
-            // dd($getUserAtasan);
-        } else if ($user->level_jabatan == 3) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '1')->first();
-            $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
-                ->where('is_admin', 'user')
-                ->where('users.id', '!=', Auth::user()->id)
-                ->where('users.divisi_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi1_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi2_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi3_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi4_id', Auth::user()->divisi_id)
-                ->get();
-            $atasan = DB::table('users')
-                ->where('users.is_admin', 'user')
-                ->where('users.divisi_id', $user->divisi_id)
-                ->orWhere('users.divisi1_id', $user->divisi_id)
-                ->orWhere('users.divisi2_id', $user->divisi_id)
-                ->orWhere('users.divisi3_id', $user->divisi_id)
-                ->orWhere('users.divisi4_id', $user->divisi_id)
-                // ->where('users.divisi_id', $user->divisi1_id)
-                // ->orWhere('users.divisi1_id', $user->divisi1_id)
-                // ->orWhere('users.divisi2_id', $user->divisi1_id)
-                // ->orWhere('users.divisi3_id', $user->divisi1_id)
-                // ->orWhere('users.divisi4_id', $user->divisi1_id)
-                // ->where('users.divisi_id', $user->divisi2_id)
-                // ->orWhere('users.divisi1_id', $user->divisi2_id)
-                // ->orWhere('users.divisi2_id', $user->divisi2_id)
-                // ->orWhere('users.divisi3_id', $user->divisi2_id)
-                // ->orWhere('users.divisi4_id', $user->divisi2_id)
-                // ->where('users.divisi_id', $user->divisi3_id)
-                // ->orWhere('users.divisi1_id', $user->divisi3_id)
-                // ->orWhere('users.divisi2_id', $user->divisi3_id)
-                // ->orWhere('users.divisi3_id', $user->divisi3_id)
-                // ->orWhere('users.divisi4_id', $user->divisi3_id)
-                // ->where('users.divisi_id', $user->divisi4_id)
-                // ->orWhere('users.divisi1_id', $user->divisi4_id)
-                // ->orWhere('users.divisi2_id', $user->divisi4_id)
-                // ->orWhere('users.divisi3_id', $user->divisi4_id)
-                // ->orWhere('users.divisi4_id', $user->divisi4_id)
-                ->join('jabatans', function ($join) use ($IdLevelAsasan) {
-                    $join->on('jabatans.id', '=', 'users.jabatan_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
-                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
-                    });
-                })
-                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
-                ->orderBy('users.id', 'DESC')
-                ->first();
-            // dd($atasan);
-            if ($atasan == '' || $atasan == NULL) {
-                $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                $atasan = DB::table('users')
+                    ->join('jabatans', function ($join) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.level_jabatan', '=', '0');
                         });
-                    })->where('users.divisi_id', $user->divisi_id)
+                    })
+                    ->where('users.divisi_id', $user->divisi_id)
                     ->orWhere('users.divisi1_id', $user->divisi_id)
                     ->orWhere('users.divisi2_id', $user->divisi_id)
                     ->orWhere('users.divisi3_id', $user->divisi_id)
                     ->orWhere('users.divisi4_id', $user->divisi_id)
-                    // ->where('users.divisi_id', $user->divisi1_id)
-                    // ->orWhere('users.divisi1_id', $user->divisi1_id)
-                    // ->orWhere('users.divisi2_id', $user->divisi1_id)
-                    // ->orWhere('users.divisi3_id', $user->divisi1_id)
-                    // ->orWhere('users.divisi4_id', $user->divisi1_id)
-                    // ->where('users.divisi_id', $user->divisi2_id)
-                    // ->orWhere('users.divisi1_id', $user->divisi2_id)
-                    // ->orWhere('users.divisi2_id', $user->divisi2_id)
-                    // ->orWhere('users.divisi3_id', $user->divisi2_id)
-                    // ->orWhere('users.divisi4_id', $user->divisi2_id)
-                    // ->where('users.divisi_id', $user->divisi3_id)
-                    // ->orWhere('users.divisi1_id', $user->divisi3_id)
-                    // ->orWhere('users.divisi2_id', $user->divisi3_id)
-                    // ->orWhere('users.divisi3_id', $user->divisi3_id)
-                    // ->orWhere('users.divisi4_id', $user->divisi3_id)
-                    // ->where('users.divisi_id', $user->divisi4_id)
-                    // ->orWhere('users.divisi1_id', $user->divisi4_id)
-                    // ->orWhere('users.divisi2_id', $user->divisi4_id)
-                    // ->orWhere('users.divisi3_id', $user->divisi4_id)
-                    // ->orWhere('users.divisi4_id', $user->divisi4_id)
                     ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
                     ->first();
-                if ($atasan1 == '' || $atasan1 == NULL) {
-                    $getUserAtasan  = NULL;
-                } else {
-                    if ($atasan1->kontrak_kerja == $kontrak) {
-                        $getUserAtasan  = $atasan1;
-                    } else {
-                        $getUserAtasan  = NULL;
-                    }
-                }
-            } else {
-                if ($atasan->kontrak_kerja == $kontrak) {
-                    $getUserAtasan  = $atasan;
-                } else {
-                    $getUserAtasan  = NULL;
-                }
+                // dd($atasan);
+                $get_user_backup = NULL;
+                $getUserAtasan = $atasan;
             }
-        } else if ($user->level_jabatan == 2) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '1')->first();
-            $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
-                ->where('is_admin', 'user')
-                ->where('users.id', '!=', Auth::user()->id)
-                ->where('users.divisi_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi1_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi2_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi3_id', Auth::user()->divisi_id)
-                ->orWhere('users.divisi4_id', Auth::user()->divisi_id)
-                ->get();
+        } else if (Auth::user()->kategori == 'Karyawan Harian') {
+            $user = DB::table('users')->where('id', Auth()->user()->id)->first();
             $atasan = DB::table('users')
-                ->join('jabatans', function ($join) use ($IdLevelAsasan) {
-                    $join->on('jabatans.id', '=', 'users.jabatan_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
-                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
-                    });
+                ->join('mapping_shifts', function ($join) {
+                    $join->on('mapping_shifts.koordinator_id', '=', 'users.id');
                 })
-                ->where('users.is_admin', 'user')
-                ->where('users.dept_id', $user->dept_id)
-                ->where('users.divisi_id', $user->divisi_id)
-                ->orWhere('users.divisi_id', $user->divisi1_id)
-                ->orWhere('users.divisi_id', $user->divisi2_id)
-                ->orWhere('users.divisi_id', $user->divisi3_id)
-                ->orWhere('users.divisi_id', $user->divisi4_id)
-                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                ->select('users.*', 'mapping_shifts.koordinator_id')
                 ->first();
-            // dd($atasan);
-            if ($atasan == '' || $atasan == NULL) {
-                $getUserAtasan  = NULL;
-            } else {
-                if ($atasan->kontrak_kerja == $kontrak) {
-                    $getUserAtasan  = $atasan;
-                } else {
-                    $getUserAtasan  = NULL;
-                }
-            }
-        } else {
-            $atasan = DB::table('users')
-                ->join('jabatans', function ($join) {
-                    $join->on('jabatans.id', '=', 'users.jabatan_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                    $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) {
-                        $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.level_jabatan', '=', '0');
-                    });
-                })
-                ->where('users.divisi_id', $user->divisi_id)
-                ->orWhere('users.divisi1_id', $user->divisi_id)
-                ->orWhere('users.divisi2_id', $user->divisi_id)
-                ->orWhere('users.divisi3_id', $user->divisi_id)
-                ->orWhere('users.divisi4_id', $user->divisi_id)
-                ->where('users.divisi_id', $user->divisi1_id)
-                ->orWhere('users.divisi1_id', $user->divisi1_id)
-                ->orWhere('users.divisi2_id', $user->divisi1_id)
-                ->orWhere('users.divisi3_id', $user->divisi1_id)
-                ->orWhere('users.divisi4_id', $user->divisi1_id)
-                ->where('users.divisi_id', $user->divisi2_id)
-                ->orWhere('users.divisi1_id', $user->divisi2_id)
-                ->orWhere('users.divisi2_id', $user->divisi2_id)
-                ->orWhere('users.divisi3_id', $user->divisi2_id)
-                ->orWhere('users.divisi4_id', $user->divisi2_id)
-                ->where('users.divisi_id', $user->divisi3_id)
-                ->orWhere('users.divisi1_id', $user->divisi3_id)
-                ->orWhere('users.divisi2_id', $user->divisi3_id)
-                ->orWhere('users.divisi3_id', $user->divisi3_id)
-                ->orWhere('users.divisi4_id', $user->divisi3_id)
-                ->where('users.divisi_id', $user->divisi4_id)
-                ->orWhere('users.divisi1_id', $user->divisi4_id)
-                ->orWhere('users.divisi2_id', $user->divisi4_id)
-                ->orWhere('users.divisi3_id', $user->divisi4_id)
-                ->orWhere('users.divisi4_id', $user->divisi4_id)
-                ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
-                ->first();
-            // dd($atasan);
             $get_user_backup = NULL;
             $getUserAtasan = $atasan;
         }
-        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal', date('Y-m-d'))->first();
+        // dd($getUserAtasan);
+        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal_masuk', date('Y-m-d'))->first();
         $record_data    = DB::table('izins')->where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
         $kategori_izin = KategoriIzin::orderBy('id', 'ASC')->get();
         if ($jam_kerja == '' || $jam_kerja == NULL) {
@@ -412,15 +2924,20 @@ class IzinUserController extends Controller
     }
     public function izinEdit($id)
     {
-        $user = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
-            ->join('level_jabatans', 'jabatans.level_id', '=', 'level_jabatans.id')
-            ->join('departemens', 'departemens.id', '=', 'users.dept_id')
-            ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
-            ->where('users.id', Auth()->user()->id)->first();
+        if (Auth::user()->kategori == 'Karyawan Bulanan') {
+            $user = DB::table('users')->join('jabatans', 'jabatans.id', '=', 'users.jabatan_id')
+                ->join('level_jabatans', 'jabatans.level_id', '=', 'level_jabatans.id')
+                ->join('departemens', 'departemens.id', '=', 'users.dept_id')
+                ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
+                ->where('users.id', Auth()->user()->id)->first();
+        } else if (Auth::user()->kategori == 'Karyawan Harian') {
+            $user = DB::table('users')->where('users.id', Auth()->user()->id)->first();
+        }
         $get_izin_id = Izin::where('id', $id)->first();
         $get_user_backup = User::where('dept_id', Auth::user()->dept_id)
             ->where('is_admin', 'user')
             ->where('users.id', '!=', Auth::user()->id)
+            ->where('users.site_job', Auth::user()->site_job)
             ->where('users.divisi_id', Auth::user()->divisi_id)
             ->orWhere('users.divisi1_id', Auth::user()->divisi_id)
             ->orWhere('users.divisi2_id', Auth::user()->divisi_id)
@@ -428,7 +2945,7 @@ class IzinUserController extends Controller
             ->orWhere('users.divisi4_id', Auth::user()->divisi_id)
             ->get();
         $kategori_izin = KategoriIzin::orderBy('id', 'ASC')->get();
-        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal', date('Y-m-d'))->first();
+        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal_masuk', date('Y-m-d'))->first();
         // dd($jam_kerja);
         if ($jam_kerja == '' || $jam_kerja == NULL) {
             $req_jm_klr = NULL;
@@ -624,7 +3141,7 @@ class IzinUserController extends Controller
 
     public function izinAbsen(Request $request)
     {
-        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal', date('Y-m-d'))->first();
+        $jam_kerja = MappingShift::with('Shift')->where('user_id', Auth::user()->id)->where('tanggal_masuk', date('Y-m-d'))->first();
         if ($jam_kerja == '' || $jam_kerja == NULL) {
             $request->session()->flash('mapping_kosong');
             return redirect('/izin/dashboard');
@@ -838,7 +3355,7 @@ class IzinUserController extends Controller
             ->join('divisis', 'divisis.id', '=', 'users.divisi_id')
             ->where('users.id', Auth()->user()->id)->first();
         $data   = DB::table('izins')->where('id', $id)->first();
-        $jam_kerja = MappingShift::with('Shift')->where('user_id', $data->user_id)->where('tanggal', date('Y-m-d'))->first();
+        $jam_kerja = MappingShift::with('Shift')->where('user_id', $data->user_id)->where('tanggal_masuk', date('Y-m-d'))->first();
         return view('users.izin.approveizin', [
             'user'  => $user,
             'jam_kerja'  => $jam_kerja,
@@ -913,7 +3430,7 @@ class IzinUserController extends Controller
                         // dd($update_izin);
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Potong Gaji ,izin sakit tanpa SKD',
                                     'status_absen' => 'Tidak Masuk',
@@ -968,7 +3485,7 @@ class IzinUserController extends Controller
                         // dd($update_izin);
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Potong Gaji ,izin sakit tanpa SKD',
                                     'status_absen' => 'Tidak Masuk',
@@ -1015,7 +3532,7 @@ class IzinUserController extends Controller
                         // dd($update_izin);
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Potong saldo cuti 2  ,Atasan Not Approve',
                                     'status_absen' => 'Masuk',
@@ -1036,7 +3553,7 @@ class IzinUserController extends Controller
                         // dd($update_izin);
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Izin Tidak Masuk Disetujui',
                                     'status_absen' => 'Masuk',
@@ -1059,7 +3576,7 @@ class IzinUserController extends Controller
                         // dd($update_izin);
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Potong Gaji ,izin Tidak Masuk,belum dapat saldo Cuti',
                                     'status_absen' => 'Tidak Masuk',
@@ -1077,7 +3594,7 @@ class IzinUserController extends Controller
 
                         foreach ($update_izin as $mapping) {
                             $update = MappingShift::where('user_id', $request->id_user)
-                                ->whereBetween('tanggal', [$mapping->tanggal, $mapping->tanggal_selesai])
+                                ->whereBetween('tanggal_masuk', [$mapping->tanggal, $mapping->tanggal_selesai])
                                 ->update([
                                     'keterangan_absensi' => 'Potong Gaji ,izin Tidak Masuk,belum dapat saldo Cuti',
                                     'status_absen' => 'Tidak Masuk',
@@ -1118,7 +3635,7 @@ class IzinUserController extends Controller
                     $data->waktu_approve = date('Y-m-d H:i:s');
                     $data->update();
 
-                    $mapping = MappingShift::where('tanggal', $request->tanggal)
+                    $mapping = MappingShift::where('tanggal_masuk', $request->tanggal)
                         ->orWhere('user_id', $request->id_user)
                         ->get();
                     dd($mapping);
@@ -1163,7 +3680,7 @@ class IzinUserController extends Controller
         $departemen = Departemen::where('id', Auth::user()->dept_id)->first();
         $user_backup = User::where('id', $izin->user_id_backup)->first();
         // dd(Izin::with('User')->where('izins.id', $id)->where('izins.status_izin', '2')->first());
-        $jam_kerja = MappingShift::with('Shift')->where('user_id', $izin->user_id)->where('tanggal', date('Y-m-d'))->first();
+        $jam_kerja = MappingShift::with('Shift')->where('user_id', $izin->user_id)->where('tanggal_masuk', date('Y-m-d'))->first();
         $data = [
             'data_izin' => Izin::with('User')->where('izins.id', $id)->where('izins.status_izin', '2')->first(),
             'jabatan' => $jabatan,

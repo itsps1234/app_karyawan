@@ -58,16 +58,16 @@
             <div class="head-details">
                 <div class=" container">
                     <div class="dz-info">
-                        <span class="location d-block text-left">Form Izin&nbsp;Datang Terlambat
+                        <span class="location d-block text-left">Form Izin&nbsp;Pulang Cepat
                         </span>
                         @if(auth()->user()->kategori=='Karyawan Bulanan')
-                        <h5 class="title">@if($user->kontrak_kerja == 'SP')
+                        <h6 class="title">@if($user->kontrak_kerja == 'SP')
                             CV. SUMBER PANGAN
                             @elseif($user->kontrak_kerja == 'SPS')
                             PT. SURYA PANGAN SEMESTA
                             @elseif($user->kontrak_kerja == 'SIP')
                             CV. SURYA INTI PANGAN
-                            @endif</h5>
+                            @endif</h6>
                         @elseif(auth()->user()->kategori=='Karyawan Harian')
                         <h5 class="title">{{auth()->user()->penempatan_kerja}}
                         </h5>
@@ -120,7 +120,7 @@
                     </button>
                 </div>
                 @endif
-                <form class="my-2" method="post" action="{{ url('/izin/datang_terlambat_proses/') }}" enctype=" multipart/form-data">
+                <form class="my-2" method="post" action="{{ url('/home/pulang_cepat_proses/') }}" enctype=" multipart/form-data">
                     <div id="alert_atasankosong" class="alert mt-4 alert-primary light alert-lg alert-dismissible fade show">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="20" width="20" version="1.1" id="_x32_" viewBox="0 0 512 512" xml:space="preserve">
                             <style type="text/css">
@@ -137,7 +137,7 @@
                                 <path class="st0" d="M255.996,341.378c-62.044,0-114.78,55.833-127.194,96.163C115.64,480.308,131.9,512,175.335,512h161.322   c43.435,0,59.695-31.692,46.533-74.458C370.776,397.211,318.04,341.378,255.996,341.378z" />
                             </g>
                         </svg>
-                        &nbsp;Anda Absensi Melebihi Ketentuan Jam. Silahkan Mengisi Form Datang Terlambat
+                        &nbsp;Anda Absensi Kurang dari Ketentuan Jam Pulang. Silahkan Mengisi Form Pulang Cepat
                         <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
@@ -153,12 +153,13 @@
                         <input type="hidden" name="level_jabatan" value="@if(Auth::user()->kategori=='Karyawan Harian')@else{{ $user->level_jabatan }}@endif">
                         <input type="hidden" name="divisi" value="{{ $user->divisi_id }}">
                         <input type="hidden" name="id_mapping" value="{{ $jam_kerja->id}}">
-                        <input type="hidden" name="menit_telat" value="{{ $telat}}">
+                        <input type="hidden" name="menit_telat" value="{{ $pulang_cepat}}">
                         <input type="hidden" name="id_user_atasan" value="@if($getUserAtasan=='') @else{{ $getUserAtasan->id}}@endif">
-                        <input type="hidden" name="foto_jam_absen" value="{{ $foto_jam_absen}}">
-                        <input type="hidden" name="lat_absen" value="{{ $lat_absen}}">
-                        <input type="hidden" name="long_absen" value="{{ $long_absen}}">
-                        <input type="hidden" name="jarak_masuk" value="{{ $jarak_masuk}}">
+                        <input type="hidden" name="foto_jam_pulang" value="{{ $foto_jam_pulang}}">
+                        <input type="hidden" name="total_jam_kerja" value="{{ $total_jam_kerja}}">
+                        <input type="hidden" name="lat_pulang" value="{{ $lat_pulang}}">
+                        <input type="hidden" name="long_pulang" value="{{ $long_pulang}}">
+                        <input type="hidden" name="jarak_pulang" value="{{ $jarak_pulang}}">
                     </div>
                     <div class="input-group">
                         <input type="text" class="form-control" value="Name" readonly>
@@ -166,23 +167,19 @@
                     </div>
                     <div class="input-group">
                         <input type="text" class="form-control" value="Kategori Izin" readonly>
-                        <input type="text" name="izin" class="form-control" value="Datang Terlambat" readonly>
+                        <input type="text" name="izin" class="form-control" value="Pulang Cepat" readonly>
                     </div>
                     <div class="input-group">
                         <input type="text" class="form-control" value="Tanggal" readonly>
                         <input type="date" name="tanggal" id="tanggal" value="{{date('Y-m-d')}}" readonly style="font-weight: bold" required placeholder="Tanggal" class="form-control">
                     </div>
                     <div id="jam_masuk_kerja" class="input-group">
-                        <input type="text" class="form-control" value="Jam Masuk Kerja" readonly>
-                        <input type="text" id="jam_masuk" name="jam_masuk" value="@if($jam_kerja=='' || $jam_kerja==NULL)Mapping Belum Tersedia @else {{$jam_kerja->Shift->jam_masuk}} @endif" readonly style="font-weight: bold" placeholder="Jam Masuk Kerja" class="form-control">
+                        <input type="text" class="form-control" value="Jam Pulang Kerja" readonly>
+                        <input type="text" id="jam_pulang" name="jam_pulang" value="@if($jam_kerja=='' || $jam_kerja==NULL)Mapping Belum Tersedia @else {{$jam_kerja->Shift->jam_keluar}} @endif" readonly style="font-weight: bold" placeholder="Jam Pulang Kerja" class="form-control">
                     </div>
-                    <div id="jam_datang" class="input-group">
-                        <input type="text" class="form-control" value="Jam Datang" readonly>
-                        <input type="time" id="jam" name="jam" value="{{$jam_datang}}" readonly style="font-weight: bold" placeholder="Jam Datang" class="form-control">
-                    </div>
-                    <div id="form_terlambat" class="input-group">
-                        <input type="text" class="form-control" value="Terlambat" readonly>
-                        <input type="text" id="terlambat" name="terlambat" value="{{$jumlah_terlambat}}" readonly style="font-weight: bold" placeholder="Terlambat" class="form-control">
+                    <div id="form_jam_pulang_cepat" class="input-group">
+                        <input type="text" class="form-control" value="Jam Keluar" readonly>
+                        <input type="time" readonly name="jam_pulang_cepat" id="jam_pulang_cepat" value="{{date('H:i')}}" style="font-weight: bold" placeholder="Jam Pulang" class="form-control">
                     </div>
                     <div class="input-group">
                         <textarea class="form-control" name="keterangan_izin" style="font-weight: bold" required placeholder="Keterangan"></textarea>

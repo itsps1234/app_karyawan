@@ -46,6 +46,11 @@
             /* height: 30px; */
         }
 
+        .location {
+
+            position: absolute;
+        }
+
         @media screen and (max-width: 1190px) {
             .logo {
                 width: 130px;
@@ -102,7 +107,7 @@
                                         <blockquote class="blockquote">
                                             <h4 class="card-title mb-1">PT. SURYA PANGAN SEMESTA</h4>
                                         </blockquote>
-                                        <figcaption class="blockquote-footer" style="margin: 0;">
+                                        <figcaption class="location blockquote-footer" style="margin: 0;">
                                             Lokasi <cite title="Source Title">Pabrik</cite>
                                             <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
                                             <p style="margin: 0;"><i class="mdi mdi-google-maps"></i>Kabupaten Ngawi, Jawa Timur</p>
@@ -111,7 +116,7 @@
                                     </figure>
                                 </div>
                                 <img src="{{asset('admin/assets/img/icons/misc/triangle-light.png')}}" class="scaleX-n1-rtl position-absolute bottom-0 end-0" width="166" alt="triangle background" data-app-light-img="icons/misc/triangle-light.png" data-app-dark-img="icons/misc/triangle-dark.png" />
-                                <img src="{{ url('public/holding/assets/img/logosps.png') }}" class="scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" width="150" alt="view sales" />
+                                <img src="{{ url('public/holding/assets/img/logosps.png') }}" class="logo scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" width="150" alt="view sales" />
                             </div>
                         </a>
                     </div>
@@ -130,7 +135,7 @@
                                     </figure>
                                 </div>
                                 <img src="{{asset('admin/assets/img/icons/misc/triangle-light.png')}}" class="scaleX-n1-rtl position-absolute bottom-0 end-0" width="166" alt="triangle background" data-app-light-img="icons/misc/triangle-light.png" data-app-dark-img="icons/misc/triangle-dark.png" />
-                                <img src="{{ url('public/holding/assets/img/logosipbaru.png') }}" class="scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" width="200" alt="view sales" />
+                                <img src="{{ url('public/holding/assets/img/logosipbaru.png') }}" class="logo scaleX-n1-rtl position-absolute bottom-0 end-0 me-4 pb-2" width="200" alt="view sales" />
                             </div>
                         </a>
                     </div>

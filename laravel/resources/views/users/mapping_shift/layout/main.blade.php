@@ -26,8 +26,9 @@
     {{-- <link rel="manifest" href="{{ asset('assets/assets_users/manifest.json') }}"> --}}
 
     <!-- Stylesheets -->
-    @include('users.cuti.layout.css') @yield('css')
+    @include('users.mapping_shift.layout.css') @yield('css')
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <!-- Include Bootstrap DateTimePicker CDN -->
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +37,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
     <div class="page-wraper">
 
         <!-- Preloader -->
@@ -56,12 +58,12 @@
             <div class="head-details">
                 <div class=" container">
                     <div class="dz-info">
-                        <span class="location d-block">Form Cuti
-                            @if($user->kontrak_kerja == 'sp')
+                        <span class="location d-block">Form Izin&nbsp;
+                            @if($user->kontrak_kerja == 'SP')
                             CV. SUMBER PANGAN
-                            @elseif($user->kontrak_kerja == 'sps')
+                            @elseif($user->kontrak_kerja == 'SPS')
                             PT. SURYA PANGAN SEMESTA
-                            @elseif($user->kontrak_kerja == 'sip')
+                            @elseif($user->kontrak_kerja == 'SIP')
                             CV. SURYA INTI PANGAN
                             @endif
                         </span>
@@ -99,8 +101,8 @@
 
         </div>
     </div>
-    @include('users.cuti.layout.menubar')
-    @include('users.cuti.layout.js') @yield('js')
+    @include('users.mapping_shift.layout.menubar')
+    @include('users.mapping_shift.layout.js') @yield('js')
 </body>
 
 </html>

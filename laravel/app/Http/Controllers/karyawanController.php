@@ -65,10 +65,43 @@ class karyawanController extends Controller
 
         return redirect('/karyawan/' . $holding)->with('success', 'Import Karyawan Sukses');
     }
-    public function datatable(Request $request)
+    public function datatable_bulanan(Request $request)
     {
         $holding = request()->segment(count(request()->segments()));
-        $table = User::where('kontrak_kerja', $holding)->orderBy('id', 'DESC')->get();
+        $table = User::with('Divisi')->with('Jabatan')->where('kontrak_kerja', $holding)->where('kategori', 'Karyawan Bulanan')->orderBy('id', 'DESC')->get();
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('nama_divisi', function ($row) use ($holding) {
+                    if ($row->divisi_id == '' || $row->divisi_id == NULL) {
+                        $divisi = NULL;
+                    } else {
+                        $divisi = $row->Divisi->nama_divisi;
+                    }
+                    return $divisi;
+                })
+                ->addColumn('nama_jabatan', function ($row) use ($holding) {
+                    if ($row->jabatan_id == '' || $row->jabatan_id == NULL) {
+                        $jabatan = NULL;
+                    } else {
+                        $jabatan = $row->Jabatan->nama_jabatan;
+                    }
+                    return $jabatan;
+                })
+                ->addColumn('option', function ($row) use ($holding) {
+                    $btn = '<button id="btndetail_karyawan" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-success waves-effect waves-light"><span class="tf-icons mdi mdi-eye-outline"></span></button>';
+                    $btn = $btn . '<button id="btn_mapping_shift" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-info waves-effect waves-light"><span class="tf-icons mdi mdi-clock-outline"></span></button>';
+                    $btn = $btn . '<button id="btn_edit_password" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-secondary waves-effect waves-light"><span class="tf-icons mdi mdi-key-outline"></span></button>';
+                    $btn = $btn . '<button type="button" id="btn_delete_karyawan" data-id="' . $row->id . '" data-holding="' . $holding . '" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
+                    return $btn;
+                })
+                ->rawColumns(['nama_jabatan', 'nama_divisi', 'option'])
+                ->make(true);
+        }
+    }
+    public function datatable_harian(Request $request)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table = User::where('kontrak_kerja', $holding)->where('kategori', 'Karyawan Harian')->orderBy('id', 'DESC')->get();
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('option', function ($row) use ($holding) {
@@ -110,6 +143,91 @@ class karyawanController extends Controller
         echo "<option value=''>Pilih Desa...</option>";
         foreach ($get_kecamatan as $kecamatan) {
             echo "<option value='$kecamatan->code'>$kecamatan->name</option>";
+        }
+    }
+    public function get_atasan($id, $level)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        if ($holding == 'sp') {
+            $kontrak = 'SP';
+        } else if ($holding == 'sps') {
+            $kontrak = 'SPS';
+        } else {
+            $kontrak = 'SIP';
+        }
+        // dd($holding);
+        $get_level = Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $level)->first();
+        // dd($get_level->level_jabatan);
+        if ($get_level->level_jabatan <= 4) {
+            $get_atasan = User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                ->where('users.kontrak_kerja', $kontrak)
+                ->where('level_jabatans.level_jabatan', '<', $get_level->level_jabatan)
+                ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                ->get();
+        } else {
+            $get_atasan = User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                ->where('divisis.id', $id)
+                ->where('users.kontrak_kerja', $kontrak)
+                ->where('level_jabatans.level_jabatan', '<', $get_level->level_jabatan)
+                ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                ->get();
+        }
+        echo "<option value=''>Pilih Atasan...</option>";
+        foreach ($get_atasan as $atasan) {
+            echo "<option value='$atasan->id'>$atasan->name ($atasan->nama_jabatan | $atasan->nama_bagian)</option>";
+        }
+    }
+    public function get_atasan2($id, $level)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        if ($holding == 'sp') {
+            $kontrak = 'SP';
+        } else if ($holding == 'sps') {
+            $kontrak = 'SPS';
+        } else {
+            $kontrak = 'SIP';
+        }
+        $get_level = Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $level)->first();
+        // dd($get_level);
+        if ($get_level == NULL || $get_level == '') {
+            $get_atasan = User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                ->where('level_jabatans.level_jabatan', '<', 2)
+                ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                ->get();
+        } else {
+            if ($get_level->level_jabatan <= 4) {
+                $get_atasan = User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                    ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                    ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                    ->where('users.kontrak_kerja', $kontrak)
+                    ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                    ->where('level_jabatans.level_jabatan', '<', $get_level->level_jabatan)
+                    ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                    ->get();
+            } else {
+                $get_atasan = User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                    ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                    ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                    ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                    ->where('divisis.id', $id)
+                    ->where('users.kontrak_kerja', $kontrak)
+                    ->where('level_jabatans.level_jabatan', '<', $get_level->level_jabatan)
+                    ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                    ->get();
+            }
+        }
+        echo "<option value=''>Pilih Atasan...</option>";
+        foreach ($get_atasan as $atasan) {
+            echo "<option value='$atasan->id'>$atasan->name ($atasan->nama_jabatan | $atasan->nama_bagian)</option>";
         }
     }
     public function tambahKaryawan()
@@ -474,7 +592,6 @@ class karyawanController extends Controller
                 'nik' => 'required|max:255',
                 'npwp' => 'required|max:255',
                 'fullname' => 'required|max:255',
-                'motto' => 'required|max:255',
                 'email' => 'required|max:255',
                 'telepon' => 'required|max:255',
                 'username' => 'required|max:255',
@@ -504,7 +621,6 @@ class karyawanController extends Controller
                     'nik' => 'required|max:255',
                     'npwp' => 'required|max:255',
                     'fullname' => 'required|max:255',
-                    'motto' => 'required|max:255',
                     'email' => 'required|max:255',
                     'telepon' => 'required|max:13|min:11',
                     'username' => 'required|max:255',
@@ -540,7 +656,6 @@ class karyawanController extends Controller
                     'nik' => 'required|max:255',
                     'npwp' => 'required|max:255',
                     'fullname' => 'required|max:255',
-                    'motto' => 'required|max:255',
                     'email' => 'required|max:255',
                     'telepon' => 'required|max:13|min:11',
                     'username' => 'required|max:255',
@@ -594,12 +709,14 @@ class karyawanController extends Controller
         $validatedData = $request->validate($rules, $customMessages);
         if ($validatedData['kategori'] == 'Karyawan Harian') {
             $site_job = NULL;
-            $kontrak_kerja = NULL;
+            $kontrak_kerja = $request['kontrak_kerja'];
             $tgl_mulai_kontrak = NULL;
             $tgl_selesai_kontrak = NULL;
             $lama_kontrak_kerja = NULL;
         } else if ($validatedData['kategori'] == 'Karyawan Bulanan') {
             if ($validatedData['lama_kontrak_kerja'] == 'tetap') {
+                // dd('ok');
+                $tgl_mulai_kontrak = NULL;
                 $tgl_selesai_kontrak = NULL;
                 $lama_kontrak_kerja = NULL;
             } else {
@@ -622,6 +739,13 @@ class karyawanController extends Controller
         } else {
             $img_name = NULL;
         }
+        $get_level_atasan = Jabatan::join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $request["jabatan_id"])->first();
+        $get_level_atasan = $get_level_atasan->level_jabatan - 1;
+        // dd($get_level_atasan);
+        // $get_atasan = User::join('jabatans', 'jabatans.id', 'users.jabatan_id')
+        //     ->join('jabatans', 'jabatans.id', 'users.jabatan_id')
+        //     ->join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+        //     ->where('jabatans.id',);
         $holding = request()->segment(count(request()->segments()));
         User::where('id', $id)->update(
             [
@@ -629,7 +753,7 @@ class karyawanController extends Controller
                 'nik' => $validatedData['nik'],
                 'npwp' => $validatedData['npwp'],
                 'fullname' => $validatedData['fullname'],
-                'motto' => $validatedData['motto'],
+                'motto' => $request['motto'],
                 'foto_karyawan' => $img_name,
                 'email' => $validatedData['email'],
                 'telepon' => $validatedData['telepon'],
@@ -661,15 +785,22 @@ class karyawanController extends Controller
                 'detail_alamat' => Provincies::where('code', $validatedData['provinsi'])->value('name') . ' , ' . Cities::where('code', $validatedData['kabupaten'])->value('name') . ' , ' . District::where('code', $validatedData['kecamatan'])->value('name') . ' , ' . Village::where('code', $validatedData['desa'])->value('name') . ' , RT. ' . $validatedData['rt'] . ' , RW. ' . $validatedData['rw'] . ' , ' . $validatedData['alamat'],
                 'dept_id' => Departemen::where('id', $request["departemen_id"])->value('id'),
                 'divisi_id' => Divisi::where('id', $request["divisi_id"])->value('id'),
+                'bagian_id' => Bagian::where('id', $request["bagian_id"])->value('id'),
                 'jabatan_id' => Jabatan::where('id', $request["jabatan_id"])->value('id'),
                 'divisi1_id' => Divisi::where('id', $request["divisi1_id"])->value('id'),
+                'bagian1_id' => Bagian::where('id', $request["bagian1_id"])->value('id'),
                 'jabatan1_id' => Jabatan::where('id', $request["jabatan1_id"])->value('id'),
                 'divisi2_id' => Divisi::where('id', $request["divisi2_id"])->value('id'),
+                'bagian2_id' => Bagian::where('id', $request["bagian2_id"])->value('id'),
                 'jabatan2_id' => Jabatan::where('id', $request["jabatan2_id"])->value('id'),
                 'divisi3_id' => Divisi::where('id', $request["divisi3_id"])->value('id'),
+                'bagian3_id' => Bagian::where('id', $request["bagian3_id"])->value('id'),
                 'jabatan3_id' => Jabatan::where('id', $request["jabatan3_id"])->value('id'),
                 'divisi4_id' => Divisi::where('id', $request["divisi4_id"])->value('id'),
+                'bagian4_id' => Bagian::where('id', $request["bagian4_id"])->value('id'),
                 'jabatan4_id' => Jabatan::where('id', $request["jabatan4_id"])->value('id'),
+                'atasan_1' => User::where('id', $request["atasan"])->value('id'),
+                'atasan_2' => User::where('id', $request["atasan2"])->value('id'),
             ]
         );
         ActivityLog::create([
@@ -811,7 +942,7 @@ class karyawanController extends Controller
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('option', function ($row) use ($holding) {
-                    $btn = '<button id="btn_edit_mapping_shift" type="button" data-id="' . $row->id . '" data-shift="' . $row->shift_id . '"  data-userid="' . $row->user_id . '" data-tanggal="' . $row->tanggal . '" data-holding="' . $holding . '" class="btn btn-icon btn-warning waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_edit_shift"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
+                    $btn = '<button id="btn_edit_mapping_shift" type="button" data-id="' . $row->id . '" data-shift="' . $row->shift_id . '"  data-userid="' . $row->user_id . '" data-tanggal="' . $row->tanggal_masuk . '" data-holding="' . $holding . '" class="btn btn-icon btn-warning waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_edit_shift"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
                     $btn = $btn . '<button id="btn_delete_mapping_shift" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-danger waves-effect waves-light"><span class="tf-icons mdi mdi-delete-outline"></span></button>';
                     return $btn;
                 })
@@ -873,35 +1004,49 @@ class karyawanController extends Controller
 
         // dd($request->all());
         foreach ($daterange as $date) {
-            $tanggal = $date->format("Y-m-d");
+            $tanggal_masuk = $date->format("Y-m-d");
+            $tanggal_pulang = $date->format("Y-m-d");
+            $malam = $date->modify('+1 day');
+            $tanggal_pulang_malam = $malam->format("Y-m-d");
+            // dd($tanggal_pulang_malam);
 
             if ($request["shift_id"] == '3ac53e9a-84d6-445e-9b48-fdb8a6b02cb2') {
                 $request["status_absen"] = "Libur";
             } else {
-                $request["status_absen"] = "Tidak Masuk";
+                $request["status_absen"] = NULL;
             }
 
-            $request["tanggal"] = $tanggal;
-
+            $request["tanggal_masuk"] = $tanggal_masuk;
+            $nama_shift = Shift::where('id', $request['shift_id'])->value('nama_shift');
+            if ($nama_shift == 'Malam') {
+                $request["tanggal_pulang"] = $tanggal_pulang_malam;
+            } else {
+                $request["tanggal_pulang"] = $tanggal_pulang;
+            }
+            // dd($request["tanggal_pulang"]);
             $validatedData = $request->validate([
                 'user_id' => 'required',
                 'shift_id' => 'required',
-                'tanggal' => 'required',
-                'status_absen' => 'required',
+                'tanggal_masuk' => 'required',
+                'tanggal_pulang' => 'required',
             ]);
 
             MappingShift::insert([
                 'user_id' => User::where('id', $validatedData['user_id'])->value('id'),
+                'nik_karyawan' => User::where('id', $validatedData['user_id'])->value('nomor_identitas_karyawan'),
+                'nama_karyawan' => User::where('id', $validatedData['user_id'])->value('name'),
                 'shift_id' => Shift::where('id', $validatedData['shift_id'])->value('id'),
-                'tanggal' => $validatedData['tanggal'],
-                'status_absen' => $validatedData['status_absen'],
+                'nama_shift' => Shift::where('id', $validatedData['shift_id'])->value('nama_shift'),
+                'tanggal_masuk' => $validatedData['tanggal_masuk'],
+                'tanggal_pulang' => $validatedData['tanggal_pulang'],
+                'status_absen' => $request['status_absen'],
             ]);
         }
         $holding = request()->segment(count(request()->segments()));
         ActivityLog::create([
-            'user_id' => $request->user()->id,
+            'user_id' => Auth::user()->id,
             'activity' => 'create',
-            'description' => 'Menambahkan shift karyawan ' . $request->name,
+            'description' => 'Menambahkan shift karyawan ' . Auth::user()->name,
         ]);
         return redirect('/karyawan/shift/' . $request["user_id"] . '/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
     }
@@ -934,22 +1079,32 @@ class karyawanController extends Controller
     {
         date_default_timezone_set('Asia/Jakarta');
 
-
-        // if ($request["shift_id_update"] == 1) {
-        //     $request["status_absen"] = "Libur";
-        // } else {
-        //     $request["status_absen"] = "Tidak Masuk";
-        // }
+        $nama_shift = Shift::where('id', $request['shift_id_update'])->value('nama_shift');
+        if ($nama_shift == 'Libur') {
+            $request["status_absen"] = "Libur";
+        } else if ($nama_shift == 'Malam') {
+            $tanggal_pulang = date('Y-m-d', strtotime('+1 days', strtotime($request['tanggal_update'])));
+            // dd($tanggal_pulang);
+            $request["status_absen"] = NULL;
+            $request["tanggal_masuk"] = $request['tanggal_update'];
+            $request["tanggal_pulang"] = $tanggal_pulang;
+        } else {
+            $request["tanggal_masuk"] = $request['tanggal_update'];
+            $request["tanggal_pulang"] = $request['tanggal_update'];
+            $request["status_absen"] = NULL;
+        }
         // dd($request->all());
         $validatedData = $request->validate([
             'shift_id_update' => 'required',
-            'tanggal_update' => 'required',
+            'tanggal_masuk' => 'required',
+            'tanggal_pulang' => 'required',
         ]);
 
         MappingShift::where('id', $request["id_shift"])->update([
             'user_id' => $request['user_id'],
             'shift_id' => Shift::where('id', $validatedData['shift_id_update'])->value('id'),
-            'tanggal' => $validatedData['tanggal_update'],
+            'tanggal_masuk' => $validatedData['tanggal_masuk'],
+            'tanggal_pulang' => $validatedData['tanggal_pulang'],
         ]);
         ActivityLog::create([
             'user_id' => $request->user()->id,

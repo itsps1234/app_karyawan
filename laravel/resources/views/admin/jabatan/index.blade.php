@@ -64,7 +64,13 @@
                                     <br>
                                     <div class="row g-2">
                                         <div class="col mb-2">
-                                            <?php $get_jabatan = array(
+                                            <?php
+
+                                            use App\Models\Jabatan;
+                                            use Illuminate\Database\Eloquent\Model;
+                                            use Illuminate\Support\Facades\App;
+
+                                            $get_jabatan = array(
                                                 [
                                                     "nama" => "DIREKTUR"
                                                 ],
@@ -181,9 +187,60 @@
                                     </div>
                                     <br>
                                     <div class="row g-2">
+                                        <?php $get_jabatan = array(
+                                            [
+                                                "nama" => "DIREKTUR"
+                                            ],
+                                            [
+                                                "nama" => "HEAD"
+                                            ],
+                                            [
+                                                "nama" => "MANAGER"
+                                            ],
+                                            [
+                                                "nama" => "REGIONAL MANAGER"
+                                            ],
+                                            [
+                                                "nama" => "JUNIOR MANAGER"
+                                            ],
+                                            [
+                                                "nama" => "SUPERVISOR"
+                                            ],
+                                            [
+                                                "nama" => "KOORDINATOR"
+                                            ],
+                                            [
+                                                "nama" => "OPERATOR"
+                                            ],
+                                            [
+                                                "nama" => "STAFF"
+                                            ],
+                                            [
+                                                "nama" => "ADMIN"
+                                            ],
+                                            [
+                                                "nama" => "ASM"
+                                            ],
+                                            [
+                                                "nama" => "SALES"
+                                            ],
+                                            [
+                                                "nama" => "SOPIR"
+                                            ],
+                                            [
+                                                "nama" => "KERNET"
+                                            ],
+                                        );
+                                        ?>
                                         <div class="col mb-2">
+                                            <input type="hidden" name="id_jabatan" id="id_jabatan" value="">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="text" class="form-control @error('nama_jabatan_update') is-invalid @enderror" id="nama_jabatan_update" name="nama_jabatan_update" autofocus value="{{ old('nama_jabatan_update') }}">
+                                                <select class="form-control @error('nama_jabatan_update') is-invalid @enderror" id="nama_jabatan_update" name="nama_jabatan_update" autofocus value="{{ old('nama_jabatan_update') }}">
+                                                    <option value=""> Pilih Jabatan</option>
+                                                    @foreach($get_jabatan as $s)
+                                                    <option value="{{$s['nama']}}">{{$s['nama']}}</option>
+                                                    @endforeach
+                                                </select>
                                                 <label for="nama_jabatan_update" class="float-left">Nama Jabatan</label>
                                             </div>
                                             @error('nama_jabatan_update')
@@ -191,24 +248,8 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('level_jabatan_update') is-invalid @enderror" id="level_jabatan_update" name="level_jabatan_update" autofocus value="{{ old('level_jabatan_update') }}">
-                                                    <option value=""> Pilih Level</option>
-                                                    @foreach($get_level as $data)
-                                                    <option value="{{$data->id}}">{{$data->level_jabatan}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="level_jabatan_update" class="float-left">Level Jabatan</label>
-                                            </div>
-                                            @error('level_jabatan_update')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
                                 </div>
+                                <input type="hidden" class="form-control @error('level_jabatan_update') is-invalid @enderror" id="level_jabatan_update" name="level_jabatan_update" readonly value="{{ old('level_jabatan_update') }}">
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                                         Close
@@ -283,8 +324,10 @@
             },
         ],
         order: [
-            [1, 'asc']
-        ]
+            [1, 'asc'],
+            [2, 'asc'],
+            [4, 'asc'],
+        ],
     });
 </script>
 <script>
@@ -345,7 +388,6 @@
         } else {
             $('#level_jabatan').val('7');
         }
-
     })
     $('#nama_jabatan_update').on('change', function() {
         let id = $(this).val();
@@ -380,7 +422,6 @@
         } else {
             $('#level_jabatan_update').val('7');
         }
-
     })
     $(document).on("click", "#btn_edit_jabatan", function() {
         let id = $(this).data('id');
@@ -388,6 +429,7 @@
         let divisi = $(this).data("divisi");
         let level = $(this).data("level");
         let jabatan = $(this).data("jabatan");
+        let atasan = $(this).data("atasan");
         let holding = $(this).data("holding");
         console.log(bagian);
         $('#id_jabatan').val(id);
@@ -399,10 +441,8 @@
             // console.log($(this).val().trim());
             return $(this).val().trim() == bagian
         }).prop('selected', true)
-        $('#level_jabatan_update option').filter(function() {
-            // console.log($(this).val().trim());
-            return $(this).val().trim() == level
-        }).prop('selected', true)
+
+        $('#level_jabatan_update').val(level);
         $('#nama_jabatan_update').val(jabatan);
         $('#modal_edit_jabatan').modal('show');
 

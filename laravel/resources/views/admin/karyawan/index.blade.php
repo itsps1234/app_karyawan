@@ -20,6 +20,8 @@
                     </div>
                 </div>
                 <div class="card-body">
+                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_tambah_karyawan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
+                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_import_karyawan"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
                     <hr class="my-5">
                     <div class="row g-3">
                         <div class="col-md-3 col-6">
@@ -76,8 +78,6 @@
                         </div>
                     </div>
                     <hr class="my-5">
-                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#modal_tambah_karyawan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
-                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#modal_import_karyawan"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
                     <div class="modal fade" id="modal_tambah_karyawan" data-bs-backdrop="static" tabindex="-1">
                         <div class="modal-dialog modal-dialog-scrollable modal-lg">
                             <form method="post" action="{{ url('/karyawan/tambah-karyawan-proses/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
@@ -732,21 +732,64 @@
                             </form>
                         </div>
                     </div>
-                    <table class="table" id="table_karyawan" style="width: 100%;">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>No.</th>
-                                <th>Nama</th>
-                                <th>Email</th>
-                                <th>Telepon</th>
-                                <th>NPWP</th>
-                                <th>Alamat</th>
-                                <th>Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                        </tbody>
-                    </table>
+                    <div class="nav-align-top">
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="nav nav-pills nav-fill" role="tablist">
+                                    <li class="nav-item">
+                                        <a type=" button" style="width: auto;" class="nav-link active" role="tab" data-bs-toggle="tab" href="#navs-pills-justified-home">
+                                            <i class="tf-icons mdi mdi-account-tie me-1"></i><span class="d-none d-sm-block">Karyawan Bulanan</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a type="button" style="width: auto;" class="nav-link" role="tab" data-bs-toggle="tab" href="#navs-pills-justified-profile">
+                                            <i class="tf-icons mdi mdi-account me-1"></i><span class="d-none d-sm-block">Karyawan Harian</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
+                                <table class="table" id="table_karyawan_bulanan" style="width: 100%;">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Nomor&nbsp;ID</th>
+                                            <th>Nama&nbsp;Karyawan</th>
+                                            <th>Telepon</th>
+                                            <th>Email</th>
+                                            <th>Divisi</th>
+                                            <th>Jabatan</th>
+                                            <th>Penempatan&nbsp;Kerja</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
+                                <table class="table" id="table_karyawan_harian" style="width: 100%;">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nomor&nbsp;ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nama&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Username&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Telepon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Alamat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th>Tanggal&nbsp;Masuk</th>
+                                            <th>Penempatan&nbsp;Kerja</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -761,13 +804,13 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
     let holding = window.location.pathname.split("/").pop();
-    var table = $('#table_karyawan').DataTable({
+    var table = $('#table_karyawan_bulanan').DataTable({
         "scrollY": true,
         "scrollX": true,
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ url('karyawan-datatable') }}" + '/' + holding,
+            url: "{{ url('karyawan_bulanan-datatable') }}" + '/' + holding,
         },
         columns: [{
                 data: "id",
@@ -777,24 +820,88 @@
                 }
             },
             {
-                data: 'name',
-                name: 'name'
+                data: 'nomor_identitas_karyawan',
+                name: 'nomor_identitas_karyawan'
             },
             {
-                data: 'email',
-                name: 'email'
+                data: 'name',
+                name: 'name'
             },
             {
                 data: 'telepon',
                 name: 'telepon'
             },
             {
-                data: 'npwp',
-                name: 'npwp'
+                data: 'email',
+                name: 'email'
+            },
+            {
+                data: 'nama_divisi',
+                name: 'nama_divisi'
+            },
+            {
+                data: 'nama_jabatan',
+                name: 'nama_jabatan'
+            },
+            {
+                data: 'penempatan_kerja',
+                name: 'penempatan_kerja'
+            },
+            {
+                data: 'option',
+                name: 'option'
+            },
+        ],
+        order: [
+            [2, 'asc']
+        ]
+    });
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+        table.columns.adjust().draw().responsive.recalc();
+        // table.draw();
+    })
+    var table1 = $('#table_karyawan_harian').DataTable({
+        "scrollY": true,
+        "scrollX": true,
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ url('karyawan_harian-datatable') }}" + '/' + holding,
+        },
+        columns: [{
+                data: "id",
+
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                data: 'nomor_identitas_karyawan',
+                name: 'nomor_identitas_karyawan'
+            },
+            {
+                data: 'name',
+                name: 'name'
+            },
+            {
+                data: 'username',
+                name: 'username'
+            },
+            {
+                data: 'telepon',
+                name: 'telepon'
             },
             {
                 data: 'detail_alamat',
                 name: 'detail_alamat'
+            },
+            {
+                data: 'tgl_join',
+                name: 'tgl_join'
+            },
+            {
+                data: 'penempatan_kerja',
+                name: 'penempatan_kerja'
             },
             {
                 data: 'option',
@@ -802,6 +909,10 @@
             },
         ]
     });
+    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+        table1.columns.adjust().draw().responsive.recalc();
+        // table.draw();
+    })
 </script>
 <script>
     function bankCheck(that) {
@@ -1128,8 +1239,8 @@
     $('#form_level_site').hide();
     $(document).on("click", "#btndetail_karyawan", function() {
         let id = $(this).data('id');
-        // console.log(id);
         let holding = $(this).data("holding");
+        console.log(holding);
         let url = "{{ url('/karyawan/detail/')}}" + '/' + id + '/' + holding;
         $.ajax({
             url: url,

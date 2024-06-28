@@ -140,7 +140,7 @@
                                     }
                         ?>
                     </span>
-                    <h2 class="name mb-0">{{ Auth::user()->name }}</h2>
+                    <h5 class="name mb-0">{{ Auth::user()->name }}</h5>
                 </div>
                 <div class="dz-media media-50 rounded-circle">
                     @if(Auth::user()->foto_karyawan == '' || Auth::user()->foto_karyawan == NULL)

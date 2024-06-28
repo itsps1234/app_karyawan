@@ -188,8 +188,8 @@
 			</li>
 			@if(Auth::user()->access_1=='on')
 			<li class="nav-label">ACCESS</li>
-			<li class="nav-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
-				<a class="nav-link">
+			<li class="nav-color">
+				<a class="nav-link" href="{{ url('/mapping_shift/dashboard/') }}">
 					<span class="dz-icon bg-blue light">
 						<i class="fa-solid fa-users"></i>
 					</span>

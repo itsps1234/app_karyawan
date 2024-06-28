@@ -11,7 +11,7 @@
         <div class="col-md-12">
             <ul class="nav nav-pills flex-column flex-md-row mb-4 gap-2 gap-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="javascript:void(0);"><i class="mdi mdi-account-outline mdi-20px me-1"></i>{{$karyawan->fullname}}</a>
+                    <a class="nav-link active" href="javascript:void(0);"><i class="mdi mdi-account-outline mdi-20px me-1"></i>{{$karyawan->fullname}}&nbsp;<b>[{{$karyawan->nomor_identitas_karyawan}}]</b></a>
                 </li>
             </ul>
             <div class="card mb-4">
@@ -203,6 +203,10 @@
                                         [
                                             "kode_bank" => "BOCBC",
                                             "bank" => "BANK OCBC"
+                                        ],
+                                        [
+                                            "kode_bank" => "BMANDIRI",
+                                            "bank" => "BANK MANDIRI"
                                         ]
                                     );
                                     ?>
@@ -315,11 +319,18 @@
                             </div>
                             <div id="form_jabatan" class="col-md-3">
                                 <?php
+                                // Bagian
+                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->bagian_id)->get();
+                                $data_bagian1 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi1_id)->get();
+                                $data_bagian2 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi2_id)->get();
+                                $data_bagian3 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi3_id)->get();
+                                $data_bagian4 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi4_id)->get();
+                                // Jabatan
                                 $data_jabatan = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian_id)->get();
-                                $data_jabatan1 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi1_id)->get();
-                                $data_jabatan2 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi2_id)->get();
-                                $data_jabatan3 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi3_id)->get();
-                                $data_jabatan4 = App\Models\Jabatan::Where('divisi_id', $karyawan->divisi4_id)->get();
+                                $data_jabatan1 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian1_id)->get();
+                                $data_jabatan2 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian2_id)->get();
+                                $data_jabatan3 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian3_id)->get();
+                                $data_jabatan4 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian4_id)->get();
                                 // echo $kec;
                                 ?>
                                 <div class="form-floating form-floating-outline">
@@ -339,101 +350,69 @@
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
                                             <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                                Jika Karyawan Memiliki Lebih Dari 1 Jabatan
+                                                Tambahkan Atasan Karyawan
                                             </button>
                                         </h2>
 
-                                        <div id="accordionOne" class="accordion-collapse collapse @if($karyawan->divisi1_id=='')@else show @endif" data-bs-parent="#accordionExample">
+                                        <div id="accordionOne" class="accordion-collapse collapse show " data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <div class="row g-2">
                                                     <div class="col mb-2">
                                                         <div class="form-floating form-floating-outline">
-                                                            <select name="divisi1_id" id="id_divisi1" class="form-control">
-                                                                <option disabled selected value="">Pilih Divisi</option>
-                                                                @foreach ($data_divisi as $divisi)
-                                                                <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi1_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
+                                                            <select name="atasan" id="atasan" class="form-control">
+                                                                <option disabled selected value="">Atasan 1</option>
+                                                                <?php
+                                                                $level = App\Models\Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $karyawan->jabatan_id)->first();
+                                                                if ($level == '' || $level == NULL) {
+                                                                    $get_atasan = NULL;
+                                                                } else {
+                                                                    $get_atasan = App\Models\User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                                                                        ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                                                                        ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                                                                        ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                                                                        ->where('users.kontrak_kerja', $karyawan->kontrak_kerja)
+                                                                        ->where('level_jabatans.level_jabatan', '<', $level->level_jabatan)
+                                                                        ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                                                                        ->get();
+                                                                }
+                                                                ?>
+                                                                @if($karyawan->atasan_1==NULL || $karyawan->atasan_1=='')
+                                                                @else
+                                                                @foreach($get_atasan as $atasan)
+                                                                <option value="{{$atasan->id}}" {{($atasan->id == $karyawan->atasan_1) ? 'selected' : ''}}>{{$atasan->name}} ({{$atasan->nama_jabatan}} | {{$atasan->nama_bagian}})</option>
                                                                 @endforeach
+                                                                @endif
                                                             </select>
-                                                            <label for=" id_divisi1">Divisi 2</label>
+                                                            <label for="atasan">Atasan 1</label>
                                                         </div>
                                                     </div>
                                                     <div class="col mb-2">
                                                         <div class="form-floating form-floating-outline">
-                                                            <select name="jabatan1_id" id="id_jabatan1" class="form-control">
-                                                                @foreach ($data_jabatan1 as $jabatan)
-                                                                <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan1_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
+                                                            <select name="atasan2" id="atasan2" class="form-control">
+                                                                <option disabled selected value="">Atasan 2</option>
+                                                                <?php
+                                                                $level = App\Models\Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $karyawan->jabatan_id)->first();
+                                                                if ($level == '' || $level == NULL) {
+                                                                    $get_atasan = NULL;
+                                                                } else {
+                                                                    $get_atasan = App\Models\User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
+                                                                        ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                                                                        ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                                                                        ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                                                                        ->where('users.kontrak_kerja', $karyawan->kontrak_kerja)
+                                                                        ->where('level_jabatans.level_jabatan', '<', $level->level_jabatan)
+                                                                        ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
+                                                                        ->get();
+                                                                }
+                                                                ?>
+                                                                @if($karyawan->atasan_2==NULL || $karyawan->atasan_2=='')
+                                                                @else
+                                                                @foreach($get_atasan as $atasan)
+                                                                <option value="{{$atasan->id}}" {{($atasan->id == $karyawan->atasan_2) ? 'selected' : ''}}>{{$atasan->name}} ({{$atasan->nama_jabatan}} | {{$atasan->nama_bagian}})</option>
                                                                 @endforeach
+                                                                @endif
                                                             </select>
-                                                            <label for=" id_jabatan1">Jabatan 2</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="divisi2_id" id="id_divisi2" class="form-control">
-                                                                <option disabled selected value="">Pilih Divisi</option>
-                                                                @foreach ($data_divisi as $divisi)
-                                                                <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi2_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_divisi2">Divisi 3</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="jabatan2_id" id="id_jabatan2" class="form-control">
-                                                                @foreach ($data_jabatan2 as $jabatan)
-                                                                <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan2_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_jabatan2">Jabatan 3</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="divisi3_id" id="id_divisi3" class="form-control">
-                                                                <option disabled selected value="">Pilih Divisi</option>
-                                                                @foreach ($data_divisi as $divisi)
-                                                                <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi3_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_divisi3">Divisi 4</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="jabatan3_id" id="id_jabatan3" class="form-control">
-                                                                @foreach ($data_jabatan3 as $jabatan)
-                                                                <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan3_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_jabatan3">Jabatan 4</label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row g-2 mt-2">
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="divisi4_id" id="id_divisi4" class="form-control">
-                                                                <option disabled selected value="">Pilih Divisi</option>
-                                                                @foreach ($data_divisi as $divisi)
-                                                                <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi4_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_divisi4">Divisi 5</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="jabatan4_id" id="id_jabatan4" class="form-control">
-                                                                @foreach ($data_jabatan4 as $jabatan)
-                                                                <option value="{{$jabatan->id}}" {{($jabatan->id == $karyawan->jabatan4_id) ? 'selected' : ''}}>{{$jabatan->nama_jabatan}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <label for=" id_jabatan4">Jabatan 5</label>
+                                                            <label for=" atasan2">Atasan 2</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -464,6 +443,7 @@
                                     </select>
                                     <label for="penempatan_kerja">Penempatan Kerja</label>
                                 </div>
+                                <p class="text-info">Untuk Kebutuhan Absensi</p>
                                 @error('penempatan_kerja')
                                 <p class="alert alert-danger">{{$message}}</p>
                                 @enderror
@@ -533,6 +513,7 @@
                                     </select>
                                     <label for="site_job">Site yang Dipegang</label>
                                 </div>
+                                <p class="text-info">Untuk Kebutuhan Approval</p>
                                 @error('site_job')
                                 <p class="alert alert-danger">{{$message}}</p>
                                 @enderror
@@ -737,6 +718,7 @@
             $('#form_jabatan_more').hide();
             $('#form_jabatan').hide();
             $('#form_lama_kotrak').hide();
+            $('#form_bagian').hide();
             $('#form_kontrak').hide();
             $('#form_tgl_kontrak_kerja').hide();
             $('#form_level').hide();
@@ -750,6 +732,7 @@
             $('#form_jabatan_more').show();
             $('#form_jabatan').show();
             $('#form_lama_kotrak').show();
+            $('#form_bagian').show();
             $('#form_kontrak').show();
             $('#form_tgl_kontrak_kerja').show();
             $('#form_level').show();
@@ -766,6 +749,7 @@
                 $('#form_jabatan_more').hide();
                 $('#form_jabatan').hide();
                 $('#form_lama_kotrak').hide();
+                $('#form_bagian').hide();
                 $('#form_kontrak').hide();
                 $('#form_tgl_kontrak_kerja').hide();
                 $('#form_level').hide();
@@ -779,6 +763,7 @@
                 $('#form_jabatan_more').show();
                 $('#form_jabatan').show();
                 $('#form_lama_kotrak').show();
+                $('#form_bagian').show();
                 $('#form_kontrak').show();
                 $('#form_tgl_kontrak_kerja').show();
                 $('#form_level').show();
@@ -837,87 +822,6 @@
 
             })
         })
-        $('#id_divisi1').on('change', function() {
-            let id_divisi = $('#id_divisi1').val();
-            // console.log(id_divisi);
-            $.ajax({
-                type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
-                data: {
-                    id_divisi: id_divisi
-                },
-                cache: false,
-
-                success: function(msg) {
-                    $('#id_jabatan1').html(msg);
-                },
-                error: function(data) {
-                    console.log('error:', data)
-                },
-
-            })
-        })
-        $('#id_divisi2').on('change', function() {
-            let id_divisi = $('#id_divisi2').val();
-            // console.log(id_divisi);
-            $.ajax({
-                type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
-                data: {
-                    id_divisi: id_divisi
-                },
-                cache: false,
-
-                success: function(msg) {
-                    $('#id_jabatan2').html(msg);
-                },
-                error: function(data) {
-                    console.log('error:', data)
-                },
-
-            })
-        })
-        $('#id_divisi3').on('change', function() {
-            let id_divisi = $('#id_divisi3').val();
-            // console.log(id_divisi);
-            $.ajax({
-                type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
-                data: {
-                    id_divisi: id_divisi
-                },
-                cache: false,
-
-                success: function(msg) {
-                    $('#id_jabatan3').html(msg);
-                },
-                error: function(data) {
-                    console.log('error:', data)
-                },
-
-            })
-        })
-        $('#id_divisi4').on('change', function() {
-            let id_divisi = $('#id_divisi4').val();
-            // console.log(id_divisi);
-            $.ajax({
-                type: 'GET',
-                url: "{{url('karyawan/get_jabatan')}}",
-                data: {
-                    id_divisi: id_divisi
-                },
-                cache: false,
-
-                success: function(msg) {
-                    $('#id_jabatan4').html(msg);
-                },
-                error: function(data) {
-                    console.log('error:', data)
-                },
-
-            })
-        })
-
         $('#id_bagian').on('change', function() {
             let id_bagian = $('#id_bagian').val();
             // console.log(id_bagian);
@@ -938,6 +842,59 @@
 
             })
         })
+        $('#id_jabatan').on('change', function() {
+            let id = $(this).val();
+            let divisi = $('#id_divisi').val();
+            let holding = '{{$holding}}';
+            let url = "{{url('karyawan/atasan/get_jabatan')}}" + "/" + divisi + "/" + id + "/" + holding;
+            // console.log(divisi);
+            console.log(holding);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_divisi: id_divisi
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#atasan').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        });
+        $('#atasan').on('change', function() {
+            let id = $('#id_jabatan').val();
+            let divisi = $('#id_divisi').val();
+            let holding = '{{$holding}}';
+            let url = "{{url('karyawan/atasan2/get_jabatan')}}" + "/" + divisi + "/" + id + "/" + holding;
+            console.log(divisi);
+            // console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: false,
+                cache: false,
+                processData: false,
+                // data: {
+                //     id_divisi: id_divisi
+                // },
+                success: function(response) {
+                    // console.log(response);
+                    $('#atasan2').html(response);
+                },
+                error: function(data) {
+                    console.log('error:', data)
+                },
+
+            })
+        });
+
     })
     $(function() {
         $('#nik').keyup(function(e) {
@@ -1091,9 +1048,9 @@
 </script>
 <script>
     $(document).on("click", "#btndetail_karyawan", function() {
-        console.log('ok');
         let id = $(this).data('id');
         let holding = $(this).data("holding");
+        // console.log(id);
         let url = "{{ url('/karyawan/detail/')}}" + '/' + id + '/' + holding;
         $.ajax({
             url: url,

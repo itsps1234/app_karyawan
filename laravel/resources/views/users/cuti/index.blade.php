@@ -24,119 +24,119 @@
     }
 </style>
 
-@if(Session::has('addcutisuccess'))
-<div id="alert_addcutisuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
-    </svg>
-    <strong>Success!</strong> Anda Berhasil Pengajuan Cuti
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('addcutierror1'))
-<div id="alert_addcutierror1" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('addcutierror2'))
-<div id="alert_addcutierror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('statuscutieditsuccess'))
-<div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
-    </svg>
-    <strong>Success!</strong> Anda Berhasil Menyimpan Data Cuti
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('hapus_cuti_sukses'))
-<div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <circle cx="12" cy="12" r="10"></circle>
-        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
-        <line x1="9" y1="9" x2="9.01" y2="9"></line>
-        <line x1="15" y1="9" x2="15.01" y2="9"></line>
-    </svg>
-    <strong>Success!</strong> Anda Berhasil Menghapus Data Cuti
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('statuscutiediterror'))
-<div id="alert_statuscutiediterror" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('statuscutiediterror2'))
-<div id="alert_statuscutiediterror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('atasan1NULL'))
-<div id="alert_atasan1_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Atasan 1 Kosong
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@elseif(Session::has('atasan2NULL'))
-<div id="alert_atasan2_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
-        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
-        <line x1="15" y1="9" x2="9" y2="15"></line>
-        <line x1="9" y1="9" x2="15" y2="15"></line>
-    </svg>
-    <strong>Warning!</strong> Atasan 2 Kosong
-    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
-</div>
-@endif
 <div class="container">
+    @if(Session::has('addcutisuccess'))
+    <div id="alert_addcutisuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <strong>Success!</strong> Anda Berhasil Pengajuan Cuti
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('addcutierror1'))
+    <div id="alert_addcutierror1" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('addcutierror2'))
+    <div id="alert_addcutierror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('statuscutieditsuccess'))
+    <div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <strong>Success!</strong> Anda Berhasil Menyimpan Data Cuti
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('hapus_cuti_sukses'))
+    <div id="alert_statuscutieditsuccess" class="alert alert-success light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+        </svg>
+        <strong>Success!</strong> Anda Berhasil Menghapus Data Cuti
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('statuscutiediterror'))
+    <div id="alert_statuscutiediterror" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Anda Tidak Memiliki Kuota Cuti.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('statuscutiediterror2'))
+    <div id="alert_statuscutiediterror2" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Pengajuan Harus H-14 untuk cuti
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('atasan1NULL'))
+    <div id="alert_atasan1_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Atasan 1 Kosong
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @elseif(Session::has('atasan2NULL'))
+    <div id="alert_atasan2_null" class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>Warning!</strong> Atasan 2 Kosong
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+    @endif
     <form class="my-2">
         <div class="input-group">
             <input type="date" value="{{ date('Y-m-d') }}" readonly style="font-weight: bold" placeholder="Phone number" class="form-control">
