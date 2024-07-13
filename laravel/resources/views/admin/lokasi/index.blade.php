@@ -54,6 +54,9 @@
                                                     ],
                                                     [
                                                         "lokasi" => "PT. SURYA PANGAN SEMESTA - SUBANG"
+                                                    ],
+                                                    [
+                                                        "lokasi" => "DEPO SPS SIDOARJO"
                                                     ]
                                                 );
                                             } else {

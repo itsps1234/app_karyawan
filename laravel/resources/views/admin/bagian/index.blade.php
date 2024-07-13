@@ -22,6 +22,7 @@
                 <div class="card-body">
                     <hr class="my-5">
                     <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_tambah_bagian"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
+                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_import_bagian"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
                     <div class="modal fade" id="modal_tambah_bagian" data-bs-backdrop="static" tabindex="-1">
                         <div class="modal-dialog modal-dialog-scrollable">
                             <form method="post" action="{{ url('/bagian/insert/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
@@ -78,6 +79,36 @@
                                             </div>
                                             @enderror
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal_import_bagian" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <form method="post" action="{{ url('/bagian/ImportBagian/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="backDropModalTitle">Import Bagian</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <input type="file" id="file_excel" name="file_excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="form-control" placeholder="Masukkan File" />
+                                                <label for="file_excel">File Excel</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mt-2">
+                                        <a href="{{asset('')}}" type="button" download="" class="btn btn-sm btn-primary"> Download Format Excel</a>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -168,6 +199,7 @@
                                 <th>Departemen</th>
                                 <th>Divisi</th>
                                 <th>Nama Bagian</th>
+                                <th>Jumlah&nbsp;Jabatan</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -216,6 +248,10 @@
                 name: 'nama_bagian'
             },
             {
+                data: 'jumlah_jabatan',
+                name: 'jumlah_jabatan'
+            },
+            {
                 data: 'option',
                 name: 'option'
             },
@@ -250,6 +286,30 @@
 
         })
     })
+    $('#nama_departemen_update').on('change', function() {
+        let id_dept = $(this).val();
+        let url = "{{url('/bagian/get_divisi')}}" + "/" + id_dept;
+        // console.log(id_dept);
+        // console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: false,
+            // data: {
+            //     id_dept: id_dept
+            // },
+            success: function(response) {
+                // console.log(response);
+                $('#nama_divisi_update').html(response);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
+    })
     $(document).on("click", "#btn_edit_bagian", function() {
         let id = $(this).data('id');
         let dept = $(this).data("dept");
@@ -272,8 +332,9 @@
     });
     $(document).on('click', '#btn_delete_bagian', function() {
         var id = $(this).data('id');
+        let divisi = $(this).data("divisi");
         let holding = $(this).data("holding");
-        console.log(id);
+        // console.log(id);
         Swal.fire({
             title: 'Apakah kamu yakin?',
             text: "Kamu tidak dapat mengembalikan data ini",
@@ -287,17 +348,31 @@
                 $.ajax({
                     url: "{{ url('/bagian/delete/') }}" + '/' + id + '/' + holding,
                     type: "GET",
+                    data: {
+                        divisi: divisi,
+                    },
                     error: function() {
                         alert('Something is wrong');
                     },
                     success: function(data) {
-                        Swal.fire({
-                            title: 'Terhapus!',
-                            text: 'Data anda berhasil di hapus.',
-                            icon: 'success',
-                            timer: 1500
-                        })
-                        $('#table_bagian').DataTable().ajax.reload();
+                        console.log(data.status);
+                        if (data.status == 1) {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Data anda berhasil di hapus.',
+                                icon: 'success',
+                                timer: 1500
+                            })
+                            $('#table_bagian').DataTable().ajax.reload();
+                        } else {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: 'Jumlah Jabatan Tidak 0',
+                                icon: 'error',
+                                timer: 1500
+                            })
+                            $('#table_bagian').DataTable().ajax.reload();
+                        }
                     }
                 });
             } else {

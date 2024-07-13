@@ -49,14 +49,14 @@ class PenugasanController extends Controller
             $levelatasan1    = $userLevel->level_jabatan - 1;
             $levelatasan2    = $userLevel->level_jabatan - 2;
             $levelatasan3    = $userLevel->level_jabatan - 3;
-            $IdLevelAsasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-            $IdLevelAsasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
-            $IdLevelAsasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
-            $IdLevelAsasan3  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan3)->first();
-            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->first();
-            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAsasan1->id)->where('divisi_id', $user->divisi_id)->first();
-            $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
-            $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAsasan3->id)->where('divisi_id', $user->divisi_id)->first();
+            $IdLevelAtasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
+            $IdLevelAtasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
+            $IdLevelAtasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
+            $IdLevelAtasan3  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan3)->first();
+            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAtasan->id)->first();
+            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAtasan1->id)->where('divisi_id', $user->divisi_id)->first();
+            $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAtasan2->id)->where('divisi_id', $user->divisi_id)->first();
+            $getAsatan3      = DB::table('jabatans')->where('level_id', $IdLevelAtasan3->id)->where('divisi_id', $user->divisi_id)->first();
             $atasandirektur  = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();;
             $atasan1          = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan1->id)->orWhere('jabatan1_id', $getAsatan1->id)->orWhere('jabatan2_id', $getAsatan1->id)->orWhere('jabatan3_id', $getAsatan1->id)->orWhere('jabatan4_id', $getAsatan1->id)->first();
             $atasan2         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan2->id)->orWhere('jabatan2_id', $getAsatan2->id)->orWhere('jabatan3_id', $getAsatan2->id)->orWhere('jabatan4_id', $getAsatan2->id)->first();
@@ -107,12 +107,12 @@ class PenugasanController extends Controller
             $levelatasan    = 0;
             $levelatasan1    = $userLevel->level_jabatan - 1;
             $levelatasan2    = $userLevel->level_jabatan - 2;
-            $IdLevelAsasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-            $IdLevelAsasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
-            $IdLevelAsasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
-            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->first();
-            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAsasan1->id)->where('divisi_id', $user->divisi_id)->first();
-            $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAsasan2->id)->where('divisi_id', $user->divisi_id)->first();
+            $IdLevelAtasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
+            $IdLevelAtasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
+            $IdLevelAtasan2  = DB::table('level_jabatans')->where('level_jabatan', $levelatasan2)->first();
+            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAtasan->id)->first();
+            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAtasan1->id)->where('divisi_id', $user->divisi_id)->first();
+            $getAsatan2      = DB::table('jabatans')->where('level_id', $IdLevelAtasan2->id)->where('divisi_id', $user->divisi_id)->first();
             $atasandirektur  = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();;
             $atasan1          = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan1->id)->orWhere('jabatan1_id', $getAsatan1->id)->orWhere('jabatan2_id', $getAsatan1->id)->orWhere('jabatan3_id', $getAsatan1->id)->orWhere('jabatan4_id', $getAsatan1->id)->first();
             $atasan2         = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan2->id)->orWhere('jabatan1_id', $getAsatan2->id)->orWhere('jabatan2_id', $getAsatan2->id)->orWhere('jabatan3_id', $getAsatan2->id)->orWhere('jabatan4_id', $getAsatan2->id)->first();
@@ -161,10 +161,10 @@ class PenugasanController extends Controller
         } else if ($userLevel->level_jabatan == 2) {
             $levelatasan    = 0;
             $levelatasan1    = $userLevel->level_jabatan - 1;
-            $IdLevelAsasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
-            $IdLevelAsasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
-            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->first();
-            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAsasan1->id)->where('divisi_id', $user->divisi_id)->first();
+            $IdLevelAtasan   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan)->first();
+            $IdLevelAtasan1   = DB::table('level_jabatans')->where('level_jabatan', $levelatasan1)->first();
+            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAtasan->id)->first();
+            $getAsatan1       = DB::table('jabatans')->where('level_id', $IdLevelAtasan1->id)->where('divisi_id', $user->divisi_id)->first();
             $atasandirektur  = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
             $atasan1          = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan1->id)->orWhere('jabatan1_id', $getAsatan1->id)->orWhere('jabatan2_id', $getAsatan1->id)->orWhere('jabatan3_id', $getAsatan1->id)->orWhere('jabatan4_id', $getAsatan1->id)->first();
             // dd($user, $atasan, $atasan2, $atasan3);
@@ -210,8 +210,8 @@ class PenugasanController extends Controller
                 $getUseratasan2 = $atasandirektur;
             }
         } else {
-            $IdLevelAsasan   = DB::table('level_jabatans')->where('level_jabatan', '0')->first();
-            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAsasan->id)->first();
+            $IdLevelAtasan   = DB::table('level_jabatans')->where('level_jabatan', '0')->first();
+            $getAsatan       = DB::table('jabatans')->where('level_id', $IdLevelAtasan->id)->first();
             $atasandirektur  = User::with('jabatan')->where('is_admin', 'user')->where('jabatan_id', $getAsatan->id)->orWhere('jabatan1_id', $getAsatan->id)->orWhere('jabatan2_id', $getAsatan->id)->orWhere('jabatan3_id', $getAsatan->id)->orWhere('jabatan4_id', $getAsatan->id)->first();
             $getUserAtasan = $atasandirektur;
             $getUseratasan2 = $atasandirektur;

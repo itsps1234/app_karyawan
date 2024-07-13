@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DivisiImport;
 use App\Models\Departemen;
 use App\Models\Divisi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -18,15 +20,23 @@ class DivisiController extends Controller
         return view('admin.divisi.index', [
             'title' => 'Master Divisi',
             'holding' => $holding,
-            'data_divisi' => Divisi::with('Departemen')->get(),
-            'data_departemen' => Departemen::orderBy('nama_departemen', 'asc')->get()
+            'data_divisi' => Divisi::with('Departemen')->where('holding', $holding)->get(),
+            'data_departemen' => Departemen::orderBy('nama_departemen', 'asc')->where('holding', $holding)->get()
         ]);
     }
+    public function ImportDivisi(Request $request)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        Excel::import(new DivisiImport, $request->file_excel);
 
+        return redirect('/divisi/' . $holding)->with('success', 'Import Divisi Sukses');
+    }
     public function datatable(Request $request)
     {
         $holding = request()->segment(count(request()->segments()));
-        $table =  Divisi::with('Departemen')->get();
+        $table =  Divisi::with(['Departemen' => function ($query) {
+            $query->orderBy('nama_departemen', 'ASC');
+        }])->where('holding', $holding)->orderBy('nama_divisi', 'ASC')->get();
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('nama_departemen', function ($row) {
@@ -63,6 +73,7 @@ class DivisiController extends Controller
         Divisi::create(
             [
                 'id' => Uuid::uuid4(),
+                'holding' => $holding,
                 'nama_divisi' => $validatedData['nama_divisi'],
                 'dept_id' => Departemen::where('id', $validatedData['nama_departemen'])->value('id'),
             ]
@@ -91,6 +102,7 @@ class DivisiController extends Controller
 
         Divisi::where('id', $request->id_divisi)->update(
             [
+                'holding' => $holding,
                 'nama_divisi' => $validatedData['nama_divisi_update'],
                 'dept_id' => Departemen::where('id', $validatedData['nama_departemen_update'])->value('id'),
             ]

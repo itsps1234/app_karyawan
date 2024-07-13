@@ -1,6 +1,7 @@
 @extends('admin.layouts.dashboard')
 @section('css')
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
+<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
 <style type="text/css">
     .my-swal {
         z-index: X;
@@ -20,117 +21,33 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <hr class="my-5">
-                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_tambah_jabatan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
-                    <div class="modal fade" id="modal_tambah_jabatan" data-bs-backdrop="static" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-scrollable">
-                            <form method="post" action="{{ url('/jabatan/insert/'.$holding) }}" class=" modal-content" enctype="multipart/form-data">
+                    <div class="col-lg-8">
+                        <div class="nav-item d-flex align-items-center">
+                            <i class="mdi mdi-magnify mdi-24px lh-0"></i>
+                            <input type="text" id="search-jabatan" class="search-jabatan form-control border-0 shadow-none bg-body" placeholder="Search..." aria-label="Search..." />
+                            <button type="button" class="btn btn-sm btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_import_jabatan"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modal_import_jabatan" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <form method="post" action="{{ url('/jabatan/ImportJabatan/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-header">
-                                    <h4 class="modal-title" id="backDropModalTitle">Tambah Jabatan</h4>
+                                    <h4 class="modal-title" id="backDropModalTitle">Import Jabatan</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="row g-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_divisi') is-invalid @enderror" id="nama_divisi" name="nama_divisi" autofocus value="{{ old('nama_divisi') }}">
-                                                    <option value=""> Pilih Divisi</option>
-                                                    @foreach($data_divisi as $s)
-                                                    <option value="{{$s->id}}">{{$s->nama_divisi}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="nama_divisi" class="float-left">Nama Divisi</label>
+                                                <input type="file" id="file_excel" name="file_excel" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="form-control" placeholder="Masukkan File" />
+                                                <label for="file_excel">File Excel</label>
                                             </div>
-                                            @error('nama_divisi')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
                                         </div>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_bagian') is-invalid @enderror" id="nama_bagian" name="nama_bagian" autofocus value="{{ old('nama_bagian') }}">
-                                                    <option value=""> Pilih Bagian</option>
-                                                </select>
-                                                <label for="nama_bagian" class="float-left">Nama Bagian</label>
-                                            </div>
-                                            @error('nama_bagian')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
+                                    <div class="row g-2 mt-2">
+                                        <a href="{{asset('')}}" type="button" download="" class="btn btn-sm btn-primary"> Download Format Excel</a>
                                     </div>
-                                    <br>
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <?php
-
-                                            use App\Models\Jabatan;
-                                            use Illuminate\Database\Eloquent\Model;
-                                            use Illuminate\Support\Facades\App;
-
-                                            $get_jabatan = array(
-                                                [
-                                                    "nama" => "DIREKTUR"
-                                                ],
-                                                [
-                                                    "nama" => "HEAD"
-                                                ],
-                                                [
-                                                    "nama" => "MANAGER"
-                                                ],
-                                                [
-                                                    "nama" => "REGIONAL MANAGER"
-                                                ],
-                                                [
-                                                    "nama" => "JUNIOR MANAGER"
-                                                ],
-                                                [
-                                                    "nama" => "SUPERVISOR"
-                                                ],
-                                                [
-                                                    "nama" => "KOORDINATOR"
-                                                ],
-                                                [
-                                                    "nama" => "OPERATOR"
-                                                ],
-                                                [
-                                                    "nama" => "STAFF"
-                                                ],
-                                                [
-                                                    "nama" => "ADMIN"
-                                                ],
-                                                [
-                                                    "nama" => "ASM"
-                                                ],
-                                                [
-                                                    "nama" => "SALES"
-                                                ],
-                                                [
-                                                    "nama" => "SOPIR"
-                                                ],
-                                                [
-                                                    "nama" => "KERNET"
-                                                ],
-                                            );
-                                            ?>
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_jabatan') is-invalid @enderror" id="nama_jabatan" name="nama_jabatan">
-                                                    <option selected disabled value="">Nama Jabatan</option>
-                                                    @foreach($get_jabatan as $jabatan)
-                                                    <option value="{{$jabatan['nama']}}"> {{$jabatan['nama']}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="nama_jabatan" class="float-left">Nama Jabatan</label>
-                                            </div>
-                                            @error('nama_jabatan')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <input type="hidden" class="form-control @error('level_jabatan') is-invalid @enderror" id="level_jabatan" name="level_jabatan" readonly value="{{ old('level_jabatan') }}">
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
@@ -141,138 +58,22 @@
                             </form>
                         </div>
                     </div>
-                    <!-- modal edit -->
-                    <div class="modal fade" id="modal_edit_jabatan" data-bs-backdrop="static" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-scrollable">
-                            <form method="post" action="{{ url('/jabatan/update/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="backDropModalTitle">Edit Jabatan</h4>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <hr class="5">
+                    <div class="containerItems row">
+                        @foreach($data_divisi as $divisi)
+                        <div class="col-md-6 col-lg-4" data-search="{{$divisi->nama_divisi}}" style="">
+                            <div class="card text-center mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <p class="card-text">Departemen : </p>@if($divisi->Departemen==NULL)@else {{$divisi->Departemen->nama_departemen}} @endif
+                                    </h6>
+                                    <p class="card-text">({{$divisi->nama_divisi}})</p>
+                                    <a href="{{url('detail_jabatan',$divisi->id).'/'.$holding}}" class="btn btn-primary btn-sm waves-effect waves-light">Lihat Jabatan ({{count($divisi->Jabatan)}})</a>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_divisi_update') is-invalid @enderror" id="nama_divisi_update" name="nama_divisi_update" autofocus value="{{ old('nama_divisi_update') }}">
-                                                    <option value=""> Pilih Divisi</option>
-                                                    @foreach($data_divisi as $s)
-                                                    <option value="{{$s->id}}">{{$s->nama_divisi}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="nama_divisi_update" class="float-left">Nama Divisi</label>
-                                            </div>
-                                            @error('nama_divisi_update')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row g-2">
-                                        <div class="col mb-2">
-                                            <input type="hidden" name="id_jabatan" id="id_jabatan" value="">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_bagian_update') is-invalid @enderror" id="nama_bagian_update" name="nama_bagian_update" autofocus value="{{ old('nama_bagian_update') }}">
-                                                    <option value=""> Pilih Bagian</option>
-                                                    @foreach($data_bagian as $s)
-                                                    <option value="{{$s->id}}">{{$s->nama_bagian}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="nama_bagian_update" class="float-left">Nama Bagian</label>
-                                            </div>
-                                            @error('nama_bagian_update')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <div class="row g-2">
-                                        <?php $get_jabatan = array(
-                                            [
-                                                "nama" => "DIREKTUR"
-                                            ],
-                                            [
-                                                "nama" => "HEAD"
-                                            ],
-                                            [
-                                                "nama" => "MANAGER"
-                                            ],
-                                            [
-                                                "nama" => "REGIONAL MANAGER"
-                                            ],
-                                            [
-                                                "nama" => "JUNIOR MANAGER"
-                                            ],
-                                            [
-                                                "nama" => "SUPERVISOR"
-                                            ],
-                                            [
-                                                "nama" => "KOORDINATOR"
-                                            ],
-                                            [
-                                                "nama" => "OPERATOR"
-                                            ],
-                                            [
-                                                "nama" => "STAFF"
-                                            ],
-                                            [
-                                                "nama" => "ADMIN"
-                                            ],
-                                            [
-                                                "nama" => "ASM"
-                                            ],
-                                            [
-                                                "nama" => "SALES"
-                                            ],
-                                            [
-                                                "nama" => "SOPIR"
-                                            ],
-                                            [
-                                                "nama" => "KERNET"
-                                            ],
-                                        );
-                                        ?>
-                                        <div class="col mb-2">
-                                            <input type="hidden" name="id_jabatan" id="id_jabatan" value="">
-                                            <div class="form-floating form-floating-outline">
-                                                <select class="form-control @error('nama_jabatan_update') is-invalid @enderror" id="nama_jabatan_update" name="nama_jabatan_update" autofocus value="{{ old('nama_jabatan_update') }}">
-                                                    <option value=""> Pilih Jabatan</option>
-                                                    @foreach($get_jabatan as $s)
-                                                    <option value="{{$s['nama']}}">{{$s['nama']}}</option>
-                                                    @endforeach
-                                                </select>
-                                                <label for="nama_jabatan_update" class="float-left">Nama Jabatan</label>
-                                            </div>
-                                            @error('nama_jabatan_update')
-                                            <p class="alert alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control @error('level_jabatan_update') is-invalid @enderror" id="level_jabatan_update" name="level_jabatan_update" readonly value="{{ old('level_jabatan_update') }}">
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                        Close
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
+                        @endforeach
                     </div>
-                    <table class="table" id="table_jabatan" style="width: 100%;">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>No.</th>
-                                <th>Divisi</th>
-                                <th>Bagian</th>
-                                <th>Nama&nbsp;Jabatan</th>
-                                <th>Level</th>
-                                <th>Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table-border-bottom-0">
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
@@ -285,50 +86,27 @@
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-<script>
-    let holding = window.location.pathname.split("/").pop();
-    var table = $('#table_jabatan').DataTable({
-        "scrollY": true,
-        "scrollX": true,
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: "{{ url('jabatan-datatable') }}" + '/' + holding,
-        },
-        columns: [{
-                data: "id",
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="{{asset('search/e-search.js')}}"></script>
+<script type="text/javascript">
+    $('#search-jabatan').search(function() {
 
-                render: function(data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                }
-            },
-            {
-                data: 'nama_divisi',
-                name: 'nama_divisi'
-            },
-            {
-                data: 'nama_bagian',
-                name: 'nama_bagian'
-            },
-            {
-                data: 'nama_jabatan',
-                name: 'nama_jabatan'
-            },
-            {
-                data: 'level_jabatan',
-                name: 'level_jabatan'
-            },
-            {
-                data: 'option',
-                name: 'option'
-            },
-        ],
-        order: [
-            [1, 'asc'],
-            [2, 'asc'],
-            [4, 'asc'],
-        ],
     });
+</script>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
 </script>
 <script>
     $('#nama_divisi').on('change', function() {
@@ -357,15 +135,25 @@
     })
     $('#nama_jabatan').on('change', function() {
         let id = $(this).val();
-        if (id == 'DIREKTUR') {
+        if (id == 'DIREKTUR UTAMA') {
+            $('#level_jabatan').val('0');
+        } else if (id == 'DIREKTUR KEUANGAN') {
+            $('#level_jabatan').val('0');
+        } else if (id == 'DIREKTUR OPERASIONAL') {
+            $('#level_jabatan').val('0');
+        } else if (id == 'DIREKTUR SALES') {
             $('#level_jabatan').val('0');
         } else if (id == 'HEAD') {
             $('#level_jabatan').val('1');
+        } else if (id == 'NATIONAL SALES MANAGER') {
+            $('#level_jabatan').val('1');
         } else if (id == 'MANAGER') {
             $('#level_jabatan').val('2');
-        } else if (id == 'REGIONAL MANAGER') {
+        } else if (id == 'REGIONAL SALES MANAGER') {
             $('#level_jabatan').val('2');
         } else if (id == 'JUNIOR MANAGER') {
+            $('#level_jabatan').val('3');
+        } else if (id == 'AREA SALES MANAGER') {
             $('#level_jabatan').val('3');
         } else if (id == 'SUPERVISOR') {
             $('#level_jabatan').val('4');
@@ -388,17 +176,54 @@
         } else {
             $('#level_jabatan').val('7');
         }
+        let divisi = $('#nama_divisi').val();
+        let level = $('#level_jabatan').val();
+        let holding = '{{$holding}}';
+        let url = "{{url('atasan/get_jabatan')}}" + "/" + holding;
+        console.log(divisi);
+        // console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: true,
+            data: {
+                id: id,
+                holding: holding,
+                level: level,
+                id_divisi: divisi
+            },
+            success: function(response) {
+                // console.log(response);
+                $('#nama_jabatan_atasan').html(response);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
     })
     $('#nama_jabatan_update').on('change', function() {
         let id = $(this).val();
-        if (id == 'DIREKTUR') {
+        if (id == 'DIREKTUR UTAMA') {
+            $('#level_jabatan_update').val('0');
+        } else if (id == 'DIREKTUR KEUANGAN') {
+            $('#level_jabatan_update').val('0');
+        } else if (id == 'DIREKTUR OPERASIONAL') {
+            $('#level_jabatan_update').val('0');
+        } else if (id == 'DIREKTUR SALES') {
             $('#level_jabatan_update').val('0');
         } else if (id == 'HEAD') {
             $('#level_jabatan_update').val('1');
+        } else if (id == 'NATIONAL SALES MANAGER') {
+            $('#level_jabatan_update').val('1');
         } else if (id == 'MANAGER') {
             $('#level_jabatan_update').val('2');
-        } else if (id == 'REGIONAL MANAGER') {
+        } else if (id == 'REGIONAL SALES MANAGER') {
             $('#level_jabatan_update').val('2');
+        } else if (id == 'AREA SALES MANAGER') {
+            $('#level_jabatan_update').val('3');
         } else if (id == 'JUNIOR MANAGER') {
             $('#level_jabatan_update').val('3');
         } else if (id == 'SUPERVISOR') {
@@ -422,16 +247,45 @@
         } else {
             $('#level_jabatan_update').val('7');
         }
+
+        let divisi = $('#nama_divisi_update').val();
+        let level = $('#level_jabatan_update').val();
+        let holding = '{{$holding}}';
+        let url = "{{url('atasan/get_jabatan')}}" + "/" + holding;
+        console.log(divisi);
+        // console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: true,
+            data: {
+                id: id,
+                holding: holding,
+                level: level,
+                id_divisi: divisi
+            },
+            success: function(response) {
+                // console.log(response);
+                $('#nama_jabatan_atasan_update').html(response);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
+
+        })
     })
     $(document).on("click", "#btn_edit_jabatan", function() {
         let id = $(this).data('id');
         let bagian = $(this).data("bagian");
         let divisi = $(this).data("divisi");
         let level = $(this).data("level");
+        $level = $(this).data("level");
         let jabatan = $(this).data("jabatan");
         let atasan = $(this).data("atasan");
         let holding = $(this).data("holding");
-        console.log(bagian);
+        console.log($level);
         $('#id_jabatan').val(id);
         $('#nama_divisi_update option').filter(function() {
             // console.log($(this).val().trim());
@@ -441,9 +295,34 @@
             // console.log($(this).val().trim());
             return $(this).val().trim() == bagian
         }).prop('selected', true)
+        let url = "{{url('atasan/edit/get_jabatan')}}" + "/" + holding;
+        console.log(divisi);
+        // console.log(url);
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: false,
+            cache: false,
+            processData: true,
+            data: {
+                id: id,
+                atasan: atasan,
+                holding: holding,
+                level: level,
+                id_divisi: divisi
+            },
+            success: function(response) {
+                // console.log(response);
+                $('#nama_jabatan_atasan_update').html(response);
+            },
+            error: function(data) {
+                console.log('error:', data)
+            },
 
+        })
         $('#level_jabatan_update').val(level);
         $('#nama_jabatan_update').val(jabatan);
+        $('#nama_jabatan_atasan_update').val(atasan);
         $('#modal_edit_jabatan').modal('show');
 
     });

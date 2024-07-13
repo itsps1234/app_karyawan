@@ -130,7 +130,7 @@
                                         </blockquote>
                                         <figcaption class="blockquote-footer" style="margin: 0;">
                                             Lokasi <cite title="Source Title">Pabrik</cite>
-                                            <p><i class="mdi mdi-google-maps"></i>Kabupaten Kediri, Jawa Timur</p>
+                                            <p><i class="mdi mdi-google-maps"></i>Makasar, Sulawesi Utara</p>
                                         </figcaption>
                                     </figure>
                                 </div>

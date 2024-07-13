@@ -19,6 +19,7 @@
                 <!-- Account -->
                 <form method="post" action="{{ url('/karyawan/proses-edit/'.$karyawan->id.'/'.$holding) }}" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" value="{{$karyawan->id}}" name="id_karyawan" id="id_karyawan">
                     <div class="card-body">
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
                             @if($karyawan->foto_karyawan == null)
@@ -266,7 +267,7 @@
                                     <select name="departemen_id" id="id_departemen" class="form-control @error('departemen_id') is-invalid @enderror">
                                         <option value=""> Pilih Departemen</option>
                                         @foreach ($data_departemen as $dj)
-                                        @if(old('departemen_id', $karyawan->dept_id) == $dj->id)
+                                        @if(old('departemen_id',$karyawan->dept_id) == $dj->id)
                                         <option value="{{ $dj->id }}" selected>{{ $dj->nama_departemen }}</option>
                                         @else
                                         <option value="{{ $dj->id }}">{{ $dj->nama_departemen }}</option>
@@ -281,14 +282,14 @@
                             </div>
                             <div id="form_divisi" class="col-md-6">
                                 <?php
-                                $data_divisi = App\Models\Divisi::Where('dept_id', $karyawan->dept_id)->get();
+                                $data_divisi = App\Models\Divisi::Where('dept_id', $karyawan->dept_id)->orderBy('nama_divisi', 'ASC')->get();
                                 // echo $kec;
                                 ?>
                                 <div class="form-floating form-floating-outline">
                                     <select name="divisi_id" id="id_divisi" class="form-control @error('divisi_id') is-invalid @enderror">
                                         @foreach ($data_divisi as $divisi)
-                                        @if(old('divisi_id', $karyawan->divisi_id) == $divisi["id"])
-                                        <option value="{{$divisi->id}}" {{($divisi->id == $karyawan->divisi_id) ? 'selected' : ''}}>{{$divisi->nama_divisi}}</option>
+                                        @if(old('divisi_id', $karyawan->divisi_id) == $divisi['id'])
+                                        <option value="{{$divisi->id}}" selected>{{$divisi->nama_divisi}}</option>
                                         @else
                                         <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option>
                                         @endif
@@ -302,13 +303,17 @@
                             </div>
                             <div id="form_bagian" class="col-md-3">
                                 <?php
-                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->divisi_id)->get();
+                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->divisi_id)->orderBy('nama_bagian', 'ASC')->get();
                                 // echo $kec;
                                 ?>
                                 <div class="form-floating form-floating-outline">
                                     <select name="bagian_id" id="id_bagian" class="form-control @error('bagian_id') is-invalid @enderror">
                                         @foreach ($data_bagian as $bagian)
-                                        <option value="{{$bagian->id}}" {{($bagian->id == $karyawan->bagian_id) ? 'selected' : ''}}>{{$bagian->nama_bagian}}</option>
+                                        @if(old('bagian_id', $karyawan->bagian_id) == $bagian['id'])
+                                        <option value="{{$bagian->id}}" selected>{{$bagian->nama_bagian}}</option>
+                                        @else
+                                        <option value="{{$bagian->id}}">{{$divisi->nama_bagian}}</option>
+                                        @endif
                                         @endforeach
                                     </select>
                                     <label for="id_bagian">Bagian</label>
@@ -320,17 +325,17 @@
                             <div id="form_jabatan" class="col-md-3">
                                 <?php
                                 // Bagian
-                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->bagian_id)->get();
-                                $data_bagian1 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi1_id)->get();
-                                $data_bagian2 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi2_id)->get();
-                                $data_bagian3 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi3_id)->get();
-                                $data_bagian4 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi4_id)->get();
+                                $data_bagian = App\Models\Bagian::Where('divisi_id', $karyawan->divisi_id)->orderBy('nama_bagian', 'ASC')->get();
+                                $data_bagian1 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi1_id)->orderBy('nama_bagian', 'ASC')->get();
+                                $data_bagian2 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi2_id)->orderBy('nama_bagian', 'ASC')->get();
+                                $data_bagian3 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi3_id)->orderBy('nama_bagian', 'ASC')->get();
+                                $data_bagian4 = App\Models\Bagian::Where('divisi_id', $karyawan->divisi4_id)->orderBy('nama_bagian', 'ASC')->get();
                                 // Jabatan
-                                $data_jabatan = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian_id)->get();
-                                $data_jabatan1 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian1_id)->get();
-                                $data_jabatan2 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian2_id)->get();
-                                $data_jabatan3 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian3_id)->get();
-                                $data_jabatan4 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian4_id)->get();
+                                $data_jabatan = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian_id)->where($karyawan->disivi_id)->orderBy('nama_jabatan', 'ASC')->get();
+                                $data_jabatan1 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian1_id)->where($karyawan->disivi1_id)->orderBy('nama_jabatan', 'ASC')->get();
+                                $data_jabatan2 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian2_id)->where($karyawan->disivi2_id)->orderBy('nama_jabatan', 'ASC')->get();
+                                $data_jabatan3 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian3_id)->where($karyawan->disivi3_id)->orderBy('nama_jabatan', 'ASC')->get();
+                                $data_jabatan4 = App\Models\Jabatan::Where('bagian_id', $karyawan->bagian4_id)->where($karyawan->disivi4_id)->orderBy('nama_jabatan', 'ASC')->get();
                                 // echo $kec;
                                 ?>
                                 <div class="form-floating form-floating-outline">
@@ -345,74 +350,252 @@
                                 <p class="alert alert-danger">{{$message}}</p>
                                 @enderror
                             </div>
-                            <div id="form_jabatan_more" class="col-md-12">
-                                <div class="accordion mt-3" id="accordionExample">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingOne">
-                                            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
-                                                Tambahkan Atasan Karyawan
-                                            </button>
-                                        </h2>
+                            <div id="form_jabatan_more" class="row g-2 mt-2">
+                                <div class="col mb-2">
+                                    <div class="accordion mt-3" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
+                                                    Jika Karyawan Memiliki Lebih Dari 1 Jabatan
+                                                </button>
+                                            </h2>
 
-                                        <div id="accordionOne" class="accordion-collapse collapse show " data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                <div class="row g-2">
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="atasan" id="atasan" class="form-control">
-                                                                <option disabled selected value="">Atasan 1</option>
-                                                                <?php
-                                                                $level = App\Models\Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $karyawan->jabatan_id)->first();
-                                                                if ($level == '' || $level == NULL) {
-                                                                    $get_atasan = NULL;
-                                                                } else {
-                                                                    $get_atasan = App\Models\User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
-                                                                        ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
-                                                                        ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
-                                                                        ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
-                                                                        ->where('users.kontrak_kerja', $karyawan->kontrak_kerja)
-                                                                        ->where('level_jabatans.level_jabatan', '<', $level->level_jabatan)
-                                                                        ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
-                                                                        ->get();
-                                                                }
-                                                                ?>
-                                                                @if($karyawan->atasan_1==NULL || $karyawan->atasan_1=='')
-                                                                @else
-                                                                @foreach($get_atasan as $atasan)
-                                                                <option value="{{$atasan->id}}" {{($atasan->id == $karyawan->atasan_1) ? 'selected' : ''}}>{{$atasan->name}} ({{$atasan->nama_jabatan}} | {{$atasan->nama_bagian}})</option>
-                                                                @endforeach
-                                                                @endif
-                                                            </select>
-                                                            <label for="atasan">Atasan 1</label>
+                                            <div id="accordionOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    <div class="row g-2 mt-2">
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="divisi1_id" id="id_divisi1" class="form-control">
+                                                                    <option value=""> Pilih Divisi</option>
+                                                                    <?php
+                                                                    $divisi = App\Models\Divisi::where('dept_id', old('departemen_id', $karyawan->dept_id))->get();
+                                                                    ?>
+                                                                    @foreach($divisi as $divisi)
+                                                                    @if(old('divisi1_id',$karyawan->divisi1_id) == $divisi->id)
+                                                                    <option value="{{ $divisi->id }}" selected>{{ $divisi->nama_divisi }}</option>
+                                                                    @else
+                                                                    <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_divisi1">Divisi 2</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="bagian1_id" id="id_bagian1" class="form-control @error('bagian1_id') is-invalid @enderror">
+                                                                    <option value=""> Pilih Bagian</option>
+                                                                    <?php
+                                                                    $bagian = App\Models\Bagian::where('divisi_id', old('divisi1_id', $karyawan->divisi1_id))->get();
+                                                                    ?>
+                                                                    @foreach($bagian as $bagian)
+                                                                    @if(old('bagian1_id',$karyawan->bagian1_id) == $bagian->id)
+                                                                    <option value="{{ $bagian->id }}" selected>{{ $bagian->nama_bagian }}</option>
+                                                                    @else
+                                                                    <option value="{{ $bagian->id }}">{{ $bagian->nama_bagian }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for="id_bagian1">Bagian 2</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="jabatan1_id" id="id_jabatan1" class="form-control">
+                                                                    <option value=""> Pilih Jabatan</option>
+                                                                    <?php
+                                                                    $jabatan = App\Models\Jabatan::where('bagian_id', old('bagian1_id', $karyawan->bagian1_id))->get();
+                                                                    ?>
+                                                                    @foreach($jabatan as $jabatan)
+                                                                    @if(old('jabatan1_id',$karyawan->jabatan1_id) == $jabatan->id)
+                                                                    <option value="{{ $jabatan->id }}" selected>{{ $jabatan->nama_jabatan }}</option>
+                                                                    @else
+                                                                    <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_jabatan1">Jabatan 2</label>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col mb-2">
-                                                        <div class="form-floating form-floating-outline">
-                                                            <select name="atasan2" id="atasan2" class="form-control">
-                                                                <option disabled selected value="">Atasan 2</option>
-                                                                <?php
-                                                                $level = App\Models\Jabatan::Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')->where('jabatans.id', $karyawan->jabatan_id)->first();
-                                                                if ($level == '' || $level == NULL) {
-                                                                    $get_atasan = NULL;
-                                                                } else {
-                                                                    $get_atasan = App\Models\User::Join('jabatans', 'jabatans.id', 'users.jabatan_id')
-                                                                        ->Join('divisis', 'divisis.id', 'jabatans.divisi_id')
-                                                                        ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
-                                                                        ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
-                                                                        ->where('users.kontrak_kerja', $karyawan->kontrak_kerja)
-                                                                        ->where('level_jabatans.level_jabatan', '<', $level->level_jabatan)
-                                                                        ->select('users.*', 'jabatans.nama_jabatan', 'bagians.nama_bagian')
-                                                                        ->get();
-                                                                }
-                                                                ?>
-                                                                @if($karyawan->atasan_2==NULL || $karyawan->atasan_2=='')
-                                                                @else
-                                                                @foreach($get_atasan as $atasan)
-                                                                <option value="{{$atasan->id}}" {{($atasan->id == $karyawan->atasan_2) ? 'selected' : ''}}>{{$atasan->name}} ({{$atasan->nama_jabatan}} | {{$atasan->nama_bagian}})</option>
-                                                                @endforeach
-                                                                @endif
-                                                            </select>
-                                                            <label for=" atasan2">Atasan 2</label>
+                                                    <div class="row g-2 mt-2">
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="divisi2_id" id="id_divisi2" class="form-control">
+                                                                    <option value=""> Pilih Divisi</option>
+                                                                    <?php
+                                                                    $divisi = App\Models\Divisi::where('dept_id', old('departemen_id', $karyawan->dept_id))->get();
+                                                                    ?>
+                                                                    @foreach($divisi as $divisi)
+                                                                    @if(old('divisi2_id',$karyawan->divisi2_id) == $divisi->id)
+                                                                    <option value="{{ $divisi->id }}" selected>{{ $divisi->nama_divisi }}</option>
+                                                                    @else
+                                                                    <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_divisi2">Divisi 3</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="bagian2_id" id="id_bagian2" class="form-control">
+                                                                    <option value=""> Pilih Bagian</option>
+                                                                    <?php
+                                                                    $bagian = App\Models\Bagian::where('divisi_id', old('divisi2_id', $karyawan->divisi2_id))->get();
+                                                                    ?>
+                                                                    @foreach($bagian as $bagian)
+                                                                    @if(old('bagian2_id',$karyawan->bagian2_id) == $bagian->id)
+                                                                    <option value="{{ $bagian->id }}" selected>{{ $bagian->nama_bagian }}</option>
+                                                                    @else
+                                                                    <option value="{{ $bagian->id }}">{{ $bagian->nama_bagian }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for="id_bagian2">Bagian 3</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="jabatan2_id" id="id_jabatan2" class="form-control">
+                                                                    <option value=""> Pilih Jabatan</option>
+                                                                    <?php
+                                                                    $jabatan = App\Models\Jabatan::where('bagian_id', old('bagian2_id', $karyawan->bagian2_id))->get();
+                                                                    ?>
+                                                                    @foreach($jabatan as $jabatan)
+                                                                    @if(old('jabatan2_id',$karyawan->jabatan2_id) == $jabatan->id)
+                                                                    <option value="{{ $jabatan->id }}" selected>{{ $jabatan->nama_jabatan }}</option>
+                                                                    @else
+                                                                    <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_jabatan2">Jabatan 3</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-2 mt-2">
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="divisi3_id" id="id_divisi3" class="form-control">
+                                                                    <option value=""> Pilih Divisi</option>
+                                                                    <?php
+                                                                    $divisi = App\Models\Divisi::where('dept_id', old('departemen_id', $karyawan->dept_id))->get();
+                                                                    ?>
+                                                                    @foreach($divisi as $divisi)
+                                                                    @if(old('divisi3_id',$karyawan->divisi3_id) == $divisi->id)
+                                                                    <option value="{{ $divisi->id }}" selected>{{ $divisi->nama_divisi }}</option>
+                                                                    @else
+                                                                    <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_divisi3">Divisi 4</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="bagian3_id" id="id_bagian3" class="form-control">
+                                                                    <option value=""> Pilih Bagian</option>
+                                                                    <?php
+                                                                    $bagian = App\Models\Bagian::where('divisi_id', old('divisi3_id', $karyawan->divisi3_id))->get();
+                                                                    ?>
+                                                                    @foreach($bagian as $bagian)
+                                                                    @if(old('bagian3_id',$karyawan->bagian3_id) == $bagian->id)
+                                                                    <option value="{{ $bagian->id }}" selected>{{ $bagian->nama_bagian }}</option>
+                                                                    @else
+                                                                    <option value="{{ $bagian->id }}">{{ $bagian->nama_bagian }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for="id_bagian3">Bagian 4</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="jabatan3_id" id="id_jabatan3" class="form-control">
+                                                                    <option value=""> Pilih Jabatan</option>
+                                                                    <?php
+                                                                    $jabatan = App\Models\Jabatan::where('bagian_id', old('bagian3_id', $karyawan->bagian3_id))->get();
+                                                                    ?>
+                                                                    @foreach($jabatan as $jabatan)
+                                                                    @if(old('jabatan3_id',$karyawan->jabatan3_id) == $jabatan->id)
+                                                                    <option value="{{ $jabatan->id }}" selected>{{ $jabatan->nama_jabatan }}</option>
+                                                                    @else
+                                                                    <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_jabatan3">Jabatan 4</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row g-2 mt-2">
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="divisi4_id" id="id_divisi4" class="form-control">
+                                                                    <option value=""> Pilih Divisi</option>
+                                                                    <?php
+                                                                    $divisi = App\Models\Divisi::where('dept_id', old('departemen_id', $karyawan->dept_id))->get();
+                                                                    ?>
+                                                                    @foreach($divisi as $divisi)
+                                                                    @if(old('divisi4_id',$karyawan->divisi4_id) == $divisi->id)
+                                                                    <option value="{{ $divisi->id }}" selected>{{ $divisi->nama_divisi }}</option>
+                                                                    @else
+                                                                    <option value="{{ $divisi->id }}">{{ $divisi->nama_divisi }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_divisi4">Divisi 5</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="bagian4_id" id="id_bagian4" class="form-control">
+                                                                    <option value=""> Pilih Bagian</option>
+                                                                    <?php
+                                                                    $bagian = App\Models\Bagian::where('divisi_id', old('divisi4_id', $karyawan->divisi4_id))->get();
+                                                                    ?>
+                                                                    @foreach($bagian as $bagian)
+                                                                    @if(old('bagian4_id') == $bagian->id)
+                                                                    <option value="{{ $bagian->id }}" selected>{{ $bagian->nama_bagian }}</option>
+                                                                    @else
+                                                                    <option value="{{ $bagian->id }}">{{ $bagian->nama_bagian }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for="id_bagian4">Bagian 5</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-2">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select name="jabatan4_id" id="id_jabatan4" class="form-control">
+                                                                    <option value=""> Pilih Jabatan</option>
+                                                                    <?php
+                                                                    $jabatan = App\Models\Jabatan::where('bagian_id', old('bagian4_id', $karyawan->bagian4_id))->get();
+                                                                    ?>
+                                                                    @foreach($jabatan as $jabatan)
+                                                                    @if(old('jabatan4_id',$karyawan->jabatan4_id) == $jabatan->id)
+                                                                    <option value="{{ $jabatan->id }}" selected>{{ $jabatan->nama_jabatan }}</option>
+                                                                    @else
+                                                                    <option value="{{ $jabatan->id }}">{{ $jabatan->nama_jabatan }}</option>
+                                                                    <!-- <option value="{{$divisi->id}}">{{$divisi->nama_divisi}}</option> -->
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                                <label for=" id_jabatan4">Jabatan 5</label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -562,9 +745,9 @@
                             </div>
                             <div class="col-md-3">
                                 <?php
-                                $kab = App\Models\Cities::Where('province_code', $karyawan->provinsi)->get();
-                                $kec = App\Models\District::Where('city_code', $karyawan->kabupaten)->get();
-                                $desa = App\Models\Village::Where('district_code', $karyawan->kecamatan)->get();
+                                $kab = App\Models\Cities::Where('province_code', $karyawan->provinsi)->orderBy('name', 'ASC')->get();
+                                $kec = App\Models\District::Where('city_code', $karyawan->kabupaten)->orderBy('name', 'ASC')->get();
+                                $desa = App\Models\Village::Where('district_code', $karyawan->kecamatan)->orderBy('name', 'ASC')->get();
                                 // echo $kab;
                                 ?>
                                 <div class="form-floating form-floating-outline">
@@ -778,11 +961,13 @@
     $(function() {
         $('#id_departemen').on('change', function() {
             let id_departemen = $('#id_departemen').val();
+            let holding = '{{$holding}}';
             // console.log(id_departemen);
             $.ajax({
                 type: 'GET',
                 url: "{{url('karyawan/get_divisi')}}",
                 data: {
+                    holding: holding,
                     id_departemen: id_departemen
                 },
                 cache: false,
@@ -804,11 +989,13 @@
         })
         $('#id_divisi').on('change', function() {
             let id_divisi = $('#id_divisi').val();
+            let holding = '{{$holding}}';
             console.log(id_divisi);
             $.ajax({
                 type: 'GET',
                 url: "{{url('karyawan/get_bagian')}}",
                 data: {
+                    holding: holding,
                     id_divisi: id_divisi
                 },
                 cache: false,
@@ -825,10 +1012,12 @@
         $('#id_bagian').on('change', function() {
             let id_bagian = $('#id_bagian').val();
             // console.log(id_bagian);
+            let holding = '{{$holding}}';
             $.ajax({
                 type: 'GET',
                 url: "{{url('karyawan/get_jabatan')}}",
                 data: {
+                    holding: holding,
                     id_bagian: id_bagian
                 },
                 cache: false,
@@ -844,9 +1033,10 @@
         })
         $('#id_jabatan').on('change', function() {
             let id = $(this).val();
+            let id_karyawan = $('#id_karyawan').val();
             let divisi = $('#id_divisi').val();
             let holding = '{{$holding}}';
-            let url = "{{url('karyawan/atasan/get_jabatan')}}" + "/" + divisi + "/" + id + "/" + holding;
+            let url = "{{url('karyawan/atasan/get_jabatan')}}" + "/" + holding;
             // console.log(divisi);
             console.log(holding);
             $.ajax({
@@ -854,10 +1044,13 @@
                 method: 'GET',
                 contentType: false,
                 cache: false,
-                processData: false,
-                // data: {
-                //     id_divisi: id_divisi
-                // },
+                processData: true,
+                data: {
+                    id: id,
+                    id_karyawan: id_karyawan,
+                    holding: holding,
+                    id_divisi: divisi
+                },
                 success: function(response) {
                     // console.log(response);
                     $('#atasan').html(response);
@@ -871,8 +1064,9 @@
         $('#atasan').on('change', function() {
             let id = $('#id_jabatan').val();
             let divisi = $('#id_divisi').val();
+            let id_karyawan = $('#id_karyawan').val();
             let holding = '{{$holding}}';
-            let url = "{{url('karyawan/atasan2/get_jabatan')}}" + "/" + divisi + "/" + id + "/" + holding;
+            let url = "{{url('karyawan/atasan2/get_jabatan')}}" + "/" + holding;
             console.log(divisi);
             // console.log(url);
             $.ajax({
@@ -880,10 +1074,13 @@
                 method: 'GET',
                 contentType: false,
                 cache: false,
-                processData: false,
-                // data: {
-                //     id_divisi: id_divisi
-                // },
+                processData: true,
+                data: {
+                    id: id,
+                    id_karyawan: id_karyawan,
+                    holding: holding,
+                    id_divisi: divisi
+                },
                 success: function(response) {
                     // console.log(response);
                     $('#atasan2').html(response);

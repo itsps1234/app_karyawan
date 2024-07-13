@@ -13,7 +13,7 @@ class Jabatan extends Model
     use HasFactory, UuidTrait;
     public $incrementing = false;
     protected $guarded = ['id', 'created_at', 'updated_at'];
-    protected $fillable = ['divisi_id', 'atasan_id', 'atasan2_id', 'bagian_id', 'nama_jabatan', 'level_id', 'created_at', 'updated_at'];
+    protected $fillable = ['divisi_id', 'holding', 'atasan_id', 'atasan2_id', 'bagian_id', 'nama_jabatan', 'level_id', 'lintas_departemen', 'created_at', 'updated_at'];
 
     public function LevelJabatan(): BelongsTo
     {
@@ -26,5 +26,25 @@ class Jabatan extends Model
     public function Divisi(): BelongsTo
     {
         return $this->belongsTo(Divisi::class, 'divisi_id', 'id');
+    }
+    public function User(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
+    public function User1(): HasMany
+    {
+        return $this->hasMany(User::class, 'jabatan1_id', 'id');
+    }
+    public function User2(): HasMany
+    {
+        return $this->hasMany(User::class, 'jabatan2_id', 'id');
+    }
+    public function User3(): HasMany
+    {
+        return $this->hasMany(User::class, 'jabatan3_id', 'id');
+    }
+    public function User4(): HasMany
+    {
+        return $this->hasMany(User::class, 'jabatan4_id', 'id');
     }
 }

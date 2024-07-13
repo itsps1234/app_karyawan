@@ -239,6 +239,7 @@
 <script type="text/javascript">
     $(function() {
         $(document).on('click', '#approve_btn', function(e) {
+            // console.log('ok');
             e.preventDefault();
             var canvas = document.getElementById("the_canvas");
             var dataUrl = canvas.toDataURL();
@@ -269,13 +270,14 @@
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
-                    // var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    // $(location).attr('href', url);
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
 
                 },
                 error: function(data) {
-                    // var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    // $(location).attr('href', url);
+                    console.log('error:', data)
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
                 }
             });
         });
@@ -311,13 +313,13 @@
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
-                    // var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    // $(location).attr('href', url);
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
 
                 },
                 error: function(data) {
-                    // var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    // $(location).attr('href', url);
+                    var url = "{{ url('/home') }}"; //the url I want to redirect to
+                    $(location).attr('href', url);
 
                 }
             });

@@ -54,7 +54,6 @@
                                     @if(count($jabatan_karyawan)>1)
                                     @foreach($jabatan_karyawan as $jb)
                                     {{$no1++;}}. {{$jb->nama_jabatan}} <br>
-                                    @break
                                     @endforeach
                                     @else
                                     {{$karyawan->Jabatan->nama_jabatan}} <br>

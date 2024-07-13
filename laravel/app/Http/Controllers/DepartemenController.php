@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\DepartemenImport;
 use App\Models\Departemen;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -18,10 +20,17 @@ class DepartemenController extends Controller
             'data_departemen' => Departemen::all()
         ]);
     }
+    public function ImportDepartemen(Request $request)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        Excel::import(new DepartemenImport, $request->file_excel);
+
+        return redirect('/departemen/' . $holding)->with('success', 'Import Departemen Sukses');
+    }
     public function datatable(Request $request)
     {
         $holding = request()->segment(count(request()->segments()));
-        $table = Departemen::all();
+        $table = Departemen::orderBy('nama_departemen', 'ASC')->where('holding', $holding)->orderBy('nama_departemen', 'ASC')->get();
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('option', function ($row) use ($holding) {
@@ -52,6 +61,7 @@ class DepartemenController extends Controller
         Departemen::create(
             [
                 'id' => Uuid::uuid4(),
+                'holding' => $holding,
                 'nama_departemen' => $validatedData['nama_departemen'],
             ]
         );
@@ -76,6 +86,7 @@ class DepartemenController extends Controller
         ]);
 
         Departemen::where('id', $request->id_departemen)->update([
+            'holding' => $holding,
             'nama_departemen' => $validatedData['nama_departemen_update'],
         ]);
         return redirect('/departemen/' . $holding)->with('success', 'Data Berhasil di Update');

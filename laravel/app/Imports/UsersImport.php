@@ -24,7 +24,6 @@ class UsersImport implements ToModel
      */
     public function model(array $row)
     {
-        // dd($row);
         $divisi = Divisi::where('nama_divisi', $row[38])->value('id');
         if ($row[13] == NULL) {
             $tgl_lahir = NULL;
@@ -87,18 +86,18 @@ class UsersImport implements ToModel
             "site_job" => $row[34],
             "nama_bank" => $row[35],
             "nomor_rekening" => $row[36],
-            "dept_id" => Departemen::where('nama_departemen', $row[37])->value('id'),
-            "divisi_id" => Divisi::where('nama_divisi', $row[38])->value('id'),
-            "bagian_id" => Bagian::where('nama_bagian', $row[39])->value('id'),
-            "jabatan_id" => Jabatan::where('nama_jabatan', $row[40])->where('divisi_id', $divisi)->value('id'),
-            "divisi1_id" => Divisi::where('nama_divisi', $row[41])->value('id'),
-            "jabatan1_id" => Jabatan::where('nama_jabatan', $row[42])->value('id'),
-            "divisi2_id" => Divisi::where('nama_divisi', $row[43])->value('id'),
-            "jabat2an_id" => Jabatan::where('nama_jabatan', $row[44])->value('id'),
-            "divisi3_id" => Divisi::where('nama_divisi', $row[45])->value('id'),
-            "jabatan3_id" => Jabatan::where('nama_jabatan', $row[46])->value('id'),
-            "divisi4_id" => Divisi::where('nama_divisi', $row[47])->value('id'),
-            "jabatan4_id" => Jabatan::where('nama_jabatan', $row[48])->value('id'),
+            // "dept_id" => Departemen::where('nama_departemen', $row[37])->value('id'),
+            // "divisi_id" => Divisi::where('id', $divisi)->value('id'),
+            // "bagian_id" => Bagian::where('nama_bagian', $row[39])->value('id'),
+            // "jabatan_id" => Jabatan::where('nama_jabatan', $row[40])->where('divisi_id', $divisi)->value('id'),
+            // "divisi1_id" => Divisi::where('nama_divisi', $row[41])->value('id'),
+            // "jabatan1_id" => Jabatan::where('nama_jabatan', $row[42])->value('id'),
+            // "divisi2_id" => Divisi::where('nama_divisi', $row[43])->value('id'),
+            // "jabat2an_id" => Jabatan::where('nama_jabatan', $row[44])->value('id'),
+            // "divisi3_id" => Divisi::where('nama_divisi', $row[45])->value('id'),
+            // "jabatan3_id" => Jabatan::where('nama_jabatan', $row[46])->value('id'),
+            // "divisi4_id" => Divisi::where('nama_divisi', $row[47])->value('id'),
+            // "jabatan4_id" => Jabatan::where('nama_jabatan', $row[48])->value('id')
         ]);
     }
 }

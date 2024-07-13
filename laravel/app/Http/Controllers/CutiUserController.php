@@ -46,11 +46,11 @@ class CutiUserController extends Controller
         // dd($kontrak);
         // jika level staff/admin
         if ($user->level_jabatan == 6) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '5')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '4')->first();
-            $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '3')->first();
-            $IdLevelAsasan3  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan4  = LevelJabatan::where('level_jabatan', '1')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '5')->first();
+            $IdLevelAtasan1  = LevelJabatan::where('level_jabatan', '4')->first();
+            $IdLevelAtasan2  = LevelJabatan::where('level_jabatan', '3')->first();
+            $IdLevelAtasan3  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAtasan4  = LevelJabatan::where('level_jabatan', '1')->first();
 
             // Atasan Tingkat 1
             if ($lokasi_site_job->kategori_kantor == 'sps') {
@@ -65,15 +65,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -89,15 +89,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -113,15 +113,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -135,15 +135,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -157,15 +157,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -202,15 +202,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -226,15 +226,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -250,15 +250,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -272,15 +272,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -294,15 +294,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -339,15 +339,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -363,15 +363,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -387,15 +387,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -409,15 +409,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -431,15 +431,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -476,15 +476,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -500,15 +500,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -524,15 +524,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -546,15 +546,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -568,15 +568,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -613,15 +613,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -637,15 +637,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -661,15 +661,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -683,15 +683,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -705,15 +705,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -749,15 +749,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -772,15 +772,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -795,15 +795,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -816,15 +816,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -837,15 +837,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan == '') {
                                 $atasan = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -874,15 +874,15 @@ class CutiUserController extends Controller
             // Atasan Tingkat 2
             if ($lokasi_site_job->kategori_kantor == 'sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -898,15 +898,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -920,15 +920,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -942,15 +942,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -970,15 +970,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1002,15 +1002,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1024,15 +1024,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1052,15 +1052,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1089,15 +1089,15 @@ class CutiUserController extends Controller
                     if ($atasan1->name == $atasan->name) {
                         // dd('ok');
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -1112,15 +1112,15 @@ class CutiUserController extends Controller
                         // dd($atasan1);
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1135,15 +1135,15 @@ class CutiUserController extends Controller
                             // dd($atasan1);
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1164,15 +1164,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1196,15 +1196,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1218,15 +1218,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1246,15 +1246,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -1286,15 +1286,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sp') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -1310,15 +1310,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -1332,15 +1332,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -1354,15 +1354,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1382,15 +1382,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1414,15 +1414,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1436,15 +1436,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1464,15 +1464,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1500,15 +1500,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -1522,15 +1522,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1544,15 +1544,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1572,15 +1572,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1604,15 +1604,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1626,15 +1626,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1654,15 +1654,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -1694,15 +1694,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sip') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -1718,15 +1718,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -1740,15 +1740,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -1762,15 +1762,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1790,15 +1790,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1822,15 +1822,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1844,15 +1844,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1872,15 +1872,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -1908,15 +1908,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -1930,15 +1930,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -1952,15 +1952,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -1980,15 +1980,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2012,15 +2012,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2034,15 +2034,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2062,15 +2062,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -2101,15 +2101,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -2125,15 +2125,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -2147,15 +2147,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -2169,15 +2169,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2197,15 +2197,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2229,15 +2229,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2251,15 +2251,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2279,15 +2279,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2315,15 +2315,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -2337,15 +2337,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2359,15 +2359,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2387,15 +2387,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2419,15 +2419,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2441,15 +2441,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2469,15 +2469,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -2508,15 +2508,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -2532,15 +2532,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -2554,15 +2554,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -2576,15 +2576,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2604,15 +2604,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2636,15 +2636,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2658,15 +2658,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2686,15 +2686,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2722,15 +2722,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -2744,15 +2744,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -2766,15 +2766,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2794,15 +2794,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2826,15 +2826,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -2848,15 +2848,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -2876,15 +2876,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -2916,15 +2916,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'all') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -2939,15 +2939,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -2960,15 +2960,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -2981,15 +2981,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3008,15 +3008,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -3039,15 +3039,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3060,15 +3060,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -3087,15 +3087,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -3122,15 +3122,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3143,15 +3143,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3164,15 +3164,15 @@ class CutiUserController extends Controller
                                 ->first();
                             if ($atasan1 == '') {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -3191,15 +3191,15 @@ class CutiUserController extends Controller
                             } else {
                                 if ($atasan1->name == $atasan->name) {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -3222,15 +3222,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -3243,15 +3243,15 @@ class CutiUserController extends Controller
                                     ->first();
                                 if ($atasan1 == '') {
                                     $atasan1 = DB::table('users')
-                                        ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                        ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                             });
                                         })
                                         ->where('is_admin', 'user')
@@ -3270,15 +3270,15 @@ class CutiUserController extends Controller
                                 } else {
                                     if ($atasan1->name == $atasan->name) {
                                         $atasan1 = DB::table('users')
-                                            ->join('jabatans', function ($join) use ($IdLevelAsasan4) {
+                                            ->join('jabatans', function ($join) use ($IdLevelAtasan4) {
                                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan4) {
+                                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan4) {
                                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan4->id);
+                                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan4->id);
                                                 });
                                             })
                                             ->where('is_admin', 'user')
@@ -3308,10 +3308,10 @@ class CutiUserController extends Controller
                 }
             }
         } else if ($user->level_jabatan == 5) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '4')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '3')->first();
-            $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan3  = LevelJabatan::where('level_jabatan', '1')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '4')->first();
+            $IdLevelAtasan1  = LevelJabatan::where('level_jabatan', '3')->first();
+            $IdLevelAtasan2  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAtasan3  = LevelJabatan::where('level_jabatan', '1')->first();
 
             // Atasan Tingkat 1
             if ($lokasi_site_job->kategori_kantor == 'sps') {
@@ -3326,15 +3326,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3350,15 +3350,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3374,15 +3374,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3396,15 +3396,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3438,15 +3438,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3462,15 +3462,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3486,15 +3486,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3508,15 +3508,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3550,15 +3550,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3574,15 +3574,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3598,15 +3598,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3620,15 +3620,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3662,15 +3662,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3686,15 +3686,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3710,15 +3710,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3732,15 +3732,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3774,15 +3774,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3798,15 +3798,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3822,15 +3822,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3844,15 +3844,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3885,15 +3885,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -3908,15 +3908,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -3931,15 +3931,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -3952,15 +3952,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan == '') {
                             $atasan = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -3987,15 +3987,15 @@ class CutiUserController extends Controller
             // Atasan Tingkat 2
             if ($lokasi_site_job->kategori_kantor == 'sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4011,15 +4011,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4033,15 +4033,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4057,15 +4057,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4086,15 +4086,15 @@ class CutiUserController extends Controller
                     if ($atasan1->name == $atasan->name) {
                         // dd('ok');
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4109,15 +4109,15 @@ class CutiUserController extends Controller
                         // dd($atasan1);
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4134,15 +4134,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -4166,15 +4166,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sp') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4190,15 +4190,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4212,15 +4212,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4236,15 +4236,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4264,15 +4264,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4286,15 +4286,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4310,15 +4310,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -4342,15 +4342,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sip') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4366,15 +4366,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4388,15 +4388,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4412,15 +4412,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4440,15 +4440,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4462,15 +4462,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4486,15 +4486,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -4517,15 +4517,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4541,15 +4541,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4563,15 +4563,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4587,15 +4587,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4615,15 +4615,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4637,15 +4637,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4661,15 +4661,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -4692,15 +4692,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4716,15 +4716,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4738,15 +4738,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4762,15 +4762,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4790,15 +4790,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4812,15 +4812,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4836,15 +4836,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -4868,15 +4868,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'all') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -4891,15 +4891,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -4912,15 +4912,15 @@ class CutiUserController extends Controller
                         ->first();
                     if ($atasan1 == '') {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4935,15 +4935,15 @@ class CutiUserController extends Controller
                     } else {
                         if ($atasan1->name == $atasan->name) {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -4962,15 +4962,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -4983,15 +4983,15 @@ class CutiUserController extends Controller
                             ->first();
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -5007,15 +5007,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -5039,9 +5039,9 @@ class CutiUserController extends Controller
                 }
             }
         } else if ($user->level_jabatan == 4) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '3')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan2  = LevelJabatan::where('level_jabatan', '1')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '3')->first();
+            $IdLevelAtasan1  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAtasan2  = LevelJabatan::where('level_jabatan', '1')->first();
 
             // Atasan Tingkat 1
             if ($lokasi_site_job->kategori_kantor == 'sps') {
@@ -5056,15 +5056,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5080,15 +5080,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5104,15 +5104,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5147,15 +5147,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5171,15 +5171,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5195,15 +5195,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5234,15 +5234,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5258,15 +5258,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5282,15 +5282,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5321,15 +5321,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5345,15 +5345,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5369,15 +5369,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5408,15 +5408,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5432,15 +5432,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5456,15 +5456,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5494,15 +5494,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5517,15 +5517,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5540,15 +5540,15 @@ class CutiUserController extends Controller
                     if ($atasan == '') {
                         // dd('oke1');
                         $atasan = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5572,15 +5572,15 @@ class CutiUserController extends Controller
             // Atasan Tingkat 2
             if ($lokasi_site_job->kategori_kantor == 'sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5596,15 +5596,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5622,15 +5622,15 @@ class CutiUserController extends Controller
                     if ($atasan1->name == $atasan->name) {
                         // dd('ok');
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5645,15 +5645,15 @@ class CutiUserController extends Controller
                         // dd($atasan1);
                         if ($atasan1 == '') {
                             $atasan1 = DB::table('users')
-                                ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                        $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                        $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                     });
                                 })
                                 ->where('is_admin', 'user')
@@ -5670,15 +5670,15 @@ class CutiUserController extends Controller
                         } else {
                             if ($atasan1->name == $atasan->name) {
                                 $atasan1 = DB::table('users')
-                                    ->join('jabatans', function ($join) use ($IdLevelAsasan3) {
+                                    ->join('jabatans', function ($join) use ($IdLevelAtasan3) {
                                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan3) {
+                                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan3) {
                                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                            $query->where('level_jabatans.id', '=', $IdLevelAsasan3->id);
+                                            $query->where('level_jabatans.id', '=', $IdLevelAtasan3->id);
                                         });
                                     })
                                     ->where('is_admin', 'user')
@@ -5702,15 +5702,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sp') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5726,15 +5726,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5751,15 +5751,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5779,15 +5779,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sip') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5803,15 +5803,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5831,15 +5831,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5863,15 +5863,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5887,15 +5887,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5911,15 +5911,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -5938,15 +5938,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -5962,15 +5962,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -5986,15 +5986,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -6014,15 +6014,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'all') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6037,15 +6037,15 @@ class CutiUserController extends Controller
                 if ($atasan1 == '') {
                     // dd('oke1');
                     $atasan1 = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6064,15 +6064,15 @@ class CutiUserController extends Controller
                 } else {
                     if ($atasan1->name == $atasan->name) {
                         $atasan1 = DB::table('users')
-                            ->join('jabatans', function ($join) use ($IdLevelAsasan2) {
+                            ->join('jabatans', function ($join) use ($IdLevelAtasan2) {
                                 $join->on('jabatans.id', '=', 'users.jabatan_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                                 $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                                $join->join('level_jabatans', function ($query) use ($IdLevelAsasan2) {
+                                $join->join('level_jabatans', function ($query) use ($IdLevelAtasan2) {
                                     $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                    $query->where('level_jabatans.id', '=', $IdLevelAsasan2->id);
+                                    $query->where('level_jabatans.id', '=', $IdLevelAtasan2->id);
                                 });
                             })
                             ->where('is_admin', 'user')
@@ -6090,8 +6090,8 @@ class CutiUserController extends Controller
                 }
             }
         } else if ($user->level_jabatan == 3) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '2')->first();
-            $IdLevelAsasan1  = LevelJabatan::where('level_jabatan', '1')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '2')->first();
+            $IdLevelAtasan1  = LevelJabatan::where('level_jabatan', '1')->first();
 
             // Atasan Tingkat 1
             if ($lokasi_site_job->kategori_kantor == 'sps') {
@@ -6106,15 +6106,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6130,15 +6130,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6167,15 +6167,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6191,15 +6191,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6228,15 +6228,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6252,15 +6252,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6289,15 +6289,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6313,15 +6313,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6350,15 +6350,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6374,15 +6374,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6410,15 +6410,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6433,15 +6433,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6463,15 +6463,15 @@ class CutiUserController extends Controller
             // Atasan Tingkat 2
             if ($lokasi_site_job->kategori_kantor == 'sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6490,15 +6490,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sp') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6515,15 +6515,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sip') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6540,15 +6540,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6565,15 +6565,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6591,15 +6591,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'all') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan1) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan1) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan1) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan1) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan1->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan1->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6615,7 +6615,7 @@ class CutiUserController extends Controller
                 }
             }
         } else if ($user->level_jabatan == 2) {
-            $IdLevelAsasan  = LevelJabatan::where('leveWSl_jabatan', '1')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '1')->first();
 
             // Atasan Tingkat 1
             if ($lokasi_site_job->kategori_kantor == 'sps') {
@@ -6630,15 +6630,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6666,15 +6666,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6701,15 +6701,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6736,15 +6736,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6771,15 +6771,15 @@ class CutiUserController extends Controller
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
                 $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6795,15 +6795,15 @@ class CutiUserController extends Controller
                 // dd($atasan);
                 if ($atasan == '') {
                     $atasan = DB::table('users')
-                        ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                        ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                             $join->on('jabatans.id', '=', 'users.jabatan_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                             $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                            $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                            $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                                 $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                                $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                                $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                             });
                         })
                         ->where('is_admin', 'user')
@@ -6830,21 +6830,11 @@ class CutiUserController extends Controller
                     ->orWhere('divisi3_id', Auth::user()->divisi_id)
                     ->orWhere('divisi4_id', Auth::user()->divisi_id)
                     ->get();
-                $atasan = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
-                        $join->on('jabatans.id', '=', 'users.jabatan_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
-                        $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
-                            $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
-                        });
-                    })
-                    ->where('is_admin', 'user')
-                    ->where('users.dept_id', $user->dept_id)
-                    ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
+                $atasan = User::where('jabatan_id', $user->atasan_id)
+                    ->orWhere('jabatan1_id', $user->atasan_id)
+                    ->orWhere('jabatan2_id', $user->atasan_id)
+                    ->orWhere('jabatan3_id', $user->atasan_id)
+                    ->orWhere('jabatan4_id', $user->atasan_id)
                     ->first();
                 // jika atasan tingkat 1 
                 // dd($atasan);
@@ -6858,15 +6848,15 @@ class CutiUserController extends Controller
             // Atasan Tingkat 2
             if ($lokasi_site_job->kategori_kantor == 'sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6885,15 +6875,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sp') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6910,15 +6900,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'sip') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6935,15 +6925,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sps') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6960,15 +6950,15 @@ class CutiUserController extends Controller
                 }
             } else if ($lokasi_site_job->kategori_kantor == 'all sp') {
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -6986,15 +6976,15 @@ class CutiUserController extends Controller
             } else if ($lokasi_site_job->kategori_kantor == 'all') {
 
                 $atasan1 = DB::table('users')
-                    ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                    ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                         $join->on('jabatans.id', '=', 'users.jabatan_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                         $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                        $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                        $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                             $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                            $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                            $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                         });
                     })
                     ->where('is_admin', 'user')
@@ -7010,32 +7000,32 @@ class CutiUserController extends Controller
                 }
             }
         } else if ($user->level_jabatan == 1) {
-            $IdLevelAsasan  = LevelJabatan::where('level_jabatan', '0')->first();
+            $IdLevelAtasan  = LevelJabatan::where('level_jabatan', '0')->first();
             $atasan = DB::table('users')
-                ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                        $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                     });
                 })->where('is_admin', 'user')
                 ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')
                 ->first();
             // dd($atasan);
             $atasan1 = DB::table('users')
-                ->join('jabatans', function ($join) use ($IdLevelAsasan) {
+                ->join('jabatans', function ($join) use ($IdLevelAtasan) {
                     $join->on('jabatans.id', '=', 'users.jabatan_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan1_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan2_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan3_id');
                     $join->orOn('jabatans.id', '=', 'users.jabatan4_id');
-                    $join->join('level_jabatans', function ($query) use ($IdLevelAsasan) {
+                    $join->join('level_jabatans', function ($query) use ($IdLevelAtasan) {
                         $query->on('level_jabatans.id', '=', 'jabatans.level_id');
-                        $query->where('level_jabatans.id', '=', $IdLevelAsasan->id);
+                        $query->where('level_jabatans.id', '=', $IdLevelAtasan->id);
                     });
                 })->where('is_admin', 'user')
                 ->select('users.*', 'jabatans.nama_jabatan', 'level_jabatans.level_jabatan')

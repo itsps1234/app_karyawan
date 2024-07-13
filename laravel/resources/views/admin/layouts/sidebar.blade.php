@@ -37,7 +37,7 @@
                 <div style="font-size: 10pt;" data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('detail_jabatan*') ? 'active open' : '' }} {{ Request::is('struktur_organisasi*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div style="font-size: 10pt;" data-i18n="Data Master">Data&nbsp;Master&nbsp;Karyawan</div>
@@ -79,7 +79,7 @@
                         <div style="font-size: 10pt;" data-i18n="Blank"> Master&nbsp;Bagian</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('jabatan*') ? 'active' : '' }}">
+                <li class="menu-item {{ Request::is('jabatan*') ? 'active' : '' }} {{ Request::is('detail_jabatan*') ? 'active' : '' }}">
                     <a href="{{ url('/jabatan/'.$holding) }}" class="menu-link">
                         <div style="font-size: 10pt;" data-i18n="Blank"> Master&nbsp;Jabatan</div>
                     </a>
@@ -125,7 +125,7 @@
                 <div style="font-size: 10pt;" data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }} {{ Request::is('detail_jabatan*') ? 'active open' : '' }} {{ Request::is('struktur_organisasi*') ? 'active open' : '' }} {{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div style="font-size: 10pt;" data-i18n="Data Master">Data&nbsp;Master&nbsp;Karyawan</div>
@@ -213,7 +213,7 @@
                 <div style="font-size: 10pt;" data-i18n="Dashboards">Dashboards</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }}{{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('karyawan*') ? 'active open' : '' }} {{ Request::is('detail_jabatan*') ? 'active open' : '' }} {{ Request::is('struktur_organisasi*') ? 'active open' : '' }}  {{ Request::is('shift*') ? 'active open' : '' }}{{ Request::is('rekap-data*') ? 'active open' : '' }} {{ Request::is('lokasi-kantor*') ? 'active open' : '' }}{{ Request::is('reset-cuti*') ? 'active open' : '' }}{{ Request::is('departemen*') ? 'active open' : '' }}{{ Request::is('divisi*') ? 'active open' : '' }} {{ Request::is('bagian*') ? 'active open' : '' }} {{ Request::is('jabatan*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons mdi mdi-window-maximize"></i>
                 <div style="font-size: 10pt;" data-i18n="Data Master">Data&nbsp;Master&nbsp;Karyawan</div>
