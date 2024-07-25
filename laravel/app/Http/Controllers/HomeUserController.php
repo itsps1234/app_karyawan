@@ -41,7 +41,7 @@ class HomeUserController extends Controller
         // dd($blnskrg);
         $tglkmrn            = date('Y-m-d', strtotime('-1 days'));
         $mapping_shift      = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->first();
-        $count_absen_hadir  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Hadir kerja')->where('tanggal_masuk', '<=', $tglskrg)
+        $count_absen_hadir  = MappingShift::where('user_id', $user_login)->where('status_absen', 'HADIR KERJA')->where('tanggal_masuk', '<=', $tglskrg)
             ->whereMonth('tanggal_masuk', $blnskrg)
             ->count();
         $count_absen_sakit  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Sakit')->where('tanggal_masuk', '<=', $tglskrg)
@@ -50,7 +50,7 @@ class HomeUserController extends Controller
         $count_absen_izin  = MappingShift::where('user_id', $user_login)->where('status_absen', 'Izin')->where('tanggal_masuk', '<=', $tglskrg)
             ->whereMonth('tanggal_masuk', $blnskrg)
             ->count();
-        $count_absen_telat  = MappingShift::where('user_id', $user_login)->where('status_absen', 'telat')->where('tanggal_masuk', '<=', $tglskrg)
+        $count_absen_telat  = MappingShift::where('user_id', $user_login)->where('status_absen', 'HADIR KERJA')->where('keterangan_absensi', 'TELAT HADIR')->where('tanggal_masuk', '<=', $tglskrg)
             ->whereMonth('tanggal_masuk', $blnskrg)
             ->count();
         $user           = Auth::user()->id;
@@ -120,8 +120,8 @@ class HomeUserController extends Controller
         if ($mapping_shift == '' || $mapping_shift == NULL) {
             $jam_absen = null;
             $jam_pulang = null;
-            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
-            $jam_kerja = MappingShift::with('Shift')->where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->first();
+            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
+            $jam_kerja = MappingShift::with('Shift')->where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
             // dd($status_absen_skrg);
             return view('users.home.index', [
                 'title'             => 'Absen',
@@ -143,27 +143,27 @@ class HomeUserController extends Controller
         } else {
             $jam_absen = $mapping_shift->jam_absen;
             $jam_pulang = $mapping_shift->jam_pulang;
-            $getshift = $mapping_shift->shift->nama_shift;
+            $status_absen_skrg = $mapping_shift->shift->nama_shift;
 
             $hours_1_masuk = Carbon::parse($mapping_shift->shift->jam_masuk)->subHour(1)->format('H:i:s');
             $hours_1_pulang = Carbon::parse($mapping_shift->shift->jam_keluar)->subHour(-1)->format('H:i:s');
             $timenow = Carbon::now()->format('H:i:s');
-            // dd($getshift);
-            if ($getshift == 'Malam') {
+            // dd($status_absen_skrg);
+            if ($status_absen_skrg == 'Malam') {
                 if ($jam_absen != null && $jam_pulang == null) {
                     if ($hours_1_pulang > $timenow) {
-                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->get();
+                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->orderBy('tanggal_masuk', 'DESC')->first();
                     } else {
-                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
+                        $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
                     }
                 } else {
-                    $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
+                    $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
                 }
             } else {
-                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
+                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
             }
-            $jam_kerja = MappingShift::with('Shift')->where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->first();
-            // $hours_1 = Carbon::parse($getshift->shift->jam_masuk)->subHour(-1)->format('H:i:s');
+            $jam_kerja = MappingShift::with('Shift')->where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
+            // $hours_1 = Carbon::parse($status_absen_skrg->shift->jam_masuk)->subHour(-1)->format('H:i:s');
             // dd($hours_1);
             // dd($status_absen_skrg);
             return view('users.home.index', [
@@ -171,7 +171,7 @@ class HomeUserController extends Controller
                 'shift_karyawan'    => MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->first(),
                 'count_absen_hadir' => $count_absen_hadir,
                 'thnskrg'           => $thnskrg,
-                'get_shift'         => $getshift,
+                'get_shift'         => $status_absen_skrg,
                 'lokasi_kantor'     => $lokasi_kantor,
                 'jam_kerja'         => $jam_kerja,
                 'status_absen_skrg' => $status_absen_skrg,
@@ -3037,7 +3037,7 @@ class HomeUserController extends Controller
                         if ($row->jam_absen == NULL) {
                             return $row->jam_absen;
                         } else {
-                            $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+                            $result = Carbon::parse($row->jam_absen)->isoFormat('HH:mm');;
                             return $result;
                         }
                     })
@@ -3045,7 +3045,7 @@ class HomeUserController extends Controller
                         if ($row->jam_pulang == NULL) {
                             return $row->jam_pulang;
                         } else {
-                            $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                            $result = Carbon::parse($row->jam_pulang)->isoFormat('HH:mm');;
                             return $result;
                         }
                     })
@@ -3062,7 +3062,7 @@ class HomeUserController extends Controller
                         if ($row->jam_absen == NULL) {
                             return $row->jam_absen;
                         } else {
-                            $result = Carbon::parse($row->jam_absen)->isoFormat('H:m');;
+                            $result = Carbon::parse($row->jam_absen)->isoFormat('HH:mm');;
                             return $result;
                         }
                     })
@@ -3070,7 +3070,7 @@ class HomeUserController extends Controller
                         if ($row->jam_pulang == NULL) {
                             return $row->jam_pulang;
                         } else {
-                            $result = Carbon::parse($row->jam_pulang)->isoFormat('H:m');;
+                            $result = Carbon::parse($row->jam_pulang)->isoFormat('HH:mm');;
                             return $result;
                         }
                     })
@@ -3160,6 +3160,11 @@ class HomeUserController extends Controller
         if ($request["mulai"] && $request["akhir"]) {
             $data_absen = MappingShift::where('user_id', auth()->user()->id)->whereBetween('tanggal_masuk', [$request["mulai"], $request["akhir"]]);
         }
+        // dd($mapping_shift);
+        if ($mapping_shift == NULL) {
+            $request->session()->flash('Mapping_shift_kosong');
+            return redirect('home');
+        }
         $timenow = Carbon::now()->format('H:i:s');
         $hours_1_masuk = Carbon::parse($mapping_shift->shift->jam_masuk)->subHour(1)->format('H:i:s');
         $hours_1_pulang = Carbon::parse($mapping_shift->shift->jam_keluar)->subHour(-1)->format('H:i:s');
@@ -3169,27 +3174,25 @@ class HomeUserController extends Controller
             if ($hours_1_pulang > $timenow) {
                 // dd('1');
                 // dd('oke');
-                $getshift = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->first();
-                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->get();
+                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglkmrn)->orderBy('tanggal_masuk', 'DESC')->first();
             } else {
                 // dd('2');
-                $getshift = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->first();
-                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
+                $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
             }
         } else {
-            $getshift = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->first();
-            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->get();
+            $status_absen_skrg = MappingShift::where('user_id', $user_login)->where('tanggal_masuk', $tglskrg)->orderBy('tanggal_masuk', 'DESC')->first();
             // dd($status_absen_skrg);
         }
-        $cek_jam_maks_kerja = MappingShift::where('user_id', Auth::user()->id)->where('tanggal_masuk', $tglskrg)->first();
+        $cek_jam_maks_kerja = MappingShift::With('Shift')->where('user_id', Auth::user()->id)->where('tanggal_masuk', $tglskrg)->first();
         $time_now = date('H:i:s');
-        $date1          = new DateTime($cek_jam_maks_kerja->tanggal_masuk . $cek_jam_maks_kerja->jam_absen);
+        // dd($cek_jam_maks_kerja->Shift->jam_keluar);
+        $date1          = new DateTime($cek_jam_maks_kerja->tanggal_masuk . $cek_jam_maks_kerja->Shift->jam_keluar);
         $date2          = new DateTime($cek_jam_maks_kerja->tanggal_masuk . $time_now);
         $interval       = $date1->diff($date2);
-        $hitung_jam_kerja = ($interval->format('%H') . ':' . $interval->format('%I') . ':' . $interval->format('%S'));
-        if ($getshift->jam_absen == '' || $getshift->jam_absen == NULL) {
+        // dd($interval);
+        if ($status_absen_skrg->jam_absen == '' || $status_absen_skrg->jam_absen == NULL) {
             if ($timenow >= $hours_1_masuk) {
-                // dd($get_nama_shift);
+                // dd($interval->h);
                 if ($interval->h <= 6) {
                     $request->session()->flash('jam_kerja_kurang');
                 }
@@ -3215,7 +3218,12 @@ class HomeUserController extends Controller
                 Alert::error('Gagal', 'Anda Belum Masuk Jam Absensi');
                 return redirect()->back()->with('Gagal', 'Anda Belum Masuk Jam Absensi');
             }
-        } else if ($getshift->jam_absen != '' || $getshift->jam_absen != NULL) {
+        } else if ($status_absen_skrg->jam_absen != '' || $status_absen_skrg->jam_absen != NULL) {
+            $date1_pulang          = new DateTime($cek_jam_maks_kerja->tanggal_pulang . $cek_jam_maks_kerja->Shift->jam_masuk);
+            $date2_pulang          = new DateTime($cek_jam_maks_kerja->tanggal_pulang . $time_now);
+            $interval_pulang       = $date1_pulang->diff($date2_pulang);
+            // dd($interval_pulang);
+            $hitung_jam_kerja = ($interval_pulang->format('%H') . ':' . $interval_pulang->format('%I') . ':' . $interval_pulang->format('%S'));
             // dd($hitung_jam_kerja);
             if ($hitung_jam_kerja <= '06:00:00') {
                 $request->session()->flash('jam_kerja_kurang');
@@ -3503,28 +3511,55 @@ class HomeUserController extends Controller
                 $lokasi_kantor_sip_makasar = Lokasi::where('lokasi_kantor', 'CV. SURYA INTI PANGAN - MAKASAR')->first();
                 // dd($lokasi_kantor);
                 // dd($request["jarak_masuk"]);
-                if ($lokasi_kantor->kategori_kantor == 'all') {
-                    $result_sp_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_kediri->lat_kantor, $lokasi_kantor_sp_kediri->long_kantor, "K") * 1000;
-                    // dd($result_sp_kediri, $lokasi_kantor_sp_kediri->radius);
-                    if ($result_sp_kediri > $lokasi_kantor_sp_kediri->radius) {
+                if ($request["lat_absen"] == NULL && $request["long_absen"] == NULL) {
+                    $request->session()->flash('latlongnull', 'Gagal Absen Masuk');
+                    return redirect('/home');
+                } else {
+                    if ($lokasi_kantor->kategori_kantor == 'all') {
+                        $result_sp_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_kediri->lat_kantor, $lokasi_kantor_sp_kediri->long_kantor, "K") * 1000;
+                        if ($result_sp_kediri > $lokasi_kantor_sp_kediri->radius) {
+                            // dd($result_sp_kediri, $lokasi_kantor_sp_kediri->radius);
+                            // dd($result_sp_kediri);
+                            $result_sps_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_kediri->lat_kantor, $lokasi_kantor_sps_kediri->long_kantor, "K") * 1000;
+                            if ($result_sps_kediri > $lokasi_kantor_sps_kediri->radius) {
+                                $result_sps_ngawi = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_ngawi->lat_kantor, $lokasi_kantor_sps_ngawi->long_kantor, "K") * 1000;
+                                if ($result_sps_ngawi > $lokasi_kantor_sps_ngawi->radius) {
+                                    $result_sps_subang = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_subang->lat_kantor, $lokasi_kantor_sps_subang->long_kantor, "K") * 1000;
+                                    if ($result_sps_subang > $lokasi_kantor_sps_subang->radius) {
+                                        $result_sp_tuban = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_tuban->lat_kantor, $lokasi_kantor_sp_tuban->long_kantor, "K") * 1000;
+                                        if ($result_sp_tuban > $lokasi_kantor_sp_tuban->radius) {
+                                            $result_sip_makasar = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sip_makasar->lat_kantor, $lokasi_kantor_sip_makasar->long_kantor, "K") * 1000;
+                                            if ($result_sip_makasar > $lokasi_kantor_sip_makasar->radius) {
+                                                $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
+                                                return redirect('/home');
+                                            } else {
+                                                $request["jarak_masuk"] = $result_sip_makasar;
+                                            }
+                                        } else {
+                                            $request["jarak_masuk"] = $result_sp_tuban;
+                                        }
+                                    } else {
+                                        $request["jarak_masuk"] = $result_sps_subang;
+                                    }
+                                } else {
+                                    $request["jarak_masuk"] = $result_sps_ngawi;
+                                }
+                            } else {
+                                $request["jarak_masuk"] = $result_sps_kediri;
+                            }
+                        } else {
+                            // dd('ok');
+                            $request["jarak_masuk"] = $result_sp_kediri;
+                        }
+                    } else if ($lokasi_kantor->kategori_kantor == 'all sps') {
                         $result_sps_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_kediri->lat_kantor, $lokasi_kantor_sps_kediri->long_kantor, "K") * 1000;
                         if ($result_sps_kediri > $lokasi_kantor_sps_kediri->radius) {
                             $result_sps_ngawi = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_ngawi->lat_kantor, $lokasi_kantor_sps_ngawi->long_kantor, "K") * 1000;
                             if ($result_sps_ngawi > $lokasi_kantor_sps_ngawi->radius) {
                                 $result_sps_subang = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_subang->lat_kantor, $lokasi_kantor_sps_subang->long_kantor, "K") * 1000;
                                 if ($result_sps_subang > $lokasi_kantor_sps_subang->radius) {
-                                    $result_sp_tuban = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_tuban->lat_kantor, $lokasi_kantor_sp_tuban->long_kantor, "K") * 1000;
-                                    if ($result_sp_tuban > $lokasi_kantor_sp_tuban->radius) {
-                                        $result_sip_makasar = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sip_makasar->lat_kantor, $lokasi_kantor_sip_makasar->long_kantor, "K") * 1000;
-                                        if ($result_sip_makasar > $lokasi_kantor_sip_makasar->radius) {
-                                            $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
-                                            return redirect('/home');
-                                        } else {
-                                            $request["jarak_masuk"] = $result_sip_makasar;
-                                        }
-                                    } else {
-                                        $request["jarak_masuk"] = $result_sp_tuban;
-                                    }
+                                    $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
+                                    return redirect('/home');
                                 } else {
                                     $request["jarak_masuk"] = $result_sps_subang;
                                 }
@@ -3534,50 +3569,30 @@ class HomeUserController extends Controller
                         } else {
                             $request["jarak_masuk"] = $result_sps_kediri;
                         }
-                    } else {
-                        $request["jarak_masuk"] = $result_sp_kediri;
-                    }
-                } else if ($lokasi_kantor->kategori_kantor == 'all sps') {
-                    $result_sps_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_kediri->lat_kantor, $lokasi_kantor_sps_kediri->long_kantor, "K") * 1000;
-                    if ($result_sps_kediri > $lokasi_kantor_sps_kediri->radius) {
-                        $result_sps_ngawi = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_ngawi->lat_kantor, $lokasi_kantor_sps_ngawi->long_kantor, "K") * 1000;
-                        if ($result_sps_ngawi > $lokasi_kantor_sps_ngawi->radius) {
-                            $result_sps_subang = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sps_subang->lat_kantor, $lokasi_kantor_sps_subang->long_kantor, "K") * 1000;
-                            if ($result_sps_subang > $lokasi_kantor_sps_subang->radius) {
+                    } else if ($lokasi_kantor->kategori_kantor == 'all sp') {
+                        $result_sp_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_kediri->lat_kantor, $lokasi_kantor_sp_kediri->long_kantor, "K") * 1000;
+                        // dd($request["jarak_masuk"], $lokasi_kantor_sp_kediri->radius);
+                        if ($result_sp_kediri > $lokasi_kantor_sp_kediri->radius) {
+                            $result_sp_tuban = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_tuban->lat_kantor, $lokasi_kantor_sp_tuban->long_kantor, "K") * 1000;
+                            if ($result_sp_tuban > $lokasi_kantor_sp_tuban->radius) {
                                 $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
                                 return redirect('/home');
                             } else {
-                                $request["jarak_masuk"] = $result_sps_subang;
+                                $request["jarak_masuk"] = $result_sp_tuban;
                             }
                         } else {
-                            $request["jarak_masuk"] = $result_sps_ngawi;
+                            $request["jarak_masuk"] = $result_sp_kediri;
                         }
                     } else {
-                        $request["jarak_masuk"] = $result_sps_kediri;
-                    }
-                } else if ($lokasi_kantor->kategori_kantor == 'all sp') {
-                    $result_sp_kediri = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_kediri->lat_kantor, $lokasi_kantor_sp_kediri->long_kantor, "K") * 1000;
-                    // dd($request["jarak_masuk"], $lokasi_kantor_sp_kediri->radius);
-                    if ($result_sp_kediri > $lokasi_kantor_sp_kediri->radius) {
-                        $result_sp_tuban = $this->distance($request["lat_absen"], $request["long_absen"], $lokasi_kantor_sp_tuban->lat_kantor, $lokasi_kantor_sp_tuban->long_kantor, "K") * 1000;
-                        if ($result_sp_tuban > $lokasi_kantor_sp_tuban->radius) {
+                        $lat_kantor = $lokasi_kantor->lat_kantor;
+                        $long_kantor = $lokasi_kantor->long_kantor;
+                        $result_lokasi_kantor = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
+                        if ($result_lokasi_kantor > $lokasi_kantor->radius) {
                             $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
                             return redirect('/home');
                         } else {
-                            $request["jarak_masuk"] = $result_sp_tuban;
+                            $request["jarak_masuk"] = $result_lokasi_kantor;
                         }
-                    } else {
-                        $request["jarak_masuk"] = $result_sp_kediri;
-                    }
-                } else {
-                    $lat_kantor = $lokasi_kantor->lat_kantor;
-                    $long_kantor = $lokasi_kantor->long_kantor;
-                    $result_lokasi_kantor = $this->distance($request["lat_absen"], $request["long_absen"], $lat_kantor, $long_kantor, "K") * 1000;
-                    if ($result_lokasi_kantor > $lokasi_kantor->radius) {
-                        $request->session()->flash('absenmasukoutradius', 'Gagal Absen Masuk');
-                        return redirect('/home');
-                    } else {
-                        $request["jarak_masuk"] = $result_lokasi_kantor;
                     }
                 }
                 // dd($lokasi_kantor);
@@ -3586,8 +3601,11 @@ class HomeUserController extends Controller
                 // dd('gak oke');
                 // dd($request["jarak_masuk"]);
                 $foto_jam_absen = $request["foto_jam_absen"];
-
                 $image_parts = explode(";base64,", $foto_jam_absen);
+                if ($image_parts[0] == NULL) {
+                    $request->session()->flash('cameraoff');
+                    return redirect('absen/dashboard');
+                }
 
                 $image_base64 = base64_decode($image_parts[1]);
                 $fileName = 'foto_jam_absen/' . uniqid() . '.png';
@@ -3598,7 +3616,7 @@ class HomeUserController extends Controller
                 $request["foto_jam_absen"] = $fileName;
 
                 $mapping_shift = MappingShift::where('id', $id)->get();
-
+                // dd($mapping_shift);
                 foreach ($mapping_shift as $mp) {
                     $shift = $mp->Shift->jam_masuk;
                     $tanggal = $mp->tanggal_masuk;
@@ -3606,19 +3624,26 @@ class HomeUserController extends Controller
 
                 $tgl_skrg = date("Y-m-d H:i:s");
 
+                // $date1          = new DateTime($tanggal . '09:00');
                 $date1          = new DateTime($tanggal . $shift);
                 $date2          = new DateTime($tgl_skrg);
-                $interval       = $date1->diff($date2);
-                $jum_mnt  = ($interval->i);
-                $jum_hours  = ($interval->h);
-                $jum_hour_mnt  = ($jum_hours * 60);
-                $toleransi_mnt = 5;
-                $jml_all = ($jum_hour_mnt + $jum_mnt - $toleransi_mnt);
+                if ($date1 >= $date2) {
+                    $jml_all = 0;
+                } else {
+                    // dd('ok1');
+                    $interval       = $date1->diff($date2);
+                    $jum_mnt  = ($interval->i);
+                    $jum_hours  = ($interval->h);
+                    $jum_hour_mnt  = ($jum_hours * 60);
+                    $toleransi_mnt = 5;
+                    $jml_all = ($jum_hour_mnt + $jum_mnt - $toleransi_mnt);
+                }
                 // dd($jml_all);
                 // dd($diff); // 5273
                 if ($jml_all <= 0) {
                     $telat = 0;
-                } else if ($jml_all > 10 || $jml_all <= 120) {
+                    // dd($telat);
+                } else if ($jml_all > 0 && $jml_all <= 180) {
                     $telat = $jml_all;
                     $site_job = Auth::guard('web')->user()->site_job;
                     $lokasi_site_job = Lokasi::where('lokasi_kantor', $site_job)->first();
@@ -3634,7 +3659,7 @@ class HomeUserController extends Controller
                             ->where('users.id', Auth()->user()->id)->first();
                         // dd($user->atasan_id);
                         $IdLevelAtasan = $user->atasan_id;
-                        $IdLevelAtasan1 = LevelJabatan::where('level_jabatan', '0')->first();
+                        // $IdLevelAtasan1 = LevelJabatan::where('level_jabatan', '0')->first();
                         if ($lokasi_site_job->kategori_kantor == 'sps') {
 
                             $atasan = DB::table('users')
@@ -3887,11 +3912,10 @@ class HomeUserController extends Controller
                         'lat_absen' => $request["lat_absen"],
                         'long_absen' => $request["long_absen"],
                     ]);
-                } else if ($jml_all < 120) {
+                } else if ($jml_all > 180) {
+                    // dd('ok1');
                     $request->session()->flash('absen_tidak_masuk');
                     return redirect('home');
-                } else if ($jml_all < 10) {
-                    $telat = $jml_all;
                 }
 
 
@@ -3945,6 +3969,7 @@ class HomeUserController extends Controller
                 $result_sp_kediri = $this->distance($request["lat_pulang"], $request["long_pulang"], $lokasi_kantor_sp_kediri->lat_kantor, $lokasi_kantor_sp_kediri->long_kantor, "K") * 1000;
                 // dd($result_sp_kediri, $lokasi_kantor_sp_kediri->radius);
                 if ($result_sp_kediri > $lokasi_kantor_sp_kediri->radius) {
+                    // dd($result_sp_kediri, $lokasi_kantor_sp_kediri->radius);
                     $result_sps_kediri = $this->distance($request["lat_pulang"], $request["long_pulang"], $lokasi_kantor_sps_kediri->lat_kantor, $lokasi_kantor_sps_kediri->long_kantor, "K") * 1000;
                     if ($result_sps_kediri > $lokasi_kantor_sps_kediri->radius) {
                         $result_sps_ngawi = $this->distance($request["lat_pulang"], $request["long_pulang"], $lokasi_kantor_sps_ngawi->lat_kantor, $lokasi_kantor_sps_ngawi->long_kantor, "K") * 1000;

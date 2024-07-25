@@ -39,6 +39,9 @@ class MappingShift extends Model
         'total_jam_kerja',
         'status_absen',
         'kelengkapan_absensi',
+        'izin_id',
+        'cuti_id',
+        'penugasaan_id',
         'keterangan_izin',
         'keterangan_cuti',
         'keterangan_dinas'

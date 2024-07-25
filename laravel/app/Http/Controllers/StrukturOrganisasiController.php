@@ -15,35 +15,15 @@ class StrukturOrganisasiController extends Controller
 
         $kontrak = 'SP';
         // syncfusion
-        $jabatan = Jabatan::with(['User' => function ($query) {
-            $query->where('penempatan_kerja', 'CV. SUMBER PANGAN - KEDIRI');
-            $query->orWhere('penempatan_kerja', 'CV. SUMBER PANGAN - TUBAN');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP, SPS, SIP)');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP)');
+        $jabatan = Jabatan::with(['User' => function ($query) {;
             $query->select('jabatan_id', 'users.name');
         }])->with(['User1' => function ($query) {
-            $query->where('penempatan_kerja', 'CV. SUMBER PANGAN - KEDIRI');
-            $query->orWhere('penempatan_kerja', 'CV. SUMBER PANGAN - TUBAN');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP, SPS, SIP)');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP)');
             $query->select('jabatan1_id', 'users.name');
         }])->with(['User2' => function ($query) {
-            $query->where('penempatan_kerja', 'CV. SUMBER PANGAN - KEDIRI');
-            $query->orWhere('penempatan_kerja', 'CV. SUMBER PANGAN - TUBAN');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP, SPS, SIP)');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP)');
             $query->select('jabatan2_id', 'users.name');
         }])->with(['User3' => function ($query) {
-            $query->where('penempatan_kerja', 'CV. SUMBER PANGAN - KEDIRI');
-            $query->orWhere('penempatan_kerja', 'CV. SUMBER PANGAN - TUBAN');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP, SPS, SIP)');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP)');
             $query->select('jabatan3_id', 'users.name');
         }])->with(['User4' => function ($query) {
-            $query->where('penempatan_kerja', 'CV. SUMBER PANGAN - KEDIRI');
-            $query->orWhere('penempatan_kerja', 'CV. SUMBER PANGAN - TUBAN');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP, SPS, SIP)');
-            $query->orWhere('penempatan_kerja', 'ALL SITES (SP)');
             $query->select('jabatan4_id', 'users.name');
         }])
             ->join('divisis', 'divisis.id', '=', 'jabatans.divisi_id')
@@ -51,12 +31,11 @@ class StrukturOrganisasiController extends Controller
             ->join('departemens', 'departemens.id', '=', 'divisis.dept_id')
             ->join('bagians', 'bagians.id', '=', 'jabatans.bagian_id')
             ->where('jabatans.holding', 'sp')
-            ->orderBy('level_jabatans.level_jabatan', 'ASC')
+            ->orderBy('jabatans.nama_jabatan', 'ASC')
             ->select('bagians.nama_bagian', 'jabatans.id', 'jabatans.atasan_id', 'jabatans.nama_jabatan', 'divisis.nama_divisi', 'level_jabatans.level_jabatan')
             // ->take('10')
             ->get();
-        // dd($jabatan);
-        // dd($jabatan);
+        // dd($jabatan->User->toArray());
         if (count($jabatan) == 0) {
             $jabatan_struktur = NULL;
         } else {
@@ -66,6 +45,9 @@ class StrukturOrganisasiController extends Controller
                 $ok2 = $jabatan->User2->toArray();
                 $ok3 = $jabatan->User3->toArray();
                 $ok4 = $jabatan->User4->toArray();
+                // $get_jabatan_sps = Jabatan::where('nama_jabatan', $jabatan->nama_jabatan)->where('holding', 'sps')->first();
+                // $user_sps = User::where('jabatan_id', $get_jabatan_sps)->value('name');
+                // $userssps[] = array($user_sps);
                 if ($ok == []) {
                     $user_name = NULL;
                 } else {
@@ -130,8 +112,8 @@ class StrukturOrganisasiController extends Controller
                 $jabatan_struktur[] = array('x' => $jabatan['nama_jabatan'] . ' (' . $jabatan['nama_bagian'] . ')', 'id' => str_replace("-", "", $jabatan['id']), 'parent' => str_replace("-", "", $jabatan['atasan_id']), 'attributes' => array('role' => $user_name  . $user_name1 . $user_name2 . $user_name3 . $user_name4, 'photo' => $foto));
             }
         }
+        // dd($userssps);
         // dd($user_name1);
-        // dd($jabatan_struktur);
         $jabatan1 = Jabatan::with(['User' => function ($query) {
             $query->where('penempatan_kerja', 'PT. SURYA PANGAN SEMESTA - NGAWI');
             $query->orWhere('penempatan_kerja', 'PT. SURYA PANGAN SEMESTA - SUBANG');

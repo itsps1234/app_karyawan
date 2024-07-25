@@ -183,68 +183,7 @@ $('.month').val(month);
 
 });
   </script>
-<script type="text/javascript">
-$(document).ready(function () {
-    load_data();
-    function load_data(filter_month = '') {
-      console.log(filter_month);
-      var table1 = $('#datatableHome').DataTable({
-        processing: true,
-        serverSide: true,
-        responsive:true,
-        scrollX: true,
-        "bPaginate": false,
-        searching: false,
-        ajax: {
-          url :"{{ route('datatableHome') }}",
-          data:{
-            filter_month:filter_month,
-          }
-        },
-        columns: [
-            {
-              data: 'id',render: function(data, type, row, meta) 
-              {
-              return meta.row + meta.settings._iDisplayStart + 1;
-              }
-            },
-            {
-              data: 'tanggal_masuk', 
-              name: 'tanggal_masuk'
-            },
-            {data: 'jam_absen', name: 'jam_absen'},
-            {data: 'jam_pulang', name: 'jam_pulang'},
-          ],
-          order: [[1, 'desc']]
-      });
-    }
-    function load_absensi(filter_month=''){
-      $.ajax({
-        url: "{{route('get_count_absensi_home')}}",
-        data:{
-              filter_month:filter_month,
-        },
-        type: "GET",
-        error: function() {
-          alert('Something is wrong');
-        },
-        success: function(data) {
-          $('#count_absen_hadir').html(data);
-          console.log(data)
-        }
-      });
-    }
-    $('#month').change(function () {
-    filter_month = $(this).val();
-    console.log(filter_month);
-    $('#datatableHome').DataTable().destroy();
-    load_data(filter_month);
-    load_absensi(filter_month);
-    
-    
-    })
-  });
-</script>
+
 
 
 
@@ -253,24 +192,7 @@ $(document).ready(function () {
   {{-- selectpicker --}}
   <script src="{{ url('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js') }}"></script>
 
-  <script>
-      getLocation();
-      function getLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-          x.innerHTML = "Geolocation is not supported by this browser.";
-        }
-      }
-      function showPosition(position) {
-      //   x.innerHTML = "Latitude: " + position.coords.latitude +
-      //   "<br>Longitude: " + position.coords.longitude;
-      $('#lat').val(position.coords.latitude);
-      $('#lat2').val(position.coords.latitude);
-      $('#long').val(position.coords.longitude);
-      $('#long2').val(position.coords.longitude);
-      }
-  </script>
+ 
 
   <script>
       config = {

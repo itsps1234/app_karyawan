@@ -135,19 +135,9 @@ class RekapDataController extends Controller
                     ->rawColumns(['total_hadir_tepat_waktu', 'btn_detail', 'total_hadir_telat_hadir', 'total_izin_true', 'total_cuti_true', 'total_dinas_true', 'total_pulang_cepat', 'tidak_hadir_kerja', 'total_semua'])
                     ->make(true);
             } else {
-                $now = date('Y-m-d');
-                $now1 = date('Y-m-20');
-                if ($now > $now1) {
-                    $tgl_mulai = date('Y-m-21');
-                    $tgl_mulai1 = date('Y-m-20');
-                    $tgl_selesai = date('Y-m-d', strtotime('+1 month', strtotime($tgl_mulai1)));
-                    // dd($tgl_mulai_yesterday);
-                } else {
-                    $tgl = date('Y-m-21');
-                    $tgl_mulai = date('Y-m-d', strtotime('-1 month', strtotime($tgl)));
-                    $tgl_selesai = date('Y-m-20');
-                    // dd('ok1');
-                }
+                $now = Carbon::now()->startOfMonth();
+                $now1 = Carbon::now()->endOfMonth();
+
                 // dd($tgl_mulai, $tgl_selesai);
                 $table = User::with('Mappingshift')
                     ->where('kontrak_kerja', $holding)
@@ -159,34 +149,34 @@ class RekapDataController extends Controller
                         $btn_detail = '<a id="btn_detail" type="button" href="' . url('rekap-data/detail', ['id' => $row->id]) . '/' . $holding . '" class="btn btn-sm btn-info"><i class="menu-icon tf-icons mdi mdi-eye"></i> Detail</a>';
                         return $btn_detail;
                     })
-                    ->addColumn('total_hadir_tepat_waktu', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $jumlah_hadir_tepat_waktu = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('keterangan_absensi', 'TEPAT WAKTU')->where('status_absen', 'HADIR KERJA')->count();
+                    ->addColumn('total_hadir_tepat_waktu', function ($row) use ($now, $now1) {
+                        $jumlah_hadir_tepat_waktu = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('keterangan_absensi', 'TEPAT WAKTU')->where('status_absen', 'HADIR KERJA')->count();
                         return $jumlah_hadir_tepat_waktu . " x";
                     })
-                    ->addColumn('total_hadir_telat_hadir', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $jumlah_hadir_telat_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('keterangan_absensi', 'TELAT HADIR')->count();
+                    ->addColumn('total_hadir_telat_hadir', function ($row) use ($now, $now1) {
+                        $jumlah_hadir_telat_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('keterangan_absensi', 'TELAT HADIR')->count();
                         return $jumlah_hadir_telat_hadir . " x";
                     })
-                    ->addColumn('total_izin_true', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $total_izin_true = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_izin', 'TRUE')->count();
+                    ->addColumn('total_izin_true', function ($row) use ($now, $now1) {
+                        $total_izin_true = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_izin', 'TRUE')->count();
                         return $total_izin_true  . " x";
                     })
-                    ->addColumn('total_cuti_true', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $total_cuti_true = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_cuti', 'TRUE')->count();
+                    ->addColumn('total_cuti_true', function ($row) use ($now, $now1) {
+                        $total_cuti_true = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_cuti', 'TRUE')->count();
                         return $total_cuti_true  . " x";
                     })
-                    ->addColumn('total_dinas_true', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $total_dinas_true = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_dinas', 'TRUE')->count();
+                    ->addColumn('total_dinas_true', function ($row) use ($now, $now1) {
+                        $total_dinas_true = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_dinas', 'TRUE')->count();
                         return $total_dinas_true  . " x";
                     })
 
-                    ->addColumn('tidak_hadir_kerja', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $tidak_hadir_kerja = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_dinas', 'FALSE')->where('keterangan_cuti', 'FALSE')->where('keterangan_izin', 'FALSE')->count() . " x";
+                    ->addColumn('tidak_hadir_kerja', function ($row) use ($now, $now1) {
+                        $tidak_hadir_kerja = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'TIDAK HADIR KERJA')->where('keterangan_dinas', 'FALSE')->where('keterangan_cuti', 'FALSE')->where('keterangan_izin', 'FALSE')->count() . " x";
                         return $tidak_hadir_kerja;
                     })
-                    ->addColumn('total_semua', function ($row) use ($tgl_mulai, $tgl_selesai) {
-                        $total_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'HADIR KERJA')->count();
-                        $total_tidak_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$tgl_mulai, $tgl_selesai])->where('status_absen', 'TIDAK HADIR KERJA')->count();
+                    ->addColumn('total_semua', function ($row) use ($now, $now1) {
+                        $total_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'HADIR KERJA')->count();
+                        $total_tidak_hadir = $row->MappingShift->whereBetween('tanggal_masuk', [$now, $now1])->where('status_absen', 'TIDAK HADIR KERJA')->count();
                         $total_semua = ($total_hadir + $total_tidak_hadir) . ' x';
                         return $total_semua;
                     })
@@ -213,7 +203,7 @@ class RekapDataController extends Controller
                         if ($row->foto_jam_absen == '') {
                             $foto_absen_masuk = '';
                         } else {
-                            $foto_absen_masuk = 'https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_jam_absen/' . $row->foto_jam_absen;
+                            $foto_absen_masuk = '<a target="_blank" href="https://karyawan.sumberpangan.store/laravel/storage/app/public/' . $row->foto_jam_absen . '">Foto Absen Masuk".$row->tanggal_masuk.$row->jam_absen."</a>';
                         }
                         return $foto_absen_masuk;
                     })
@@ -221,7 +211,7 @@ class RekapDataController extends Controller
                         if ($row->foto_jam_pulang == '') {
                             $foto_absen_pulang = '';
                         } else {
-                            $foto_absen_pulang = 'https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_jam_pulang/' . $row->foto_jam_pulang;
+                            $foto_absen_pulang = '<a target="_blank" href="https://karyawan.sumberpangan.store/laravel/storage/app/public/' . $row->foto_jam_pulang . '">Foto Absen Pulang' . $row->tanggal_pulang . $row->jam_pulang . '</a>';
                         }
                         return $foto_absen_pulang;
                     })
@@ -248,7 +238,7 @@ class RekapDataController extends Controller
                         if ($row->foto_jam_absen == '') {
                             $foto_absen_masuk = '';
                         } else {
-                            $foto_absen_masuk = 'https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_jam_absen/' . $row->foto_jam_absen;
+                            $foto_absen_masuk = '<a target="_blank" href="https://karyawan.sumberpangan.store/laravel/storage/app/public/' . $row->foto_jam_absen . '">Foto Absen Masuk' . $row->tanggal_masuk . $row->jam_absen . '</a>';
                         }
                         return $foto_absen_masuk;
                     })
@@ -256,7 +246,7 @@ class RekapDataController extends Controller
                         if ($row->foto_jam_pulang == '') {
                             $foto_absen_pulang = '';
                         } else {
-                            $foto_absen_pulang = '<a href="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_jam_pulang/.$row->foto_jam_pulang." </a>';
+                            $foto_absen_pulang = '<a target="_blank" href="https://karyawan.sumberpangan.store/laravel/storage/app/public/' . $row->foto_jam_pulang . '">Foto Absen Pulang' . $row->tanggal_pulang . $row->jam_pulang . '</a>';
                         }
                         return $foto_absen_pulang;
                     })

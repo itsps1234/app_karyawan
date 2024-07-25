@@ -56,7 +56,7 @@
                         <div class="mid-content">
                         </div>
                         <div class="right-content">
-                            <a href="javascript:void(0);" class="theme-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+                            <!-- <a href="javascript:void(0);" class="theme-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
                                 <svg class="color-plate" enable-background="new 0 0 512.214 512.214" height="24" viewBox="0 0 512.214 512.214" width="24" xmlns="http://www.w3.org/2000/svg">
                                     <g id="Color_Palette_1_">
                                         <g>
@@ -73,7 +73,7 @@
                                         </g>
                                     </g>
                                 </svg>
-                            </a>
+                            </a> -->
                             <a href="javascript:void(0);" class="theme-btn">
                                 <svg class="dark" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>

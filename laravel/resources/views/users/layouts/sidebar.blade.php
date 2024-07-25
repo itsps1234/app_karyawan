@@ -38,7 +38,7 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li class="nav-label">Main Menu</li>
-			<li><a class="nav-link" href="{{ url('/absen/dashboard/') }}">
+			<li><a class="nav-link" href="{{ url('/home/absen') }}">
 					<span class="dz-icon bg-red light">
 						<svg xmlns="http://www.w3.org/2000/svg" class="ionicon s-ion-icon" viewBox="0 0 512 512">
 							<title>Scan</title>
@@ -117,7 +117,7 @@
 					<span>Penugasan</span>
 				</a>
 			</li>
-			<li><a class="nav-link" href="ui-components.html">
+			<!-- <li><a class="nav-link" href="ui-components.html">
 					<span class="dz-icon bg-skyblue light">
 						<svg width="800px" height="800px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<title>history-list</title>
@@ -130,8 +130,8 @@
 						</svg>
 					</span>
 					<span>History</span>
-				</a></li>
-			<li>
+				</a></li> -->
+			<!-- <li>
 				<a class="nav-link" href="notification.html">
 					<span class="dz-icon bg-green light">
 						<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -140,9 +140,9 @@
 					</span>
 					<span>Slip Gaji</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
-				<a class="nav-link" href="profile.html">
+				<a class="nav-link" href="{{route('profile')}}">
 					<span class="dz-icon bg-yellow light">
 						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 24 24" version="1.1" class="svg-main-icon">
 							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -155,7 +155,7 @@
 					<span>Profile</span>
 				</a>
 			</li>
-			<li>
+			<!-- <li>
 				<a class="nav-link" href="messages.html">
 					<span class="dz-icon bg-skyblue light">
 						<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +167,7 @@
 					</span>
 					<span>Id Card</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
 				<a class="nav-link" href="onboading.html" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
 					<span class="dz-icon bg-red light">
@@ -182,7 +182,7 @@
 					</span>
 					<span>Logout</span>
 				</a>
-				<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+				<form id="logout-form" action="{{ route('logout') }}" method="GET" style="display: none;">
 					{{ csrf_field() }}
 				</form>
 			</li>
@@ -197,15 +197,15 @@
 				</a>
 			</li>
 			@endif
-			<li class="nav-label">Settings</li>
-			<li class="nav-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+			<li class="nav-label">Tema</li>
+			<!-- <li class="nav-color" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
 				<a class="nav-link">
 					<span class="dz-icon bg-blue light">
 						<i class="fa-solid fa-palette"></i>
 					</span>
 					<span>Highlights</span>
 				</a>
-			</li>
+			</li> -->
 			<li>
 				<div class="mode">
 					<span class="dz-icon bg-green light">
@@ -220,8 +220,8 @@
 			</li>
 		</ul>
 		<div class="sidebar-bottom">
-			<h6 class="name">Jobie - Job Portal</h6>
-			<p>App Version 1.0</p>
+			<h6 class="name">HRD-APP</h6>
+			<p>Version 1.0</p>
 		</div>
 	</div>
 	<!-- Sidebar End -->

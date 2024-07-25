@@ -111,6 +111,8 @@
             <input type="hidden" name="level_jabatan" value="@if(Auth::user()->kategori=='Karyawan Harian')@else{{ $user->level_jabatan }}@endif">
             <input type="hidden" name="divisi" value="{{ $get_izin->divisi_id }}">
             <input type="hidden" name="id_user_atasan" value="{{ $get_izin->id_approve_atasan }}">
+            <input type="hidden" name="izin_old" value="{{ $get_izin->izin }}">
+            <input type="hidden" name="no_form_old" value="{{ $get_izin->no_form_izin }}">
         </div>
         <div class="input-group">
             <input type="text" class="form-control" value="Name" readonly>

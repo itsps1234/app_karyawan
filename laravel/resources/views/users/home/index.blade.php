@@ -152,6 +152,20 @@
         </button>
     </div>
 </div>
+@elseif(Session::has('latlongnull'))
+<div id="alert_latlongnull" class="container" style="margin-top:-5%">
+    <div class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        <strong>error!</strong>&nbsp;Lokasi Anda Tidak Teridentifikasi
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</div>
 @elseif(Session::has('approveperdinsukses'))
 <div id="alert_approve_penugasan_sukses" class="container" style="margin-top:-5%">
     <div class="alert alert-success light alert-lg alert-dismissible fade show">
@@ -241,6 +255,34 @@
         </button>
     </div>
 </div>
+@elseif(Session::has('jabatanNULL'))
+<div id="alert_jabatan_null" class="container" style="margin-top:-5%">
+    <div class="alert alert-danger light alert-lg alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+            <line x1="15" y1="9" x2="9" y2="15"></line>
+            <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+        &nbsp; Jabatan Anda Kosong. Hubungi HRD
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</div>
+@elseif(Session::has('penugasan_wilayah_kantor'))
+<div class="container" style="margin-top:-5%">
+    <div class="alert alert-warning light alert-dismissible fade show">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+        &nbsp;User Belum Mapping Shift. Harap Hubungi HRD.
+        <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+</div>
 @elseif(Session::has('penugasan_wilayah_kantor'))
 <div id="alert_kontrak_kerja_null" class="container" style="margin-top:-5%">
     <div class="alert alert-danger light alert-lg alert-dismissible fade show">
@@ -256,7 +298,7 @@
     </div>
 </div>
 @endif
-@if($status_absen_skrg=='[]')
+@if($status_absen_skrg==NULL)
 <div class="container" style="margin-top:-5%">
     <div class="alert alert-warning light alert-dismissible fade show">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
@@ -272,8 +314,9 @@
 </div>
 @else
 @endif
-@foreach ($status_absen_skrg as $data)
-@if ($data->keterangan_absensi == 'ABSENSI PENUGASAN DILUAR WILAYAH KANTOR')
+@if($status_absen_skrg==NULL)
+@else
+@if ($status_absen_skrg->keterangan_absensi == 'ABSENSI PENUGASAN DILUAR WILAYAH KANTOR')
 <div class="container" style="margin-top:-5%">
     <div class="alert alert-success light alert-lg alert-dismissible fade show">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="_x3C_Layer_x3E_" version="1.1" xml:space="preserve">
@@ -304,7 +347,7 @@
         </button>
     </div>
 </div>
-@elseif($data->keterangan_absensi == 'ABSENSI PENUGASAN WILAYAH KANTOR')
+@elseif($status_absen_skrg->keterangan_absensi == 'ABSENSI PENUGASAN WILAYAH KANTOR')
 <div class="container" style="margin-top:-5%">
     <div class="alert alert-success light alert-lg alert-dismissible fade show">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="_x3C_Layer_x3E_" version="1.1" xml:space="preserve">
@@ -336,7 +379,7 @@
     </div>
 </div>
 @endif
-@endforeach
+@endif
 @endsection
 @section('content_top')
 <div class="container">
@@ -379,8 +422,9 @@
 </div>
 @endsection
 @section('absensi')
-@foreach ($status_absen_skrg as $data)
-@if ($data->jam_absen == null && $data->jam_pulang==null)
+@if($status_absen_skrg==NULL)
+@else
+@if ($status_absen_skrg->jam_absen == null && $status_absen_skrg->jam_pulang==null)
 <div class=" container" style="margin-top: -5%;">
     <div class="col-lg-12">
         <div class="row">
@@ -432,7 +476,7 @@
         </div>
     </div>
 </div>
-@elseif ($data->jam_absen != null && $data->jam_pulang==null)
+@elseif ($status_absen_skrg->jam_absen != null && $status_absen_skrg->jam_pulang==null)
 <div class="container" style="margin-top: -5%;">
     <div class="col-lg-12">
         <div class="row">
@@ -447,7 +491,7 @@
                                 </g>
                             </svg>
                             <div class="info" style="color: white;">
-                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $data->jam_absen }}</span></p>
+                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $status_absen_skrg->jam_absen }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -484,7 +528,7 @@
         </div>
     </div>
 </div>
-@elseif ($data->jam_absen != null && $data->jam_pulang != null)
+@elseif ($status_absen_skrg->jam_absen != null && $status_absen_skrg->jam_pulang != null)
 <div class="container" style="margin-top: -5%;">
     <div class="col-lg-12">
         <div class="row">
@@ -499,7 +543,7 @@
                                 </g>
                             </svg>
                             <div class="info" style="color: white;">
-                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $data->jam_absen }}</span></p>
+                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $status_absen_skrg->jam_absen }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -516,7 +560,7 @@
                                 </g>
                             </svg>
                             <div class="info" style="color: white;">
-                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $data->jam_pulang }}</span></p>
+                                <p>Sudah Absen <br> <span class="title" style="font-size: 23pt; text-align: center;">{{ $status_absen_skrg->jam_pulang }}</span></p>
                             </div>
                         </div>
                     </div>
@@ -526,11 +570,11 @@
     </div>
 </div>
 @endif
-@endforeach
+@endif
 
 @endsection
 @section('content')
-@if($status_absen_skrg=='[]')
+@if($status_absen_skrg==NULL)
 <div class="offcanvas offcanvas-bottom pwa-offcanvas">
     <div class="container">
         <div class="offcanvas-body small text-center">
@@ -578,7 +622,7 @@
     </div>
     <ul class="d-flex align-items-center">
         <li class="text-center">
-            <a class="nav-link " href="{{ url('/absen/dashboard/') }}">
+            <a class="nav-link " href="{{ url('/home/absen') }}">
                 <span class="dz-icon bg-green light" style="height: 50px; width: 50px; box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 3px 10px 0 rgba(0, 0, 0, 0.1);">
                     <svg xmlns="http://www.w3.org/2000/svg" style="height: 30px; width: 30px;" viewBox="0 0 24 24" fill="none">
                         <path d="M7 3H5C3.89543 3 3 3.89543 3 5V7M3 17V19C3 20.1046 3.89543 21 5 21H7M17 21H19C20.1046 21 21 20.1046 21 19V17M21 7V5C21 3.89543 20.1046 3 19 3H17" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
@@ -1097,10 +1141,10 @@
             <table class="table" id="datatableHome" style="width:100%;">
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col">#</th>
                         <th scope="col">Tanggal</th>
-                        <th scope="col">Jam&nbsp;Masuk</th>
-                        <th scope="col">Jam&nbsp;Pulang</th>
+                        <th scope="col">Masuk</th>
+                        <th scope="col">Pulang</th>
+                        <th scope="col">Keterangan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -1112,12 +1156,89 @@
 <!-- Categorie End -->
 @endsection
 @section('js')
+<script type="text/javascript">
+    $(document).ready(function() {
+        load_data();
+
+        function load_data(filter_month = '') {
+            console.log(filter_month);
+            var table1 = $('#datatableHome').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                scrollX: true,
+                "bPaginate": false,
+                searching: false,
+                ajax: {
+                    url: "{{ route('datatableHome') }}",
+                    data: {
+                        filter_month: filter_month,
+                    }
+                },
+                columns: [{
+                        data: 'tanggal_masuk',
+                        name: 'tanggal_masuk'
+                    },
+                    {
+                        data: 'jam_absen',
+                        name: 'jam_absen'
+                    },
+                    {
+                        data: 'jam_pulang',
+                        name: 'jam_pulang'
+                    },
+                    {
+                        data: 'status_absen',
+                        name: 'status_absen'
+                    },
+                ],
+                order: [
+                    [0, 'DESC']
+                ]
+            });
+        }
+
+        function load_absensi(filter_month = '') {
+            $.ajax({
+                url: "{{route('get_count_absensi_home')}}",
+                data: {
+                    filter_month: filter_month,
+                },
+                type: "GET",
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {
+                    $('#count_absen_hadir').html(data);
+                    console.log(data)
+                }
+            });
+        }
+        $('#month').change(function() {
+            filter_month = $(this).val();
+            console.log(filter_month);
+            $('#datatableHome').DataTable().destroy();
+            load_data(filter_month);
+            load_absensi(filter_month);
+
+
+        })
+    });
+</script>
 <script>
     $("document").ready(function() {
         // console.log('ok');
         setTimeout(function() {
             // console.log('ok1');
             $("#alert_kontrak_kerja_null").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_jabatan_null").remove();
         }, 7000); // 7 secs
 
     });
@@ -1190,6 +1311,22 @@
         setTimeout(function() {
             // console.log('ok1');
             $("#alert_approve_penugasan_sukses").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_lokasikerjanull").remove();
+        }, 7000); // 7 secs
+
+    });
+    $("document").ready(function() {
+        // console.log('ok');
+        setTimeout(function() {
+            // console.log('ok1');
+            $("#alert_latlongnull").remove();
         }, 7000); // 7 secs
 
     });

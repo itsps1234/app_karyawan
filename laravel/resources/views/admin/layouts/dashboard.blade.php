@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - Analytics | Materio - Bootstrap Material Design Admin Template</title>
+    <title>HRD-APP | ADMIN</title>
 
     <meta name="description" content="" />
 
@@ -74,16 +74,8 @@
                                     <script>
                                         document.write(new Date().getFullYear());
                                     </script>
-                                    , made with <span class="text-danger"><i class="tf-icons mdi mdi-heart"></i></span> by
-                                    <a href="https://themeselection.com" target="_blank" class="footer-link fw-medium">ThemeSelection</a>
-                                </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <a href="https://themeselection.com/license/" class="footer-link me-3" target="_blank">License</a>
-                                    <a href="https://themeselection.com/" target="_blank" class="footer-link me-3">More Themes</a>
-
-                                    <a href="https://demos.themeselection.com/materio-bootstrap-html-admin-template/documentation/" target="_blank" class="footer-link me-3">Documentation</a>
-
-                                    <a href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free/issues" target="_blank" class="footer-link">Support</a>
+                                    , made with <span class="text-danger">IT SP & SPS
+                                        <a href="mailto:it.dev.sps@gmail.com" target="_blank" class="footer-link fw-medium">it.dev.sps@gmail.com</a>
                                 </div>
                             </div>
                         </div>
@@ -102,9 +94,7 @@
     </div>
     <!-- / Layout wrapper -->
 
-    <div class="buy-now">
-        <a href="https://themeselection.com/item/materio-bootstrap-html-admin-template/" target="_blank" class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

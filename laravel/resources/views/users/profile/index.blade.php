@@ -10,7 +10,11 @@
     <div class="container profile-area">
         <div class="profile">
             <div class="media media-100">
-                <img width="40px" src="{{ asset('assets/assets_users/images/users/user_icon.jpg') }}" alt="/">
+                @if(Auth::user()->foto_karyawan == '' || Auth::user()->foto_karyawan == NULL)
+                <img width="40px" src="{{asset('admin/assets/img/avatars/1.png')}}" alt="/">
+                @else
+                <img width="40px" src="{{ url('https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/'.Auth::user()->foto_karyawan) }}" alt="author-image">
+                @endif
             </div>
             <div class="mb-2">
                 <h4 class="mb-0">{{ $data->name}}</h4>
@@ -70,7 +74,10 @@
                 <div class="col-4">
                     <div class="skill-bar">
                         <div class="donut-chart-sale">
-                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#EE8524&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">86/100</span><svg class="peity" height="64" width="64"><path d="M 32 0 A 32 32 0 1 1 7.343576231174733 11.602432328041942 L 11.96665568782947 15.426976266534076 A 26 26 0 1 0 32 6" data-value="86" fill="#EE8524"></path><path d="M 7.343576231174733 11.602432328041942 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 11.96665568782947 15.426976266534076" data-value="14" fill="#EAE4F6"></path></svg>
+                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#EE8524&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">86/100</span><svg class="peity" height="64" width="64">
+                                <path d="M 32 0 A 32 32 0 1 1 7.343576231174733 11.602432328041942 L 11.96665568782947 15.426976266534076 A 26 26 0 1 0 32 6" data-value="86" fill="#EE8524"></path>
+                                <path d="M 7.343576231174733 11.602432328041942 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 11.96665568782947 15.426976266534076" data-value="14" fill="#EAE4F6"></path>
+                            </svg>
                             <small class="text-black">66%</small>
                         </div>
                         <h6 class="title">PHP</h6>
@@ -79,7 +86,10 @@
                 <div class="col-4">
                     <div class="skill-bar">
                         <div class="donut-chart-sale">
-                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#2AAF50&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">48/100</span><svg class="peity" height="64" width="64"><path d="M 32 0 A 32 32 0 0 1 36.01066347405774 63.74767044206329 L 35.25866407267192 57.79498223417642 A 26 26 0 0 0 32 6" data-value="48" fill="#2AAF50"></path><path d="M 36.01066347405774 63.74767044206329 A 32 32 0 1 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 1 0 35.25866407267192 57.79498223417642" data-value="52" fill="#EAE4F6"></path></svg>
+                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#2AAF50&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">48/100</span><svg class="peity" height="64" width="64">
+                                <path d="M 32 0 A 32 32 0 0 1 36.01066347405774 63.74767044206329 L 35.25866407267192 57.79498223417642 A 26 26 0 0 0 32 6" data-value="48" fill="#2AAF50"></path>
+                                <path d="M 36.01066347405774 63.74767044206329 A 32 32 0 1 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 1 0 35.25866407267192 57.79498223417642" data-value="52" fill="#EAE4F6"></path>
+                            </svg>
                             <small class="text-black">48%</small>
                         </div>
                         <h6 class="title">Java</h6>
@@ -88,7 +98,10 @@
                 <div class="col-4">
                     <div class="skill-bar">
                         <div class="donut-chart-sale">
-                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#1A88C6&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">56/100</span><svg class="peity" height="64" width="64"><path d="M 32 0 A 32 32 0 1 1 20.220014314090292 61.75284754842404 L 22.428761630198363 56.17418863309453 A 26 26 0 1 0 32 6" data-value="56" fill="#1A88C6"></path><path d="M 20.220014314090292 61.75284754842404 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 22.428761630198363 56.17418863309453" data-value="44" fill="#EAE4F6"></path></svg>
+                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#1A88C6&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">56/100</span><svg class="peity" height="64" width="64">
+                                <path d="M 32 0 A 32 32 0 1 1 20.220014314090292 61.75284754842404 L 22.428761630198363 56.17418863309453 A 26 26 0 1 0 32 6" data-value="56" fill="#1A88C6"></path>
+                                <path d="M 20.220014314090292 61.75284754842404 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 22.428761630198363 56.17418863309453" data-value="44" fill="#EAE4F6"></path>
+                            </svg>
                             <small class="text-black">56%</small>
                         </div>
                         <h6 class="title">MySQL</h6>
@@ -97,7 +110,10 @@
                 <div class="col-4">
                     <div class="skill-bar">
                         <div class="donut-chart-sale">
-                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#1A88C6&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">34/100</span><svg class="peity" height="64" width="64"><path d="M 32 0 A 32 32 0 0 1 59.018493616064475 49.146457439327904 L 53.95252606305239 45.93149666945392 A 26 26 0 0 0 32 6" data-value="34" fill="#1A88C6"></path><path d="M 59.018493616064475 49.146457439327904 A 32 32 0 1 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 1 0 53.95252606305239 45.93149666945392" data-value="66" fill="#EAE4F6"></path></svg>
+                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#1A88C6&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">34/100</span><svg class="peity" height="64" width="64">
+                                <path d="M 32 0 A 32 32 0 0 1 59.018493616064475 49.146457439327904 L 53.95252606305239 45.93149666945392 A 26 26 0 0 0 32 6" data-value="34" fill="#1A88C6"></path>
+                                <path d="M 59.018493616064475 49.146457439327904 A 32 32 0 1 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 1 0 53.95252606305239 45.93149666945392" data-value="66" fill="#EAE4F6"></path>
+                            </svg>
                             <small class="text-black">34%</small>
                         </div>
                         <h6 class="title">React N</h6>
@@ -106,7 +122,10 @@
                 <div class="col-4">
                     <div class="skill-bar">
                         <div class="donut-chart-sale">
-                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#3E1899&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">86/100</span><svg class="peity" height="64" width="64"><path d="M 32 0 A 32 32 0 1 1 7.343576231174733 11.602432328041942 L 11.96665568782947 15.426976266534076 A 26 26 0 1 0 32 6" data-value="86" fill="#3E1899"></path><path d="M 7.343576231174733 11.602432328041942 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 11.96665568782947 15.426976266534076" data-value="14" fill="#EAE4F6"></path></svg>
+                            <span class="donut" data-peity="{ &quot;fill&quot;: [&quot;#3E1899&quot;, &quot;#EAE4F6&quot;],   &quot;innerRadius&quot;: 26, &quot;radius&quot;: 32 }" style="display: none;">86/100</span><svg class="peity" height="64" width="64">
+                                <path d="M 32 0 A 32 32 0 1 1 7.343576231174733 11.602432328041942 L 11.96665568782947 15.426976266534076 A 26 26 0 1 0 32 6" data-value="86" fill="#3E1899"></path>
+                                <path d="M 7.343576231174733 11.602432328041942 A 32 32 0 0 1 31.999999999999993 0 L 31.999999999999996 6 A 26 26 0 0 0 11.96665568782947 15.426976266534076" data-value="14" fill="#EAE4F6"></path>
+                            </svg>
                             <small class="text-black">86%</small>
                         </div>
                         <h6 class="title">CSS</h6>

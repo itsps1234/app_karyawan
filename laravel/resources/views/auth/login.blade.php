@@ -17,7 +17,7 @@
     <meta name="format-detection" content="telephone=no">
 
     <!-- Favicons Icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url('public/holding/assets/img/logosp.png') }}" />
 
     <!-- Title -->
     <title>APPS KARYAWAN</title>
@@ -129,6 +129,12 @@
                             @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="1" name="remember" id="remember">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Remember Me
+                            </label>
                         </div>
                         <a href="forgot-password.html" class="btn-link d-block text-center">Forgot your password?</a>
                         <div class="input-group">

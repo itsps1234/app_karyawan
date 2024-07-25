@@ -26,13 +26,21 @@
                                 <th>Departemen</th>
                                 <td>&nbsp;</td>
                                 <th>:</th>
+                                @if($divisi==NULL)
+                                <th></th>
+                                @else
                                 <th>{{$divisi->Departemen->nama_departemen}}</th>
+                                @endif
                             </tr>
                             <tr>
                                 <th>Divisi</th>
                                 <th>&nbsp;</th>
                                 <th>:</th>
+                                @if($divisi==NULL)
+                                <th></th>
+                                @else
                                 <th>{{$divisi->nama_divisi}}</th>
+                                @endif
                             </tr>
                         </table>
                     </div>
@@ -432,6 +440,7 @@
     let oke = window.location.pathname.split("/");
     let id = oke[2];
     var table = $('#table_jabatan').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,

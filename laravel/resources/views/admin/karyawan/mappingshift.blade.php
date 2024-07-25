@@ -24,6 +24,7 @@
                         @else
                         <img src="https://karyawan.sumberpangan.store/laravel/storage/app/public/foto_karyawan/{{$karyawan->foto_karyawan}}" alt="user-avatar" class="d-block w-px-120 h-px-120 rounded" id="template_foto_karyawan" />
                         @endif
+                        @if($karyawan->kategori=='Karyawan Bulanan')
                         <table>
                             <tr>
                                 <th>Nama</th>
@@ -76,6 +77,31 @@
                                 </td>
                             </tr>
                         </table>
+                        @else
+                        <table>
+                            <tr>
+                                <th>Nama</th>
+                                <td>&nbsp;</td>
+                                <td>:</td>
+                                <td>{{$karyawan->fullname}}</td>
+                            </tr>
+                            <tr>
+                                <th>Jabatan</th>
+                                <td>&nbsp;</td>
+                                <td>:</td>
+                                <td>
+                                    Karyawan Harian
+                                </td>
+                            <tr>
+                                <th>Penempatan Kerja</th>
+                                <td>&nbsp;</td>
+                                <td>:</td>
+                                <td>
+                                    {{$karyawan->penempatan_kerja}}
+                                </td>
+                            </tr>
+                        </table>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -226,6 +252,7 @@
     console.log(holding[3]);
     console.log(holding[4]);
     var table = $('#table_mapping_shift').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,
@@ -267,7 +294,8 @@
 
         ],
         order: [
-            [0, 'desc']
+            [2, 'DESC'],
+            [0, 'DESC']
         ]
     });
 </script>

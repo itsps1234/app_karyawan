@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\Console\Input\Input;
 
 class authController extends Controller
 {
@@ -46,7 +47,8 @@ class authController extends Controller
         // if ($validator->fails()) {
         //     return redirect()->back()->withErrors($validator);
         // }
-
+        $remember = $request['remember'] ? true : false;
+        // dd($remember);
         $credentials = $request->validate([
             'username' => 'required',
             'password' => 'required',
@@ -62,11 +64,11 @@ class authController extends Controller
         } else {
             $data = User::where('email', $array)->first();
         }
-        if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'admin'))) {
+        if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'admin'), $remember)) {
             // dd('admin');
             Alert::success('Berhasil', 'Selamat Datang ' . $data->name);
             return redirect('/dashboard/holding')->with('Berhasil', 'Selamat Datang ' . $data->name);
-        } else if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'user'))) {
+        } else if (Auth::guard('web')->attempt(array($fieldType => $credentials['username'], 'password' => $credentials['password'], 'is_admin' => 'user'), $remember)) {
             // dd('user');
             Alert::success('Berhasil', 'Selamat Datang ' . $data->name);
             return redirect('/home')->with('Berhasil', 'Selamat Datang ' . $data->name);

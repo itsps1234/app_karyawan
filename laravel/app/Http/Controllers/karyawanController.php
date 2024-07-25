@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KaryawanExport;
 use App\Imports\UsersImport;
 use App\Models\Cuti;
 use App\Models\Jabatan;
@@ -29,6 +30,7 @@ use Laravolt\Indonesia\IndonesiaService;
 use App\Models\Provincies;
 use App\Models\Regencies;
 use App\Models\Village;
+use PDF;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpParser\Node\Expr\AssignOp\Div;
 use Yajra\DataTables\DataTables;
@@ -64,10 +66,63 @@ class karyawanController extends Controller
 
         return redirect('/karyawan/' . $holding)->with('success', 'Import Karyawan Sukses');
     }
+    public function ExportKaryawan(Request $request)
+    {
+        $date = date('YmdHis');
+        $holding = request()->segment(count(request()->segments()));
+        return Excel::download(new KaryawanExport($holding), 'Data Karyawan_' . $holding . '_' . $date . '.xlsx');
+    }
+    public function download_pdf_karyawan(Request $request)
+    {
+        $cek_holding = request()->segment(count(request()->segments()));
+        if ($cek_holding == 'sp') {
+            $holding = 'CV. SUMBER PANGAN';
+        } else if ($cek_holding == 'sps') {
+            $holding = 'PT. SURYA PANGAN SEMESTA';
+        } else {
+            $holding = 'CV. SURYA INTI PANGAN';
+        }
+        $date = date('YmdHis');
+        $data = [
+            'user' => User::leftJoin('departemens as a', 'a.id', 'users.dept_id')
+                ->leftJoin('divisis as b', 'b.id', 'users.divisi_id')
+                ->leftJoin('bagians as c', 'c.id', 'users.bagian_id')
+                ->leftJoin('jabatans as d', 'd.id', 'users.jabatan_id')
+                ->leftJoin('divisis as e', 'e.id', 'users.divisi1_id')
+                ->leftJoin('bagians as f', 'f.id', 'users.bagian1_id')
+                ->leftJoin('jabatans as g', 'g.id', 'users.jabatan1_id')
+                ->leftJoin('divisis as h', 'h.id', 'users.divisi2_id')
+                ->leftJoin('bagians as i', 'i.id', 'users.bagian2_id')
+                ->leftJoin('jabatans as j', 'j.id', 'users.jabatan2_id')
+                ->leftJoin('divisis as k', 'k.id', 'users.divisi3_id')
+                ->leftJoin('bagians as l', 'l.id', 'users.bagian3_id')
+                ->leftJoin('jabatans as m', 'm.id', 'users.jabatan3_id')
+                ->leftJoin('divisis as n', 'n.id', 'users.divisi4_id')
+                ->leftJoin('bagians as o', 'o.id', 'users.bagian4_id')
+                ->leftJoin('jabatans as p', 'p.id', 'users.jabatan4_id')
+                ->leftJoin('indonesia_provinces as q', 'q.code', 'users.provinsi')
+                ->leftJoin('indonesia_cities as r', 'r.code', 'users.kabupaten')
+                ->leftJoin('indonesia_districts as s', 's.code', 'users.kecamatan')
+                ->leftJoin('indonesia_villages as t', 't.code', 'users.desa')
+                ->where('users.kontrak_kerja', $cek_holding)
+                ->where('users.is_admin', 'user')
+                ->select('nomor_identitas_karyawan', 'users.name', 'nik', 'npwp', 'fullname', 'motto', 'email', 'telepon', 'username', 'tempat_lahir', 'tgl_lahir', 'gender', 'tgl_join', 'status_nikah', 'q.name as nama_provinsi', 'r.name as nama_kabupaten', 's.name as nama_kecamatan', 't.name as nama_desa', 'rt', 'rw', 'alamat', 'kuota_cuti_tahunan', 'kategori', 'lama_kontrak_kerja', 'tgl_mulai_kontrak', 'tgl_selesai_kontrak', 'kontrak_kerja', 'penempatan_kerja', 'site_job', 'nama_bank', 'nomor_rekening', 'a.nama_departemen', 'b.nama_divisi', 'c.nama_bagian', 'd.nama_jabatan', 'e.nama_divisi as nama_divisi1', 'f.nama_bagian as nama_bagian1', 'g.nama_jabatan as nama_jabatan1', 'h.nama_divisi as nama_divisi2', 'i.nama_bagian as nama_bagian2', 'j.nama_jabatan as nama_jabatan2', 'k.nama_divisi as nama_divisi3', 'l.nama_bagian as nama_bagian3', 'm.nama_jabatan as nama_jabatan3', 'n.nama_divisi as nama_divisi4', 'o.nama_bagian as nama_bagian4', 'p.nama_jabatan as nama_jabatan4')
+                ->orderBy('name', 'ASC')
+                ->get(),
+            'holding' => $holding,
+            'cek_holding' => $cek_holding,
+        ];
+        // dd($data);
+        $pdf = PDF::loadView('admin/karyawan/cetak_pdf_karyawan', $data)->setPaper('A4', 'landscape');
+        return $pdf->stream('Data Karyawan_' . $holding . '_' . $date . 'pdf');
+    }
     public function datatable_bulanan(Request $request)
     {
         $holding = request()->segment(count(request()->segments()));
-        $table = User::with('Divisi')->with('Jabatan')->where('kontrak_kerja', $holding)->where('kategori', 'Karyawan Bulanan')->orderBy('id', 'DESC')->get();
+        $table = User::with('Divisi')->with('Jabatan')->where('kontrak_kerja', $holding)
+            ->where('kategori', 'Karyawan Bulanan')
+            ->orderBy('id', 'DESC')
+            ->get();
         if (request()->ajax()) {
             return DataTables::of($table)
                 ->addColumn('nama_divisi', function ($row) use ($holding) {
@@ -325,7 +380,7 @@ class karyawanController extends Controller
                 'fullname' => 'required|max:255',
                 'motto' => 'max:255',
                 'email' => 'max:255|unique:users',
-                'telepon' => 'required|max:255',
+                'telepon' => 'max:12|min:11',
                 'username' => 'required|max:255|unique:users',
                 'password' => 'required|max:255',
                 'tempat_lahir' => 'required|max:255',
@@ -353,22 +408,27 @@ class karyawanController extends Controller
                 // 'email' => ':attribute format email salah',
                 'min' => ':attribute Kurang'
             ];
-            dd();
+            // dd();
             $validatedData = $request->validate($rules, $customMessages);
             $site_job = NULL;
             $lama_kontrak_kerja = NULL;
             $tgl_mulai_kontrak = NULL;
             $tgl_selesai_kontrak = NULL;
             $departemen     = NULL;
+            $bagian         = NULL;
             $divisi         = NULL;
             $jabatan        = NULL;
+            $bagian1        = NULL;
             $divisi1        = NULL;
             $jabatan1       = NULL;
+            $bagian2        = NULL;
             $divisi2        = NULL;
             $jabatan2       = NULL;
+            $bagian3        = NULL;
             $divisi3        = NULL;
             $jabatan3       = NULL;
             $divisi4        = NULL;
+            $bagian4        = NULL;
             $jabatan4       = NULL;
         } else if ($request->kategori == 'Karyawan Bulanan') {
             if ($request['lama_kontrak_kerja'] == 'tetap') {
@@ -378,9 +438,9 @@ class karyawanController extends Controller
                     'npwp' => 'required|max:255',
                     'fullname' => 'required|max:255',
                     'email' => 'max:255',
-                    'telepon' => 'max:13',
+                    'telepon' => 'max:12| min:11',
                     // 'email' => 'required|max:255',
-                    // 'telepon' => 'required|max:13|min:11',
+                    'telepon' => 'max:12|min:11',
                     'username' => 'required|max:255',
                     'password' => 'required|max:255',
                     'tempat_lahir' => 'required|max:255',
@@ -415,7 +475,7 @@ class karyawanController extends Controller
                     'fullname' => 'required|max:255',
                     'motto' => 'max:255',
                     'email' => 'max:255|unique:users',
-                    'telepon' => 'required|max:255',
+                    'telepon' => 'max:12|min:11',
                     'username' => 'required|max:255|unique:users',
                     'password' => 'required|max:255',
                     'tempat_lahir' => 'required|max:255',
@@ -448,7 +508,8 @@ class karyawanController extends Controller
                 'required' => ':attribute tidak boleh kosong.',
                 'unique' => ':attribute tidak boleh sama',
                 // 'email' => ':attribute format email salah',
-                'min' => ':attribute Kurang'
+                'min' => ':attribute Kurang Dari 12 Digits',
+                'min' => ':attribute Max 12 Digits'
             ];
             $validatedData = $request->validate($rules, $customMessages);
             $site_job = $validatedData['site_job'];
@@ -1007,8 +1068,10 @@ class karyawanController extends Controller
     {
         $holding = request()->segment(count(request()->segments()));
         $user_check = User::where('id', $id)->first();
-        if ($user_check->dept_id == NULL || $user_check->divisi_id == NULL || $user_check->jabatan_id == NULL) {
-            return redirect('/karyawan/' . $holding)->with('error', 'Jabatan Karyawan Kosong');
+        if ($user_check->kategori == 'Karyawan Bulanan') {
+            if ($user_check->dept_id == NULL || $user_check->divisi_id == NULL || $user_check->jabatan_id == NULL) {
+                return redirect('/karyawan/' . $holding)->with('error', 'Jabatan Karyawan Kosong');
+            }
         }
         $oke = MappingShift::with('Shift')->where('user_id', $id)->orderBy('id', 'desc')->limit(100)->get();
         // dd($oke);
@@ -1046,8 +1109,6 @@ class karyawanController extends Controller
             'no1' => $no1,
         ]);
     }
-
-
     public function mapping_shift_datatable(Request $request, $id)
     {
         $holding = request()->segment(count(request()->segments()));

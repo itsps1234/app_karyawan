@@ -50,7 +50,7 @@ use Carbon\Carbon;
 |
 */
 
-Route::middleware('auth', 'log.activity')->group(function () {
+Route::middleware('auth:sanctum', 'log.activity')->group(function () {
     Route::post('/logout', [authController::class, 'logout']);
     Route::put('/karyawan/proses-edit-shift/sp', [karyawanController::class, 'prosesEditShift']);
     Route::put('/karyawan/proses-edit-shift/sps', [karyawanController::class, 'prosesEditShift']);
@@ -201,6 +201,12 @@ Route::put('/karyawan/edit-password-proses/{id}/sip', [karyawanController::class
 Route::post('/karyawan/ImportKaryawan/sp', [karyawanController::class, 'ImportKaryawan'])->middleware('admin');
 Route::post('/karyawan/ImportKaryawan/sps', [karyawanController::class, 'ImportKaryawan'])->middleware('admin');
 Route::post('/karyawan/ImportKaryawan/sip', [karyawanController::class, 'ImportKaryawan'])->middleware('admin');
+Route::get('/karyawan/ExportKaryawan/sp', [karyawanController::class, 'ExportKaryawan'])->middleware('admin');
+Route::get('/karyawan/ExportKaryawan/sps', [karyawanController::class, 'ExportKaryawan'])->middleware('admin');
+Route::get('/karyawan/ExportKaryawan/sip', [karyawanController::class, 'ExportKaryawan'])->middleware('admin');
+Route::get('/karyawan/pdfKaryawan/sps', [karyawanController::class, 'download_pdf_karyawan'])->middleware('admin');
+Route::get('/karyawan/pdfKaryawan/sp', [karyawanController::class, 'download_pdf_karyawan'])->middleware('admin');
+Route::get('/karyawan/pdfKaryawan/sip', [karyawanController::class, 'download_pdf_karyawan'])->middleware('admin');
 // STRUKTUR ORGANISASI
 Route::get('/struktur_organisasi/sp', [StrukturOrganisasiController::class, 'index'])->middleware('admin');
 Route::get('/struktur_organisasi/sps', [StrukturOrganisasiController::class, 'index'])->middleware('admin');
@@ -379,6 +385,12 @@ Route::get('/departemen/delete/{id}/sip', [DepartemenController::class, 'delete'
 Route::post('/departemen/ImportDepartemen/sp', [DepartemenController::class, 'ImportDepartemen'])->middleware('admin');
 Route::post('/departemen/ImportDepartemen/sps', [DepartemenController::class, 'ImportDepartemen'])->middleware('admin');
 Route::post('/departemen/ImportDepartemen/sip', [DepartemenController::class, 'ImportDepartemen'])->middleware('admin');
+Route::get('/departemen/divisi-datatable/{id?}/sp', [DepartemenController::class, 'divisi_datatable'])->middleware('admin');
+Route::get('/departemen/divisi-datatable/{id?}/sps', [DepartemenController::class, 'divisi_datatable'])->middleware('admin');
+Route::get('/departemen/divisi-datatable/{id?}/sip', [DepartemenController::class, 'divisi_datatable'])->middleware('admin');
+Route::get('/departemen/karyawandepartemen-datatable/{id?}/sp', [DepartemenController::class, 'karyawandepartemen_datatable'])->middleware('admin');
+Route::get('/departemen/karyawandepartemen-datatable/{id?}/sps', [DepartemenController::class, 'karyawandepartemen_datatable'])->middleware('admin');
+Route::get('/departemen/karyawandepartemen-datatable/{id?}/sip', [DepartemenController::class, 'karyawandepartemen_datatable'])->middleware('admin');
 // MASTER DIVISI
 Route::get('/divisi/sp', [DivisiController::class, 'index'])->middleware('admin');
 Route::get('/divisi/sps', [DivisiController::class, 'index'])->middleware('admin');
@@ -404,6 +416,12 @@ Route::get('/divisi/delete/{id}/sip', [DivisiController::class, 'delete'])->midd
 Route::post('/divisi/ImportDivisi/sp', [DivisiController::class, 'ImportDivisi'])->middleware('admin');
 Route::post('/divisi/ImportDivisi/sps', [DivisiController::class, 'ImportDivisi'])->middleware('admin');
 Route::post('/divisi/ImportDivisi/sip', [DivisiController::class, 'ImportDivisi'])->middleware('admin');
+Route::get('/divisi/bagian-datatable/{id?}/sp', [DivisiController::class, 'bagian_datatable'])->middleware('admin');
+Route::get('/divisi/bagian-datatable/{id?}/sps', [DivisiController::class, 'bagian_datatable'])->middleware('admin');
+Route::get('/divisi/bagian-datatable/{id?}/sip', [DivisiController::class, 'bagian_datatable'])->middleware('admin');
+Route::get('/divisi/karyawandivisi-datatable/{id?}/sp', [DivisiController::class, 'karyawandivisi_datatable'])->middleware('admin');
+Route::get('/divisi/karyawandivisi-datatable/{id?}/sps', [DivisiController::class, 'karyawandivisi_datatable'])->middleware('admin');
+Route::get('/divisi/karyawandivisi-datatable/{id?}/sip', [DivisiController::class, 'karyawandivisi_datatable'])->middleware('admin');
 
 // MASTER BAGIAN
 Route::get('/bagian/sp', [BagianController::class, 'index'])->middleware('admin');
@@ -431,6 +449,12 @@ Route::get('/bagian/get_divisi/{id}', [BagianController::class, 'get_divisi'])->
 Route::post('/bagian/ImportBagian/sp', [BagianController::class, 'ImportBagian'])->middleware('admin');
 Route::post('/bagian/ImportBagian/sps', [BagianController::class, 'ImportBagian'])->middleware('admin');
 Route::post('/bagian/ImportBagian/sip', [BagianController::class, 'ImportBagian'])->middleware('admin');
+Route::get('/jabatan/jabatan-datatable/{id?}/sp', [BagianController::class, 'jabatan_datatable'])->middleware('admin');
+Route::get('/jabatan/jabatan-datatable/{id?}/sps', [BagianController::class, 'jabatan_datatable'])->middleware('admin');
+Route::get('/jabatan/jabatan-datatable/{id?}/sip', [BagianController::class, 'jabatan_datatable'])->middleware('admin');
+Route::get('/jabatan/karyawanjabatan-datatable/{id?}/sp', [BagianController::class, 'karyawanjabatan_datatable'])->middleware('admin');
+Route::get('/jabatan/karyawanjabatan-datatable/{id?}/sps', [BagianController::class, 'karyawanjabatan_datatable'])->middleware('admin');
+Route::get('/jabatan/karyawanjabatan-datatable/{id?}/sip', [BagianController::class, 'karyawanjabatan_datatable'])->middleware('admin');
 
 
 // MASTER JABATAN
@@ -499,7 +523,7 @@ Route::delete('/dokumen/delete/{id}', [DokumenController::class, 'delete'])->mid
 // Route::get('/my-dokumen/edit/{id}', [DokumenController::class, 'myDokumenEdit'])->middleware('auth');
 // Route::put('/my-dokumen/edit-proses/{id}', [DokumenController::class, 'myDokumenEditProses'])->middleware('auth');
 // Route::delete('/my-dokumen/delete/{id}', [DokumenController::class, 'myDokumenDelete'])->middleware('auth');
-Route::post('/logout', [authController::class, 'logout'])->name('logout');
+Route::get('/logout', [authController::class, 'logout'])->name('logout');
 
 Route::get('optimize', function () {
     Artisan::call('cache:clear');

@@ -101,6 +101,7 @@
             function load_data(filter_month = '') {
                 console.log(filter_month);
                 var table = $('#table_rekapdata_detail').DataTable({
+                    pageLength: 50,
                     "scrollY": true,
                     "scrollX": true,
                     processing: true,

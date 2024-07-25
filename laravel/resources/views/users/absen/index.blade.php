@@ -2,27 +2,6 @@
 @section('title') APPS | KARYAWAN - SP @endsection
 @section('content')
 
-@if($shift_karyawan->count() > 0)
-@foreach ($shift_karyawan as $sk)
-<?php $skid = $sk->id ?>
-<?php $sktanggal = $sk->tanggal ?>
-<?php $sknamas = $sk->Shift->nama_shift  ?>
-<?php $skjamas = $sk->Shift->jam_masuk ?>
-<?php $skjamkel = $sk->Shift->jam_keluar ?>
-<?php $skjamab = $sk->jam_absen ?>
-<?php $skjampul = $sk->jam_pulang ?>
-<?php $skstatus = $sk->status_absen ?>
-@endforeach
-@else
-<?php $skid = "-" ?>
-<?php $sktanggal = "-" ?>
-<?php $sknamas = "-"  ?>
-<?php $skjamas = "-" ?>
-<?php $skjamkel = "-" ?>
-<?php $skjamab = "-" ?>
-<?php $skjampul = "-" ?>
-<?php $skstatus = "-" ?>
-@endif
 <!-- Features -->
 @if(Session::has('jam_kerja_kurang'))
 <div class="alert alert-danger light alert-lg alert-dismissible fade show">
@@ -45,6 +24,18 @@
         <i class="fa-solid fa-xmark"></i>
     </button>
 </div>
+@elseif(Session::has('cameraoff'))
+<div class="alert alert-danger light alert-lg alert-dismissible fade show">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+        <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    <strong>&nbsp;Camera Error. Harap Ulangi </strong>
+    <button class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+        <i class="fa-solid fa-xmark"></i>
+    </button>
+</div>
 @endif
 <div class="">
     <div class="row m-b20 g-3">
@@ -55,19 +46,14 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6">
-                                    <form action="{{ url('/home/my-location') }}" method="get">
-                                        @csrf
-                                        <input type="hidden" name="lat" id="lat2">
-                                        <input type="hidden" name="long" id="long2">
-                                        <button type="submit" class="btn btn-sm btn-secondary" style="height:10px;">
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#FFFFFF" version="1.1" id="Capa_1" width="18" height="18" class="svg-main-icon" viewBox="0 0 395.71 395.71" xml:space="preserve">
-                                                <g>
-                                                    <path d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738   c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388   C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191   c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
-                                                </g>
-                                            </svg>
-                                            &nbsp;Lokasi&nbsp;Saya
-                                        </button>
-                                    </form>
+                                    <a type="button" href="{{ url('/home/my-location') }}" class="btn btn-sm btn-secondary" style="height:10px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#FFFFFF" version="1.1" id="Capa_1" width="18" height="18" class="svg-main-icon" viewBox="0 0 395.71 395.71" xml:space="preserve">
+                                            <g>
+                                                <path d="M197.849,0C122.131,0,60.531,61.609,60.531,137.329c0,72.887,124.591,243.177,129.896,250.388l4.951,6.738   c0.579,0.792,1.501,1.255,2.471,1.255c0.985,0,1.901-0.463,2.486-1.255l4.948-6.738c5.308-7.211,129.896-177.501,129.896-250.388   C335.179,61.609,273.569,0,197.849,0z M197.849,88.138c27.13,0,49.191,22.062,49.191,49.191c0,27.115-22.062,49.191-49.191,49.191   c-27.114,0-49.191-22.076-49.191-49.191C148.658,110.2,170.734,88.138,197.849,88.138z" />
+                                            </g>
+                                        </svg>
+                                        &nbsp;Lokasi&nbsp;Saya
+                                    </a>
                                 </div>
                                 <div class="col-6">
                                     <a href="{{url('/absen/data-absensi')}}" class="btn btn-sm btn-secondary" style="height:10px;">
@@ -83,7 +69,7 @@
                         </div>
                         <br><br>
                         <div class="row">
-                            @if($shift_karyawan->count() == 0)
+                            @if($shift_karyawan == NULL)
                             <div class="card col-lg-12">
                                 <div class="mt-5">
                                     <div class="mb-5">
@@ -93,7 +79,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @elseif($skstatus == "Libur")
+                            @elseif($shift_karyawan->status_absen == "Libur")
                             <div class="card col-lg-12">
                                 <div class="mt-5">
                                     <div class="mb-5">
@@ -103,7 +89,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @elseif($skstatus == "Cuti")
+                            @elseif($shift_karyawan->status_absen == "Cuti")
                             <div class="card col-lg-12">
                                 <div class="mt-5">
                                     <div class="mb-5">
@@ -114,14 +100,14 @@
                                 </div>
                             </div>
                             @else
-                            @if($skjamab == null)
-                            <form method="post" action="{{ url('/home/absen/masuk/'.$skid) }}">
+                            @if($shift_karyawan->jam_absen == NULL && $shift_karyawan->jam_pulang== NULL)
+                            <form method="post" action="{{ url('/home/absen/masuk/'.$shift_karyawan->id) }}">
                                 @method('put')
                                 @csrf
                                 <div class="form">
                                     <center>
                                         <h2 style="color: white">Absen Masuk: </h2>
-                                        <div style="margin-top:-60px" class="webcam" id="results"></div>
+                                        <div class="webcam" id="results"></div>
                                     </center>
                                     <input type="hidden" name="jam_absen" value="{{ date('H:i:s') }}">
                                     <input type="hidden" name="foto_jam_absen" class="image-tag">
@@ -132,7 +118,7 @@
                                     <input type="hidden" name="status_absen">
                                     <input type="hidden" name="keterangan_absensi">
                                     <center>
-                                        <button style="background-color: white" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
+                                        <button id="btn_submit" style="background-color: white; display: none;" type="submit" class="btn btn-lokasisaya" value="Ambil Foto" onClick="take_snapshot()">Masuk</button>
                                     </center>
                                 </div>
                             </form>
@@ -157,25 +143,25 @@
                                     });
                                 }
                             </script>
-                            @elseif($skjampul == null)
-                            <form method="post" action="{{ url('/home/absen/pulang/'.$skid) }}">
+                            @elseif($shift_karyawan->jam_absen != NULL && $shift_karyawan->jam_pulang == NULL)
+                            <form method="post" action="{{ url('/home/absen/pulang/'.$shift_karyawan->id) }}">
                                 @method('put')
                                 @csrf
                                 <div class="form">
                                     <center>
                                         <h2 style="color: white">Absen Pulang: </h2>
-                                        <div style="margin-top:-60px" class="webcam" id="results"></div>
+                                        <div class="webcam" id="results"></div>
                                     </center>
                                     <input type="hidden" name="jam_pulang" value="{{ date('H:i') }}">
                                     <input type="hidden" name="foto_jam_pulang" class="image-tag">
-                                    <input type="hidden" name="lat_pulang" id="lat">
-                                    <input type="hidden" name="long_pulang" id="long">
+                                    <input type="hidden" name="lat_pulang" id="lat2" value="">
+                                    <input type="hidden" name="long_pulang" id="long2" value="">
                                     <input type="hidden" name="pulang_cepat">
                                     <input type="hidden" name="jarak_pulang">
                                     <input type="hidden" name="keterangan_absensi">
-                                    <input type="hidden" name="jam_masuk" value="{{$skjamab}}">
+                                    <input type="hidden" name="jam_masuk" value="{{$shift_karyawan->jam_absen}}">
                                     <center>
-                                        <button type="submit" class="btn btn-lokasisaya" style="background-color: white" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
+                                        <button id="btn_submit" type="submit" class="btn btn-lokasisaya" style="background-color: white; display: none;" value="Ambil Foto" onClick="take_snapshot()">Pulang</button>
                                     </center>
                                 </div>
                             </form>
@@ -218,4 +204,28 @@
         </div>
     </div>
 </div>
+@endsection
+@section('js')
+<script>
+    getLocation();
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function showPosition(position) {
+        //   x.innerHTML = "Latitude: " + position.coords.latitude +
+        //   "<br>Longitude: " + position.coords.longitude;
+        $('#lat').val(position.coords.latitude);
+        $('#lat2').val(position.coords.latitude);
+        $('#long').val(position.coords.longitude);
+        $('#long2').val(position.coords.longitude);
+        $('#long2').val(position.coords.longitude);
+        $('#btn_submit').show();
+    }
+</script>
 @endsection

@@ -119,11 +119,78 @@
                             </form>
                         </div>
                     </div>
+                    <!-- modal lihat karyawan -->
+                    <div class="modal fade" id="modal_lihat_karyawan" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class=" modal-content">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="backDropModalTitle"> Daftar Karyawan</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <table class="table" id="table_lihat_karyawan" style="width: 100%;">
+                                            <thead class="table-primary">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Nama&nbsp;Karyawan</th>
+                                                    <th>Divisi</th>
+                                                    <th>Bagian</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal lihat divisi -->
+                    <div class="modal fade" id="modal_lihat_divisi" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                            <div class=" modal-content">
+
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="backDropModalTitle"> Daftar Divisi</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="col-lg-12">
+                                        <table class="table" id="table_lihat_divisi" style="width: 100%;">
+                                            <thead class="table-primary">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Nama&nbsp;Divisi</th>
+                                                    <th>Jumlah&nbsp;Karyawan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <table class="table" id="table_departemen" style="width: 100%;">
                         <thead class="table-primary">
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Departemen</th>
+                                <th>Jumlah&nbsp;Divisi</th>
+                                <th>Total&nbsp;Karyawan</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -145,6 +212,7 @@
 <script>
     let holding = window.location.pathname.split("/").pop();
     var table = $('#table_departemen').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,
@@ -162,6 +230,14 @@
             {
                 data: 'nama_departemen',
                 name: 'nama_departemen'
+            },
+            {
+                data: 'jumlah_divisi',
+                name: 'jumlah_divisi'
+            },
+            {
+                data: 'jumlah_karyawan',
+                name: 'jumlah_karyawan'
             },
             {
                 data: 'option',
@@ -183,6 +259,7 @@
     });
     $(document).on('click', '#btn_delete_dept', function() {
         var id = $(this).data('id');
+        var usercount = $(this).data('usercount');
         let holding = $(this).data("holding");
         console.log(id);
         Swal.fire({
@@ -202,13 +279,31 @@
                         alert('Something is wrong');
                     },
                     success: function(data) {
-                        Swal.fire({
-                            title: 'Terhapus!',
-                            text: 'Data anda berhasil di hapus.',
-                            icon: 'success',
-                            timer: 1500
-                        })
-                        $('#table_departemen').DataTable().ajax.reload();
+                        if (data.status == 1) {
+                            Swal.fire({
+                                title: 'Terhapus!',
+                                text: 'Data anda berhasil di hapus.',
+                                icon: 'success',
+                                timer: 1500
+                            })
+                            $('#table_departemen').DataTable().ajax.reload();
+                        } else if (data.status == 2) {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: 'Departemen Masih Terhubung Karyawan',
+                                icon: 'error',
+                                timer: 1500
+                            })
+                            $('#table_departemen').DataTable().ajax.reload();
+                        } else if (data.status == 0) {
+                            Swal.fire({
+                                title: 'Gagal!',
+                                text: 'Departemen Masih Terhubung Divisi',
+                                icon: 'error',
+                                timer: 1500
+                            })
+                            $('#table_departemen').DataTable().ajax.reload();
+                        }
                     }
                 });
             } else {
@@ -221,6 +316,94 @@
             }
         });
 
+    });
+    $(document).on('click', '#btn_lihat_divisi', function() {
+
+        let id = $(this).data('id');
+        let holding = $(this).data("holding");
+        let url = "{{ url('departemen/divisi-datatable') }}" + '/' + id + '/' + holding;
+        // console.log(url);
+        var table1 = $('#table_lihat_divisi').DataTable({
+            "scrollY": true,
+            "scrollX": true,
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            ajax: {
+                url: url,
+            },
+            columns: [{
+                    data: "id",
+
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'nama_divisi',
+                    name: 'nama_divisi'
+                },
+                {
+                    data: 'jumlah_karyawan',
+                    name: 'jumlah_karyawan'
+                },
+            ],
+            order: [
+                [1, 'asc'],
+                [2, 'asc'],
+            ],
+        });
+        $('#modal_lihat_divisi').modal('show');
+        $('#modal_lihat_divisi').on('hidden.bs.modal', function(e) {
+            table1.destroy();
+            $('#table_departemen').DataTable().ajax.reload();
+        })
+    });
+    $(document).on('click', '#btn_lihat_karyawan', function() {
+
+        let id = $(this).data('id');
+        let holding = $(this).data("holding");
+        let url = "{{ url('departemen/karyawandepartemen-datatable') }}" + '/' + id + '/' + holding;
+        console.log(id);
+        var table1 = $('#table_lihat_karyawan').DataTable({
+            "scrollY": true,
+            "scrollX": true,
+            processing: true,
+            serverSide: true,
+            retrieve: true,
+            ajax: {
+                url: url,
+            },
+            columns: [{
+                    data: "id",
+
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'nama_divisi',
+                    name: 'nama_divisi'
+                },
+                {
+                    data: 'nama_bagian',
+                    name: 'nama_bagian'
+                },
+            ],
+            order: [
+                [1, 'asc'],
+                [2, 'asc'],
+            ],
+        });
+        $('#modal_lihat_karyawan').modal('show');
+        $('#modal_lihat_karyawan').on('hidden.bs.modal', function(e) {
+            table1.destroy();
+            $('#table_departemen').DataTable().ajax.reload();
+        })
     });
 </script>
 @endsection

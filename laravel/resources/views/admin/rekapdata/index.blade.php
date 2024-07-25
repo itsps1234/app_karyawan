@@ -233,6 +233,7 @@
             function load_data(filter_month = '') {
                 console.log(filter_month);
                 var table = $('#table_rekapdata').DataTable({
+                    pageLength: 50,
                     "scrollY": true,
                     "scrollX": true,
                     processing: true,
@@ -260,8 +261,8 @@
                             name: 'nomor_identitas_karyawan'
                         },
                         {
-                            data: 'name',
-                            name: 'name'
+                            data: 'fullname',
+                            name: 'fullname'
                         },
                         {
                             data: 'total_hadir_tepat_waktu',
@@ -319,8 +320,8 @@
                         name: 'nomor_identitas_karyawan'
                     },
                     {
-                        data: 'name',
-                        name: 'name'
+                        data: 'fullname',
+                        name: 'fullname'
                     },
                     {
                         data: 'total_hadir_tepat_waktu',

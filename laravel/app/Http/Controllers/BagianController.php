@@ -7,6 +7,7 @@ use App\Models\Bagian;
 use App\Models\Departemen;
 use App\Models\Divisi;
 use App\Models\Jabatan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Ramsey\Uuid\Uuid;
@@ -75,8 +76,32 @@ class BagianController extends Controller
                     return $nama_divisi;
                 })
                 ->addColumn('jumlah_jabatan', function ($row) use ($holding) {
-                    $jumlah_jabatan = Jabatan::where('bagian_id', $row->id)->where('divisi_id', $row->divisi_id)->where('holding', $holding)->count();
+                    $cek_jabatan = Jabatan::where('bagian_id', $row->id)->where('divisi_id', $row->divisi_id)->where('holding', $holding)->count();
+                    if ($cek_jabatan == 0) {
+                        $jumlah_jabatan = $cek_jabatan;
+                    } else {
+                        $jumlah_jabatan = $cek_jabatan . '&nbsp; <button id="btn_lihat_jabatan" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-sm btn-outline-primary">
+                    <span class="tf-icons mdi mdi-eye-circle-outline me-1"></span>Lihat
+                  </button>';
+                    }
                     return $jumlah_jabatan;
+                })
+                ->addColumn('jumlah_karyawan', function ($row) use ($holding) {
+                    $cek_karyawan = User::where('bagian_id', $row->id)
+                        ->orWhere('bagian1_id', $row->id)
+                        ->orWhere('bagian2_id', $row->id)
+                        ->orWhere('bagian3_id', $row->id)
+                        ->orWhere('bagian4_id', $row->id)
+                        ->where('kontrak_kerja', $holding)
+                        ->count();
+                    if ($cek_karyawan == 0) {
+                        $jumlah_karyawan = $cek_karyawan;
+                    } else {
+                        $jumlah_karyawan = $cek_karyawan . '&nbsp; <button id="btn_lihat_karyawan" data-id="' . $row->id . '" data-holding="' . $holding . '" type="button" class="btn btn-sm btn-outline-info">
+                        <span class="tf-icons mdi mdi-eye-circle-outline me-1"></span>Lihat
+                        </button>';
+                    }
+                    return $jumlah_karyawan;
                 })
                 ->addColumn('option', function ($row) use ($holding) {
                     $btn = '<button id="btn_edit_bagian" data-id="' . $row->id . '" data-dept="' . $row->Dept_id . '" data-divisi="' . $row->divisi_id . '" data-bagian="' . $row->nama_bagian . '" data-holding="' . $holding . '" type="button" class="btn btn-icon btn-warning waves-effect waves-light"><span class="tf-icons mdi mdi-pencil-outline"></span></button>';
@@ -84,7 +109,53 @@ class BagianController extends Controller
 
                     return $btn;
                 })
-                ->rawColumns(['nama_departemen', 'nama_divisi', 'jumlah_jabatan', 'option'])
+                ->rawColumns(['nama_departemen', 'nama_divisi', 'jumlah_jabatan', 'jumlah_karyawan', 'option'])
+                ->make(true);
+        }
+    }
+    public function jabatan_datatable(Request $request, $id)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table =  Jabatan::where('bagian_id', $id)
+            ->where('holding', $holding)
+            ->get();
+        // dd($table);
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('jumlah_karyawan', function ($row) use ($holding) {
+                    $karyawan = User::where('jabatan_id', $row->id)
+                        ->orWhere('jabatan1_id', $row->id)
+                        ->orWhere('jabatan2_id', $row->id)
+                        ->orWhere('jabatan3_id', $row->id)
+                        ->orWhere('jabatan4_id', $row->id)
+                        ->where('kontrak_kerja', $holding)
+                        ->where('is_admin', 'user')
+                        ->count();
+                    return $karyawan;
+                })
+                ->rawColumns(['jumlah_karyawan'])
+                ->make(true);
+        }
+    }
+    public function karyawanjabatan_datatable(Request $request, $id)
+    {
+        $holding = request()->segment(count(request()->segments()));
+        $table =   User::where('bagian_id', $id)
+            ->orWhere('bagian1_id', $id)
+            ->orWhere('bagian2_id', $id)
+            ->orWhere('bagian3_id', $id)
+            ->orWhere('bagian4_id', $id)
+            ->where('is_admin', 'user')
+            ->where('kontrak_kerja', $holding)
+            ->get();
+        // dd($table);
+        if (request()->ajax()) {
+            return DataTables::of($table)
+                ->addColumn('nama_jabatan', function ($row) use ($holding) {
+                    $jabatan = Jabatan::where('holding', $holding)->where('id', $row->jabatan_id)->value('nama_jabatan');
+                    return $jabatan;
+                })
+                ->rawColumns(['nama_jabatan'])
                 ->make(true);
         }
     }
@@ -151,30 +222,21 @@ class BagianController extends Controller
     {
         // dd($request->all());
         $holding = request()->segment(count(request()->segments()));
-        if ($request->holding == 'sp') {
-            $cek_jabatan = Jabatan::where('bagian_id', $id)
-                ->where('divisi_id', $request->divisi_id)
-                ->where('holding', $holding)
-                ->count();
-        } else if ($request->holding == 'sps') {
-            $cek_jabatan = Jabatan::where('bagian_id', $id)
-                ->where('divisi_id', $request->divisi_id)
-                ->where('holding', $holding)
-                ->count();
-        } else {
-            $cek_jabatan = Jabatan::where('bagian_id', $id)
-                ->where('divisi_id', $request->divisi_id)
-                ->where('holding', $holding)
-                ->count();
-        }
+        $cek_jabatan = Jabatan::where('bagian_id', $id)
+            ->where('divisi_id', $request->divisi)
+            ->where('holding', $request->holding)
+            ->count();
+        // dd($cek_jabatan);
         if ($cek_jabatan == 0) {
-            $divisi = Bagian::findOrFail($id);
-            $divisi->delete();
-            return response()->json(['status' => 1]);
+            $cek_karyawan = User::where('jabatan_id', $id)->where('kontrak_kerja', $holding)->count();
+            if ($cek_karyawan == 0) {
+                // $bagian = Bagian::where('id', $id)->delete();
+                return response()->json(['status' => 1]);
+            } else {
+                return response()->json(['status' => 2]);
+            }
         } else {
             return response()->json(['status' => 0]);
         }
-
-        return redirect('/bagian/' . $holding)->with('success', 'Data Berhasil di Delete');
     }
 }

@@ -5,76 +5,83 @@
         </a>
     </div>
 
-    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        <!-- Search -->
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4">
+                <button type="button" class="btn btn-outline-primary waves-effect">
+                    <span class="tf-icons mdi mdi-calendar-clock-outline me-1"></span>
+                    <span class="text-center" style="font-size: 13pt; text-align: center;">{{\Carbon\Carbon::now()->isoFormat('DD MMMM YYYY');}}&nbsp;&nbsp;</span><br>
+                    <span class="text-center" style="font-size: 13pt; text-align: center;" id="jam_sekarang"></span>
+                </button>
+            </div>
+            <div class="col-lg-4">
+                <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+                    <!-- Search -->
+                    <script>
+                        setInterval(customClock, 500);
 
-        <!-- /Search -->
+                        function customClock() {
+                            var time = new Date();
+                            var hrs = (time.getHours() < 10 ? '0' : '') + time.getHours();
+                            var min = (time.getMinutes() < 10 ? '0' : '') + time.getMinutes();
+                            var sec = (time.getSeconds() < 10 ? '0' : '') + time.getSeconds();
+                            document.getElementById('jam_sekarang').innerHTML = hrs + ":" + min + ":" + sec;
+                        }
+                    </script>
+                    <!-- /Search -->
 
-        <ul class="navbar-nav flex-row align-items-center ms-auto">
-            <!-- Place this tag where you want the button to render. -->
-            <li class="nav-item lh-1 me-3">
-                <a class="github-button" href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star themeselection/materio-bootstrap-html-admin-template-free on GitHub">Star</a>
-            </li>
+                    <ul class="navbar-nav flex-row align-items-center ms-auto">
 
-            <!-- User -->
-            <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                        <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
-                    </div>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
-                    <li>
-                        <a class="dropdown-item pb-2 mb-1" href="#">
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0 me-2 pe-1">
-                                    <div class="avatar avatar-online">
-                                        <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
-                                    </div>
+                        <!-- User -->
+                        <li class="nav-item navbar-dropdown dropdown-user dropdown" style="right: 1%;">
+                            <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                <div class="avatar avatar-online">
+                                    <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
                                 </div>
-                                <div class="flex-grow-1">
-                                    <h6 class="mb-0">John Doe</h6>
-                                    <small class="text-muted">Admin</small>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider my-1"></div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-account-outline me-1 mdi-20px"></i>
-                            <span class="align-middle">My Profile</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="mdi mdi-cog-outline me-1 mdi-20px"></i>
-                            <span class="align-middle">Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <span class="d-flex align-items-center align-middle">
-                                <i class="flex-shrink-0 mdi mdi-credit-card-outline me-1 mdi-20px"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
-                                <span class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="dropdown-divider my-1"></div>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);">
-                            <i class="mdi mdi-power me-1 mdi-20px"></i>
-                            <span class="align-middle">Log Out</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!--/ User -->
-        </ul>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end mt-3 py-2">
+                                <li>
+                                    <a class="dropdown-item pb-2 mb-1" href="#">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0 me-2 pe-1">
+                                                <div class="avatar avatar-online">
+                                                    <img src="{{asset('admin/assets/img/avatars/1.png')}}" alt class="w-px-40 h-auto rounded-circle" />
+                                                </div>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <h6 class="mb-0">ADMIN</h6>
+                                                <small class="text-muted">Admin</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider my-1"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="mdi mdi-account-outline me-1 mdi-20px"></i>
+                                        <span class="align-middle">My Profile</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <div class="dropdown-divider my-1"></div>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="{{url('/logout')}}">
+                                        <i class="mdi mdi-power me-1 mdi-20px"></i>
+                                        <span class="align-middle">Log Out</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--/ User -->
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
+
 </nav>

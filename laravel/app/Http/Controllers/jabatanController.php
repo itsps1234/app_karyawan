@@ -291,7 +291,7 @@ class jabatanController extends Controller
     public function get_atasan(Request $request)
     {
         // dd($request->all());
-        $dept = Divisi::where('nama_divisi', $request->id_divisi)->first();
+        $dept = Divisi::where('nama_divisi', $request->id_divisi)->where('holding', $request->holding)->first();
         // dd($dept);
         if ($request->level == 0) {
             $get_atasan = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
@@ -303,7 +303,18 @@ class jabatanController extends Controller
                 ->select('jabatans.*', 'divisis.nama_divisi', 'level_jabatans.level_jabatan', 'bagians.nama_bagian')
                 ->orderBy('jabatans.nama_jabatan', 'ASC')
                 ->get();
+            $get_atasan_lintas = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                ->where('level_jabatans.level_jabatan', '=', $request->level)
+                ->where('jabatans.nama_jabatan', '=', 'DIREKTUR UTAMA')
+                ->where('jabatans.holding', '=', $request->holding)
+                ->where('jabatans.lintas_departemen', 'on')
+                ->orderBy('jabatans.nama_jabatan', 'ASC')
+                ->select('jabatans.*', 'divisis.nama_divisi', 'level_jabatans.level_jabatan', 'bagians.nama_bagian')
+                ->get();
         } else if ($request->level <= 4) {
+            // dd('ok');
             $getatasan = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
                 ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
                 ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
@@ -354,16 +365,19 @@ class jabatanController extends Controller
                     ->get();
             }
         } else {
+            // dd($request->holding);
             $get_atasan = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
                 ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
                 ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
-                ->where('divisis.dept_id', $dept->dept_id)
+                ->where('divisis.id', $dept->id)
+                ->where('divisis.holding', '=', $request->holding)
                 ->where('jabatans.holding', '=', $request->holding)
                 ->where('jabatans.lintas_departemen', NULL)
                 ->where('level_jabatans.level_jabatan', '<', $request->level)
                 ->select('jabatans.*', 'divisis.nama_divisi', 'level_jabatans.level_jabatan', 'bagians.nama_bagian')
                 ->orderBy('jabatans.nama_jabatan', 'ASC')
                 ->get();
+            // dd($get_atasan);
             $get_atasan_lintas = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
                 ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
                 ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
@@ -375,16 +389,22 @@ class jabatanController extends Controller
                 ->get();
         }
         echo "<option value=''>Pilih Jabatan Atasan...</option>";
-        echo "<optgroup label='Lintas Departemen'>";
-        foreach ($get_atasan_lintas as $atasan1) {
-            echo "<option value='$atasan1->id'>$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
+        if (count($get_atasan_lintas) == 0) {
+        } else {
+            echo "<optgroup label='Lintas Departemen'>";
+            foreach ($get_atasan_lintas as $atasan1) {
+                echo "<option value='$atasan1->id'>$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
+            }
+            echo "</optgroup>";
         }
-        echo "</optgroup>";
-        echo "<optgroup label='Atasan'>";
-        foreach ($get_atasan as $atasan) {
-            echo "<option value='$atasan->id'>$atasan->nama_jabatan | $atasan->nama_bagian</option>";
+        if (count($get_atasan) == 0) {
+        } else {
+            echo "<optgroup label='Atasan'>";
+            foreach ($get_atasan as $atasan) {
+                echo "<option value='$atasan->id'>$atasan->nama_jabatan | $atasan->nama_bagian</option>";
+            }
+            echo "</optgroup>";
         }
-        echo "</optgroup>";
     }
     public function get_atasan_edit(Request $request)
     {
@@ -398,6 +418,17 @@ class jabatanController extends Controller
                 ->where('jabatans.id', '!=', $request->id)
                 ->where('jabatans.nama_jabatan', '=', 'DIREKTUR UTAMA')
                 ->where('jabatans.holding', '=', $request->holding)
+                ->orderBy('jabatans.nama_jabatan', 'ASC')
+                ->select('jabatans.*', 'divisis.nama_divisi', 'level_jabatans.level_jabatan', 'bagians.nama_bagian')
+                ->get();
+            $get_atasan_lintas = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
+                ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
+                ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
+                ->where('level_jabatans.level_jabatan', '=', $request->level)
+                ->where('jabatans.id', '!=', $request->id)
+                ->where('jabatans.nama_jabatan', '=', 'DIREKTUR UTAMA')
+                ->where('jabatans.holding', '=', $request->holding)
+                ->where('jabatans.lintas_departemen', 'on')
                 ->orderBy('jabatans.nama_jabatan', 'ASC')
                 ->select('jabatans.*', 'divisis.nama_divisi', 'level_jabatans.level_jabatan', 'bagians.nama_bagian')
                 ->get();
@@ -434,7 +465,7 @@ class jabatanController extends Controller
                 $get_atasan = Jabatan::Join('divisis', 'divisis.id', 'jabatans.divisi_id')
                     ->Join('level_jabatans', 'level_jabatans.id', 'jabatans.level_id')
                     ->Join('bagians', 'bagians.id', 'jabatans.bagian_id')
-                    ->where('divisis.dept_id', $dept->dept_id)
+                    ->where('divisis.id', $dept->id)
                     ->where('jabatans.holding', '=', $request->holding)
                     ->where('jabatans.lintas_departemen', NULL)
                     ->where('level_jabatans.level_jabatan', '<', $request->level)
@@ -475,24 +506,30 @@ class jabatanController extends Controller
                 ->get();
         }
         echo "<option value=''>Pilih Jabatan Atasan...</option>";
-        echo "<optgroup label='Lintas Departemen'>";
-        foreach ($get_atasan_lintas as $atasan1) {
-            if ($atasan1->id == $request->atasan) {
-                echo "<option value='$atasan1->id' selected >$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
-            } else {
-                echo "<option value='$atasan1->id'>$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
+        if (count($get_atasan_lintas) == 0) {
+        } else {
+            echo "<optgroup label='Lintas Departemen'>";
+            foreach ($get_atasan_lintas as $atasan1) {
+                if ($atasan1->id == $request->atasan) {
+                    echo "<option value='$atasan1->id' selected >$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
+                } else {
+                    echo "<option value='$atasan1->id'>$atasan1->nama_jabatan | $atasan1->nama_bagian</option>";
+                }
             }
+            echo "</optgroup>";
         }
-        echo "</optgroup>";
-        echo "<optgroup label='Atasan'>";
-        foreach ($get_atasan as $atasan) {
-            if ($atasan->id == $request->atasan) {
-                echo "<option value='$atasan->id' selected >$atasan->nama_jabatan | $atasan->nama_bagian</option>";
-            } else {
-                echo "<option value='$atasan->id'>$atasan->nama_jabatan | $atasan->nama_bagian</option>";
+        if (count($get_atasan) == 0) {
+        } else {
+            echo "<optgroup label='Atasan'>";
+            foreach ($get_atasan as $atasan) {
+                if ($atasan->id == $request->atasan) {
+                    echo "<option value='$atasan->id' selected >$atasan->nama_jabatan | $atasan->nama_bagian</option>";
+                } else {
+                    echo "<option value='$atasan->id'>$atasan->nama_jabatan | $atasan->nama_bagian</option>";
+                }
             }
+            echo "</optgroup>";
         }
-        echo "</optgroup>";
     }
     public function create()
     {
@@ -526,7 +563,7 @@ class jabatanController extends Controller
                 'level_id' => LevelJabatan::where('level_jabatan', $validatedData['level_jabatan'])->value('id'),
             ]
         );
-        return redirect('/detail_jabatan/' . Divisi::where('nama_divisi', $validatedData['nama_divisi'])->value('id') . '/' . $holding)->with('success', 'Data Berhasil di Tambahkan');
+        return redirect()->back()->with('success', 'Data Berhasil di Tambahkan');
     }
 
     public function edit($id)

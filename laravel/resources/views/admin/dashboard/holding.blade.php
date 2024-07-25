@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>HRD | App</title>
+    <title>HRD-APP | ADMIN</title>
 
     <meta name="description" content="" />
 
@@ -41,6 +41,18 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{asset('admin/assets/js/config.js')}}"></script>
     <style>
+        .img_beras {
+            bottom: -5%;
+            position: fixed;
+            filter: drop-shadow(2px 5px 5px #222);
+            left: -4%;
+            transform: perspective(400px) rotate3d(1, -180, 0, calc(var(--i, 1) * 8deg));
+        }
+
+        .img_beras:hover {
+            --i: -1;
+        }
+
         .logo {
             width: 150px;
             /* height: 30px; */
@@ -55,17 +67,53 @@
             .logo {
                 width: 130px;
             }
+
+            .img_beras {
+                bottom: -5%;
+                position: fixed;
+                filter: drop-shadow(2px 2px 5px #222);
+                left: -5%;
+                transform: perspective(400px) rotate3d(1, -1, 0, calc(var(--i, 1) * 8deg));
+            }
+
+            .img_beras:hover {
+                --i: -1;
+            }
         }
 
         @media screen and (max-width: 990px) {
             .logo {
                 width: 100px;
             }
+
+            .img_beras {
+                bottom: -4%;
+                position: fixed;
+                filter: drop-shadow(2px 2px 5px #222);
+                left: -4%;
+                transform: perspective(400px) rotate3d(1, -1, 0, calc(var(--i, 1) * 8deg));
+            }
+
+            .img_beras:hover {
+                --i: -1;
+            }
         }
 
         @media screen and (max-width: 760px) {
             .logo {
                 width: 150px;
+            }
+
+            .img_beras {
+                bottom: -5%;
+                position: fixed;
+                filter: drop-shadow(2px 2px 5px #222);
+                left: -5%;
+                transform: perspective(400px) rotate3d(1, -1, 0, calc(var(--i, 1) * 8deg));
+            }
+
+            .img_beras:hover {
+                --i: -1;
             }
         }
     </style>
@@ -122,7 +170,7 @@
                     </div>
                     <div class="col-md-4 col-lg-4">
                         <a href="{{ url('dashboard/holding/sip') }}">
-                            <div class="card" style="height: 200px;">
+                            <div class="card" style="height: 200px; display: block;">
                                 <div class="card-body">
                                     <figure>
                                         <blockquote class="blockquote">
@@ -141,17 +189,14 @@
                     </div>
                 </div>
             </div>
-            <img src="{{asset('admin/assets/img/illustrations/tree-3.png')}}" alt="auth-tree" class="authentication-image-object-left d-none d-lg-block" />
+            <img src="{{ asset('holding/assets/img/produk_beras.png') }}" width="350" class="img_beras" alt="auth-tree" style="" />
             <img src="{{asset('admin/assets/img/illustrations/auth-basic-mask-light.png')}}" class="authentication-image d-none d-lg-block" alt="triangle-bg" data-app-light-img="illustrations/auth-basic-mask-light.png" data-app-dark-img="illustrations/auth-basic-mask-dark.png" />
-            <img src="{{asset('admin/assets/img/illustrations/tree.png')}}" alt="auth-tree" class="authentication-image-object-right d-none d-lg-block" />
         </div>
     </div>
 
     <!-- / Content -->
 
-    <div class="buy-now">
-        <a href="https://themeselection.com/item/materio-bootstrap-html-admin-template/" target="_blank" class="btn btn-danger btn-buy-now">Upgrade to Pro</a>
-    </div>
+
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

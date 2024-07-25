@@ -46,7 +46,7 @@
                         @else
                         <img src="{{ url('https://karyawan.sumberpangan.store/laravel/public/signature/'.$data->ttd_pengajuan.'.png') }}" style="width: 100%;" alt="">
                         @endif
-                        <p style="text-align: center;font-weight: bold">{{ \Carbon\Carbon::parse($data->waktu_ttd_pengajuan)->isoFormat('D MMMM Y HH:m')}} WIB</p>
+                        <p style="text-align: center;font-weight: bold">{{ \Carbon\Carbon::parse($data->waktu_ttd_pengajuan)->isoFormat('D MMMM Y HH:mm')}} WIB</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-danger light" data-bs-dismiss="modal">Close</button>
@@ -239,7 +239,7 @@
 <script type="text/javascript">
     $(function() {
         $(document).on('click', '#approve_btn', function(e) {
-            // console.log('ok');
+            console.log('ok');
             e.preventDefault();
             var canvas = document.getElementById("the_canvas");
             var dataUrl = canvas.toDataURL();
@@ -252,34 +252,39 @@
             var izin = $('#izin').val();
             var tanggal = $('#tanggal').val();
             var tanggal_selesai = $('#tanggal_selesai').val();
-            $.ajax({
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    approve: approve,
-                    id: id,
-                    id_user: id_user,
-                    status_izin: status_izin,
-                    signature: signature,
-                    izin: izin,
-                    catatan: catatan,
-                    tanggal: tanggal,
-                    tanggal_selesai: tanggal_selesai,
-                },
-                url: "{{ url('/izin/approve/proses') }}",
-                type: "POST",
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    $(location).attr('href', url);
+            if (signaturePad.isEmpty()) {
+                swal.fire("Please provide signature first.");
+                event.preventDefault();
+            } else {
+                $.ajax({
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        approve: approve,
+                        id: id,
+                        id_user: id_user,
+                        status_izin: status_izin,
+                        signature: signature,
+                        izin: izin,
+                        catatan: catatan,
+                        tanggal: tanggal,
+                        tanggal_selesai: tanggal_selesai,
+                    },
+                    url: "{{ url('/izin/approve/proses') }}",
+                    type: "POST",
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        var url = "{{ url('/home') }}"; //the url I want to redirect to
+                        $(location).attr('href', url);
 
-                },
-                error: function(data) {
-                    console.log('error:', data)
-                    var url = "{{ url('/home') }}"; //the url I want to redirect to
-                    $(location).attr('href', url);
-                }
-            });
+                    },
+                    error: function(data) {
+                        console.log('error:', data)
+                        var url = "{{ url('/home') }}"; //the url I want to redirect to
+                        $(location).attr('href', url);
+                    }
+                });
+            }
         });
         $(document).on('click', '#not_approve_btn', function(e) {
             e.preventDefault();

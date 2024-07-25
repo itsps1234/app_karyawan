@@ -74,6 +74,7 @@
 <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js" type="text/javascript"></script>
 <script src="https://code.jscharting.com/latest/jscharting.js"></script>
 <script type="text/javascript" src="https://code.jscharting.com/latest/modules/types.js"></script>
+<!-- <script type="text/javascript" src="https://code.jscharting.com/latest/modules/toolbar.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script>
     var selectedPoint;
@@ -89,7 +90,7 @@
     var chart = JSC.chart('chartDiv1', {
         debug: true,
         type: 'organizational',
-        defaultTooltip_enabled: false,
+        defaultTooltip_enabled: true,
 
         /* These options will apply to all annotations including point nodes. */
         defaultAnnotation: {
@@ -254,10 +255,10 @@
     var points = <?php echo json_encode($user1) ?>;
 
     console.log(points);
-    var chart = JSC.chart('chartDiv2', {
+    var chart1 = JSC.chart('chartDiv2', {
         debug: true,
         type: 'organizational',
-        defaultTooltip_enabled: false,
+        defaultTooltip_enabled: true,
 
         /* These options will apply to all annotations including point nodes. */
         defaultAnnotation: {
@@ -326,7 +327,7 @@
             points: points
         }]
     });
-
+    chart1.redraw();
     /** 
      * Event Handlers 
      */
@@ -425,7 +426,7 @@
     var chart = JSC.chart('chartDiv3', {
         debug: true,
         type: 'organizational',
-        defaultTooltip_enabled: false,
+        defaultTooltip_enabled: true,
 
         /* These options will apply to all annotations including point nodes. */
         defaultAnnotation: {

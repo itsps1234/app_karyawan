@@ -21,7 +21,14 @@
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_tambah_karyawan"><i class="menu-icon tf-icons mdi mdi-plus"></i>Tambah</button>
-                    <button type="button" class="btn btn-sm btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal_import_karyawan"><i class="menu-icon tf-icons mdi mdi-file-excel"></i>Import</button>
+                    <button class="btn btn-sm btn-success waves-effect waves-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="menu-icon tf-icons mdi mdi-file-excel"></i> Excel
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_import_karyawan" href="">Import Excel</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal_export_karyawan" href="#">Export Excel</a></li>
+                    </ul>
+                    <a type="button" href="{{url('karyawan/pdfKaryawan/'.$holding)}}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="menu-icon tf-icons mdi mdi-file-pdf-box"></i>PDF</a>
                     <hr class="my-5">
                     <div class="row g-3">
                         <div class="col-md-3 col-6">
@@ -370,7 +377,7 @@
                                             <p class="text-info">Untuk Kebutuhan Absensi</p>
                                         </div>
                                     </div>
-                                    <div id="form_level_site" class="row g-2 mt-2">
+                                    <div class="row g-2 mt-2">
                                         <div class="col mb-2">
                                             <div class="form-floating form-floating-outline">
                                                 <?php $is_admin = array(
@@ -398,7 +405,7 @@
                                             <p class="alert alert-danger">{{$message}}</p>
                                             @enderror
                                         </div>
-                                        <div class="col mb-2">
+                                        <div class="col mb-2" id="form_level_site">
                                             <div class="form-floating form-floating-outline">
                                                 <select class="form-control @error('site_job') is-invalid @enderror" id="site_job" name="site_job">
                                                     <option selected disabled value=""> Pilih Site..</option>
@@ -989,6 +996,32 @@
                             </form>
                         </div>
                     </div>
+                    <div class="modal fade" id="modal_export_karyawan" data-bs-backdrop="static" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <form method="post" action="{{ url('/karyawan/ImportKaryawan/'.$holding) }}" class="modal-content" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="backDropModalTitle">Export Excel Karyawan</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row g-2 mt-2">
+                                        <div class="col mb-2">
+                                            <div class="form-floating form-floating-outline">
+                                                <h6>Download File Excel Data Karyawan</h6>
+                                                <a href="{{url('karyawan/ExportKaryawan/'.$holding)}}" type="button" class="btn btn-sm btn-success"> Download Excel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="nav-align-top">
                         <div class="row">
                             <div class="col-6">
@@ -1062,6 +1095,7 @@
 <script>
     let holding = window.location.pathname.split("/").pop();
     var table = $('#table_karyawan_bulanan').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,
@@ -1118,6 +1152,7 @@
         // table.draw();
     })
     var table1 = $('#table_karyawan_harian').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,
@@ -1164,6 +1199,9 @@
                 data: 'option',
                 name: 'option'
             },
+        ],
+        order: [
+            [2, 'asc']
         ]
     });
     $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {

@@ -150,6 +150,7 @@
 <script>
     let holding = window.location.pathname.split("/").pop();
     var table = $('#table_access_karyawan').DataTable({
+        pageLength: 50,
         "scrollY": true,
         "scrollX": true,
         processing: true,
